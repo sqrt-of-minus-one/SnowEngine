@@ -18,6 +18,14 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Math\Angle.h" />
+    <ClInclude Include="Math\Math.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Math\Angle.cpp" />
+    <ClCompile Include="Math\Math.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{8E7EC31F-78BE-4BD3-9899-F942F29624E3}</ProjectGuid>
