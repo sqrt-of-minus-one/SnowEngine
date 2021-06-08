@@ -33,7 +33,7 @@ float snow::Angle::get_degrees() const
 
 float snow::Angle::get_radians() const
 {
-	return value_deg * snow::Math::PI / 180.f;
+	return value_deg * snow::math::PI / 180.f;
 }
 
 float snow::Angle::get_gradians() const
@@ -48,7 +48,7 @@ void snow::Angle::set_degrees(float degrees)
 
 void snow::Angle::set_radians(float radians)
 {
-	value_deg = radians * 180.f / snow::Math::PI;
+	value_deg = radians * 180.f / snow::math::PI;
 }
 
 void snow::Angle::set_gradians(float gradians)
@@ -81,7 +81,7 @@ const snow::Angle snow::Angle::get_normalized_180() const
 
 const snow::Angle snow::Angle::abs() const
 {
-	return Angle(std::abs(value_deg));
+	return Angle(snow::math::abs(value_deg));
 }
 
 snow::Angle& snow::Angle::operator=(const Angle& angle)
@@ -199,12 +199,12 @@ snow::Angle snow::operator"" _deg(unsigned long long degrees)
 
 snow::Angle snow::operator"" _rad(long double radians)
 {
-	return snow::Angle(static_cast<float>(radians) * 180.f / snow::Math::PI);
+	return snow::Angle(static_cast<float>(radians) * 180.f / snow::math::PI);
 }
 
 snow::Angle snow::operator"" _rad(unsigned long long radians)
 {
-	return snow::Angle(static_cast<float>(radians) * 180.f / snow::Math::PI);
+	return snow::Angle(static_cast<float>(radians) * 180.f / snow::math::PI);
 }
 
 snow::Angle snow::operator"" _grad(long double gradians)
