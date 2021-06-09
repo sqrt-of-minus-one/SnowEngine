@@ -76,7 +76,7 @@ const snow::Angle snow::Angle::get_normalized_360() const
 const snow::Angle snow::Angle::get_normalized_180() const
 {
 	Angle ret = get_normalized_360();
-	return ret > STRAIGHT ? ret - STRAIGHT : ret;
+	return ret > STRAIGHT ? ret - 360_deg : ret;
 }
 
 const snow::Angle snow::Angle::abs() const

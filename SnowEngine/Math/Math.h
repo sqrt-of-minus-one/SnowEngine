@@ -15,6 +15,9 @@
 
 namespace snow
 {
+
+class Angle;
+
 namespace math
 {
 
@@ -145,6 +148,30 @@ int abs(int value);
  *	\return An absolute value.
  */
 float abs(float value);
+
+float sin(const Angle& angle);
+
+float cos(const Angle& angle);
+
+float sec(const Angle& angle);
+
+float cosec(const Angle& angle);
+
+float tg(const Angle& angle);
+
+float ctg(const Angle& angle);
+
+Angle arcsin(float value);
+
+Angle arccos(float value);
+
+Angle arcsec(float value);
+
+Angle arccosec(float value);
+
+Angle arctg(float value);
+
+Angle arcctg(float value);
 
 }
 }
