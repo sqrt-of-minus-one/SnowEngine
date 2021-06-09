@@ -8,8 +8,15 @@
 int main()
 {
 	snow::Angle angle;
-	angle.set_radians(snow::math::PI);
-	std::cout << snow::math::cos(angle) << std::endl << cos(angle.get_radians());
+
+	try
+	{
+		std::cout << snow::math::ctg(90_deg);
+	}
+	catch (std::exception e)
+	{
+		std::cout << e.what();
+	}
 
 	_getch();
 	return 0;

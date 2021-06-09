@@ -7,6 +7,7 @@
 #include "Math.h"
 
 #include <cmath>
+#include <stdexcept>
 
 #include "Angle.h"
 
@@ -102,22 +103,42 @@ float snow::math::cos(const snow::Angle& angle)
 
 float snow::math::sec(const snow::Angle& angle)
 {
-	return 0.f;
+	float c = cos(angle);
+	if (c == 0.f)
+	{
+		throw std::invalid_argument("Secant does not exist");
+	}
+	return 1.f / c;
 }
 
 float snow::math::cosec(const snow::Angle& angle)
 {
-	return 0.f;
+	float s = sin(angle);
+	if (s == 0.f)
+	{
+		throw std::invalid_argument("Cosecant does not exist");
+	}
+	return 1.f / s;
 }
 
 float snow::math::tg(const snow::Angle& angle)
 {
-	return 0.f;
+	float s = sin(angle);
+	if (s == 1.f)
+	{
+		throw std::invalid_argument("Tangent does not exist");
+	}
+	return s / sqrt(1 - s * s);
 }
 
 float snow::math::ctg(const snow::Angle& angle)
 {
-	return 0.f;
+	float c = cos(angle);
+	if (c == 1.f)
+	{
+		throw std::invalid_argument("Cotangent does not exist");
+	}
+	return c / sqrt(1 - c * c);
 }
 
 snow::Angle snow::math::arcsin(float value)
