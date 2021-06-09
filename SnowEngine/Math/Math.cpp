@@ -69,7 +69,35 @@ float snow::math::sin(const snow::Angle& angle)
 
 float snow::math::cos(const snow::Angle& angle)
 {
-	return 0.f;
+	Angle norm = angle.get_normalized_180();
+	if (norm > Angle::RIGHT)
+	{
+		return -cos(Angle::STRAIGHT - norm);
+	}
+	else if (norm < -Angle::RIGHT)
+	{
+		return -cos(-Angle::STRAIGHT - norm);
+	}
+	if (norm == Angle::RIGHT || norm == -Angle::RIGHT)
+	{
+		return 0.f;
+	}
+	float rad = norm.get_radians();
+
+	float result = 0.f;
+	long long fact = 1;
+	float one = 1.f;
+	float rrad = 1;
+	int accuracy = (rad > 1.45f ? (rad > 1.55 ? 21 : 17) : 11);
+	rad *= rad;
+	for (int i = 0; i < accuracy; i += 2)
+	{
+		result += one * rrad / fact;
+		fact *= (i + 1) * (i + 2);
+		rrad *= rad;
+		one *= -1.f;
+	}
+	return result;
 }
 
 float snow::math::sec(const snow::Angle& angle)

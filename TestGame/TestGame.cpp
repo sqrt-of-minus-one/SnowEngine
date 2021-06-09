@@ -7,7 +7,9 @@
 
 int main()
 {
-	std::cout << snow::math::sin(-210_deg);
+	snow::Angle angle;
+	angle.set_radians(snow::math::PI);
+	std::cout << snow::math::cos(angle) << std::endl << cos(angle.get_radians());
 
 	_getch();
 	return 0;
