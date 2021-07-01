@@ -11,7 +11,7 @@ int main()
 
 	try
 	{
-		std::cout << snow::math::ctg(90_deg);
+		std::cout << snow::math::arccos(.5f).get_degrees();
 	}
 	catch (std::exception e)
 	{

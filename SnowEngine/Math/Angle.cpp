@@ -26,6 +26,11 @@ snow::Angle::Angle(float degrees) :
 	value_deg(degrees)
 {}
 
+const std::string snow::Angle::to_string() const
+{
+	return std::to_string(value_deg) + "_deg";
+}
+
 float snow::Angle::get_degrees() const
 {
 	return value_deg;

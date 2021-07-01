@@ -149,28 +149,112 @@ int abs(int value);
  */
 float abs(float value);
 
+/**
+ *	\brief A sine of the angle
+ *	
+ *	Calculates a sine of the passed angle.
+ *	\param angle The angle whose sine should be calculated.
+ *	\return A sine of the passed angle.
+ */
 float sin(const Angle& angle);
 
+/**
+ *	\brief A cosine of the angle
+ *
+ *	Calculates a cosine of the passed angle.
+ *	\param angle The angle whose cosine should be calculated.
+ *	\return A cosine of the passed angle.
+ */
 float cos(const Angle& angle);
 
+/**
+ *	\brief A secant of the angle
+ *
+ *	Calculates a secant of the passed angle.
+ *	\param angle The angle whose secant should be calculated.
+ *	\return A secant of the passed angle.
+ */
 float sec(const Angle& angle);
 
+/**
+ *	\brief A cosecant of the angle
+ *
+ *	Calculates a cosecant of the passed angle.
+ *	\param angle The angle whose cosecant should be calculated.
+ *	\return A cosecant of the passed angle.
+ */
 float cosec(const Angle& angle);
 
+/**
+ *	\brief A tangent of the angle
+ *
+ *	Calculates a tangent of the passed angle.
+ *	\param angle The angle whose tangent should be calculated.
+ *	\return A tangent of the passed angle.
+ */
 float tg(const Angle& angle);
 
+/**
+ *	\brief A cotangent of the angle
+ *
+ *	Calculates a cotangent of the passed angle.
+ *	\param angle The angle whose cotangent should be calculated.
+ *	\return A cotangent of the passed angle.
+ */
 float ctg(const Angle& angle);
 
+/**
+ *	\brief An arcsine
+ *	
+ *	Calculates an arcsine: an angle whose sine is equal to the passed value.
+ *	\param value The arcsine argument.
+ *	\return An arcsine of the passed value.
+ */
 Angle arcsin(float value);
 
+/**
+ *	\brief An arccosine
+ *
+ *	Calculates an arccosine: an angle whose cosine is equal to the passed value.
+ *	\param value The arccosine argument.
+ *	\return An arccosine of the passed value.
+ */
 Angle arccos(float value);
 
+/**
+ *	\brief An arcsecant
+ *
+ *	Calculates an arcsecant: an angle whose secant is equal to the passed value.
+ *	\param value The arcsecant argument.
+ *	\return An arcsecant of the passed value.
+ */
 Angle arcsec(float value);
 
+/**
+ *	\brief An arccosecant
+ *
+ *	Calculates an arccosecant: an angle whose cosecant is equal to the passed value.
+ *	\param value The arccosecant argument.
+ *	\return An arccosecant of the passed value.
+ */
 Angle arccosec(float value);
 
+/**
+ *	\brief An arctangent
+ *
+ *	Calculates an arctangent: an angle whose tangent is equal to the passed value.
+ *	\param value The arctangent argument.
+ *	\return An arctangent of the passed value.
+ */
 Angle arctg(float value);
 
+/**
+ *	\brief An arccotangent
+ *
+ *	Calculates an arccotangent: an angle whose cotangent is equal to the passed value.
+ *	\param value The arccotangent argument.
+ *	\return An arccotangent of the passed value.
+ */
 Angle arcctg(float value);
 
 }

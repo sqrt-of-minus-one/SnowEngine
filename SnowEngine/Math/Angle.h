@@ -13,6 +13,8 @@
 
 #pragma once
 
+#include "../Object.h"
+
 namespace snow
 {
 
@@ -28,7 +30,7 @@ namespace snow
  *	\endcode
  *	You can also use the constants ZERO, RIGHT and STRAIGHT.
  */
-class Angle
+class Angle : public Object
 {
 public:
 		/* CONSTRUCTORS */
@@ -75,6 +77,16 @@ public:
 	 *	\param A value of new angle in degrees
 	 */
 	Angle(float degrees);
+
+			/* METHODS FROM Object */
+
+	/**
+	 *	\brief Converts the angle into a string
+	 *
+	 *	Creates a string with format "<val>_deg", where <val> is the angle value in degrees.
+	 *	\return A string with the angle value.
+	 */
+	virtual const std::string to_string() const override;
 
 			/* METHODS */
 
