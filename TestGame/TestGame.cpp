@@ -3,20 +3,13 @@
 
 #include "Math/Angle.h"
 #include "Math/Math.h"
-
+#include "Math/Vector2.h"
 
 int main()
 {
 	snow::Angle angle;
 
-	try
-	{
-		std::cout << snow::math::acot(std::sqrt(3)).get_degrees();
-	}
-	catch (std::exception e)
-	{
-		std::cout << e.what();
-	}
+	std::cout << snow::Vector2::I.is_co_directed(snow::Vector2::ZERO);
 
 	_getch();
 	return 0;
