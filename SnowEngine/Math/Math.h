@@ -14,6 +14,13 @@
  */
 
 #include <cmath>
+#include <functional>
+
+namespace std
+{
+template<typename T>
+class function;
+}
 
 namespace snow
 {
@@ -188,6 +195,16 @@ float sec(const Angle& angle);
 float cosec(const Angle& angle);
 
 /**
+ *	\brief A cosecant of the angle (alias)
+ *
+ *	You can use it instead of cosec.
+ *	\param angle The angle whose cosecant should be calculated.
+ *	\return A cosecant of the passed angle.
+ */
+// It doesn't work without extern (MSVS 2017), maybe there is a compiler bug. Or I'm stupid.
+extern const std::function<float(const Angle&)> csc;
+
+/**
  *	\brief A tangent of the angle
  *
  *	Calculates a tangent of the passed angle.
@@ -195,6 +212,15 @@ float cosec(const Angle& angle);
  *	\return A tangent of the passed angle.
  */
 float tg(const Angle& angle);
+
+/**
+ *	\brief A tangent of the angle (alias)
+ *
+ *	You can use it instead of tg.
+ *	\param angle The angle whose tangent should be calculated.
+ *	\return A tangent of the passed angle.
+ */
+extern const std::function<float(const Angle&)> tan;
 
 /**
  *	\brief A cotangent of the angle
@@ -206,6 +232,15 @@ float tg(const Angle& angle);
 float ctg(const Angle& angle);
 
 /**
+ *	\brief A cotangent of the angle (alias)
+ *
+ *	You can use it instead of ctg.
+ *	\param angle The angle whose cotangent should be calculated.
+ *	\return A cotangent of the passed angle.
+ */
+extern const std::function<float(const Angle&)> cot;
+
+/**
  *	\brief An arcsine
  *	
  *	Calculates an arcsine: an angle whose sine is equal to the passed value.
@@ -213,6 +248,15 @@ float ctg(const Angle& angle);
  *	\return An arcsine of the passed value.
  */
 Angle arcsin(float value);
+
+/**
+ *	\brief An arcsine (alias)
+ *
+ *	You can use it instead of arcsin
+ *	\param value The arcsine argument.
+ *	\return An arcsine of the passed value.
+ */
+extern const std::function<Angle(float)> asin;
 
 /**
  *	\brief An arccosine
@@ -224,6 +268,15 @@ Angle arcsin(float value);
 Angle arccos(float value);
 
 /**
+ *	\brief An arccosine (alias)
+ *
+ *	You can use it instead of arccos.
+ *	\param value The arccosine argument.
+ *	\return An arccosine of the passed value.
+ */
+extern const std::function<Angle(float)> acos;
+
+/**
  *	\brief An arcsecant
  *
  *	Calculates an arcsecant: an angle whose secant is equal to the passed value.
@@ -231,6 +284,15 @@ Angle arccos(float value);
  *	\return An arcsecant of the passed value.
  */
 Angle arcsec(float value);
+
+/**
+ *	\brief An arcsecant (alias)
+ *
+ *	You can use it instead of arcsec.
+ *	\param value The arcsecant argument.
+ *	\return An arcsecant of the passed value.
+ */
+extern const std::function<Angle(float)> asec;
 
 /**
  *	\brief An arccosecant
@@ -242,6 +304,15 @@ Angle arcsec(float value);
 Angle arccosec(float value);
 
 /**
+ *	\brief An arccosecant (alias)
+ *
+ *	You can use it instead of arccosec.
+ *	\param value The arccosecant argument.
+ *	\return An arccosecant of the passed value.
+ */
+extern const std::function<Angle(float)> acsc;
+
+/**
  *	\brief An arctangent
  *
  *	Calculates an arctangent: an angle whose tangent is equal to the passed value.
@@ -251,6 +322,15 @@ Angle arccosec(float value);
 Angle arctg(float value);
 
 /**
+ *	\brief An arctangent (alias)
+ *
+ *	You can use it instead of arctg.
+ *	\param value The arctangent argument.
+ *	\return An arctangent of the passed value.
+ */
+extern const std::function<Angle(float)> atan;
+
+/**
  *	\brief An arccotangent
  *
  *	Calculates an arccotangent: an angle whose cotangent is equal to the passed value.
@@ -258,6 +338,15 @@ Angle arctg(float value);
  *	\return An arccotangent of the passed value.
  */
 Angle arcctg(float value);
+
+/**
+ *	\brief An arccotangent (alias)
+ *
+ *	You can use it instead of arcctg.
+ *	\param value The arccotangent argument.
+ *	\return An arccotangent of the passed value.
+ */
+extern const std::function<Angle(float)> acot;
 
 }
 }

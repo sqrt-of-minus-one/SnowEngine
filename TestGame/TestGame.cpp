@@ -11,7 +11,7 @@ int main()
 
 	try
 	{
-		std::cout << snow::math::arcctg(std::sqrt(3)).get_degrees();
+		std::cout << snow::math::acot(std::sqrt(3)).get_degrees();
 	}
 	catch (std::exception e)
 	{

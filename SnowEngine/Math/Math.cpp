@@ -10,36 +10,38 @@
 
 #include "Angle.h"
 
-const float snow::math::PI = 3.1415926f;
+using namespace snow;
 
-int snow::math::round(float value)
+const float math::PI = 3.1415926f;
+
+int math::round(float value)
 {
 	return static_cast<int>(value >= 0 ? value + .5f : value - .5f);
 }
 
-int snow::math::floor(float value)
+int math::floor(float value)
 {
 	int int_value = static_cast<int>(value);
 	return (value == static_cast<float>(int_value) || value >= 0.f) ? int_value : int_value - 1;
 }
 
-int snow::math::ceil(float value)
+int math::ceil(float value)
 {
 	int int_value = static_cast<int>(value);
 	return (value == static_cast<float>(int_value) || value <= 0.f) ? int_value : int_value + 1;
 }
 
-int snow::math::abs(int value)
+int math::abs(int value)
 {
 	return value >= 0 ? value : -value;
 }
 
-float snow::math::abs(float value)
+float math::abs(float value)
 {
 	return value >= 0.f ? value : -value;
 }
 
-float snow::math::sin(const snow::Angle& angle)
+float math::sin(const Angle& angle)
 {
 	// Uses Taylor series to find a sine
 
@@ -71,7 +73,7 @@ float snow::math::sin(const snow::Angle& angle)
 	return result;
 }
 
-float snow::math::cos(const snow::Angle& angle)
+float math::cos(const Angle& angle)
 {
 	// Uses Taylor series to find a cosine
 
@@ -109,7 +111,7 @@ float snow::math::cos(const snow::Angle& angle)
 	return result;
 }
 
-float snow::math::sec(const snow::Angle& angle)
+float math::sec(const Angle& angle)
 {
 	float c = cos(angle);
 	if (c == 0.f)
@@ -119,7 +121,7 @@ float snow::math::sec(const snow::Angle& angle)
 	return 1.f / c;
 }
 
-float snow::math::cosec(const snow::Angle& angle)
+float math::cosec(const Angle& angle)
 {
 	float s = sin(angle);
 	if (s == 0.f)
@@ -129,7 +131,9 @@ float snow::math::cosec(const snow::Angle& angle)
 	return 1.f / s;
 }
 
-float snow::math::tg(const snow::Angle& angle)
+const std::function<float(const Angle&)> math::csc = math::cosec;
+
+float math::tg(const Angle& angle)
 {
 	float s = sin(angle);
 	if (s == 1.f)
@@ -139,7 +143,9 @@ float snow::math::tg(const snow::Angle& angle)
 	return s / sqrt(1 - s * s);
 }
 
-float snow::math::ctg(const snow::Angle& angle)
+const std::function<float(const Angle&)> math::tan = math::tg;
+
+float math::ctg(const Angle& angle)
 {
 	float c = cos(angle);
 	if (c == 1.f)
@@ -149,7 +155,9 @@ float snow::math::ctg(const snow::Angle& angle)
 	return c / sqrt(1 - c * c);
 }
 
-snow::Angle snow::math::arcsin(float value)
+const std::function<float(const Angle&)> math::cot = math::ctg;
+
+Angle math::arcsin(float value)
 {
 	// Uses Taylor series to find an arcsine
 	if (value < -1.f || value > 1.f)
@@ -198,7 +206,9 @@ snow::Angle snow::math::arcsin(float value)
 	return result_angle;
 }
 
-snow::Angle snow::math::arccos(float value)
+const std::function<Angle(float)> math::asin = math::arcsin;
+
+Angle math::arccos(float value)
 {
 	// Uses Taylor series to find an arccosine
 	if (value < -1.f || value > 1.f)
@@ -245,7 +255,9 @@ snow::Angle snow::math::arccos(float value)
 	return result_angle;
 }
 
-snow::Angle snow::math::arcsec(float value)
+const std::function<Angle(float)> math::acos = math::arccos;
+
+Angle math::arcsec(float value)
 {
 	if (value > -1.f && value < 1.f)
 	{
@@ -254,7 +266,9 @@ snow::Angle snow::math::arcsec(float value)
 	return arccos(1 / value);
 }
 
-snow::Angle snow::math::arccosec(float value)
+const std::function<Angle(float)> math::asec = math::arcsec;
+
+Angle math::arccosec(float value)
 {
 	if (value > -1.f && value < 1.f)
 	{
@@ -263,12 +277,18 @@ snow::Angle snow::math::arccosec(float value)
 	return arcsin(1 / value);
 }
 
-snow::Angle snow::math::arctg(float value)
+const std::function<Angle(float)> math::acsc = math::arccosec;
+
+Angle math::arctg(float value)
 {
 	return arcsin(value / std::sqrt(1 + value * value));
 }
 
-snow::Angle snow::math::arcctg(float value)
+const std::function<Angle(float)> math::atan = math::arctg;
+
+Angle math::arcctg(float value)
 {
 	return arccos(value / std::sqrt(1 + value * value));
 }
+
+const std::function<Angle(float)> math::acot = math::arcctg;
