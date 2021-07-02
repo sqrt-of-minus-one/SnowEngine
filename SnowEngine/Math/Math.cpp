@@ -6,7 +6,6 @@
 
 #include "Math.h"
 
-#include <cmath>
 #include <stdexcept>
 
 #include "Angle.h"
@@ -204,7 +203,7 @@ snow::Angle snow::math::arccos(float value)
 	// Uses Taylor series to find an arccosine
 	if (value < -1.f || value > 1.f)
 	{
-		throw std::invalid_argument("Arcsine of " + std::to_string(value) + " does not exist");
+		throw std::invalid_argument("Arccosine of " + std::to_string(value) + " does not exist");
 	}
 
 	if (value == 1.f)
@@ -248,20 +247,28 @@ snow::Angle snow::math::arccos(float value)
 
 snow::Angle snow::math::arcsec(float value)
 {
-	return Angle();
+	if (value > -1.f && value < 1.f)
+	{
+		throw std::invalid_argument("Arcsecant of " + std::to_string(value) + " does not exist");
+	}
+	return arccos(1 / value);
 }
 
 snow::Angle snow::math::arccosec(float value)
 {
-	return Angle();
+	if (value > -1.f && value < 1.f)
+	{
+		throw std::invalid_argument("Arccosecant of " + std::to_string(value) + " does not exist");
+	}
+	return arcsin(1 / value);
 }
 
 snow::Angle snow::math::arctg(float value)
 {
-	return Angle();
+	return arcsin(value / std::sqrt(1 + value * value));
 }
 
 snow::Angle snow::math::arcctg(float value)
 {
-	return Angle();
+	return arccos(value / std::sqrt(1 + value * value));
 }

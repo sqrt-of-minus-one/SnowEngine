@@ -13,6 +13,8 @@
  *	This file contains declarations of mathematical functions and constants.
  */
 
+#include <cmath>
+
 namespace snow
 {
 
