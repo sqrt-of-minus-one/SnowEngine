@@ -13,54 +13,54 @@
 using namespace snow;
 
 Angle::Angle() :
-	value_deg(0.f)
+	value_deg_(0.f)
 {}
 
 Angle::Angle(const Angle& angle) :
-	value_deg(angle.value_deg)
+	value_deg_(angle.value_deg_)
 {}
 
 Angle::Angle(Angle&& angle) :
-	value_deg(std::move(angle.value_deg))
+	value_deg_(std::move(angle.value_deg_))
 {}
 
 Angle::Angle(float degrees) :
-	value_deg(degrees)
+	value_deg_(degrees)
 {}
 
 const std::string Angle::to_string() const
 {
-	return std::to_string(value_deg) + "_deg";
+	return std::to_string(value_deg_) + "_deg";
 }
 
 float Angle::get_degrees() const
 {
-	return value_deg;
+	return value_deg_;
 }
 
 float Angle::get_radians() const
 {
-	return value_deg * math::PI / 180.f;
+	return value_deg_ * math::PI / 180.f;
 }
 
 float Angle::get_gradians() const
 {
-	return value_deg / .9f;
+	return value_deg_ / .9f;
 }
 
 void Angle::set_degrees(float degrees)
 {
-	value_deg = degrees;
+	value_deg_ = degrees;
 }
 
 void Angle::set_radians(float radians)
 {
-	value_deg = radians * 180.f / math::PI;
+	value_deg_ = radians * 180.f / math::PI;
 }
 
 void Angle::set_gradians(float gradians)
 {
-	value_deg = gradians * .9f;
+	value_deg_ = gradians * .9f;
 }
 
 Angle& Angle::normalize_360()
@@ -77,7 +77,7 @@ Angle& Angle::normalize_180()
 
 const Angle Angle::get_normalized_360() const
 {
-	return Angle(value_deg - 360 * floor(value_deg / 360.f));
+	return Angle(value_deg_ - 360 * floor(value_deg_ / 360.f));
 }
 
 const Angle Angle::get_normalized_180() const
@@ -88,24 +88,19 @@ const Angle Angle::get_normalized_180() const
 
 const Angle Angle::abs() const
 {
-	return Angle(math::abs(value_deg));
+	return Angle(math::abs(value_deg_));
 }
 
 Angle& Angle::operator=(const Angle& angle)
 {
-	value_deg = angle.value_deg;
+	value_deg_ = angle.value_deg_;
 	return *this;
 }
 
 Angle& Angle::operator=(Angle&& angle)
 {
-	value_deg = std::move(angle.value_deg);
+	value_deg_ = std::move(angle.value_deg_);
 	return *this;
-}
-
-const Angle Angle::operator-() const
-{
-	return Angle(-value_deg);
 }
 
 const Angle Angle::operator+() const
@@ -113,19 +108,24 @@ const Angle Angle::operator+() const
 	return *this;
 }
 
+const Angle Angle::operator-() const
+{
+	return Angle(-value_deg_);
+}
+
 const Angle Angle::operator+(const Angle& angle) const
 {
-	return Angle(value_deg + angle.value_deg);
+	return Angle(value_deg_ + angle.value_deg_);
 }
 
 const Angle Angle::operator-(const Angle& angle) const
 {
-	return Angle(value_deg - angle.value_deg);
+	return Angle(value_deg_ - angle.value_deg_);
 }
 
 const Angle Angle::operator*(float value) const
 {
-	return Angle(value_deg * value);
+	return Angle(value_deg_ * value);
 }
 
 const Angle snow::operator*(float value, const Angle& angle)
@@ -135,63 +135,63 @@ const Angle snow::operator*(float value, const Angle& angle)
 
 const Angle Angle::operator/(float value) const
 {
-	return Angle(value_deg / value);
+	return Angle(value_deg_ / value);
 }
 
 Angle& Angle::operator+=(const  Angle& angle)
 {
-	value_deg += angle.value_deg;
+	value_deg_ += angle.value_deg_;
 	return *this;
 }
 Angle& Angle::operator-=(const Angle& angle)
 {
-	value_deg -= angle.value_deg;
+	value_deg_ -= angle.value_deg_;
 	return *this;
 }
 Angle& Angle::operator*=(float value)
 {
-	value_deg *= value;
+	value_deg_ *= value;
 	return *this;
 }
 Angle& Angle::operator/=(float value)
 {
-	value_deg /= value;
+	value_deg_ /= value;
 	return *this;
 }
 
 bool Angle::operator==(const Angle& angle) const
 {
-	return value_deg == angle.value_deg;
+	return value_deg_ == angle.value_deg_;
 }
 
 bool Angle::operator!=(const Angle& angle) const
 {
-	return value_deg != angle.value_deg;
+	return value_deg_ != angle.value_deg_;
 }
 
 bool Angle::operator<(const Angle& angle) const
 {
-	return value_deg < angle.value_deg;
+	return value_deg_ < angle.value_deg_;
 }
 
 bool Angle::operator>(const Angle& angle) const
 {
-	return value_deg > angle.value_deg;
+	return value_deg_ > angle.value_deg_;
 }
 
 bool Angle::operator<=(const Angle& angle) const
 {
-	return value_deg <= angle.value_deg;
+	return value_deg_ <= angle.value_deg_;
 }
 
 bool Angle::operator>=(const Angle& angle) const
 {
-	return value_deg >= angle.value_deg;
+	return value_deg_ >= angle.value_deg_;
 }
 
 bool Angle::operator()() const
 {
-	return static_cast<bool>(value_deg);
+	return static_cast<bool>(value_deg_);
 }
 
 Angle snow::operator"" _deg(long double degrees)

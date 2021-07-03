@@ -53,7 +53,7 @@ public:
 	/**
 	 *	\brief Move constructor
 	 *	
-	 *	Moves the angle value.
+	 *	Moves an angle value.
 	 *	\param angle An r-value reference to an angle whose value will be moved.
 	 */
 	Angle(Angle&& angle);
@@ -65,16 +65,16 @@ public:
 	 *	\warning This constructor is not recommended to be used. The better way to create an angle
 	 *	is using literals or setters. They help you not to get confused in units of measurement:
 	 *	\code
-	 *		snow::Angle angle1 = 90_deg;
+	 *		Angle angle1 = 90_deg;
 	 *		
 	 *		float radians_value = 3.1415;
-	 *		snow::Angle angle2;
+	 *		Angle angle2;
 	 *		angle2.set_radians(radians_value);
 	 *		
-	 *		snow::Angle angle3;
-	 *		angle3.set_radians(snow::Math::PI);
+	 *		Angle angle3;
+	 *		angle3.set_radians(math::PI);
 	 *	\endcode
-	 *	\param A value of new angle in degrees
+	 *	\param degrees A value of new angle in degrees
 	 */
 	Angle(float degrees);
 
@@ -143,22 +143,22 @@ public:
 	 *
 	 *	Changes an angle value so that it is inside the interval [0, 360) degrees.
 	 *	\code
-	 *		snow::Angle angle1(30_deg);
+	 *		Angle angle1(30_deg);
 	 *		angle1.normalize_360(); // Now angle1 == 30_deg;
 	 *		
-	 *		snow::Angle angle2(270_deg);
+	 *		Angle angle2(270_deg);
 	 *		angle2.normalize_360(); // Now angle2 == 270_deg;
 	 *		
-	 *		snow::Angle angle3(360_deg);
+	 *		Angle angle3(360_deg);
 	 *		angle3.normalize_360(); // Now angle3 == 0_deg;
 	 *
-	 *		snow::Angle angle4(400_deg);
+	 *		Angle angle4(400_deg);
 	 *		angle4.normalize_360(); // Now angle4 == 40_deg;
 	 *
-	 *		snow::Angle angle5(-90_deg);
+	 *		Angle angle5(-90_deg);
 	 *		angle5.normalize_360(); // Now angle5 == 270_deg;
 	 *
-	 *		snow::Angle angle6(-270_deg);
+	 *		Angle angle6(-270_deg);
 	 *		angle6.normalize_360(); // Now angle6 == 90_deg;
 	 *	\endcode
 	 *	\return A reference to itself.
@@ -170,22 +170,22 @@ public:
 	 *
 	 *	Changes an angle value so that it is inside the interval (-180, 180] degrees.
 	 *	\code
-	 *		snow::Angle angle1(30_deg);
+	 *		Angle angle1(30_deg);
 	 *		angle1.normalize_180(); // Now angle1 == 30_deg;
 	 *
-	 *		snow::Angle angle2(270_deg);
+	 *		Angle angle2(270_deg);
 	 *		angle2.normalize_180(); // Now angle2 == -90_deg;
 	 *
-	 *		snow::Angle angle3(360_deg);
+	 *		Angle angle3(360_deg);
 	 *		angle3.normalize_180(); // Now angle3 == 0_deg;
 	 *
-	 *		snow::Angle angle4(400_deg);
+	 *		Angle angle4(400_deg);
 	 *		angle4.normalize_180(); // Now angle4 == 40_deg;
 	 *
-	 *		snow::Angle angle5(-90_deg);
+	 *		Angle angle5(-90_deg);
 	 *		angle5.normalize_180(); // Now angle5 == -90_deg;
 	 *
-	 *		snow::Angle angle6(-270_deg);
+	 *		Angle angle6(-270_deg);
 	 *		angle6.normalize_180(); // Now angle6 == 90_deg;
 	 *	\endcode
 	 *	\return A reference to itself.
@@ -193,27 +193,27 @@ public:
 	Angle& normalize_180();
 
 	/**
-	 *	\brief Returns an angle with value inside [0, 360) degrees
+	 *	\brief An angle with value inside [0, 360) degrees
 	 *
 	 *	Allows to get an angle with value that is inside the interval [0, 360) degrees. Doesn't
 	 *	modify the original angle value.
 	 *	\code
-	 *		const snow::Angle angle1(30_deg);
+	 *		const Angle angle1(30_deg);
 	 *		angle1.get_normalized_360() == 30_deg;
 	 *
-	 *		const snow::Angle angle2(270_deg);
+	 *		const Angle angle2(270_deg);
 	 *		angle2.get_normalized_360() == 270_deg;
 	 *
-	 *		const snow::Angle angle3(360_deg);
+	 *		const Angle angle3(360_deg);
 	 *		angle3.get_normalized_360() == 0_deg;
 	 *
-	 *		const snow::Angle angle4(400_deg);
+	 *		const Angle angle4(400_deg);
 	 *		angle4.get_normalized_360() == 40_deg;
 	 *
-	 *		const snow::Angle angle5(-90_deg);
+	 *		const Angle angle5(-90_deg);
 	 *		angle5.get_normalized_360() == 270_deg;
 	 *
-	 *		const snow::Angle angle6(-270_deg);
+	 *		const Angle angle6(-270_deg);
 	 *		angle6.get_normalized_360() == 90_deg;
 	 *	\endcode
 	 *	\return A normalized angle.
@@ -221,27 +221,27 @@ public:
 	const Angle get_normalized_360() const;
 
 	/**
-	 *	\brief Returns an angle with value inside (-180, 180] degrees.
+	 *	\brief An angle with value inside (-180, 180] degrees.
 	 *
 	 *	Allows to get an angle with value that is inside the interval (-180, 180] degrees. Doesn't
 	 *	modify the original angle value.
 	 *	\code
-	 *		const snow::Angle angle1(30_deg);
+	 *		const Angle angle1(30_deg);
 	 *		angle1.get_normalized_180() == 30_deg;
 	 *
-	 *		const snow::Angle angle2(270_deg);
+	 *		const Angle angle2(270_deg);
 	 *		angle2.get_normalized_180() == -90_deg;
 	 *
-	 *		const snow::Angle angle3(360_deg);
+	 *		const Angle angle3(360_deg);
 	 *		angle3.get_normalized_180() == 0_deg;
 	 *
-	 *		const snow::Angle angle4(400_deg);
+	 *		const Angle angle4(400_deg);
 	 *		angle4.get_normalized_180() == 40_deg;
 	 *
-	 *		const snow::Angle angle5(-90_deg);
+	 *		const Angle angle5(-90_deg);
 	 *		angle5.get_normalized_180() == -90_deg;
 	 *
-	 *		const snow::Angle angle6(-270_deg);
+	 *		const Angle angle6(-270_deg);
 	 *		angle6.get_normalized_180() == 90_deg;
 	 *	\endcode
 	 *	\return A normalized angle.
@@ -249,7 +249,7 @@ public:
 	const Angle get_normalized_180() const;
 
 	/**
-	 *	\brief Returns an absolute value of the angle
+	 *	\brief An absolute value of the angle
 	 *	
 	 *	If the angle value is non-negative, the method returns the same angle. If it is negative,
 	 *	you get the angle with positive value.
@@ -283,18 +283,6 @@ public:
 	 *	\return A reference to itself.
 	 */
 	Angle& operator=(Angle&& angle);
-
-	/**
-	 *	\brief Returns an angle with opposite sign
-	 *
-	 *	Allows to get an angle with opposite sign:
-	 *	\code
-	 *		snow::Angle angle(90_deg);
-	 *		-angle == -90_deg;
-	 *	\endcode
-	 *	\return An angle with opposite sign.
-	 */
-	const Angle operator-() const;
 	
 	/**
 	 *	\brief Returns itself
@@ -309,6 +297,18 @@ public:
 	 *	\return A copy of itself.
 	 */
 	const Angle operator+() const;
+
+	/**
+	 *	\brief Returns an angle with opposite sign
+	 *
+	 *	Allows to get an angle with opposite sign:
+	 *	\code
+	 *		Angle angle(90_deg);
+	 *		-angle == -90_deg;
+	 *	\endcode
+	 *	\return An angle with opposite sign.
+	 */
+	const Angle operator-() const;
 
 	/**
 	 *	\brief Adds angles
@@ -390,8 +390,8 @@ public:
 	 *	Finds the product of the angle and a number and assigns it to itself.
 	 *	\code
 	 *		// These strings do the same:
-	 *		angle1 *= angle2;
-	 *		angle1 = angle1 * angle2;
+	 *		angle *= num;
+	 *		angle = angle * num;
 	 *	\endcode
 	 *	\param angle A multiplier.
 	 *	\return A reference to itself.
@@ -404,8 +404,8 @@ public:
 	 *	Finds the quotient of the angle and a number and assigns it to itself.
 	 *	\code
 	 *		// These strings do the same:
-	 *		angle1 /= angle2;
-	 *		angle1 = angle1 / angle2;
+	 *		angle /= num;
+	 *		angle = angle / num;
 	 *	\endcode
 	 *	\param angle A divisor.
 	 *	\return A reference to itself.
@@ -417,8 +417,8 @@ public:
 	 *
 	 *	Checks whether two angles are equal. Note that 0_deg is not equal to 360_deg.
 	 *	\code
-	 *		snow::Angle angle1 = 0_deg;
-	 *		snow::Angle angle2 = 360_deg;
+	 *		Angle angle1 = 0_deg;
+	 *		Angle angle2 = 360_deg;
 	 *		
 	 *		// false
 	 *		angle1 == angle2;
@@ -436,9 +436,9 @@ public:
 	 *
 	 *	Checks whether two angles are different. Note that 0_deg is not equal to 360_deg.
 	 *	\code
-	 *		snow::Angle angle1 = 0_deg;
-	 *		snow::Angle angle2 = 90_deg;
-	 *		snow::Angle angle2 = 360_deg;
+	 *		Angle angle1 = 0_deg;
+	 *		Angle angle2 = 90_deg;
+	 *		Angle angle2 = 360_deg;
 	 *
 	 *		// true
 	 *		angle1 != angle2;
@@ -459,9 +459,9 @@ public:
 	 *
 	 *	Checks whether the angle is less than a passed one. Note that 270_deg is less than 360_deg.
 	 *	\code
-	 *		snow::Angle angle1 = 0_deg;
-	 *		snow::Angle angle2 = 90_deg;
-	 *		snow::Angle angle2 = 360_deg;
+	 *		Angle angle1 = 0_deg;
+	 *		Angle angle2 = 90_deg;
+	 *		Angle angle2 = 360_deg;
 	 *
 	 *		// false
 	 *		angle2 < angle1;
@@ -483,9 +483,9 @@ public:
 	 *	Checks whether the angle is greater than a passed one. Note that 270_deg is less than
 	 *	360_deg.
 	 *	\code
-	 *		snow::Angle angle1 = 0_deg;
-	 *		snow::Angle angle2 = 90_deg;
-	 *		snow::Angle angle2 = 360_deg;
+	 *		Angle angle1 = 0_deg;
+	 *		Angle angle2 = 90_deg;
+	 *		Angle angle2 = 360_deg;
 	 *
 	 *		// true
 	 *		angle2 > angle1;
@@ -507,9 +507,9 @@ public:
 	 *	Checks whether the angle is less than or equal to a passed one. Note that 270_deg is less
 	 *	than 360_deg.
 	 *	\code
-	 *		snow::Angle angle1 = 0_deg;
-	 *		snow::Angle angle2 = 90_deg;
-	 *		snow::Angle angle2 = 360_deg;
+	 *		Angle angle1 = 0_deg;
+	 *		Angle angle2 = 90_deg;
+	 *		Angle angle2 = 360_deg;
 	 *
 	 *		// false
 	 *		angle2 <= angle1;
@@ -531,9 +531,9 @@ public:
 	 *	Checks whether the angle is greater than or equal to a passed one. Note that 270_deg is
 	 *	less than 360_deg.
 	 *	\code
-	 *		snow::Angle angle1 = 0_deg;
-	 *		snow::Angle angle2 = 90_deg;
-	 *		snow::Angle angle2 = 360_deg;
+	 *		Angle angle1 = 0_deg;
+	 *		Angle angle2 = 90_deg;
+	 *		Angle angle2 = 360_deg;
 	 *
 	 *		// true
 	 *		angle2 >= angle1;
@@ -573,8 +573,8 @@ public:
 	 *	
 	 *	Can be used for create an angle with a value specified in degrees.
 	 *	\code
-	 *		snow::Angle angle1 = 2.5_deg;
-	 *		snow::Angle angle2(-5.5_deg);
+	 *		Angle angle1 = 2.5_deg;
+	 *		Angle angle2(-5.5_deg);
 	 *		if (angle1 <= 2.5_deg)
 	 *		{
 	 *			// Do something
@@ -590,8 +590,8 @@ public:
 	 *
 	 *	Can be used for create an angle with a value specified in degrees.
 	 *	\code
-	 *		snow::Angle angle1 = 30_deg;
-	 *		snow::Angle angle2(-90_deg);
+	 *		Angle angle1 = 30_deg;
+	 *		Angle angle2(-90_deg);
 	 *		if (angle1 <= 30_deg)
 	 *		{
 	 *			// Do something
@@ -607,14 +607,14 @@ public:
 	 *
 	 *	Can be used for create an angle with a value specified in radians.
 	 *	\code
-	 *		snow::Angle angle1 = 3.1415_rad;
-	 *		snow::Angle angle2(-3.5_rad);
+	 *		Angle angle1 = 3.1415_rad;
+	 *		Angle angle2(-3.5_rad);
 	 *		if (angle1 <= 3.1415_rad)
 	 *		{
 	 *			// Do something
 	 *		}
 	 *	\endcode
-	 *	\param degrees A value in radians.
+	 *	\param radians A value in radians.
 	 *	\return An angle with a specified value.
 	 */
 	friend Angle operator"" _rad(long double radians);
@@ -624,14 +624,14 @@ public:
 	 *
 	 *	Can be used for create an angle with a value specified in radians.
 	 *	\code
-	 *		snow::Angle angle1 = 3_rad;
-	 *		snow::Angle angle2(-1_rad);
+	 *		Angle angle1 = 3_rad;
+	 *		Angle angle2(-1_rad);
 	 *		if (angle1 <= 3_rad)
 	 *		{
 	 *			// Do something
 	 *		}
 	 *	\endcode
-	 *	\param degrees A value in radians.
+	 *	\param radians A value in radians.
 	 *	\return An angle with a specified value.
 	 */
 	friend Angle operator"" _rad(unsigned long long radians);
@@ -641,14 +641,14 @@ public:
 	 *
 	 *	Can be used for create an angle with a value specified in gradians.
 	 *	\code
-	 *		snow::Angle angle1 = 12.5_grad;
-	 *		snow::Angle angle2(-33.3_grad);
+	 *		Angle angle1 = 12.5_grad;
+	 *		Angle angle2(-33.3_grad);
 	 *		if (angle1 <= 12.5_grad)
 	 *		{
 	 *			// Do something
 	 *		}
 	 *	\endcode
-	 *	\param degrees A value in gradians.
+	 *	\param gradians A value in gradians.
 	 *	\return An angle with a specified value.
 	 */
 	friend Angle operator"" _grad(long double gradians);
@@ -658,14 +658,14 @@ public:
 	 *
 	 *	Can be used for create an angle with a value specified in gradians.
 	 *	\code
-	 *		snow::Angle angle1 = 50_grad;
-	 *		snow::Angle angle2(-100_grad);
+	 *		Angle angle1 = 50_grad;
+	 *		Angle angle2(-100_grad);
 	 *		if (angle1 <= 50_grad)
 	 *		{
 	 *			// Do something
 	 *		}
 	 *	\endcode
-	 *	\param degrees A value in gradians.
+	 *	\param gradians A value in gradians.
 	 *	\return An angle with a specified value.
 	 */
 	friend Angle operator"" _grad(unsigned long long gradians);
@@ -694,7 +694,7 @@ public:
 	static const Angle STRAIGHT;
 
 private:
-	float value_deg;
+	float value_deg_;
 };
 
 Angle operator"" _deg(long double degrees);

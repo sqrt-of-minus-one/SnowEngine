@@ -102,7 +102,7 @@ Angle Vector2::get_angle() const
 
 Angle Vector2::get_angle(const Vector2& vector) const
 {
-	return (get_angle() - vector.get_angle()).abs();
+	return (get_angle() - vector.get_angle()).get_normalized_180().abs();
 }
 
 bool Vector2::is_collinear(const Vector2& vector) const

@@ -67,11 +67,11 @@ const T& min(const T& a, const T& b);
  *	If a value is between two limits, the function returns it. Otherwise you get one of the limits.
  *	It doesn't matter which of the limits is greater.
  *	\code
- *		snow::math::clamp(55, 33, 66) == 55;
- *		snow::math::clamp(55, 66, 44) == 55;
- *		snow::math::clamp(55, 33, 55) == 55;
- *		snow::math::clamp(55, 33, 44) == 44;
- *		snow::math::clamp(55, 77, 66) == 66;
+ *		math::clamp(55, 33, 66) == 55;
+ *		math::clamp(55, 66, 44) == 55;
+ *		math::clamp(55, 33, 55) == 55;
+ *		math::clamp(55, 33, 44) == 44;
+ *		math::clamp(55, 77, 66) == 66;
  *	\endcode
  *	\param value A value to clamp.
  *	\param limit_1 The first limit.
@@ -86,14 +86,14 @@ const T& clamp(const T& value, const T& limit_1, const T& limit_2);
  *
  *	Finds the nearest integer and returns it.
  *	\code
- *		snow::math::round(4.f) == 4;
- *		snow::math::round(4.2f) == 4;
- *		snow::math::round(4.5f) == 5;
- *		snow::math::round(4.7f) == 5;
- *		snow::math::round(-4.f) == -4;
- *		snow::math::round(-4.2f) == -4;
- *		snow::math::round(-4.5f) == -5;
- *		snow::math::round(-4.7f) == -5;
+ *		math::round(4.f) == 4;
+ *		math::round(4.2f) == 4;
+ *		math::round(4.5f) == 5;
+ *		math::round(4.7f) == 5;
+ *		math::round(-4.f) == -4;
+ *		math::round(-4.2f) == -4;
+ *		math::round(-4.5f) == -5;
+ *		math::round(-4.7f) == -5;
  *	\endcode
  *	\param value A number to round
  *	\return A rounded value
@@ -105,14 +105,14 @@ int round(float value);
  *
  *	Finds the nearest integer that is less than or equal to a passed value.
  *	\code
- *		snow::math::floor(4.f) == 4;
- *		snow::math::floor(4.2f) == 4;
- *		snow::math::floor(4.5f) == 4;
- *		snow::math::floor(4.7f) == 4;
- *		snow::math::floor(-4.f) == -4;
- *		snow::math::floor(-4.2f) == -5;
- *		snow::math::floor(-4.5f) == -5;
- *		snow::math::floor(-4.7f) == -5;
+ *		math::floor(4.f) == 4;
+ *		math::floor(4.2f) == 4;
+ *		math::floor(4.5f) == 4;
+ *		math::floor(4.7f) == 4;
+ *		math::floor(-4.f) == -4;
+ *		math::floor(-4.2f) == -5;
+ *		math::floor(-4.5f) == -5;
+ *		math::floor(-4.7f) == -5;
  *	\endcode
  *	\param value A number to round
  *	\return A rounded value
@@ -124,14 +124,14 @@ int floor(float value);
  *
  *	Finds the nearest integer that is greater than or equal to a passed value.
  *	\code
- *		snow::math::ceil(4.f) == 4;
- *		snow::math::ceil(4.2f) == 5;
- *		snow::math::ceil(4.5f) == 5;
- *		snow::math::ceil(4.7f) == 5;
- *		snow::math::ceil(-4.f) == -4;
- *		snow::math::ceil(-4.2f) == -4;
- *		snow::math::ceil(-4.5f) == -4;
- *		snow::math::ceil(-4.7f) == -4;
+ *		math::ceil(4.f) == 4;
+ *		math::ceil(4.2f) == 5;
+ *		math::ceil(4.5f) == 5;
+ *		math::ceil(4.7f) == 5;
+ *		math::ceil(-4.f) == -4;
+ *		math::ceil(-4.2f) == -4;
+ *		math::ceil(-4.5f) == -4;
+ *		math::ceil(-4.7f) == -4;
  *	\endcode
  *	\param value A number to round
  *	\return A rounded value
