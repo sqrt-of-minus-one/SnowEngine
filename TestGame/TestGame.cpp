@@ -1,15 +1,17 @@
 #include <iostream>
 #include <conio.h>
 
-#include "Math/Angle.h"
-#include "Math/Math.h"
-#include "Math/Vector2.h"
+#include "Util/Container/List/Array.h"
 
 int main()
 {
-	snow::Angle angle;
+	snow::Array<int> i(2);
 
-	std::cout << (snow::Vector2::I - snow::Vector2::J).get_angle(-snow::Vector2::I).to_string();
+	i.sort();
+	
+	i[1] = 4;
+
+	std::cout << i[1];
 
 	_getch();
 	return 0;

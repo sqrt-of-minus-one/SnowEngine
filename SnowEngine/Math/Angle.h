@@ -33,7 +33,7 @@ namespace snow
 class Angle : public Object
 {
 public:
-		/* CONSTRUCTORS */
+			/* CONSTRUCTORS */
 
 	/**
 	 *	\brief Default constructor
@@ -83,7 +83,7 @@ public:
 	/**
 	 *	\brief Converts the angle into a string
 	 *
-	 *	Creates a string with format "<val>_deg", where <val> is the angle value in degrees.
+	 *	Creates a string with format `<val>_deg`, where `<val>` is the angle value in degrees.
 	 *	\return A string with the angle value.
 	 */
 	virtual const std::string to_string() const override;
@@ -548,23 +548,6 @@ public:
 	 *	\return `true` if the angle is greater than or equal to a passed one, `false` otherwise.
 	 */
 	bool operator>=(const Angle& angle) const;
-
-			/* CAST OPERATORS */
-
-	/**
-	 *	\brief Cast to bool
-	 *
-	 *	Is false if angle is equal to zero. Note that 360_deg, 720_deg, -360_deg etc. are not equal
-	 *	to zero.
-	 *	\code
-	 *		static_cast<bool>(0_deg) == false;
-	 *		static_cast<bool>(60_deg) == true;
-	 *		static_cast<bool>(360_deg) == true;
-	 *		static_cast<bool>(360_deg.get_normalized_360()) == false;
-	 *	\endcode
-	 *	\return `true` if the angle is not zero, `false` otherwise.
-	 */
-	bool operator()() const;
 		
 			/* LITERALS */
 

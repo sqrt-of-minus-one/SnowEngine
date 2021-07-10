@@ -14,6 +14,7 @@
  */
 
 #include <string>
+#include <stdexcept>
 
 namespace snow
 {

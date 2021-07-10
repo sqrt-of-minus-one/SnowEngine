@@ -189,11 +189,6 @@ bool Angle::operator>=(const Angle& angle) const
 	return value_deg_ >= angle.value_deg_;
 }
 
-bool Angle::operator()() const
-{
-	return static_cast<bool>(value_deg_);
-}
-
 Angle snow::operator"" _deg(long double degrees)
 {
 	return Angle(static_cast<float>(degrees));

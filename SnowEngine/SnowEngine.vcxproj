@@ -22,13 +22,21 @@
     <ClInclude Include="Math\Angle.h" />
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Math\Vector2.h" />
+    <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Util\Container\Container.h" />
+    <ClInclude Include="Util\Container\List\Array.h" />
+    <ClInclude Include="Util\Container\List\LinkedList.h" />
+    <ClInclude Include="Util\Container\List\List.h" />
+    <ClInclude Include="Util\Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math\Angle.cpp" />
     <ClCompile Include="Math\Math.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
+    <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Util\Util.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

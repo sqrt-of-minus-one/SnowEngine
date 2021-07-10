@@ -347,26 +347,25 @@ Angle arcctg(float value);
  *	\return An arccotangent of the passed value.
  */
 extern const std::function<Angle(float)> acot;
-
-}
 }
 
 
+		/* DEFINITIONS */
 
 template<typename T>
-const T& snow::math::max(const T& a, const T& b)
+const T& math::max(const T& a, const T& b)
 {
 	return a > b ? a : b;
 }
 
 template<typename T>
-const T& snow::math::min(const T& a, const T& b)
+const T& math::min(const T& a, const T& b)
 {
 	return a > b ? b : a;
 }
 
 template<typename T>
-const T& snow::math::clamp(const T& value, const T& limit_1, const T& limit_2)
+const T& math::clamp(const T& value, const T& limit_1, const T& limit_2)
 {
 	const T& min;
 	const T& max;
@@ -385,3 +384,8 @@ const T& snow::math::clamp(const T& value, const T& limit_1, const T& limit_2)
 	else if (value > max) return max;
 	else                  return value;
 }
+
+}
+
+
+

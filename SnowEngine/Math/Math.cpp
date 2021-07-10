@@ -6,8 +6,6 @@
 
 #include "Math.h"
 
-#include <stdexcept>
-
 #include "Angle.h"
 
 using namespace snow;
