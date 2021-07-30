@@ -28,6 +28,21 @@ const std::string to_string(T* var);
 template<typename T>
 const std::string to_string(T var);
 
+
+int hash_code(int var);
+
+int hash_code(float var);
+
+int hash_code(char var);
+
+int hash_code(bool var);
+
+template<typename T>
+int hash_code(T* var);
+
+template<typename T>
+int hash_code(T var);
+
 }
 
 
@@ -43,6 +58,18 @@ template<typename T>
 const std::string util::to_string(T var)
 {
 	return var.to_string();
+}
+
+template<typename T>
+int util::hash_code(T* var)
+{
+	return var->hash_code();
+}
+
+template<typename T>
+int util::hash_code(T var)
+{
+	return var.hash_code();
 }
 
 }

@@ -33,6 +33,11 @@ const std::string Angle::to_string() const
 	return std::to_string(value_deg_) + "_deg";
 }
 
+int Angle::hash_code() const
+{
+	return static_cast<int>(value_deg_ * 10'000.f);
+}
+
 float Angle::get_degrees() const
 {
 	return value_deg_;

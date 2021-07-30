@@ -39,6 +39,11 @@ const std::string Vector2::to_string() const
 	return "{" + std::to_string(x_) + ", " + std::to_string(y_) + "}";
 }
 
+int Vector2::hash_code() const
+{
+	return static_cast<int>(x_ + y_);
+}
+
 float Vector2::get_x() const
 {
 	return x_;

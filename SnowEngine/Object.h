@@ -36,6 +36,15 @@ public:
 	 *	\return A string.
 	 */
 	virtual const std::string to_string() const = 0;
+
+	/**
+	 *	\brief Allows to get hash code of the object
+	 *	
+	 *	Hash code is an integer number. If two objects are equal, their hash codes are equal too,
+	 *	but two different objects can also have the same hash.
+	 *	\return Hash code of the object.
+	 */
+	virtual int hash_code() const = 0;
 };
 
 }

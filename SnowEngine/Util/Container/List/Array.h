@@ -80,6 +80,9 @@ public:
 	virtual bool add(T&& element, int index) override;
 
 	virtual bool remove(int index) override;
+	virtual bool remove(std::shared_ptr<Iterator<T>> iterator) override;
+	virtual bool remove(std::shared_ptr<ListIterator<T>> iterator) override;
+	virtual bool remove(std::shared_ptr<ArrayIterator<T>> iterator);
 	virtual bool remove_first(const T& element) override;
 	virtual bool remove_last(const T& element) override;
 	virtual int remove_all(const T& element) override;
@@ -87,8 +90,6 @@ public:
 	virtual int find_first(const T& element) const override;
 	virtual int find_last(const T& element) const override;
 	virtual LinkedList<int> find_all(const T& element) const override;
-
-	virtual int contains(const T& element) const override;
 
 	virtual void sort(std::function<int(const T&, const T&)> comparator) override;
 
@@ -117,8 +118,12 @@ private:
 	std::shared_ptr<T[]> array_;
 
 	LinkedList<std::weak_ptr<ArrayIterator<T>>> iterators_;
+	mutable LinkedList<std::weak_ptr<ConstArrayIterator<T>>> const_iterators_;
 
 	std::function<int(const T&, const T&)>* comparator_;
+	
+	void add_move_iterators_(int index);
+	void remove_move_iterators_(int index);
 
 	void check_real_size_();
 
@@ -215,7 +220,7 @@ template<typename T_Container, typename T_Element>
 BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(T_Container& array, int index) :
 	container_(array),
 	index_(index),
-	is_valid_(true)
+	BaseIterator_::is_valid_(true)
 {}
 
 		/* DEFINITIONS of Array */
@@ -335,11 +340,9 @@ bool Array<T>::add(const T& element, int index)
 				array_[i] = std::move(array_[i - 1]);
 			}
 			array_[index] = element;
+			size_++;
 			
-			if (move_iterators)
-			{
-				// Todo: Use LinkedListIterator
-			}
+			add_move_iterators_(index);
 
 			return true;
 		}
@@ -347,7 +350,7 @@ bool Array<T>::add(const T& element, int index)
 }
 
 template<typename T>
-bool Array<T>::add(T&& element, int index, bool move_iterators)
+bool Array<T>::add(T&& element, int index)
 {
 	if (index < 0 || index > size_)
 	{
@@ -367,11 +370,9 @@ bool Array<T>::add(T&& element, int index, bool move_iterators)
 				array_[i] = std::move(array_[i - 1]);
 			}
 			array_[index] = std::move(element);
-
-			if (move_iterators)
-			{
-				// Todo: Use LinkedListIterator
-			}
+			size_++;
+			
+			add_move_iterators_(index);
 
 			return true;
 		}
@@ -399,8 +400,52 @@ bool Array<T>::remove(int index)
 			{
 				array_[i] = std::move(array_[i + 1]);
 			}
+			
+			remove_move_iterators_(index);
+			
 			return true;
 		}
+	}
+}
+
+template<typename T>
+bool Array<T>::remove(std::shared_ptr<Iterator<T>> iterator)
+{
+	std::shared_ptr<ArrayIterator> iter = std::dynamic_pointer_cast<ArrayIterator>(iterator);
+	if (iter && &iter->get_container() == this)
+	{
+		return remove(iter->get_index());
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T>
+bool Array<T>::remove(std::shared_ptr<ListIterator<T>> iterator)
+{
+	std::shared_ptr<ArrayIterator> iter = std::dynamic_pointer_cast<ArrayIterator>(iterator);
+	if (iter && &iter->get_container() == this)
+	{
+		return remove(iter->get_index());
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T>
+bool Array<T>::remove(std::shared_ptr<ArrayIterator<T>> iterator)
+{
+	if (iterator && &iterator->get_container() == this)
+	{
+		return remove(iterator->get_index());
+	}
+	else
+	{
+		return false;
 	}
 }
 
@@ -414,6 +459,21 @@ template<typename T>
 bool Array<T>::remove_last(const T& element)
 {
 	return remove(find_last(element));
+}
+
+template<typename T>
+int Array<T>::remove_all(const T& element)
+{
+	int counter = 0;
+	for (int i = 0; i < size_; i++)
+	{
+		if (array_[i] == element)
+		{
+			remove(i);
+			counter++;
+		}
+	}
+	return counter;
 }
 
 template<typename T>
@@ -443,9 +503,17 @@ int Array<T>::find_last(const T& element) const
 }
 
 template<typename T>
-bool Array<T>::contains(const T& element) const
+LinkedList<int> Array<T>::find_all(const T& element) const
 {
-	return find_first(element) >= 0;
+	LinkedList<int> result;
+	for (int i = 0; i < size_; i++)
+	{
+		if (array_[i] == element)
+		{
+			result.add(i);
+		}
+	}
+	return result;
 }
 
 template<typename T>
@@ -527,6 +595,61 @@ template<typename T>
 std::shared_ptr<Iterator<T>> Array<T>::create_iterator()
 {
 	return create_array_iterator();
+}
+
+template<typename T>
+std::shared_ptr<ConstArrayIterator<T>> Array<T>::create_const_array_iterator(E_ArrayIteratorType type) const
+{
+	switch (type)
+	{
+	case E_ArrayIteratorType::BEGIN:
+	{
+		std::shared_ptr<ConstArrayIterator<T>> ptr = std::make_shared<ConstArrayIterator<T>>(*this, 0);
+		const_iterators_.add(std::weak_ptr(ptr));
+		return ptr;
+		break;
+	}
+	case E_ArrayIteratorType::END:
+	{
+		std::shared_ptr<ConstArrayIterator<T>> ptr = std::make_shared<ConstArrayIterator<T>>(*this, size() - 1);
+		const_iterators_.add(std::weak_ptr(ptr));
+		return ptr;
+		break;
+	}
+	}
+}
+
+template<typename T>
+std::shared_ptr<ConstArrayIterator<T>> Array<T>::create_const_array_iterator(int index) const
+{
+	if (index < 0 || index >= size_)
+	{
+		throw std::range_error("Index is out of range");
+	}
+	else
+	{
+		std::shared_ptr<ConstArrayIterator<T>> ptr = std::make_shared<ConstArrayIterator<T>>(*this, index);
+		const_iterators_.add(std::weak_ptr(ptr));
+		return ptr;
+	}
+}
+
+template<typename T>
+std::shared_ptr<ConstListIterator<T>> Array<T>::create_const_list_iterator() const
+{
+	return create_const_array_iterator();
+}
+
+template<typename T>
+std::shared_ptr<ConstListIterator<T>> Array<T>::create_const_list_iterator(int index) const
+{
+	return create_const_array_iterator(index);
+}
+
+template<typename T>
+std::shared_ptr<ConstIterator<T>> Array<T>::create_const_iterator() const
+{
+	return create_const_array_iterator();
 }
 
 template<typename T>

@@ -56,6 +56,11 @@ const std::string Vector3::to_string() const
 	return "{" + std::to_string(x_) + ", " + std::to_string(y_) + ", " + std::to_string(z_) + "}";
 }
 
+int Vector3::hash_code() const
+{
+	return static_cast<int>(x_ + y_ + z_);
+}
+
 float Vector3::get_x() const
 {
 	return x_;

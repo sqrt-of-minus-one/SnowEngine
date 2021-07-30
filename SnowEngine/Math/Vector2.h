@@ -67,10 +67,19 @@ public:
 	/**
 	 *	\brief Converts the vector into a string
 	 *
-	 *	Creates a string with format `{<x>, <y>}`, where `<x>` and `<y>` are coordinates of the vector.
+	 *	Creates a string with format `{<x>, <y>}`, where `<x>` and `<y>` are coordinates of the
+	 *	vector.
 	 *	\return A string with the vector value.
 	 */
 	virtual const std::string to_string() const override;
+
+	/**
+	 *	\brief Hash code of the vector
+	 *	
+	 *	Hash code of the vector is the sum of its coordinates casted to integer.
+	 *	\return Hash code of the vector.
+	*/
+	int hash_code() const override;
 	
 			/* METHODS */
 	

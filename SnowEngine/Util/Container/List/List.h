@@ -45,12 +45,16 @@ public:
 	virtual bool add(T&& element, int index) = 0;
 
 	virtual bool remove(int index) = 0;
+	virtual bool remove(std::shared_ptr<ListIterator<T>> iterator) = 0;
 	virtual bool remove_first(const T& element) = 0;
 	virtual bool remove_last(const T& element) = 0;
+
 
 	virtual int find_first(const T& element) const = 0;
 	virtual int find_last(const T& element) const = 0;
 	virtual LinkedList<int> find_all(const T& element) const = 0;
+
+	virtual int contains(const T& element) const override;
 
 	virtual void sort(std::function<int(const T&, const T&)> comparator) = 0;
 
@@ -69,20 +73,26 @@ public:
 		/* DEFINITIONS of List */
 
 template<typename T>
+int List<T>::contains(const T& element) const
+{
+	return find_all(element).size();
+}
+
+template<typename T>
 bool List<T>::operator==(const List<T>& list) const
 {
-	if (size() != list.size())
+	if (this->size() != list.size())
 	{
 		return false;
 	}
-	else if (size() == 0)
+	else if (this->size() == 0)
 	{
 		return true;
 	}
 	else
 	{
-		std::shared_ptr<ConstListIterator<T>> iterator_1 = get_const_list_iterator(0);
-		std::shared_ptr<ConstListIterator<T>> iterator_2 = list.get_const_list_iterator(0);
+		std::shared_ptr<ConstListIterator<T>> iterator_1 = create_const_list_iterator(0);
+		std::shared_ptr<ConstListIterator<T>> iterator_2 = list.create_const_list_iterator(0);
 		do 
 		{
 			if (iterator_1->get() != iterator_2->get())

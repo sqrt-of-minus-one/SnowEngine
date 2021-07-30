@@ -1,17 +1,19 @@
 #include <iostream>
 #include <conio.h>
 
-#include "Util/Container/List/Array.h"
+#include "Util/Container/Array.h"
 
 int main()
 {
 	snow::Array<int> i(2);
-
-	i.sort();
 	
 	i[1] = 4;
 
-	std::cout << i[1];
+	snow::Array<int> j(3);
+	j[1] = 55;
+	j = i;
+
+	std::cout << j[1];
 
 	_getch();
 	return 0;

@@ -88,6 +88,15 @@ public:
 	 */
 	virtual const std::string to_string() const override;
 
+	/**
+	 *	\brief Hash code of the angle
+	 *	
+	 *	Hash code of the angle is the product of its value in degrees and 10'000. This number then
+	 *	is converted to integer.
+	 *	\return Hash code of the angle.
+	 */
+	virtual int hash_code() const override;
+
 			/* METHODS */
 
 	/**
