@@ -44,6 +44,15 @@
     <ClInclude Include="Util\Container\Array.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
+    <ClInclude Include="Util\Container\LinkedList.h">
+      <Filter>Source Files\Util\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Container\ArrayIterator.h">
+      <Filter>Source Files\Util\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Container\LinkedListIterator.h">
+      <Filter>Source Files\Util\Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math\Math.cpp">

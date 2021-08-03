@@ -5,15 +5,16 @@
 
 int main()
 {
-	snow::Array<int> i(2);
-	
-	i[1] = 4;
+	snow::LinkedList<int> list;
 
-	snow::Array<int> j(3);
-	j[1] = 55;
-	j = i;
+	list.add(5);
+	list.add(7);
+	list.add_to_begin(2);
 
-	std::cout << j[1];
+	for (auto& i : list)
+	{
+		std::cout << i << " ";
+	}
 
 	_getch();
 	return 0;

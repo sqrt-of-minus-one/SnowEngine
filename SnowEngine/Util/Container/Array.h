@@ -6,73 +6,23 @@
 
 #pragma once
 
-#include "Container.h"
-
-#include "../Util.h"
-//#include "LinkedList.h"
+#include "ArrayIterator.h"
+#include "LinkedList.h"
 
 namespace snow
 {
 
 template<typename T>
-class Array;
-
-namespace
-{
-
-template<typename T_Container, typename T_Element>
-class BaseArrayIterator_ :
+class Array :
 	public Object,
-	public IIterator<T_Container, T_Element>
+	public IContainer<T>
 {
 	template<typename T>
-	friend class Array;
+	friend class ArrayIterator;
 
-public:
-	BaseArrayIterator_(const BaseArrayIterator_<T_Container, T_Element>& iterator);
-	BaseArrayIterator_(BaseArrayIterator_<T_Container, T_Element>&& iterator);
+	template<typename T>
+	friend class ConstArrayIterator;
 
-	virtual const std::string to_string() const override;
-	virtual int hash_code() const override;
-
-	virtual bool is_valid() const override;
-
-	virtual T_Container& get_container() const override;
-	virtual T_Element& get() const override;
-	int get_index() const;
-
-	virtual bool is_begin() const override;
-	virtual bool is_end() const override;
-	virtual bool next() override;
-	virtual bool prev() override;
-
-	virtual T_Element& operator*() const override;
-	virtual bool operator++() override;
-	virtual bool operator--() override;
-	virtual bool operator++(int) override;
-	virtual bool operator--(int) override;
-
-	virtual bool operator==(const IIterator<T_Container, T_Element>& iterator) const override;
-	virtual bool operator!=(const IIterator<T_Container, T_Element>& iterator) const override;
-private:
-	BaseArrayIterator_(T_Container& array, int index);
-	
-	T_Container& container_;
-	int index_;
-	bool is_container_valid_;
-};
-
-}
-
-template<typename T>
-using ConstArrayIterator = BaseArrayIterator_<const Array<T>, const T>;
-
-template<typename T>
-using ArrayIterator = BaseArrayIterator_<Array<T>, T>;
-
-template<typename T>
-class Array : public Object, public IContainer<T>
-{
 public:
 	Array();
 	Array(const Array<T>& array);
@@ -95,20 +45,22 @@ public:
 	virtual bool remove(const ConstArrayIterator<T>& element);
 	virtual bool remove_first(const T& element);
 	virtual bool remove_last(const T& element);
-	virtual bool remove_all(const T& element) override;
+	virtual int remove_all(const T& element) override;
 
 	virtual int find_first(const T& element) const;
 	virtual int find_last(const T& element) const;
-//	virtual LinkedList<int> find_all(const T& element) const;
+	virtual LinkedList<int> find_all(const T& element) const;
 
 	virtual bool contains(const T& element) const override;
 	virtual int count(const T& element) const override;
 
 	virtual ArrayIterator<T> begin();
+	virtual ArrayIterator<T> last();
 	virtual ArrayIterator<T> end();
 	virtual ArrayIterator<T> create_iterator(int index);
 	virtual ConstArrayIterator<T> begin() const;
 	virtual ConstArrayIterator<T> end() const;
+	virtual ConstArrayIterator<T> last() const;
 	virtual ConstArrayIterator<T> create_iterator(int index) const;
 
 	virtual Array<T>& operator=(const Array<T>& array);
@@ -129,150 +81,6 @@ private:
 
 	static const int DEFAULT_REAL_SIZE_;
 };
-
-		/* DEFINITIONS of BaseArrayIterator_ */
-
-template<typename T_Container, typename T_Element>
-BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(const BaseArrayIterator_<T_Container, T_Element>& iterator) :
-	container_(iterator.container_),
-	index_(iterator.index_),
-	is_container_valid_(true)
-{}
-
-template<typename T_Container, typename T_Element>
-BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(BaseArrayIterator_<T_Container, T_Element>&& iterator) :
-	container_(std::move(iterator.container_)),
-	index_(std::move(iterator.index_)),
-	is_container_valid_(true)
-{}
-
-template<typename T_Container, typename T_Element>
-const std::string BaseArrayIterator_<T_Container, T_Element>::to_string() const
-{
-	return util::to_string(get());
-}
-
-
-template<typename T_Container, typename T_Element>
-int BaseArrayIterator_<T_Container, T_Element>::hash_code() const
-{
-	return util::hash_code(get());
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::is_valid() const
-{
-	return is_container_valid_ && index_ >= 0 && index_ < container_.size();
-}
-
-template<typename T_Container, typename T_Element>
-T_Container& BaseArrayIterator_<T_Container, T_Element>::get_container() const
-{
-	return container_;
-}
-
-template<typename T_Container, typename T_Element>
-T_Element& BaseArrayIterator_<T_Container, T_Element>::get() const
-{
-	return container_[index_];
-}
-
-template<typename T_Container, typename T_Element>
-int BaseArrayIterator_<T_Container, T_Element>::get_index() const
-{
-	return index_;
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::is_begin() const
-{
-	return index_ == 0;
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::is_end() const
-{
-	return index_ == container_.size() - 1;
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::next()
-{
-	if (is_end())
-	{
-		return false;
-	}
-	else
-	{
-		index_++;
-		return true;
-	}
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::prev()
-{
-	if (is_begin())
-	{
-		return false;
-	}
-	else
-	{
-		index_--;
-		return true;
-	}
-}
-
-
-template<typename T_Container, typename T_Element>
-T_Element& BaseArrayIterator_<T_Container, T_Element>::operator*() const
-{
-	return get();
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::operator++()
-{
-	return next();
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::operator--()
-{
-	return prev();
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::operator++(int)
-{
-	return next();
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::operator--(int)
-{
-	return prev();
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::operator==(const IIterator<T_Container, T_Element>& iterator) const
-{
-	return container_ == iterator.get_container() &&
-		index_ == dynamic_cast<const BaseArrayIterator_<T_Container, T_Element>*>(&iterator)->index_;
-}
-
-template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::operator!=(const IIterator<T_Container, T_Element>& iterator) const
-{
-	return !(*this == iterator);
-}
-
-template<typename T_Container, typename T_Element>
-BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(T_Container& array, int index) :
-	container_(array),
-	index_(index),
-	is_container_valid_(true)
-{}
 
 		/* DEFINITIONS of Array */
 
@@ -482,7 +290,7 @@ bool Array<T>::remove_last(const T& element)
 }
 
 template<typename T>
-bool Array<T>::remove_all(const T& element)
+int Array<T>::remove_all(const T& element)
 {
 	for (int to = 0, from = 0; to < size_; to++)
 	{
@@ -529,19 +337,19 @@ int Array<T>::find_last(const T& element) const
 	return -1;
 }
 
-// template<typename T>
-// LinkedList<int> Array<T>::find_all(const T& element) const
-// {
-// 	LinkedList<int> result;
-// 	for (int i = 0; i < size_; i++)
-// 	{
-// 		if (array_[i] == element)
-// 		{
-// 			result.add(i);
-// 		}
-// 	}
-// 	return result;
-// }
+template<typename T>
+LinkedList<int> Array<T>::find_all(const T& element) const
+{
+	LinkedList<int> result;
+	for (int i = 0; i < size_; i++)
+	{
+		if (array_[i] == element)
+		{
+			result.add(i);
+		}
+	}
+	return result;
+}
 
 template<typename T>
 bool Array<T>::contains(const T& element) const
@@ -570,6 +378,12 @@ ArrayIterator<T> Array<T>::begin()
 }
 
 template<typename T>
+ArrayIterator<T> Array<T>::last()
+{
+	return ArrayIterator<T>(*this, size_ - 1);
+}
+
+template<typename T>
 ArrayIterator<T> Array<T>::end()
 {
 	return ArrayIterator<T>(*this, size_);
@@ -578,7 +392,7 @@ ArrayIterator<T> Array<T>::end()
 template<typename T>
 ArrayIterator<T> Array<T>::create_iterator(int index)
 {
-	if (index < 0 || index >= size_)
+	if (index < 0 || index > size_)
 	{
 		throw std::range_error("Index is out of array bounds");
 	}
@@ -592,6 +406,12 @@ ConstArrayIterator<T> Array<T>::begin() const
 }
 
 template<typename T>
+ConstArrayIterator<T> Array<T>::last() const
+{
+	return ConstArrayIterator<T>(*this, size_ - 1);
+}
+
+template<typename T>
 ConstArrayIterator<T> Array<T>::end() const
 {
 	return ConstArrayIterator<T>(*this, size_);
@@ -600,6 +420,10 @@ ConstArrayIterator<T> Array<T>::end() const
 template<typename T>
 ConstArrayIterator<T> Array<T>::create_iterator(int index) const
 {
+	if (index < 0 || index > size_)
+	{
+		throw std::range_error("Index is out of array bounds");
+	}
 	return ConstArrayIterator<T>(*this, index);
 }
 

@@ -25,7 +25,10 @@
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Util\Container\Array.h" />
+    <ClInclude Include="Util\Container\ArrayIterator.h" />
     <ClInclude Include="Util\Container\Container.h" />
+    <ClInclude Include="Util\Container\LinkedList.h" />
+    <ClInclude Include="Util\Container\LinkedListIterator.h" />
     <ClInclude Include="Util\Util.h" />
   </ItemGroup>
   <ItemGroup>
