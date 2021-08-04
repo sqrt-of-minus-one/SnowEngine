@@ -5,16 +5,12 @@
 
 int main()
 {
-	snow::LinkedList<int> list;
+	snow::Array<int> array;
+	array.add(5);
+	array.add(6);
+	array.add(7);
 
-	list.add(5);
-	list.add(7);
-	list.add_to_begin(2);
-
-	for (auto& i : list)
-	{
-		std::cout << i << " ";
-	}
+	snow::ConstArrayIterator<int> itr = array.begin();
 
 	_getch();
 	return 0;

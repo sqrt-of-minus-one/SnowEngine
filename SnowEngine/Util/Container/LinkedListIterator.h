@@ -46,9 +46,13 @@ class ConstLinkedListIterator : public BaseLinkedListIterator_
 	template<typename T>
 	friend class LinkedList;
 
+	template<typename T>
+	friend class LinkedListIterator;
+
 public:
 	ConstLinkedListIterator(const ConstLinkedListIterator<T>& iterator);
 	ConstLinkedListIterator(ConstLinkedListIterator<T>&& iterator);
+	~ConstLinkedListIterator();
 
 	virtual const std::string to_string() const override;
 	virtual int hash_code() const override;
@@ -89,6 +93,7 @@ class LinkedListIterator : public BaseLinkedListIterator_
 public:
 	LinkedListIterator(const LinkedListIterator<T>& iterator);
 	LinkedListIterator(LinkedListIterator<T>&& iterator);
+	~LinkedListIterator();
 
 	virtual const std::string to_string() const override;
 	virtual int hash_code() const override;
@@ -147,14 +152,35 @@ ConstLinkedListIterator<T>::ConstLinkedListIterator(const ConstLinkedListIterato
 	container_(iterator.container_),
 	node_(iterator.node_),
 	BaseLinkedListIterator_(iterator.index_, iterator.is_valid_)
-{}
+{
+	if (is_valid_)
+	{
+		container_.register_iterator_(this);
+	}
+}
 
 template<typename T>
 ConstLinkedListIterator<T>::ConstLinkedListIterator(ConstLinkedListIterator<T>&& iterator) :
 	container_(iterator.container_),
 	node_(std::move(iterator.node_)),
 	BaseLinkedListIterator_(std::move(iterator.index_), std::move(iterator.is_valid_))
-{}
+{
+	if (is_valid_)
+	{
+		container_.unregister_iterator_(&iterator);
+		container_.register_iterator_(this);
+		iterator.is_valid_ = false;
+	}
+}
+
+template<typename T>
+ConstLinkedListIterator<T>::~ConstLinkedListIterator()
+{
+	if (is_valid_)
+	{
+		container_.unregister_iterator_(this);
+	}
+}
 
 template<typename T>
 const std::string ConstLinkedListIterator<T>::to_string() const
@@ -287,7 +313,9 @@ ConstLinkedListIterator<T>::ConstLinkedListIterator(const LinkedList<T>& linked_
 	container_(linked_list),
 	node_(node),
 	BaseLinkedListIterator_(index, true)
-{}
+{
+	container_.register_iterator_(this);
+}
 
 		/* DEFINITIONS of LinkedListIterator */
 
@@ -296,14 +324,35 @@ LinkedListIterator<T>::LinkedListIterator(const LinkedListIterator<T>& iterator)
 	container_(iterator.container_),
 	node_(iterator.node_),
 	BaseLinkedListIterator_(iterator.index_, iterator.is_valid_)
-{}
+{
+	if (is_valid_)
+	{
+		container_.register_iterator_(this);
+	}
+}
 
 template<typename T>
 LinkedListIterator<T>::LinkedListIterator(LinkedListIterator<T>&& iterator) :
 	container_(iterator.container_),
 	node_(std::move(iterator.node_)),
 	BaseLinkedListIterator_(std::move(iterator.index_), std::move(iterator.is_valid_))
-{}
+{
+	if (is_valid_)
+	{
+		container_.unregister_iterator_(&iterator);
+		container_.register_iterator_(this);
+		iterator.is_valid_ = false;
+	}
+}
+
+template<typename T>
+LinkedListIterator<T>::~LinkedListIterator()
+{
+	if (is_valid_)
+	{
+		container_.unregister_iterator_(this);
+	}
+}
 
 template<typename T>
 const std::string LinkedListIterator<T>::to_string() const
@@ -434,7 +483,7 @@ bool LinkedListIterator<T>::operator!=(const LinkedListIterator<T>& iterator) co
 template<typename T>
 LinkedListIterator<T>::operator ConstLinkedListIterator<T>() const
 {
-	return ConstLinkedListIterator<T>(container_, index_, node_);
+	return ConstLinkedListIterator<T>(container_, index_, node_.lock());
 }
 
 template<typename T>
@@ -442,6 +491,8 @@ LinkedListIterator<T>::LinkedListIterator(LinkedList<T>& linked_list, int index,
 	container_(linked_list),
 	node_(node),
 	BaseLinkedListIterator_(index, true)
-{}
+{
+	container_.register_iterator_(this);
+}
 
 }

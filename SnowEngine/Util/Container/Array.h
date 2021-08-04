@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include <map>
+#include <list>
+
 #include "ArrayIterator.h"
 #include "LinkedList.h"
 
@@ -43,6 +46,8 @@ public:
 
 	virtual bool remove(int index);
 	virtual bool remove(const ConstArrayIterator<T>& element);
+	virtual bool remove(int from, int to);
+	virtual bool remove(const ConstArrayIterator<T>& from, const ConstArrayIterator<T>& to);
 	virtual bool remove_first(const T& element);
 	virtual bool remove_last(const T& element);
 	virtual int remove_all(const T& element) override;
@@ -78,6 +83,10 @@ private:
 	std::unique_ptr<T[]> array_;
 
 	void check_real_size_to_add_();
+
+	mutable std::list<BaseArrayIterator_*> iterators_;
+	void register_iterator_(BaseArrayIterator_* iterator) const;
+	void unregister_iterator_(BaseArrayIterator_* iterator) const;
 
 	static const int DEFAULT_REAL_SIZE_;
 };
@@ -241,26 +250,25 @@ bool Array<T>::add(T&& element, int index)
 template<typename T>
 bool Array<T>::remove(int index)
 {
-	if (index < 0 || index >= size_)
+	return remove(index, index + 1);
+}
+
+template<typename T>
+bool Array<T>::remove(int from, int to)
+{
+	if (from < to && from >= 0 && to <= size_)
 	{
-		return false;
+		int delta = to - from;
+		size_ -= delta;
+		for (int i = from; i < size_; i++)
+		{
+			array_[i] = std::move(array_[i + delta]);
+		}
+		return true;
 	}
 	else
 	{
-		if (index == size_ - 1)
-		{
-			size_--;
-			return true;
-		}
-		else
-		{
-			size_--;
-			for (int i = index; i < size_; i++)
-			{
-				array_[i] = std::move(array_[i + 1]);
-			}
-			return true;
-		}
+		return false;
 	}
 }
 
@@ -270,6 +278,19 @@ bool Array<T>::remove(const ConstArrayIterator<T>& element)
 	if (&element.get_container() == this)
 	{
 		return remove(element.get_index());
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T>
+bool Array<T>::remove(const ConstArrayIterator<T>& from, const ConstArrayIterator<T>& to)
+{
+	if (&from.get_container() == this && &to.get_container() == this)
+	{
+		return remove(from.get_index(), to.get_index());
 	}
 	else
 	{
@@ -522,6 +543,26 @@ void Array<T>::check_real_size_to_add_()
 			new_ptr[i] = std::move(array_[i]);
 		}
 		array_ = std::move(new_ptr);
+	}
+}
+
+template<typename T>
+void Array<T>::register_iterator_(BaseArrayIterator_* iterator) const
+{
+	iterators_.push_back(iterator);
+}
+
+template<typename T>
+void Array<T>::unregister_iterator_(BaseArrayIterator_* iterator) const
+{
+	auto end = iterators_.end();
+	for (auto ptr = iterators_.begin(); ptr != end; ptr++)
+	{
+		if (*ptr == iterator)
+		{
+			iterators_.erase(ptr);
+			break;
+		}
 	}
 }
 

@@ -44,9 +44,13 @@ class ConstArrayIterator : public BaseArrayIterator_
 	template<typename T>
 	friend class Array;
 
+	template<typename T>
+	friend class ArrayIterator;
+
 public:
 	ConstArrayIterator(const ConstArrayIterator<T>& iterator);
 	ConstArrayIterator(ConstArrayIterator<T>&& iterator);
+	~ConstArrayIterator();
 
 	virtual const std::string to_string() const override;
 	virtual int hash_code() const override;
@@ -84,6 +88,7 @@ class ArrayIterator : public BaseArrayIterator_
 public:
 	ArrayIterator(const ArrayIterator<T>& iterator);
 	ArrayIterator(ArrayIterator<T>&& iterator);
+	~ArrayIterator();
 
 	virtual const std::string to_string() const override;
 	virtual int hash_code() const override;
@@ -159,12 +164,33 @@ template<typename T>
 ConstArrayIterator<T>::ConstArrayIterator(const ConstArrayIterator<T>& iterator) :
 	container_(iterator.container_),
 	BaseArrayIterator_(iterator.index_, iterator.is_valid_)
-{}
+{
+	if (is_valid_)
+	{
+		container_.register_iterator_(this);
+	}
+}
 template<typename T>
 ConstArrayIterator<T>::ConstArrayIterator(ConstArrayIterator<T>&& iterator) :
 	container_(iterator.container_),
 	BaseArrayIterator_(std::move(iterator.index_), std::move(iterator.is_valid_))
-{}
+{
+	if (is_valid_)
+	{
+		container_.unregister_iterator_(&iterator);
+		container_.register_iterator_(this);
+		iterator.is_valid_ = false;
+	}
+}
+
+template<typename T>
+ConstArrayIterator<T>::~ConstArrayIterator()
+{
+	if (is_valid_)
+	{
+		container_.unregister_iterator_(this);
+	}
+}
 
 template<typename T>
 const std::string ConstArrayIterator<T>::to_string() const
@@ -266,7 +292,9 @@ template<typename T>
 ConstArrayIterator<T>::ConstArrayIterator(const Array<T>& array, int index) :
 	container_(array),
 	BaseArrayIterator_(index, true)
-{}
+{
+	container_.register_iterator_(this);
+}
 
 		/* DEFINITIONS of ConstArrayIterator */
 
@@ -274,12 +302,34 @@ template<typename T>
 ArrayIterator<T>::ArrayIterator(const ArrayIterator<T>& iterator) :
 	container_(iterator.container_),
 	BaseArrayIterator_(iterator.index_, iterator.is_valid_)
-{}
+{
+	if (is_valid_)
+	{
+		container_.register_iterator_(this);
+	}
+}
+
 template<typename T>
 ArrayIterator<T>::ArrayIterator(ArrayIterator<T>&& iterator) :
 	container_(iterator.container_),
 	BaseArrayIterator_(std::move(iterator.index_), std::move(iterator.is_valid_))
-{}
+{
+	if (is_valid_)
+	{
+		container_.unregister_iterator_(&iterator);
+		container_.register_iterator_(this);
+		iterator.is_valid_ = false;
+	}
+}
+
+template<typename T>
+ArrayIterator<T>::~ArrayIterator()
+{
+	if (is_valid_)
+	{
+		container_.unregister_iterator_(this);
+	}
+}
 
 template<typename T>
 const std::string ArrayIterator<T>::to_string() const
@@ -380,13 +430,15 @@ bool ArrayIterator<T>::operator!=(const ArrayIterator& iterator) const
 template<typename T>
 ArrayIterator<T>::operator ConstArrayIterator<T>() const
 {
-	return ArrayIterator<T>(container_, index_);
+	return ConstArrayIterator<T>(container_, index_);
 }
 
 template<typename T>
 ArrayIterator<T>::ArrayIterator(Array<T>& array, int index) :
 	container_(array),
 	BaseArrayIterator_(index, true)
-{}
+{
+	container_.register_iterator_(this);
+}
 
 }
