@@ -9,16 +9,23 @@
 namespace snow
 {
 
+template<typename T_Container, typename T_Element>
 class IIterator
 {
 public:
 	virtual bool is_valid() const = 0;
+	virtual bool is_element_valid() const = 0;
+
+	virtual T_Container& get_container() const = 0;
+	virtual T_Element& get() const = 0;
 
 	virtual bool is_begin() const = 0;
 	virtual bool is_last() const = 0;
 	virtual bool is_end() const = 0;
 	virtual bool next() = 0;
 	virtual bool prev() = 0;
+
+	virtual T_Element& operator*() const = 0;
 };
 
 template<typename T>

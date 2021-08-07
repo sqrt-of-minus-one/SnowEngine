@@ -38,16 +38,14 @@ class LinkedList :
 	public Object,
 	public IContainer<T>
 {
-	template<typename T>
-	friend class LinkedListIterator;
-
-	template<typename T>
-	friend class ConstLinkedListIterator;
+	template<typename T_Container, typename T_Element, typename T_Node>
+	friend class BaseLinkedListIterator_;
 
 public:
 	LinkedList();
 	LinkedList(const LinkedList<T>& linked_list);
 	LinkedList(LinkedList<T>&& linked_list);
+	~LinkedList();
 
 	virtual const std::string to_string() const override;
 	virtual int hash_code() const override;
@@ -56,24 +54,30 @@ public:
 	virtual bool is_empty() const override;
 	virtual void clear() override;
 
-	virtual T& get_begin();
-	virtual T& get_last();
-	virtual const T& get_begin() const;
-	virtual const T& get_last() const;
+	T& get_begin();
+	T& get_last();
+	const T& get_begin() const;
+	const T& get_last() const;
 
 	virtual bool add(const T& element) override;
 	virtual bool add(T&& element) override;
 	virtual bool add(const T& element, int index);
 	virtual bool add(T&& element, int index);
-	virtual bool add_after(const T& element, const ConstLinkedListIterator<T>& iterator);
-	virtual bool add_after(T&& element, const ConstLinkedListIterator<T>& iterator);
+	virtual int add(const LinkedList<T>& list);
+	virtual int add(LinkedList<T>&& list);
+	virtual bool add_before(const T& element, const LinkedListIterator<T>& iterator);
+	virtual bool add_before(T&& element, const LinkedListIterator<T>& iterator);
+	virtual bool add_before(const T& element, const ConstLinkedListIterator<T>& iterator);
+	virtual bool add_before(T&& element, const ConstLinkedListIterator<T>& iterator);
 	virtual bool add_to_begin(const T& element);
 	virtual bool add_to_begin(T&& element);
 
 	virtual bool remove(int index);
+	virtual bool remove(const LinkedListIterator<T>& element);
 	virtual bool remove(const ConstLinkedListIterator<T>& element);
-	virtual bool remove(int from, int to);
-	virtual bool remove(const ConstLinkedListIterator<T>& from, const ConstLinkedListIterator<T>& to);
+	virtual int remove(int from, int to);
+	virtual int remove(const LinkedListIterator<T>& from, const LinkedListIterator<T>& to);
+	virtual int remove(const ConstLinkedListIterator<T>& from, const ConstLinkedListIterator<T>& to);
 	virtual bool remove_first(const T& element);
 	virtual bool remove_last(const T& element);
 	virtual int remove_all(const T& element) override;
@@ -89,32 +93,40 @@ public:
 	virtual bool contains(const T& element) const override;
 	virtual int count(const T& element) const override;
 
-	virtual LinkedListIterator<T> begin();
-	virtual LinkedListIterator<T> last();
-	virtual LinkedListIterator<T> end();
-	virtual LinkedListIterator<T> create_iterator(int index);
-	virtual ConstLinkedListIterator<T> begin() const;
-	virtual ConstLinkedListIterator<T> last() const;
-	virtual ConstLinkedListIterator<T> end() const;
-	virtual ConstLinkedListIterator<T> create_iterator(int index) const;
+	LinkedListIterator<T> begin();
+	LinkedListIterator<T> last();
+	LinkedListIterator<T> end();
+	LinkedListIterator<T> create_iterator(int index);
+	ConstLinkedListIterator<T> begin() const;
+	ConstLinkedListIterator<T> last() const;
+	ConstLinkedListIterator<T> end() const;
+	ConstLinkedListIterator<T> create_iterator(int index) const;
 
 	virtual LinkedList<T>& operator=(const LinkedList<T>& linked_list);
 	virtual LinkedList<T>& operator=(LinkedList<T>&& linked_list);
 
-	virtual bool operator==(const LinkedList<T>& linked_list) const;
-	virtual bool operator!=(const LinkedList<T>& linked_list) const;
+	bool operator==(const LinkedList<T>& linked_list) const;
+	bool operator!=(const LinkedList<T>& linked_list) const;
 
-	virtual T& operator[](int index);
-	virtual const T& operator[](int index) const;
+	T& operator[](int index);
+	const T& operator[](int index) const;
+
+	static ConstLinkedListIterator<T> iterator_to_const(const LinkedListIterator<T> iterator);
 
 private:
 	std::shared_ptr<LinkedListNode_<T>> begin_;
 	std::shared_ptr<LinkedListNode_<T>> end_;
 	int size_;
 
-	mutable std::list<BaseLinkedListIterator_*> iterators_;
-	void register_iterator_(BaseLinkedListIterator_* iterator) const;
-	void unregister_iterator_(BaseLinkedListIterator_* iterator) const;
+	std::shared_ptr<LinkedListNode_<T>> get_last_node_() const;
+
+	mutable std::list<LinkedListIterator<T>*> iterators_;
+	mutable std::list<ConstLinkedListIterator<T>*> const_iterators_;
+	void register_iterator_(LinkedListIterator<T>* iterator);
+	void unregister_iterator_(LinkedListIterator<T>* iterator);
+	void register_iterator_(ConstLinkedListIterator<T>* iterator) const;
+	void unregister_iterator_(ConstLinkedListIterator<T>* iterator) const;
+	void clear_iterators_() const;
 };
 
 
@@ -157,8 +169,16 @@ template<typename T>
 LinkedList<T>::LinkedList(LinkedList<T>&& linked_list) :
 	begin_(std::move(linked_list.begin_)),
 	end_(std::move(linked_list.end_)),
-	size_(std::move(linked_list.size_))
+	size_(std::move(linked_list.size_)),
+	iterators_(std::move(linked_list.iterators_)),
+	const_iterators_(std::move(linked_list.const_iterators_))
 {}
+
+template<typename T>
+LinkedList<T>::~LinkedList()
+{
+	clear_iterators_();
+}
 
 template<typename T>
 const std::string LinkedList<T>::to_string() const
@@ -171,7 +191,7 @@ const std::string LinkedList<T>::to_string() const
 	{
 		std::string str = "{ ";
 		ConstLinkedListIterator<T> p = begin();
-		for ( ; !p.is_end(); p++)
+		for ( ; !p.is_last(); p.next())
 		{
 			str += util::to_string(*p) + ", ";
 		}
@@ -213,6 +233,7 @@ bool LinkedList<T>::is_empty() const
 template<typename T>
 void LinkedList<T>::clear()
 {
+	clear_iterators_();
 	begin_.reset();
 	end_.reset();
 	size_ = 0;
@@ -221,41 +242,53 @@ void LinkedList<T>::clear()
 template<typename T>
 T& LinkedList<T>::get_begin()
 {
-	if (is_empty())
+	if (size_ > 0)
+	{
+		return begin_->value;
+	}
+	else
 	{
 		throw std::range_error("Attempt to access an element of empty linked list");
 	}
-	return begin_->value;
 }
 
 template<typename T>
 T& LinkedList<T>::get_last()
 {
-	if (is_empty())
+	if (size_ > 0)
+	{
+		return end_->value;
+	}
+	else
 	{
 		throw std::range_error("Attempt to access an element of empty linked list");
 	}
-	return end_->value;
 }
 
 template<typename T>
 const T& LinkedList<T>::get_begin() const
 {
-	if (size_ <= 0)
+	if (size_ > 0)
+	{
+		return begin_->value;
+	}
+	else
 	{
 		throw std::range_error("Attempt to access an element of empty linked list");
 	}
-	return begin_->value;
 }
 
 template<typename T>
 const T& LinkedList<T>::get_last() const
 {
-	if (size_ <= 0)
+	if (size_ > 0)
+	{
+		return end_->value;
+	}
+	else
 	{
 		throw std::range_error("Attempt to access an element of empty linked list");
 	}
-	return end_->value;
 }
 
 template<typename T>
@@ -272,6 +305,22 @@ bool LinkedList<T>::add(const T& element)
 		end_->next->prev = end_;
 		end_ = end_->next;
 	}
+	
+	for (auto i : iterators_)
+	{
+		if (i->index_ >= size_)
+		{
+			i->index_++;
+		}
+	}
+	for (auto i : const_iterators_)
+	{
+		if (i->index_ >= size_)
+		{
+			i->index_++;
+		}
+	}
+
 	size_++;
 	return true;
 }
@@ -290,6 +339,22 @@ bool LinkedList<T>::add(T&& element)
 		end_->next->prev = end_;
 		end_ = end_->next;
 	}
+	
+	for (auto i : iterators_)
+	{
+		if (i->index_ >= size_)
+		{
+			i->index_++;
+		}
+	}
+	for (auto i : const_iterators_)
+	{
+		if (i->index_ >= size_)
+		{
+			i->index_++;
+		}
+	}
+
 	size_++;
 	return true;
 }
@@ -297,45 +362,9 @@ bool LinkedList<T>::add(T&& element)
 template<typename T>
 bool LinkedList<T>::add(const T& element, int index)
 {
-	if (index == 0)
+	if (index >= 0 && index <= size_)
 	{
-		return add_to_begin(element);
-	}
-	else
-	{
-		return add_after(element, create_iterator(index - 1));
-	}
-}
-
-template<typename T>
-bool LinkedList<T>::add(T&& element, int index)
-{
-	if (index == 0)
-	{
-		return add_to_begin(std::forward<T>(element));
-	}
-	else
-	{
-		return add_after(std::forward<T>(element), create_iterator(index - 1));
-	}
-}
-
-template<typename T>
-bool LinkedList<T>::add_after(const T& element, const ConstLinkedListIterator<T>& iterator)
-{
-	std::shared_ptr<LinkedListNode_<T>> node = iterator.node_.lock();
-	if (iterator.is_valid() && &iterator.get_container() == this && node)
-	{
-		std::shared_ptr<LinkedListNode_<T>> ptr = std::make_shared<LinkedListNode_<T>>(element);
-		ptr->prev = node;
-		ptr->next = node->next;
-		if (node->next)
-		{
-			node->next->prev = ptr;
-		}
-		node->next = ptr;
-		size_++;
-		return true;
+		return add_before(element, create_iterator(index));
 	}
 	else
 	{
@@ -344,21 +373,158 @@ bool LinkedList<T>::add_after(const T& element, const ConstLinkedListIterator<T>
 }
 
 template<typename T>
-bool LinkedList<T>::add_after(T&& element, const ConstLinkedListIterator<T>& iterator)
+bool LinkedList<T>::add(T&& element, int index)
 {
-	std::shared_ptr<LinkedListNode_<T>> node = iterator.node_.lock();
-	if (iterator.is_valid() && &iterator.get_container() == this && node)
+	if (index >= 0 && index <= size_)
 	{
-		std::shared_ptr<LinkedListNode_<T>> ptr = std::make_shared<LinkedListNode_<T>>(std::move(element));
-		ptr->prev = iterator.node_;
-		ptr->next = node->next;
-		if (node->next)
+		return add_before(std::forward<T>(element), create_iterator(index));
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T>
+int LinkedList<T>::add(const LinkedList<T>& list)
+{
+	int ret = 0;
+	for (const T& i : list)
+	{
+		ret += static_cast<int>(add(i));
+	}
+	return ret;
+}
+
+template<typename T>
+int LinkedList<T>::add(LinkedList<T>&& list)
+{
+	int ret = list.size_;
+	if (!list.is_empty())
+	{
+		end_->next = list.begin_;
+		list.begin_->prev = end_;
+		end_ = list.end_;
+
+		for (auto i : iterators_)
 		{
-			node->next->prev = ptr;
+			if (i->index_ >= size_)
+			{
+				i->index_ += ret;
+			}
 		}
-		node->next = ptr;
-		size_++;
-		return true;
+		for (auto i : const_iterators_)
+		{
+			if (i->index_ >= size_)
+			{
+				i->index_ += ret;
+			}
+		}
+
+		size_ += list.size_;
+	}
+	return ret;
+}
+
+template<typename T>
+bool LinkedList<T>::add_before(const T& element, const LinkedListIterator<T>& iterator)
+{
+	return add_before(element, iterator_to_const(iterator));
+}
+
+template<typename T>
+bool LinkedList<T>::add_before(T&& element, const LinkedListIterator<T>& iterator)
+{
+	return add_before(std::forward<T>(element), iterator_to_const(iterator));
+}
+
+template<typename T>
+bool LinkedList<T>::add_before(const T& element, const ConstLinkedListIterator<T>& iterator)
+{
+	if (iterator.is_valid() && &iterator.get_container() == this)
+	{
+		if (iterator.is_end())
+		{
+			return add(element);
+		}
+		else
+		{
+			std::shared_ptr<LinkedListNode_<T>> node = iterator.node_.lock();
+			std::shared_ptr<LinkedListNode_<T>> new_node = std::make_shared<LinkedListNode_<T>>(element);
+			new_node->next = node;
+			new_node->prev = node->prev;
+			node->prev = new_node;
+			if (new_node->prev.lock())
+			{
+				new_node->prev.lock()->next = new_node;
+			}
+			size_++;
+
+			int index = iterator.index_;
+			for (auto i : iterators_)
+			{
+				if (i->index_ >= index)
+				{
+					i->index_++;
+				}
+			}
+			for (auto i : const_iterators_)
+			{
+				if (i->index_ >= index)
+				{
+					i->index_++;
+				}
+			}
+
+			return true;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T>
+bool LinkedList<T>::add_before(T&& element, const ConstLinkedListIterator<T>& iterator)
+{
+	if (iterator.is_valid() && &iterator.get_container() == this)
+	{
+		if (iterator.is_end())
+		{
+			return add(element);
+		}
+		else
+		{
+			std::shared_ptr<LinkedListNode_<T>> node = iterator.node_.lock();
+			std::shared_ptr<LinkedListNode_<T>> new_node = std::make_shared<LinkedListNode_<T>>(std::forward<T>(element));
+			new_node->next = node;
+			new_node->prev = node->prev;
+			node->prev = new_node;
+			if (new_node->prev.lock())
+			{
+				new_node->prev.lock()->next = new_node;
+			}
+			size_++;
+
+			int index = iterator.index_;
+			for (auto i : iterators_)
+			{
+				if (i->index_ >= index)
+				{
+					i->index_++;
+				}
+			}
+			for (auto i : const_iterators_)
+			{
+				if (i->index_ >= index)
+				{
+					i->index_++;
+				}
+			}
+
+			return true;
+		}
 	}
 	else
 	{
@@ -369,22 +535,42 @@ bool LinkedList<T>::add_after(T&& element, const ConstLinkedListIterator<T>& ite
 template<typename T>
 bool LinkedList<T>::add_to_begin(const T& element)
 {
-	std::shared_ptr<LinkedListNode_<T>> ptr = std::make_shared<LinkedListNode_<T>>(element);
-	ptr->next = begin_;
-	begin_->prev = ptr;
-	begin_ = ptr;
+	std::shared_ptr<LinkedListNode_<T>> new_node = std::make_shared<LinkedListNode_<T>>(element);
+	new_node->next = begin_;
+	begin_->prev = new_node;
+	begin_ = new_node;
 	size_++;
+
+	for (auto i : iterators_)
+	{
+		i->index_++;
+	}
+	for (auto i : const_iterators_)
+	{
+		i->index_++;
+	}
+
 	return true;
 }
 
 template<typename T>
 bool LinkedList<T>::add_to_begin(T&& element)
 {
-	std::shared_ptr<LinkedListNode_<T>> ptr = std::make_shared<LinkedListNode_<T>>(std::move(element));
-	ptr->next = begin_;
-	begin_->prev = ptr;
-	begin_ = ptr;
+	std::shared_ptr<LinkedListNode_<T>> new_node = std::make_shared<LinkedListNode_<T>>(std::move(element));
+	new_node->next = begin_;
+	begin_->prev = new_node;
+	begin_ = new_node;
 	size_++;
+
+	for (auto i : iterators_)
+	{
+		i->index_++;
+	}
+	for (auto i : const_iterators_)
+	{
+		i->index_++;
+	}
+
 	return true;
 }
 
@@ -395,28 +581,53 @@ bool LinkedList<T>::remove(int index)
 }
 
 template<typename T>
+bool LinkedList<T>::remove(const LinkedListIterator<T>& element)
+{
+	return remove(iterator_to_const(element));
+}
+
+template<typename T>
 bool LinkedList<T>::remove(const ConstLinkedListIterator<T>& element)
 {
-	std::shared_ptr<LinkedListNode_<T>> node = element.node_.lock();
-	if (element.is_valid() && &element.get_container() == this)
+	if (element.is_element_valid() && &element.get_container() == this)
 	{
-		if (node->prev.lock())
+		int index = element.index_;
+
+		std::shared_ptr<LinkedListNode_<T>> node = element.node_.lock();
+		if (!element.is_begin())
 		{
 			node->prev.lock()->next = node->next;
 		}
-		if (node->next)
-		{
-			node->next->prev = node->prev;
-		}
-		if (element.is_begin())
+		else
 		{
 			begin_ = node->next;
 		}
-		if (element.is_last())
+
+		if (!element.is_last())
+		{
+			node->next->prev = node->prev;
+		}
+		else
 		{
 			end_ = node->prev.lock();
 		}
 		size_--;
+
+		for (auto i : iterators_)
+		{
+			if (i->index_ > index)
+			{
+				i->index_--;
+			}
+		}
+		for (auto i : const_iterators_)
+		{
+			if (i->index_ > index)
+			{
+				i->index_--;
+			}
+		}
+		
 		return true;
 	}
 	else
@@ -426,7 +637,7 @@ bool LinkedList<T>::remove(const ConstLinkedListIterator<T>& element)
 }
 
 template<typename T>
-bool LinkedList<T>::remove(int from, int to)
+int LinkedList<T>::remove(int from, int to)
 {
 	if (from < to && from >= 0 && to <= size_)
 	{
@@ -445,31 +656,67 @@ bool LinkedList<T>::remove(int from, int to)
 }
 
 template<typename T>
-bool LinkedList<T>::remove(const ConstLinkedListIterator<T>& from, const ConstLinkedListIterator<T>& to)
+int LinkedList<T>::remove(const LinkedListIterator<T>& from, const LinkedListIterator<T>& to)
 {
-	if (&from.get_container() == this && &to.get_container() == this && from.get_index() < to.get_index())
+	return remove(iterator_to_const(from), iterator_to_const(to));
+}
+
+template<typename T>
+int LinkedList<T>::remove(const ConstLinkedListIterator<T>& from, const ConstLinkedListIterator<T>& to)
+{
+	if (from.is_element_valid() && to.is_valid() &&
+		&from.get_container() == this && &to.get_container() == this &&
+		from.get_index() < to.get_index())
 	{
+		int from_index = from.index_;
+		int to_index = to.index_;
 		std::shared_ptr<LinkedListNode_<T>> from_node = from.node_.lock();
 		std::shared_ptr<LinkedListNode_<T>> to_node = (--ConstLinkedListIterator<T>(to)).node_.lock();
 
-		if (from_node->prev.lock())
+		if (!from.is_begin())
 		{
-			from_node->prev.lock()->next = to_node->next;
+			from_node->prev.lock()->next = to_node;
 		}
-		if (to_node->next)
-		{
-			to_node->next->prev = from_node->prev;
-		}
-		if (from.is_begin())
+		else
 		{
 			begin_ = to_node->next;
 		}
-		if (to.is_end())
+		
+		if (!to.is_end())
+		{
+			to_node->prev = from_node->prev;
+		}
+		else
 		{
 			end_ = from_node->prev.lock();
 		}
-		size_--;
-		return true;
+		
+		size_ -= to_index - from_index;
+		
+		for (auto i : iterators_)
+		{
+			if (i->index_ > from_index && i->index_ < to_index)
+			{
+				i->index_ = from_index;
+			}
+			else if (i->index_ >= to_index)
+			{
+				i->index_ -= to_index - from_index;
+			}
+		}
+		for (auto i : const_iterators_)
+		{
+			if (i->index_ > from_index && i->index_ < to_index)
+			{
+				i->index_ = from_index;
+			}
+			else if (i->index_ >= to_index)
+			{
+				i->index_ -= to_index - from_index;
+			}
+		}
+		
+		return to_index - from_index;
 	}
 	else
 	{
@@ -492,32 +739,27 @@ bool LinkedList<T>::remove_last(const T& element)
 template<typename T>
 int LinkedList<T>::remove_all(const T& element)
 {
-	int result = 0;
-	for (std::shared_ptr<LinkedListNode_<T>> i = begin_; i; i = i->next)
+	if (!is_empty())
 	{
-		if (i->value == element)
+		int ret = 0;
+		while (get_begin() == element)
 		{
-			if (i->prev.lock())
-			{
-				i->prev.lock()->next = i->next;
-			}
-			else
-			{
-				begin_ = i->next;
-			}
-			if (i->next)
-			{
-				i->next->prev = i->prev;
-			}
-			else
-			{
-				end_ = i->prev.lock();
-			}
-			size_--;
-			result++;
+			ret += static_cast<int>(remove(begin()));
 		}
+		auto i = begin();
+		while (i.next())
+		{
+			if (i.get() == element)
+			{
+				ret += static_cast<int>(remove(i--));
+			}
+		}
+		return ret;
 	}
-	return result;
+	else
+	{
+		return 0;
+	}
 }
 
 template<typename T>
@@ -667,17 +909,19 @@ LinkedListIterator<T> LinkedList<T>::end()
 template<typename T>
 LinkedListIterator<T> LinkedList<T>::create_iterator(int index)
 {
-	if (index < 0 || index >= size_)
+	if (index >= 0 && index <= size_)
+	{
+		auto ret = begin();
+		for (int i = 0; i < index; i++)
+		{
+			ret.next();
+		}
+		return ret;
+	}
+	else
 	{
 		throw std::range_error("Index is out of linked list bounds");
 	}
-
-	std::shared_ptr<LinkedListNode_<T>> ptr = begin_;
-	for (int i = 0; i < index; i++)
-	{
-		ptr = ptr->next;
-	}
-	return LinkedListIterator<T>(*this, index, ptr);
 }
 
 template<typename T>
@@ -701,17 +945,19 @@ ConstLinkedListIterator<T> LinkedList<T>::end() const
 template<typename T>
 ConstLinkedListIterator<T> LinkedList<T>::create_iterator(int index) const
 {
-	if (index < 0 || index >= size_)
+	if (index >= 0 && index <= size_)
+	{
+		auto ret = begin();
+		for (int i = 0; i < index; i++)
+		{
+			ret.next();
+		}
+		return ret;
+	}
+	else
 	{
 		throw std::range_error("Index is out of linked list bounds");
 	}
-
-	std::shared_ptr<LinkedListNode_<T>> ptr = begin_;
-	for (int i = 0; i < index; i++)
-	{
-		ptr = ptr->next;
-	}
-	return ConstLinkedListIterator<T>(*this, index, ptr);
 }
 
 
@@ -729,9 +975,12 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& linked_list)
 template<typename T>
 LinkedList<T>& LinkedList<T>::operator=(LinkedList<T>&& linked_list)
 {
+	clear_iterators_();
 	begin_ = std::move(linked_list.begin_);
 	end_ = std::move(linked_list.end_);
 	size_ = std::move(linked_list.size_);
+	iterators_ = std::move(linked_list.iterators_);
+	const_iterators_ = std::move(linked_list.const_iterators_);
 	return *this;
 }
 
@@ -740,8 +989,8 @@ bool LinkedList<T>::operator==(const LinkedList<T>& linked_list) const
 {
 	if (size_ == linked_list.size_)
 	{
-		ConstLinkedListIterator<T> this_iter = begin();
-		ConstLinkedListIterator<T> other_iter = linked_list.end();
+		auto this_iter = begin();
+		auto other_iter = linked_list.begin();
 		do 
 		{
 			if (this_iter.get() != other_iter.get())
@@ -796,13 +1045,25 @@ const T& LinkedList<T>::operator[](int index) const
 }
 
 template<typename T>
-void LinkedList<T>::register_iterator_(BaseLinkedListIterator_* iterator) const
+ConstLinkedListIterator<T> LinkedList<T>::iterator_to_const(const LinkedListIterator<T> iterator)
+{
+	return ConstLinkedListIterator<T>(iterator.container_, iterator.index_, iterator.node_.lock(), iterator.is_valid_);
+}
+
+template<typename T>
+std::shared_ptr<LinkedListNode_<T>> LinkedList<T>::get_last_node_() const
+{
+	return end_;
+}
+
+template<typename T>
+void LinkedList<T>::register_iterator_(LinkedListIterator<T>* iterator)
 {
 	iterators_.push_back(iterator);
 }
 
 template<typename T>
-void LinkedList<T>::unregister_iterator_(BaseLinkedListIterator_* iterator) const
+void LinkedList<T>::unregister_iterator_(LinkedListIterator<T>* iterator)
 {
 	auto end = iterators_.end();
 	for (auto ptr = iterators_.begin(); ptr != end; ptr++)
@@ -813,6 +1074,41 @@ void LinkedList<T>::unregister_iterator_(BaseLinkedListIterator_* iterator) cons
 			break;
 		}
 	}
+}
+
+template<typename T>
+void LinkedList<T>::register_iterator_(ConstLinkedListIterator<T>* iterator) const
+{
+	const_iterators_.push_back(iterator);
+}
+
+template<typename T>
+void LinkedList<T>::unregister_iterator_(ConstLinkedListIterator<T>* iterator) const
+{
+	auto end = const_iterators_.end();
+	for (auto ptr = const_iterators_.begin(); ptr != end; ptr++)
+	{
+		if (*ptr == iterator)
+		{
+			const_iterators_.erase(ptr);
+			break;
+		}
+	}
+}
+
+template<typename T>
+void LinkedList<T>::clear_iterators_() const
+{
+	for (auto i : iterators_)
+	{
+		i->is_valid_ = false;
+	}
+	iterators_.clear();
+	for (auto i : const_iterators_)
+	{
+		i->is_valid_ = false;
+	}
+	const_iterators_.clear();
 }
 
 }

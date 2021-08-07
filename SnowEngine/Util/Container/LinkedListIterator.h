@@ -8,6 +8,9 @@
 
 #include "../../Object.h"
 #include "Container.h"
+
+#include <exception>
+
 #include "../Util.h"
 
 namespace snow
@@ -22,477 +25,278 @@ namespace
 template<typename T>
 struct LinkedListNode_;
 
+template<typename T_Container, typename T_Element, typename T_Node>
 class BaseLinkedListIterator_ :
 	public Object,
-	public IIterator
+	public IIterator<T_Container, T_Element>
 {
+	template<typename T>
+	friend class LinkedList;
+
 public:
+	BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator);
+	BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator);
+	~BaseLinkedListIterator_();
+
+	virtual const std::string to_string() const override;
+	virtual int hash_code() const override;
+
+	virtual bool is_valid() const override;
+	virtual bool is_element_valid() const override;
+
+	virtual T_Container& get_container() const override;
+	virtual T_Element& get() const override;
 	int get_index() const;
 
-protected:
-	BaseLinkedListIterator_(int index, bool is_valid);
+	virtual bool is_begin() const override;
+	virtual bool is_last() const override;
+	virtual bool is_end() const override;
+	virtual bool next() override;
+	virtual bool prev() override;
 
+	virtual T_Element& operator*() const override;
+	BaseLinkedListIterator_<T_Container, T_Element, T_Node> operator++();
+	BaseLinkedListIterator_<T_Container, T_Element, T_Node> operator--();
+	BaseLinkedListIterator_<T_Container, T_Element, T_Node> operator++(int);
+	BaseLinkedListIterator_<T_Container, T_Element, T_Node> operator--(int);
+
+	bool operator==(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const;
+	bool operator!=(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const;
+
+protected:
+	BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node = nullptr, bool is_valid = true);
+
+	T_Container& container_;
+	std::weak_ptr<T_Node> node_;
 	int index_;
 	bool is_valid_;
-
-	void move_index_(int delta_index);
 };
 
 }
 
 template<typename T>
-class ConstLinkedListIterator : public BaseLinkedListIterator_
-{
-	template<typename T>
-	friend class LinkedList;
-
-	template<typename T>
-	friend class LinkedListIterator;
-
-public:
-	ConstLinkedListIterator(const ConstLinkedListIterator<T>& iterator);
-	ConstLinkedListIterator(ConstLinkedListIterator<T>&& iterator);
-	~ConstLinkedListIterator();
-
-	virtual const std::string to_string() const override;
-	virtual int hash_code() const override;
-
-	virtual bool is_valid() const override;
-
-	const LinkedList<T>& get_container() const;
-	const T& get() const;
-
-	virtual bool is_begin() const override;
-	virtual bool is_last() const override;
-	virtual bool is_end() const override;
-	virtual bool next() override;
-	virtual bool prev() override;
-
-	const T& operator*() const;
-	ConstLinkedListIterator<T> operator++();
-	ConstLinkedListIterator<T> operator--();
-	ConstLinkedListIterator<T> operator++(int);
-	ConstLinkedListIterator<T> operator--(int);
-
-	bool operator==(const ConstLinkedListIterator<T>& iterator) const;
-	bool operator!=(const ConstLinkedListIterator<T>& iterator) const;
-	
-private:
-	ConstLinkedListIterator(const LinkedList<T>& linked_list, int index, std::shared_ptr<LinkedListNode_<T>> node = nullptr);
-
-	const LinkedList<T>& container_;
-	std::weak_ptr<LinkedListNode_<T>> node_;
-};
+using ConstLinkedListIterator = BaseLinkedListIterator_<const LinkedList<T>, const T, LinkedListNode_<T>>;
 
 template<typename T>
-class LinkedListIterator : public BaseLinkedListIterator_
-{
-	template<typename T>
-	friend class LinkedList;
-
-public:
-	LinkedListIterator(const LinkedListIterator<T>& iterator);
-	LinkedListIterator(LinkedListIterator<T>&& iterator);
-	~LinkedListIterator();
-
-	virtual const std::string to_string() const override;
-	virtual int hash_code() const override;
-
-	virtual bool is_valid() const override;
-
-	LinkedList<T>& get_container() const;
-	T& get() const;
-
-	virtual bool is_begin() const override;
-	virtual bool is_last() const override;
-	virtual bool is_end() const override;
-	virtual bool next() override;
-	virtual bool prev() override;
-
-	T& operator*() const;
-	LinkedListIterator<T> operator++();
-	LinkedListIterator<T> operator--();
-	LinkedListIterator<T> operator++(int);
-	LinkedListIterator<T> operator--(int);
-
-	bool operator==(const LinkedListIterator<T>& iterator) const;
-	bool operator!=(const LinkedListIterator<T>& iterator) const;
-
-	operator ConstLinkedListIterator<T>() const;
-
-private:
-	LinkedListIterator(LinkedList<T>& linked_list, int index, std::shared_ptr<LinkedListNode_<T>> node = nullptr);
-
-	LinkedList<T>& container_;
-	std::weak_ptr<LinkedListNode_<T>> node_;
-};
+using LinkedListIterator = BaseLinkedListIterator_<LinkedList<T>, T, LinkedListNode_<T>>;
 
 
 		/* DEFINITIONS of BaseLinkedListIterator_ */
 
-int BaseLinkedListIterator_::get_index() const
+template<typename T_Container, typename T_Element, typename T_Node>
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) :
+	container_(iterator.container_),
+	node_(iterator.node_),
+	index_(iterator.index_),
+	is_valid_(iterator.is_valid_)
 {
-	return index_;
+	if (is_valid_)
+	{
+		container_.register_iterator_(this);
+	}
 }
 
-void BaseLinkedListIterator_::move_index_(int delta_index)
+template<typename T_Container, typename T_Element, typename T_Node>
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator) :
+	container_(iterator.container_),
+	node_(iterator.node_),
+	index_(iterator.index_),
+	is_valid_(iterator.is_valid_)
 {
-	index_ += delta_index;
+	if (is_valid_)
+	{
+		iterator.is_valid_ = false;
+		container_.unregister_iterator_(&iterator);
+		container_.register_iterator_(this);
+	}
 }
 
-BaseLinkedListIterator_::BaseLinkedListIterator_(int index, bool is_valid) :
+template<typename T_Container, typename T_Element, typename T_Node>
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::~BaseLinkedListIterator_()
+{
+	if (is_valid_)
+	{
+		container_.unregister_iterator_(this);
+	}
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+const std::string BaseLinkedListIterator_<T_Container, T_Element, T_Node>::to_string() const
+{
+	return util::to_string(get());
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+int BaseLinkedListIterator_<T_Container, T_Element, T_Node>::hash_code() const
+{
+	return util::hash_code(get());
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_valid() const
+{
+	return is_valid_ && index_ >= 0 && index_ <= container_.size();
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_element_valid() const
+{
+	return is_valid_ && node_.lock() && index_ >= 0 && index_ < container_.size();
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+T_Container& BaseLinkedListIterator_<T_Container, T_Element, T_Node>::get_container() const
+{
+	if (is_valid())
+	{
+		return container_;
+	}
+	else
+	{
+		throw std::logic_error("Attempt to get container of invalid iterator");
+	}
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+T_Element& BaseLinkedListIterator_<T_Container, T_Element, T_Node>::get() const
+{
+	if (is_element_valid())
+	{
+		return node_.lock()->value;
+	}
+	else
+	{
+		throw std::logic_error("Attempt to get element of invalid iterator");
+	}
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+int BaseLinkedListIterator_<T_Container, T_Element, T_Node>::get_index() const
+{
+	if (is_valid())
+	{
+		return index_;
+	}
+	else
+	{
+		throw std::logic_error("Attempt to get index of invalid iterator");
+	}
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_begin() const
+{
+	return is_valid_ && index_ == 0;
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_last() const
+{
+	return is_valid_ && index_ == container_.size() - 1;
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_end() const
+{
+	return is_valid_ && index_ == container_.size();
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::next()
+{
+	if (is_valid_ && index_ < container_.size())
+	{
+		node_ = node_.lock()->next;
+		return ++index_ < container_.size();
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::prev()
+{
+	if (is_valid_ && index_ > 0)
+	{
+		if (node_.lock()) // If is not end
+		{
+			node_ = node_.lock()->prev;
+		}
+		else
+		{
+			node_ = container_.get_last_node_();
+		}
+		index_--;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+T_Element& BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator*() const
+{
+	return get();
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+BaseLinkedListIterator_<T_Container, T_Element, T_Node> BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator++()
+{
+	next();
+	return *this;
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+BaseLinkedListIterator_<T_Container, T_Element, T_Node> BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator--()
+{
+	prev();
+	return *this;
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+BaseLinkedListIterator_<T_Container, T_Element, T_Node> BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator++(int)
+{
+	auto ret = *this;
+	next();
+	return ret;
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+BaseLinkedListIterator_<T_Container, T_Element, T_Node> BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator--(int)
+{
+	auto ret = *this;
+	prev();
+	return ret;
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator==(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const
+{
+	return !is_valid_ && !iterator.is_valid_ ||
+		&container_ == &iterator.container_ && index_ == iterator.index_;
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator!=(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const
+{
+	return !(*this == iterator);
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node, bool is_valid) :
+	container_(linked_list),
+	node_(node),
 	index_(index),
 	is_valid_(is_valid)
-{}
-
-		/* DEFINITIONS of ConstLinkedListIterator */
-
-template<typename T>
-ConstLinkedListIterator<T>::ConstLinkedListIterator(const ConstLinkedListIterator<T>& iterator) :
-	container_(iterator.container_),
-	node_(iterator.node_),
-	BaseLinkedListIterator_(iterator.index_, iterator.is_valid_)
 {
 	if (is_valid_)
 	{
 		container_.register_iterator_(this);
 	}
-}
-
-template<typename T>
-ConstLinkedListIterator<T>::ConstLinkedListIterator(ConstLinkedListIterator<T>&& iterator) :
-	container_(iterator.container_),
-	node_(std::move(iterator.node_)),
-	BaseLinkedListIterator_(std::move(iterator.index_), std::move(iterator.is_valid_))
-{
-	if (is_valid_)
-	{
-		container_.unregister_iterator_(&iterator);
-		container_.register_iterator_(this);
-		iterator.is_valid_ = false;
-	}
-}
-
-template<typename T>
-ConstLinkedListIterator<T>::~ConstLinkedListIterator()
-{
-	if (is_valid_)
-	{
-		container_.unregister_iterator_(this);
-	}
-}
-
-template<typename T>
-const std::string ConstLinkedListIterator<T>::to_string() const
-{
-	return util::to_string(get());
-}
-
-template<typename T>
-int ConstLinkedListIterator<T>::hash_code() const
-{
-	return util::hash_code(get());
-}
-
-template<typename T>
-bool ConstLinkedListIterator<T>::is_valid() const
-{
-	return is_valid_ && node_.lock();
-}
-
-template<typename T>
-const LinkedList<T>& ConstLinkedListIterator<T>::get_container() const
-{
-	return container_;
-}
-
-template<typename T>
-const T& ConstLinkedListIterator<T>::get() const
-{
-	return node_.lock()->value;
-}
-
-template<typename T>
-bool ConstLinkedListIterator<T>::is_begin() const
-{
-	return index_ == 0;
-}
-
-template<typename T>
-bool ConstLinkedListIterator<T>::is_last() const
-{
-	return index_ == container_.size() - 1;
-}
-
-template<typename T>
-bool ConstLinkedListIterator<T>::is_end() const
-{
-	return index_ == container_.size();
-}
-
-template<typename T>
-bool ConstLinkedListIterator<T>::next()
-{
-	if (is_end())
-	{
-		return false;
-	}
-	else
-	{
-		node_ = node_.lock()->next;
-		index_++;
-		return !is_end();
-	}
-}
-
-template<typename T>
-bool ConstLinkedListIterator<T>::prev()
-{
-	if (is_begin())
-	{
-		return false;
-	}
-	else
-	{
-		node_ = node_.lock()->prev;
-		index_--;
-		return true;
-	}
-}
-
-template<typename T>
-const T& ConstLinkedListIterator<T>::operator*() const
-{
-	return get();
-}
-
-template<typename T>
-ConstLinkedListIterator<T> ConstLinkedListIterator<T>::operator++()
-{
-	next();
-	return *this;
-}
-
-template<typename T>
-ConstLinkedListIterator<T> ConstLinkedListIterator<T>::operator--()
-{
-	prev();
-	return *this;
-}
-
-template<typename T>
-ConstLinkedListIterator<T> ConstLinkedListIterator<T>::operator++(int)
-{
-	ConstLinkedListIterator<T> ret = *this;
-	next();
-	return ret;
-}
-
-template<typename T>
-ConstLinkedListIterator<T> ConstLinkedListIterator<T>::operator--(int)
-{
-	ConstLinkedListIterator<T> ret = *this;
-	prev();
-	return ret;
-}
-
-template<typename T>
-bool ConstLinkedListIterator<T>::operator==(const ConstLinkedListIterator<T>& iterator) const
-{
-	return &container_ == &iterator.container_ && index_ == iterator.index_;
-}
-
-template<typename T>
-bool ConstLinkedListIterator<T>::operator!=(const ConstLinkedListIterator<T>& iterator) const
-{
-	return !(*this == iterator);
-}
-
-template<typename T>
-ConstLinkedListIterator<T>::ConstLinkedListIterator(const LinkedList<T>& linked_list, int index, std::shared_ptr<LinkedListNode_<T>> node) :
-	container_(linked_list),
-	node_(node),
-	BaseLinkedListIterator_(index, true)
-{
-	container_.register_iterator_(this);
-}
-
-		/* DEFINITIONS of LinkedListIterator */
-
-template<typename T>
-LinkedListIterator<T>::LinkedListIterator(const LinkedListIterator<T>& iterator) :
-	container_(iterator.container_),
-	node_(iterator.node_),
-	BaseLinkedListIterator_(iterator.index_, iterator.is_valid_)
-{
-	if (is_valid_)
-	{
-		container_.register_iterator_(this);
-	}
-}
-
-template<typename T>
-LinkedListIterator<T>::LinkedListIterator(LinkedListIterator<T>&& iterator) :
-	container_(iterator.container_),
-	node_(std::move(iterator.node_)),
-	BaseLinkedListIterator_(std::move(iterator.index_), std::move(iterator.is_valid_))
-{
-	if (is_valid_)
-	{
-		container_.unregister_iterator_(&iterator);
-		container_.register_iterator_(this);
-		iterator.is_valid_ = false;
-	}
-}
-
-template<typename T>
-LinkedListIterator<T>::~LinkedListIterator()
-{
-	if (is_valid_)
-	{
-		container_.unregister_iterator_(this);
-	}
-}
-
-template<typename T>
-const std::string LinkedListIterator<T>::to_string() const
-{
-	return util::to_string(get());
-}
-
-template<typename T>
-int LinkedListIterator<T>::hash_code() const
-{
-	return util::hash_code(get());
-}
-
-template<typename T>
-bool LinkedListIterator<T>::is_valid() const
-{
-	return is_valid_ && node_.lock();
-}
-
-template<typename T>
-LinkedList<T>& LinkedListIterator<T>::get_container() const
-{
-	return container_;
-}
-
-template<typename T>
-T& LinkedListIterator<T>::get() const
-{
-	return node_.lock()->value;
-}
-
-template<typename T>
-bool LinkedListIterator<T>::is_begin() const
-{
-	return index_ == 0;
-}
-
-template<typename T>
-bool LinkedListIterator<T>::is_last() const
-{
-	return index_ == container_.size() - 1;
-}
-
-template<typename T>
-bool LinkedListIterator<T>::is_end() const
-{
-	return index_ == container_.size();
-}
-
-template<typename T>
-bool LinkedListIterator<T>::next()
-{
-	if (is_end())
-	{
-		return false;
-	}
-	else
-	{
-		node_ = node_.lock()->next;
-		index_++;
-		return !is_end();
-	}
-}
-
-template<typename T>
-bool LinkedListIterator<T>::prev()
-{
-	if (is_begin())
-	{
-		return false;
-	}
-	else
-	{
-		node_ = node_.lock()->prev;
-		index_--;
-		return true;
-	}
-}
-
-template<typename T>
-T& LinkedListIterator<T>::operator*() const
-{
-	return get();
-}
-
-template<typename T>
-LinkedListIterator<T> LinkedListIterator<T>::operator++()
-{
-	next();
-	return *this;
-}
-
-template<typename T>
-LinkedListIterator<T> LinkedListIterator<T>::operator--()
-{
-	prev();
-	return *this;
-}
-
-template<typename T>
-LinkedListIterator<T> LinkedListIterator<T>::operator++(int)
-{
-	LinkedListIterator<T> ret = *this;
-	next();
-	return ret;
-}
-
-template<typename T>
-LinkedListIterator<T> LinkedListIterator<T>::operator--(int)
-{
-	LinkedListIterator<T> ret = *this;
-	prev();
-	return ret;
-}
-
-template<typename T>
-bool LinkedListIterator<T>::operator==(const LinkedListIterator<T>& iterator) const
-{
-	return &container_ == &iterator.container_ && index_ == iterator.index_;
-}
-
-template<typename T>
-bool LinkedListIterator<T>::operator!=(const LinkedListIterator<T>& iterator) const
-{
-	return !(*this == iterator);
-}
-
-template<typename T>
-LinkedListIterator<T>::operator ConstLinkedListIterator<T>() const
-{
-	return ConstLinkedListIterator<T>(container_, index_, node_.lock());
-}
-
-template<typename T>
-LinkedListIterator<T>::LinkedListIterator(LinkedList<T>& linked_list, int index, std::shared_ptr<LinkedListNode_<T>> node) :
-	container_(linked_list),
-	node_(node),
-	BaseLinkedListIterator_(index, true)
-{
-	container_.register_iterator_(this);
 }
 
 }
