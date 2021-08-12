@@ -9,8 +9,6 @@
 #include "../../Object.h"
 #include "Container.h"
 
-#include <exception>
-
 #include "../Util.h"
 
 namespace snow
@@ -62,6 +60,8 @@ public:
 
 	bool operator==(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const;
 	bool operator!=(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const;
+
+	T_Element* operator->() const;
 
 protected:
 	BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node = nullptr, bool is_valid = true);
@@ -284,6 +284,12 @@ template<typename T_Container, typename T_Element, typename T_Node>
 bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator!=(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const
 {
 	return !(*this == iterator);
+}
+
+template<typename T_Container, typename T_Element, typename T_Node>
+T_Element* BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator->() const
+{
+	return &get();
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>

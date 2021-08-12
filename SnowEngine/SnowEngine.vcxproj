@@ -29,6 +29,9 @@
     <ClInclude Include="Util\Container\Container.h" />
     <ClInclude Include="Util\Container\LinkedList.h" />
     <ClInclude Include="Util\Container\LinkedListIterator.h" />
+    <ClInclude Include="Util\Container\Map.h" />
+    <ClInclude Include="Util\Container\MapIterator.h" />
+    <ClInclude Include="Util\Container\Pair.h" />
     <ClInclude Include="Util\Util.h" />
   </ItemGroup>
   <ItemGroup>

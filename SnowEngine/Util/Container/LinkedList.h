@@ -248,7 +248,7 @@ T& LinkedList<T>::get_begin()
 	}
 	else
 	{
-		throw std::range_error("Attempt to access an element of empty linked list");
+		throw std::out_of_range("Attempt to access an element of empty linked list");
 	}
 }
 
@@ -261,7 +261,7 @@ T& LinkedList<T>::get_last()
 	}
 	else
 	{
-		throw std::range_error("Attempt to access an element of empty linked list");
+		throw std::out_of_range("Attempt to access an element of empty linked list");
 	}
 }
 
@@ -274,7 +274,7 @@ const T& LinkedList<T>::get_begin() const
 	}
 	else
 	{
-		throw std::range_error("Attempt to access an element of empty linked list");
+		throw std::out_of_range("Attempt to access an element of empty linked list");
 	}
 }
 
@@ -287,7 +287,7 @@ const T& LinkedList<T>::get_last() const
 	}
 	else
 	{
-		throw std::range_error("Attempt to access an element of empty linked list");
+		throw std::out_of_range("Attempt to access an element of empty linked list");
 	}
 }
 
@@ -920,7 +920,7 @@ LinkedListIterator<T> LinkedList<T>::create_iterator(int index)
 	}
 	else
 	{
-		throw std::range_error("Index is out of linked list bounds");
+		throw std::out_of_range("Index is out of linked list bounds");
 	}
 }
 
@@ -956,7 +956,7 @@ ConstLinkedListIterator<T> LinkedList<T>::create_iterator(int index) const
 	}
 	else
 	{
-		throw std::range_error("Index is out of linked list bounds");
+		throw std::out_of_range("Index is out of linked list bounds");
 	}
 }
 
@@ -1017,7 +1017,7 @@ T& LinkedList<T>::operator[](int index)
 {
 	if (index < 0 || index >= size_)
 	{
-		throw std::range_error("Index is out of linked list bounds");
+		throw std::out_of_range("Index is out of linked list bounds");
 	}
 
 	std::shared_ptr<LinkedListNode_<T>> ptr = begin_;
@@ -1033,7 +1033,7 @@ const T& LinkedList<T>::operator[](int index) const
 {
 	if (index < 0 || index >= size_)
 	{
-		throw std::range_error("Index is out of linked list bounds");
+		throw std::out_of_range("Index is out of linked list bounds");
 	}
 
 	std::shared_ptr<LinkedListNode_<T>> ptr = begin_;

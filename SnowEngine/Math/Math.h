@@ -182,6 +182,7 @@ float cos(const Angle& angle);
  *	Calculates a secant of the passed angle.
  *	\param angle The angle whose secant should be calculated.
  *	\return A secant of the passed angle.
+ *	\throw std::domain_error Secant of passed angle does not exist.
  */
 float sec(const Angle& angle);
 
@@ -191,6 +192,7 @@ float sec(const Angle& angle);
  *	Calculates a cosecant of the passed angle.
  *	\param angle The angle whose cosecant should be calculated.
  *	\return A cosecant of the passed angle.
+ *	\throw std::domain_error Cosecant of passed angle does not exits.
  */
 float cosec(const Angle& angle);
 
@@ -200,6 +202,7 @@ float cosec(const Angle& angle);
  *	You can use it instead of cosec.
  *	\param angle The angle whose cosecant should be calculated.
  *	\return A cosecant of the passed angle.
+ *	\throw std::domain_error Cosecant of passed angle does not exits.
  */
 // It doesn't work without extern (MSVS 2017), maybe there is a compiler bug. Or I'm stupid.
 extern const std::function<float(const Angle&)> csc;
@@ -210,6 +213,7 @@ extern const std::function<float(const Angle&)> csc;
  *	Calculates a tangent of the passed angle.
  *	\param angle The angle whose tangent should be calculated.
  *	\return A tangent of the passed angle.
+ *	\throw std::domain_error Tangent of passed angle does not exits.
  */
 float tg(const Angle& angle);
 
@@ -219,6 +223,7 @@ float tg(const Angle& angle);
  *	You can use it instead of tg.
  *	\param angle The angle whose tangent should be calculated.
  *	\return A tangent of the passed angle.
+ *	\throw std::domain_error Tangent of passed angle does not exits.
  */
 extern const std::function<float(const Angle&)> tan;
 
@@ -228,6 +233,7 @@ extern const std::function<float(const Angle&)> tan;
  *	Calculates a cotangent of the passed angle.
  *	\param angle The angle whose cotangent should be calculated.
  *	\return A cotangent of the passed angle.
+ *	\throw std::domain_error Cotangent of passed angle does not exits.
  */
 float ctg(const Angle& angle);
 
@@ -237,6 +243,7 @@ float ctg(const Angle& angle);
  *	You can use it instead of ctg.
  *	\param angle The angle whose cotangent should be calculated.
  *	\return A cotangent of the passed angle.
+ *	\throw std::domain_error Cotangent of passed angle does not exits.
  */
 extern const std::function<float(const Angle&)> cot;
 
@@ -246,6 +253,7 @@ extern const std::function<float(const Angle&)> cot;
  *	Calculates an arcsine: an angle whose sine is equal to the passed value.
  *	\param value The arcsine argument.
  *	\return An arcsine of the passed value.
+ *	\throw std::domain_error Arcsine of passed value does not exits.
  */
 Angle arcsin(float value);
 
@@ -255,6 +263,7 @@ Angle arcsin(float value);
  *	You can use it instead of arcsin
  *	\param value The arcsine argument.
  *	\return An arcsine of the passed value.
+ *	\throw std::domain_error Arcsine of passed value does not exits.
  */
 extern const std::function<Angle(float)> asin;
 
@@ -264,6 +273,7 @@ extern const std::function<Angle(float)> asin;
  *	Calculates an arccosine: an angle whose cosine is equal to the passed value.
  *	\param value The arccosine argument.
  *	\return An arccosine of the passed value.
+ *	\throw std::domain_error Arccosine of passed value does not exits.
  */
 Angle arccos(float value);
 
@@ -273,6 +283,7 @@ Angle arccos(float value);
  *	You can use it instead of arccos.
  *	\param value The arccosine argument.
  *	\return An arccosine of the passed value.
+ *	\throw std::domain_error Arccosine of passed value does not exits.
  */
 extern const std::function<Angle(float)> acos;
 
@@ -282,6 +293,7 @@ extern const std::function<Angle(float)> acos;
  *	Calculates an arcsecant: an angle whose secant is equal to the passed value.
  *	\param value The arcsecant argument.
  *	\return An arcsecant of the passed value.
+ *	\throw std::domain_error Arcsecant of passed value does not exits.
  */
 Angle arcsec(float value);
 
@@ -291,6 +303,7 @@ Angle arcsec(float value);
  *	You can use it instead of arcsec.
  *	\param value The arcsecant argument.
  *	\return An arcsecant of the passed value.
+ *	\throw std::domain_error Arcsecant of passed value does not exits.
  */
 extern const std::function<Angle(float)> asec;
 
@@ -300,6 +313,7 @@ extern const std::function<Angle(float)> asec;
  *	Calculates an arccosecant: an angle whose cosecant is equal to the passed value.
  *	\param value The arccosecant argument.
  *	\return An arccosecant of the passed value.
+ *	\throw std::domain_error Arccosecant of passed value does not exits.
  */
 Angle arccosec(float value);
 
@@ -309,6 +323,7 @@ Angle arccosec(float value);
  *	You can use it instead of arccosec.
  *	\param value The arccosecant argument.
  *	\return An arccosecant of the passed value.
+ *	\throw std::domain_error Arccosecant of passed value does not exits.
  */
 extern const std::function<Angle(float)> acsc;
 

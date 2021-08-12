@@ -28,7 +28,7 @@ public:
 	Array(const Array<T>& array);
 	Array(Array<T>&& array);
 	Array(int size);
-	~Array();
+	virtual ~Array();
 
 	virtual const std::string to_string() const override;
 	virtual int hash_code() const override;
@@ -47,11 +47,11 @@ public:
 	virtual int add(Array<T>&& array);
 
 	virtual bool remove(int index);
-	virtual bool remove(const ArrayIterator<T>& element);
-	virtual bool remove(const ConstArrayIterator<T>& element);
-	virtual int remove(int from, int to);
-	virtual int remove(const ArrayIterator<T>& from, const ArrayIterator<T>& to);
-	virtual int remove(const ConstArrayIterator<T>& from, const ConstArrayIterator<T>& to);
+	bool remove(const ArrayIterator<T>& element);
+	bool remove(const ConstArrayIterator<T>& element);
+	int remove(int from, int to);
+	int remove(const ArrayIterator<T>& from, const ArrayIterator<T>& to);
+	int remove(const ConstArrayIterator<T>& from, const ConstArrayIterator<T>& to);
 	virtual bool remove_first(const T& element);
 	virtual bool remove_last(const T& element);
 	virtual int remove_all(const T& element) override;
@@ -209,6 +209,11 @@ bool Array<T>::resize(int new_size)
 		}
 		else
 		{
+			int to_reset = math::min(new_size, real_size_);
+			for (int i = size_; i < to_reset; i++)
+			{
+				array_[i] = T();
+			}
 			check_real_size_to_add_(new_size);
 			size_ = new_size;
 		}
@@ -559,7 +564,7 @@ int Array<T>::find_first(const T& element) const
 {
 	for (int i = 0; i < size_; i++)
 	{
-		if (array_[i] = element)
+		if (array_[i] == element)
 		{
 			return i;
 		}
@@ -641,7 +646,7 @@ ArrayIterator<T> Array<T>::create_iterator(int index)
 	}
 	else
 	{
-		throw std::range_error("Index is out of array bounds");
+		throw std::out_of_range("Index is out of array bounds");
 	}
 }
 
@@ -672,7 +677,7 @@ ConstArrayIterator<T> Array<T>::create_iterator(int index) const
 	}
 	else
 	{
-		throw std::range_error("Index is out of array bounds");
+		throw std::out_of_range("Index is out of array bounds");
 	}
 }
 
@@ -737,7 +742,7 @@ T& Array<T>::operator[](int index)
 	}
 	else
 	{
-		throw std::range_error("Index is out of array bounds");
+		throw std::out_of_range("Index is out of array bounds");
 	}
 }
 
@@ -750,7 +755,7 @@ const T& Array<T>::operator[](int index) const
 	}
 	else
 	{
-		throw std::range_error("Index is out of array bounds");
+		throw std::out_of_range("Index is out of array bounds");
 	}
 }
 

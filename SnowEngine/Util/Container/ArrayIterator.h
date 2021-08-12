@@ -9,8 +9,6 @@
 #include "../../Object.h"
 #include "Container.h"
 
-#include <exception>
-
 #include "../Util.h"
 
 namespace snow
@@ -59,6 +57,8 @@ public:
 
 	bool operator==(const BaseArrayIterator_<T_Container, T_Element>& iterator) const;
 	bool operator!=(const BaseArrayIterator_<T_Container, T_Element>& iterator) const;
+
+	T_Element* operator->() const;
 
 protected:
 	BaseArrayIterator_(T_Container& array, int index, bool is_valid = true);
@@ -280,6 +280,12 @@ template<typename T_Container, typename T_Element>
 bool BaseArrayIterator_<T_Container, T_Element>::operator!=(const BaseArrayIterator_<T_Container, T_Element>& iterator) const
 {
 	return !(*this == iterator);
+}
+
+template<typename T_Container, typename T_Element>
+T_Element* BaseArrayIterator_<T_Container, T_Element>::operator->() const
+{
+	return &get();
 }
 
 template<typename T_Container, typename T_Element>

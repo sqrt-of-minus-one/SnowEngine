@@ -53,6 +53,15 @@
     <ClInclude Include="Util\Container\LinkedListIterator.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
+    <ClInclude Include="Util\Container\Map.h">
+      <Filter>Source Files\Util\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Container\MapIterator.h">
+      <Filter>Source Files\Util\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Container\Pair.h">
+      <Filter>Source Files\Util\Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math\Math.cpp">
