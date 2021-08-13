@@ -16,6 +16,7 @@ template<typename T_First, typename T_Second>
 class Pair : public Object
 {
 public:
+	Pair();
 	Pair(const Pair<T_First, T_Second>& pair);
 	Pair(Pair<T_First, T_Second>&& pair);
 	Pair(const T_First& first, const T_Second& second);
@@ -47,6 +48,12 @@ private:
 		/* DEFINITIONS of Pair */
 
 template<typename T_First, typename T_Second>
+Pair<T_First, T_Second>::Pair() :
+	first_(),
+	second_()
+{}
+
+template<typename T_First, typename T_Second>
 Pair<T_First, T_Second>::Pair(const Pair<T_First, T_Second>& pair) :
 	first_(pair.first_),
 	second_(pair.second_)
@@ -73,7 +80,7 @@ Pair<T_First, T_Second>::Pair(T_First&& first, T_Second&& second) :
 template<typename T_First, typename T_Second>
 const std::string Pair<T_First, T_Second>::to_string() const
 {
-	return "[ " + util::to_string(first_) + ": " + util::to_string(second_) + " ]";
+	return "[" + util::to_string(first_) + ": " + util::to_string(second_) + "]";
 }
 
 template<typename T_First, typename T_Second>

@@ -59,8 +59,8 @@ public:
 	const T& get_begin() const;
 	const T& get_last() const;
 
-	virtual bool add(const T& element) override;
-	virtual bool add(T&& element) override;
+	virtual bool add(const T& element);
+	virtual bool add(T&& element);
 	virtual bool add(const T& element, int index);
 	virtual bool add(T&& element, int index);
 	virtual int add(const LinkedList<T>& list);
@@ -190,10 +190,9 @@ const std::string LinkedList<T>::to_string() const
 	else
 	{
 		std::string str = "{ ";
-		ConstLinkedListIterator<T> p = begin();
-		for ( ; !p.is_last(); p.next())
+		for (auto p = begin(); !p.is_last(); p.next())
 		{
-			str += util::to_string(*p) + ", ";
+			str += p.to_string() + ", ";
 		}
 		return str + util::to_string(get_last()) + " }";
 	}
@@ -671,11 +670,11 @@ int LinkedList<T>::remove(const ConstLinkedListIterator<T>& from, const ConstLin
 		int from_index = from.index_;
 		int to_index = to.index_;
 		std::shared_ptr<LinkedListNode_<T>> from_node = from.node_.lock();
-		std::shared_ptr<LinkedListNode_<T>> to_node = (--ConstLinkedListIterator<T>(to)).node_.lock();
+		std::shared_ptr<LinkedListNode_<T>> to_node = to.is_end() ? end_ : to.node_.lock()->prev.lock();
 
 		if (!from.is_begin())
 		{
-			from_node->prev.lock()->next = to_node;
+			from_node->prev.lock()->next = to_node->next;
 		}
 		else
 		{
@@ -684,7 +683,7 @@ int LinkedList<T>::remove(const ConstLinkedListIterator<T>& from, const ConstLin
 		
 		if (!to.is_end())
 		{
-			to_node->prev = from_node->prev;
+			to_node->next->prev = from_node->prev;
 		}
 		else
 		{
@@ -911,12 +910,24 @@ LinkedListIterator<T> LinkedList<T>::create_iterator(int index)
 {
 	if (index >= 0 && index <= size_)
 	{
-		auto ret = begin();
-		for (int i = 0; i < index; i++)
+		if (index < size_ / 2)
 		{
-			ret.next();
+			auto ret = begin();
+			for (int i = 0; i < index; i++)
+			{
+				ret.next();
+			}
+			return ret;
 		}
-		return ret;
+		else
+		{
+			auto ret = last();
+			for (int i = size_ - 1; i > index; i--)
+			{
+				ret.prev();
+			}
+			return ret;
+		}
 	}
 	else
 	{
@@ -947,12 +958,24 @@ ConstLinkedListIterator<T> LinkedList<T>::create_iterator(int index) const
 {
 	if (index >= 0 && index <= size_)
 	{
-		auto ret = begin();
-		for (int i = 0; i < index; i++)
+		if (index < size_ / 2)
 		{
-			ret.next();
+			auto ret = begin();
+			for (int i = 0; i < index; i++)
+			{
+				ret.next();
+			}
+			return ret;
 		}
-		return ret;
+		else
+		{
+			auto ret = last();
+			for (int i = size_ - 1; i > index; i--)
+			{
+				ret.prev();
+			}
+			return ret;
+		}
 	}
 	else
 	{

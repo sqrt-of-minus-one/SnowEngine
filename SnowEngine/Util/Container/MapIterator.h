@@ -209,7 +209,7 @@ bool BaseMapIterator_<T_Container, T_Key, T_Value>::next()
 			auto& list = container_.map_[hash];
 			auto itr = list.begin();
 			while (itr.get().get_first() != key_ && itr.next());
-			if (itr.is_end())
+			if (itr.is_last())
 			{
 				while (container_.map_[++hash].is_empty());
 				key_ = container_.map_[hash].get_begin().get_first();

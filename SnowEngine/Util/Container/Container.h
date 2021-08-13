@@ -36,9 +36,6 @@ public:
 	virtual bool is_empty() const = 0;
 	virtual void clear() = 0;
 
-	virtual bool add(const T& element) = 0;
-	virtual bool add(T&& element) = 0;
-
 	virtual int remove_all(const T& element) = 0;
 
 	virtual bool contains(const T& element) const = 0;

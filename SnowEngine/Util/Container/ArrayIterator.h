@@ -224,7 +224,7 @@ bool BaseArrayIterator_<T_Container, T_Element>::prev()
 {
 	if (is_valid_ && index_ > 0)
 	{
-		index_++;
+		index_--;
 		return true;
 	}
 	else

@@ -39,8 +39,8 @@ public:
 	
 	bool resize(int new_size);
 
-	virtual bool add(const T& element) override;
-	virtual bool add(T&& element) override;
+	virtual bool add(const T& element);
+	virtual bool add(T&& element);
 	virtual bool add(const T& element, int index);
 	virtual bool add(T&& element, int index);
 	virtual int add(const Array<T>& array);
@@ -135,7 +135,7 @@ template<typename T>
 Array<T>::Array(int size) :
 	real_size_(size),
 	size_(size),
-	array_(new T[real_size_])
+	array_(new T[real_size_] { })
 {}
 
 template<typename T>
@@ -526,7 +526,7 @@ bool Array<T>::remove_last(const T& element)
 template<typename T>
 int Array<T>::remove_all(const T& element)
 {
-	for (int to = 0, from = 0; to < size_; to++)
+	for (int to = 0, from = -1; to < size_; to++)
 	{
 		do
 		{
@@ -779,7 +779,7 @@ void Array<T>::check_real_size_to_add_(int required_size)
 		{
 			real_size_ = math::max(static_cast<int>(real_size_ * 1.5f), required_size);
 		}
-		std::unique_ptr<T[]> new_ptr(new T[real_size_]);
+		std::unique_ptr<T[]> new_ptr(new T[real_size_] { });
 		for (int i = 0; i < old_size; i++)
 		{
 			new_ptr[i] = std::move(array_[i]);

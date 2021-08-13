@@ -51,7 +51,14 @@ int hash_code(T var);
 template<typename T>
 const std::string util::to_string(T* var)
 {
-	return var->to_string();
+	if (var)
+	{
+		return var->to_string();
+	}
+	else
+	{
+		return "NULL";
+	}
 }
 
 template<typename T>
@@ -63,7 +70,14 @@ const std::string util::to_string(T var)
 template<typename T>
 int util::hash_code(T* var)
 {
-	return var->hash_code();
+	if (var)
+	{
+		return var->hash_code();
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 template<typename T>

@@ -39,8 +39,6 @@ public:
 	
 	void resize(int new_size);
 	
-	virtual bool add(const T_Value& element) override;
-	virtual bool add(T_Value&& element) override;
 	bool add(const T_Key& key, const T_Value& value, bool allow_override = true);
 	bool add(const T_Key& key, T_Value&& value, bool allow_override = true);
 	bool add(const Pair<T_Key, T_Value>& pair, bool allow_override = true);
@@ -54,6 +52,7 @@ public:
 	bool remove_one(const T_Value& element);
 	virtual int remove_all(const T_Value& element) override;
 
+	T_Key find(const T_Value& element) const;
 	T_Key find(const T_Value& element, bool& out_success) const;
 	LinkedList<T_Key> find_all(const T_Value& element) const;
 
@@ -164,7 +163,7 @@ const std::string Map<T_Key, T_Value>::to_string() const
 		{
 			for (const auto& j : i)
 			{
-				ret += j.to_string() + "; ";
+				ret += j.to_string() + ", ";
 			}
 		}
 		ret[ret.length() - 2] = ' ';
@@ -211,6 +210,7 @@ void Map<T_Key, T_Value>::clear()
 {
 	map_.clear();
 	map_.resize(internal_size_);
+	size_ = 0;
 	clear_iterators_();
 }
 
@@ -235,18 +235,6 @@ void Map<T_Key, T_Value>::resize(int new_size)
 }
 
 template<typename T_Key, typename T_Value>
-bool Map<T_Key, T_Value>::add(const T_Value& element)
-{
-	return add(T_Key(), element);
-}
-
-template<typename T_Key, typename T_Value>
-bool Map<T_Key, T_Value>::add(T_Value&& element)
-{
-	return add(T_Key(), std::forward<T_Value>(element));
-}
-
-template<typename T_Key, typename T_Value>
 bool Map<T_Key, T_Value>::add(const T_Key& key, const T_Value& value, bool allow_override)
 {
 	return add(Pair<T_Key, T_Value>(key, value));
@@ -262,7 +250,7 @@ template<typename T_Key, typename T_Value>
 bool Map<T_Key, T_Value>::add(const Pair<T_Key, T_Value>& pair, bool allow_override)
 {
 	int hash = math::abs(util::hash_code(pair.get_first()) % internal_size_);
-	auto list = map_[hash];
+	auto& list = map_[hash];
 	for (auto& i : list)
 	{
 		if (i.get_first() == pair.get_first())
@@ -295,7 +283,7 @@ template<typename T_Key, typename T_Value>
 bool Map<T_Key, T_Value>::add(Pair<T_Key, T_Value>&& pair, bool allow_override)
 {
 	int hash = math::abs(util::hash_code(pair.get_first()) % internal_size_);
-	auto list = map_[hash];
+	auto& list = map_[hash];
 	for (auto& i : list)
 	{
 		if (i.get_first() == pair.get_first())
@@ -359,7 +347,7 @@ template<typename T_Key, typename T_Value>
 bool Map<T_Key, T_Value>::remove(const T_Key& key)
 {
 	int hash = math::abs(util::hash_code(key) % internal_size_);
-	auto list = map_[hash];
+	auto& list = map_[hash];
 	for (auto i = list.begin(); !i.is_end(); i.next())
 	{
 		if (i->get_first() == key)
@@ -451,6 +439,13 @@ int Map<T_Key, T_Value>::remove_all(const T_Value& element)
 }
 
 template<typename T_Key, typename T_Value>
+T_Key Map<T_Key, T_Value>::find(const T_Value& element) const
+{
+	bool success;
+	return find(element, success);
+}
+
+template<typename T_Key, typename T_Value>
 T_Key Map<T_Key, T_Value>::find(const T_Value& element, bool& out_success) const
 {
 	for (auto i = begin(); !i.is_end(); i.next())
@@ -523,9 +518,10 @@ template<typename T_Key, typename T_Value>
 Array<T_Key> Map<T_Key, T_Value>::get_keys() const
 {
 	Array<T_Key> ret(size_);
+	int index = 0;
 	for (auto i = begin(); !i.is_end(); i.next())
 	{
-		ret.add(i.get_key());
+		ret[index++] = i.get_key();
 	}
 	return ret;
 }
@@ -534,9 +530,10 @@ template<typename T_Key, typename T_Value>
 Array<T_Value> Map<T_Key, T_Value>::get_values() const
 {
 	Array<T_Value> ret(size_);
+	int index = 0;
 	for (const auto& i : *this)
 	{
-		ret.add(i);
+		ret[index++] = i;
 	}
 	return ret;
 }
@@ -545,11 +542,12 @@ template<typename T_Key, typename T_Value>
 Array<Pair<T_Key, T_Value>> Map<T_Key, T_Value>::get_pairs() const
 {
 	Array<Pair<T_Key, T_Value>> ret(size_);
+	int index = 0;
 	for (auto& i : map_)
 	{
 		for (auto j = i.begin(); !j.is_end(); j.next())
 		{
-			ret.add(j.get());
+			ret[index++] = j.get();
 		}
 	}
 	return ret;
@@ -694,7 +692,7 @@ template<typename T_Key, typename T_Value>
 T_Value& Map<T_Key, T_Value>::operator[](const T_Key& key)
 {
 	int hash = math::abs(util::hash_code(key) % internal_size_);
-	auto list = map_[hash];
+	auto& list = map_[hash];
 	for (auto i = list.begin(); !i.is_end(); i.next())
 	{
 		if (i->get_first() == key)
@@ -709,7 +707,7 @@ template<typename T_Key, typename T_Value>
 const T_Value& Map<T_Key, T_Value>::operator[](const T_Key& key) const
 {
 	int hash = math::abs(util::hash_code(key) % internal_size_);
-	auto list = map_[hash];
+	auto& list = map_[hash];
 	for (auto i = list.begin(); !i.is_end(); i.next())
 	{
 		if (i->get_first() == key)

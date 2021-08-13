@@ -20,7 +20,7 @@ const std::string util::to_string(float var)
 
 const std::string util::to_string(char var)
 {
-	return "" + var;
+	return { var };
 }
 
 const std::string util::to_string(bool var)
