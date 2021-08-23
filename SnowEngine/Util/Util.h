@@ -6,6 +6,13 @@
 
 #pragma once
 
+/**
+ *	\file
+ *	\brief File with auxiliary functions
+ *	
+ *	This file contains declarations of members of util namespace.
+ */
+
 #include "../Object.h"
 
 namespace snow
@@ -14,34 +21,120 @@ namespace snow
 namespace util
 {
 
-const std::string to_string(int var);
+/**
+ *	\brief `int` to string
+ *	
+ *	Converts the passed integer to string.
+ *	\param var Integer that will be converted to string.
+ *	\return A string that contains the passed integer.
+ */
+const std::string to_string(int var) noexcept;
 
-const std::string to_string(float var);
+/**
+ *	\brief `float` to string
+ *
+ *	Converts the passed float to string.
+ *	\param var Float that will be converted to string.
+ *	\return A string that contains the passed float.
+ */
+const std::string to_string(float var) noexcept;
 
-const std::string to_string(char var);
+/**
+ *	\brief `char` to string
+ *
+ *	Creates a string that contains the passed character.
+ *	\param var Character that will be converted to string.
+ *	\return A string that contains the passed character.
+ */
+const std::string to_string(char var) noexcept;
 
-const std::string to_string(bool var);
+/**
+ *	\brief `bool` to string
+ *
+ *	Converts the passed boolean to string.
+ *	\param var Boolean that will be converted to string.
+ *	\return `"true"` if the passed value is true, `"false"` otherwise.
+ */
+const std::string to_string(bool var) noexcept;
 
+/**
+ *	\brief Pointer to string
+ *
+ *	Converts the value of the passed pointer to string.
+ *	\param var Pointer to the value that will be converted to string.
+ *	\return `"NULL"` if the pointer is null, `util::to_string(*var)` otherwise.
+ */
 template<typename T>
-const std::string to_string(T* var);
+const std::string to_string(T* var) noexcept;
 
+/**
+ *	\brief Object to string
+ *
+ *	Converts the passed object to string. The object must have `to_string()` method (any
+ *	`snow::Object` has it).
+ *	\param var The object that will be converted to string.
+ *	\return Result of object's `to_string()` method.
+ */
 template<typename T>
-const std::string to_string(T var);
+const std::string to_string(T var) noexcept;
 
+/**
+ *	\brief Hash code of `int`
+ *
+ *	Hash code of an integer is equal to the value of the integer.
+ *	\param var Integer whose hash code will be calculated.
+ *	\return A hash code of the passed integer.
+ */
+int hash_code(int var) noexcept;
 
-int hash_code(int var);
+/**
+ *	\brief Hash code of `float`
+ *
+ *	Hash code of a float number is equal to the value of the float rounded down.
+ *	\param var Float whose hash code will be calculated.
+ *	\return A hash code of the passed float.
+ */
+int hash_code(float var) noexcept;
 
-int hash_code(float var);
+/**
+ *	\brief Hash code of `char`
+ *
+ *	Hash code of a character is the character's ASCII code.
+ *	\param var Character whose hash code will be calculated.
+ *	\return A hash code of the passed character.
+ */
+int hash_code(char var) noexcept;
 
-int hash_code(char var);
+/**
+ *	\brief Hash code of `bool`
+ *
+ *	Hash code of a boolean value is 1 if the boolean is true, 0 otherwise.
+ *	\param var Boolean whose hash code will be calculated.
+ *	\return A hash code of the passed boolean.
+ */
+int hash_code(bool var) noexcept;
 
-int hash_code(bool var);
-
+/**
+ *	\brief Hash code of pointer
+ *
+ *	Calculates a hash code of the passed pointer. To do it the function converts the pointer to
+ *	integer.
+ *	\param var The pointer whose hash code will be calculated.
+ *	\return A hash code of the passed pointer.
+ */
 template<typename T>
-int hash_code(T* var);
+int hash_code(T* var) noexcept;
 
+/**
+ *	\brief Hash code of object
+ *
+ *	Calculates a hash code of the passed object. The object must have `hash_code()` method (any
+ *	`snow::Object` has it).
+ *	\param var Object whose hash code will be calculated.
+ *	\return A hash code of the passed object.
+ */
 template<typename T>
-int hash_code(T var);
+int hash_code(T var) noexcept;
 
 }
 
@@ -49,11 +142,11 @@ int hash_code(T var);
 		/* DEFINITIONS */
 
 template<typename T>
-const std::string util::to_string(T* var)
+const std::string util::to_string(T* var) noexcept
 {
 	if (var)
 	{
-		return var->to_string();
+		return to_string(*var);
 	}
 	else
 	{
@@ -62,26 +155,19 @@ const std::string util::to_string(T* var)
 }
 
 template<typename T>
-const std::string util::to_string(T var)
+const std::string util::to_string(T var) noexcept
 {
 	return var.to_string();
 }
 
 template<typename T>
-int util::hash_code(T* var)
+int util::hash_code(T* var) noexcept
 {
-	if (var)
-	{
-		return var->hash_code();
-	}
-	else
-	{
-		return 0;
-	}
+	return static_cast<int>(var);
 }
 
 template<typename T>
-int util::hash_code(T var)
+int util::hash_code(T var) noexcept
 {
 	return var.hash_code();
 }

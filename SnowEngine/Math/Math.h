@@ -47,7 +47,7 @@ extern const float PI;
  *	\return The greatest of two values.
  */
 template<typename T>
-const T& max(const T& a, const T& b);
+const T& max(const T& a, const T& b) noexcept;
 
 /**
  *	\brief Defines a minimum value
@@ -59,7 +59,7 @@ const T& max(const T& a, const T& b);
  *	\return The least of two values.
  */
 template<typename T>
-const T& min(const T& a, const T& b);
+const T& min(const T& a, const T& b) noexcept;
 
 /**
  *	\brief Clamp a value between two limits
@@ -79,7 +79,7 @@ const T& min(const T& a, const T& b);
  *	\return A clamped value.
  */
 template<typename T>
-const T& clamp(const T& value, const T& limit_1, const T& limit_2);
+const T& clamp(const T& value, const T& limit_1, const T& limit_2) noexcept;
 
 /**
  *	\brief Rounds a number to the nearest integer
@@ -98,7 +98,7 @@ const T& clamp(const T& value, const T& limit_1, const T& limit_2);
  *	\param value A number to round
  *	\return A rounded value
  */
-int round(float value);
+int round(float value) noexcept;
 
 /**
  *	\brief Rounds a number down
@@ -117,7 +117,7 @@ int round(float value);
  *	\param value A number to round
  *	\return A rounded value
  */
-int floor(float value);
+int floor(float value) noexcept;
 
 /**
  *	\brief Rounds a number up
@@ -136,7 +136,7 @@ int floor(float value);
  *	\param value A number to round
  *	\return A rounded value
  */
-int ceil(float value);
+int ceil(float value) noexcept;
 
 /**
  *	\brief Returns an absolute value
@@ -146,7 +146,7 @@ int ceil(float value);
  *	\param value A number.
  *	\return An absolute value.
  */
-int abs(int value);
+int abs(int value) noexcept;
 
 /**
  *	\brief Returns an absolute value
@@ -156,7 +156,7 @@ int abs(int value);
  *	\param value A number.
  *	\return An absolute value.
  */
-float abs(float value);
+float abs(float value) noexcept;
 
 /**
  *	\brief A sine of the angle
@@ -368,19 +368,19 @@ extern const std::function<Angle(float)> acot;
 		/* DEFINITIONS */
 
 template<typename T>
-const T& math::max(const T& a, const T& b)
+const T& math::max(const T& a, const T& b) noexcept
 {
 	return a > b ? a : b;
 }
 
 template<typename T>
-const T& math::min(const T& a, const T& b)
+const T& math::min(const T& a, const T& b) noexcept
 {
 	return a > b ? b : a;
 }
 
 template<typename T>
-const T& math::clamp(const T& value, const T& limit_1, const T& limit_2)
+const T& math::clamp(const T& value, const T& limit_1, const T& limit_2) noexcept
 {
 	const T& min;
 	const T& max;

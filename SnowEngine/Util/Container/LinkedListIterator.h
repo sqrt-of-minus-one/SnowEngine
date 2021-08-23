@@ -6,6 +6,13 @@
 
 #pragma once
 
+/**
+ *	\file
+ *	\brief The file of linked list iterator
+ *	
+ *	This file contains the definition of the linked list iterator classes.
+ */
+
 #include "../../Object.h"
 #include "Container.h"
 
@@ -23,6 +30,12 @@ namespace
 template<typename T>
 struct LinkedListNode_;
 
+/**
+ *	\brief The base for linked list iterators
+ *	
+ *	This class is used as a template for LinkedListIterator and ConstLinkedListIterator classes.
+ *	\warning Do not use this class directly.
+ */
 template<typename T_Container, typename T_Element, typename T_Node>
 class BaseLinkedListIterator_ :
 	public Object,
@@ -32,39 +45,228 @@ class BaseLinkedListIterator_ :
 	friend class LinkedList;
 
 public:
-	BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator);
-	BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator);
-	~BaseLinkedListIterator_();
 
-	virtual const std::string to_string() const override;
-	virtual int hash_code() const override;
+	/**
+	 *	\brief Copy constructor
+	 *
+	 *	Creates a copy of the passed iterator.
+	 *	\param iterator The iterator that will be copied.
+	 */
+	BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) noexcept;
 
-	virtual bool is_valid() const override;
-	virtual bool is_element_valid() const override;
+	/**
+	 *	\brief Move constructor
+	 *
+	 *	Creates a new iterator by moving the passed one.
+	 *	\param iterator The iterator that will be moved.
+	 */
+	BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator) noexcept;
 
+	/**
+	 *	\brief The destructor
+	 *
+	 *	The destructor of the linked list iterator.
+	 */
+	~BaseLinkedListIterator_() noexcept;
+
+	/**
+	 *	\brief Converts an element of the iterator to string
+	 *
+	 *	Gets the element that the iterator points to and converts it to string using
+	 *	`util::to_string()` function.
+	 *	\code
+	 *		// These two strings are equal:
+	 *		iterator.to_string();
+	 *		util::to_string(iterator.get());
+	 *	\endcode
+	 *	\return A result string.
+	 */
+	virtual const std::string to_string() const noexcept override;
+
+	/**
+	 *	\brief Hash code of an element of the iterator
+	 *
+	 *	Gets the element that the iterator points to and calculates its hash code using
+	 *	`util::hash_code()` function.
+	 *	\code
+	 *		// These two strings are equal:
+	 *		iterator.hash_code();
+	 *		util::hash_code(iterator.get());
+	 *	\endcode
+	 *	\return Hash code of the element.
+	 */
+	virtual int hash_code() const noexcept override;
+
+	/**
+	 *	\brief Whether the iterator is valid
+	 *
+	 *	The iterator may be invalid if its container has been destroyed.
+	 *	\return `true` if the iterator is valid, `false` otherwise.
+	*/
+	virtual bool is_valid() const noexcept override;
+
+	/**
+	 *	\brief Whether the iterator points to a valid element
+	 *
+	 *	This function returns `false` if the iterator is not valid or points to the end of the
+	 *	linked list (i. e. after the last linked list element).
+	 *	\return `true` if the iterator points to a valid element, `false` otherwise.
+	 */
+	virtual bool is_element_valid() const noexcept override;
+
+	/**
+	 *	\brief The container of the iterator
+	 *
+	 *	Allows to get the linked list that has the element that the iterator points to.
+	 *	\return The container of the iterator.
+	 *	\throw std::logic_error The iterator is not valid.
+	 */
 	virtual T_Container& get_container() const override;
+
+	/**
+	 *	\brief Get the element that the iterator points to
+	 *
+	 *	Allows to get the element that the iterator points to.
+	 *	\return The element that the iterator points to.
+	 *	\throw std::logic_error The element is not valid (`is_element_valid()` method returns
+	 *	`false`).
+	 */
 	virtual T_Element& get() const override;
+
+	/**
+	 *	\brief Index of the element that the iterator points to
+	 *
+	 *	Allows to get index of the element that the iterator points to.
+	 *	\return Index of the element.
+	 *	\throw std::logic_error The iterator is not valid.
+	 */
 	int get_index() const;
 
-	virtual bool is_begin() const override;
-	virtual bool is_last() const override;
-	virtual bool is_end() const override;
+	/**
+	 *	\brief Whether the iterator points to the first element of the linked list
+	 *
+	 *	The iterator is begin if it points to the first element.
+	 *	\return `true` if the iterator points to the first element of the linked list.
+	 */
+	virtual bool is_begin() const noexcept override;
+
+	/**
+	 *	\brief Whether the iterator points to the last element of the linked list
+	 *
+	 *	The iterator is last if it points to the last element.
+	 *	\return `true` if the iterator points to the last element of the linked list.
+	 */
+	virtual bool is_last() const noexcept override;
+
+	/**
+	 *	\brief Whether the iterator points after the last element of the linked list
+	 *
+	 *	The iterator is end if it points to a space that is after the last element. In this case
+	 *	`is_element_valid()` method returns `false`.
+	 *	\return `true` if the iterator points after the last element of the linked list.
+	 */
+	virtual bool is_end() const noexcept override;
+
+	/**
+	 *	\brief Moves iterator forward
+	 *
+	 *	Changes the iterator so that it points to the next element. The iterator won't be changed
+	 *	if it already points after the last element.
+	 *	\return `true` if the new element of the iterator is valid (is not end), `false` otherwise.
+	 *	\throw std::logic_error The iterator is not valid.
+	 */
 	virtual bool next() override;
+
+	/**
+	 *	\brief Moves the iterator backward
+	 *
+	 *	Changes the iterator so that it points to the previous element. The iterator won't be
+	 *	changed if it already points to the first element.
+	 *	\return `true` if the iterator has been moved, `false` otherwise.
+	 *	\throw std::logic_error The iterator is not valid.
+	 */
 	virtual bool prev() override;
 
+	/**
+	 *	\brief Get the element that the iterator points to
+	 *
+	 *	This operator is equal to the `get()` method.
+	 *	\return The element that the iterator points to.
+	 *	\throw std::logic_error The element is not valid (`is_element_valid()` method returns
+	 *	`false`.
+	 */
 	virtual T_Element& operator*() const override;
+
+	/**
+	 *	\brief The iterator prefix increment
+	 *
+	 *	Changes the iterator so that it points to the next element. The iterator won't be changed
+	 *	if it already points after the last element.
+	 *	\return The increased iterator.
+	 *	\throw std::logic_error The iterator is not valid.
+	 */
 	BaseLinkedListIterator_<T_Container, T_Element, T_Node> operator++();
+
+	/**
+	 *	\brief The iterator prefix decrement
+	 *
+	 *	Changes the iterator so that it points to the previous element. The iterator won't be
+	 *	changed if it already points to the first element.
+	 *	\return The decreased iterator.
+	 *	\throw std::logic_error The iterator is not valid.
+	 */
 	BaseLinkedListIterator_<T_Container, T_Element, T_Node> operator--();
+
+	/**
+	 *	\brief The iterator postfix increment
+	 *
+	 *	Changes the iterator so that it points to the next element. The iterator won't be changed
+	 *	if it already points after the last element.
+	 *	\return The iterator before increasing.
+	 *	\throw std::logic_error The iterator is not valid.
+	 */
 	BaseLinkedListIterator_<T_Container, T_Element, T_Node> operator++(int);
+
+	/**
+	 *	\brief The iterator prefix decrement
+	 *
+	 *	Changes the iterator so that it points to the previous element. The iterator won't be
+	 *	changed if it already points to the first element.
+	 *	\return The iterator before decreasing.
+	 *	\throw std::logic_error The iterator is not valid.
+	 */
 	BaseLinkedListIterator_<T_Container, T_Element, T_Node> operator--(int);
 
-	bool operator==(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const;
-	bool operator!=(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const;
+	/**
+	 *	\brief Compare two iterators
+	 *
+	 *	Two linked list iterators are equal if they point to the same element of the same list. The
+	 *	iterators are also equal if they are both invalid.
+	 *	\return `true` if the iterators are equal, `false` otherwise.
+	 */
+	bool operator==(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const noexcept;
 
-	T_Element* operator->() const;
+	/**
+	 *	\brief Compare two iterators
+	 *
+	 *	Two linked list iterators are equal if they point to the same element of the same list. The
+	 *	iterators are also equal if they are both invalid.
+	 *	\return `true` if the iterators are not equal, `false` otherwise.
+	 */
+	bool operator!=(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const noexcept;
 
-protected:
-	BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node = nullptr, bool is_valid = true);
+	/**
+	 *	\brief Get access to the element that the iterator points to
+	 *
+	 *	This operator allows to get access to members of the element that the iterator points to.
+	 *	\return The pointer to the iterator element.
+	 *	\throw std::logic_error The element is not valid (`is_element_valid()` method returns
+	 *	`false`.
+	 */
+	virtual T_Element* operator->() const override;
+
+private:
+	BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node = nullptr, bool is_valid = true) noexcept;
 
 	T_Container& container_;
 	std::weak_ptr<T_Node> node_;
@@ -74,17 +276,30 @@ protected:
 
 }
 
+/**
+ *	\brief The iterator to the element of a constant linked list
+ *
+ *	This iterator allows to read elements of a linked list but doesn't allow to modify them or the
+ *	list. Can be created by a constant linked list (or using `iterator_to_const()` method).
+ *	\tparam T Type of the linked list elements.
+ */
 template<typename T>
 using ConstLinkedListIterator = BaseLinkedListIterator_<const LinkedList<T>, const T, LinkedListNode_<T>>;
 
+/**
+ *	\brief The iterator to the element of a linked list
+ *
+ *	This iterator allows to access elements of a linked list (read and modify them).
+ *	\tparam T Type of the linked list elements.
+ */
 template<typename T>
 using LinkedListIterator = BaseLinkedListIterator_<LinkedList<T>, T, LinkedListNode_<T>>;
 
 
-		/* DEFINITIONS of BaseLinkedListIterator_ */
+		/* DEFINITIONS */
 
 template<typename T_Container, typename T_Element, typename T_Node>
-BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) :
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) noexcept :
 	container_(iterator.container_),
 	node_(iterator.node_),
 	index_(iterator.index_),
@@ -97,7 +312,7 @@ BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator) :
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator) noexcept :
 	container_(iterator.container_),
 	node_(iterator.node_),
 	index_(iterator.index_),
@@ -112,7 +327,7 @@ BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-BaseLinkedListIterator_<T_Container, T_Element, T_Node>::~BaseLinkedListIterator_()
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::~BaseLinkedListIterator_() noexcept
 {
 	if (is_valid_)
 	{
@@ -121,25 +336,25 @@ BaseLinkedListIterator_<T_Container, T_Element, T_Node>::~BaseLinkedListIterator
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-const std::string BaseLinkedListIterator_<T_Container, T_Element, T_Node>::to_string() const
+const std::string BaseLinkedListIterator_<T_Container, T_Element, T_Node>::to_string() const noexcept
 {
 	return util::to_string(get());
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-int BaseLinkedListIterator_<T_Container, T_Element, T_Node>::hash_code() const
+int BaseLinkedListIterator_<T_Container, T_Element, T_Node>::hash_code() const noexcept
 {
 	return util::hash_code(get());
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_valid() const
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_valid() const noexcept
 {
 	return is_valid_ && index_ >= 0 && index_ <= container_.size();
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_element_valid() const
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_element_valid() const noexcept
 {
 	return is_valid_ && node_.lock() && index_ >= 0 && index_ < container_.size();
 }
@@ -153,7 +368,7 @@ T_Container& BaseLinkedListIterator_<T_Container, T_Element, T_Node>::get_contai
 	}
 	else
 	{
-		throw std::logic_error("Attempt to get container of invalid iterator");
+		throw std::logic_error("Attempt to get container of an invalid iterator");
 	}
 }
 
@@ -166,7 +381,7 @@ T_Element& BaseLinkedListIterator_<T_Container, T_Element, T_Node>::get() const
 	}
 	else
 	{
-		throw std::logic_error("Attempt to get element of invalid iterator");
+		throw std::logic_error("Attempt to get element of an invalid iterator");
 	}
 }
 
@@ -179,24 +394,24 @@ int BaseLinkedListIterator_<T_Container, T_Element, T_Node>::get_index() const
 	}
 	else
 	{
-		throw std::logic_error("Attempt to get index of invalid iterator");
+		throw std::logic_error("Attempt to get index of an invalid iterator");
 	}
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_begin() const
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_begin() const noexcept
 {
 	return is_valid_ && index_ == 0;
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_last() const
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_last() const noexcept
 {
 	return is_valid_ && index_ == container_.size() - 1;
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_end() const
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_end() const noexcept
 {
 	return is_valid_ && index_ == container_.size();
 }
@@ -204,36 +419,50 @@ bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_end() const
 template<typename T_Container, typename T_Element, typename T_Node>
 bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::next()
 {
-	if (is_valid_ && index_ < container_.size())
+	if (is_valid_)
 	{
-		node_ = node_.lock()->next;
-		return ++index_ < container_.size();
+		if (index_ < container_.size())
+		{
+			node_ = node_.lock()->next;
+			return ++index_ < container_.size();
+		}
+		else
+		{
+			return false;
+		}
 	}
 	else
 	{
-		return false;
+		throw std::logic_error("Attempt to increment an invalid iterator");
 	}
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
 bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::prev()
 {
-	if (is_valid_ && index_ > 0)
+	if (is_valid_)
 	{
-		if (node_.lock()) // If is not end
+		if (index_ > 0)
 		{
-			node_ = node_.lock()->prev;
+			if (node_.lock()) // If is not end
+			{
+				node_ = node_.lock()->prev;
+			}
+			else
+			{
+				node_ = container_.get_last_node_();
+			}
+			index_--;
+			return true;
 		}
 		else
 		{
-			node_ = container_.get_last_node_();
+			return false;
 		}
-		index_--;
-		return true;
 	}
 	else
 	{
-		return false;
+		throw std::logic_error("Attempt to decrement an invalid iterator");
 	}
 }
 
@@ -274,14 +503,14 @@ BaseLinkedListIterator_<T_Container, T_Element, T_Node> BaseLinkedListIterator_<
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator==(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator==(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const noexcept
 {
 	return !is_valid_ && !iterator.is_valid_ ||
 		&container_ == &iterator.container_ && index_ == iterator.index_;
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator!=(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator!=(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) const noexcept
 {
 	return !(*this == iterator);
 }
@@ -293,7 +522,7 @@ T_Element* BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator->()
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node, bool is_valid) :
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node, bool is_valid) noexcept :
 	container_(linked_list),
 	node_(node),
 	index_(index),

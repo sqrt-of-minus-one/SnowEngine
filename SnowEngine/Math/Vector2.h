@@ -35,7 +35,7 @@ public:
 	 *	
 	 *	Creates a zero vector \f$\{0, 0\}\f$.
 	*/
-	Vector2();
+	Vector2() noexcept;
 
 	/**
 	 *	\brief Copy constructor
@@ -43,15 +43,7 @@ public:
 	 *	Copies a vector value and creates a new one.
 	 *	\param vector A vector that will be copied.
 	 */
-	Vector2(const Vector2& vector);
-
-	/**
-	 *	\brief Move constructor
-	 *	
-	 *	Moves a vector value into a new one.
-	 *	\param vector An r-value reference to a vector whose value will be moved.
-	 */
-	Vector2(Vector2&& vector);
+	Vector2(const Vector2& vector) noexcept;
 
 	/**
 	 *	\brief Creates a vector with the specified value
@@ -60,7 +52,7 @@ public:
 	 *	\param x Vector X value.
 	 *	\param y Vector Y value.
 	 */
-	Vector2(float x, float y);
+	Vector2(float x, float y) noexcept;
 
 			/* METHODS FROM Object */
 
@@ -71,7 +63,7 @@ public:
 	 *	vector.
 	 *	\return A string with the vector value.
 	 */
-	virtual const std::string to_string() const override;
+	virtual const std::string to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the vector
@@ -79,7 +71,7 @@ public:
 	 *	Hash code of the vector is the sum of its coordinates casted to integer.
 	 *	\return Hash code of the vector.
 	*/
-	int hash_code() const override;
+	int hash_code() const noexcept override;
 	
 			/* METHODS */
 	
@@ -89,7 +81,7 @@ public:
 	 *	Allows to get the X coordinate.
 	 *	\return The vector X coordinate.
 	 */
-	float get_x() const;
+	float get_x() const noexcept;
 	
 	/**
 	 *	\brief Returns Y coordinate
@@ -97,7 +89,7 @@ public:
 	 *	Allows to get the Y coordinate.
 	 *	\return The vector Y coordinate.
 	 */
-	float get_y() const;
+	float get_y() const noexcept;
 
 	/**
 	 *	\brief Sets X coordinate
@@ -105,7 +97,7 @@ public:
 	 *	Allows to set the X coordinate.
 	 *	\param x The new value of the vector X coordinate.
 	 */
-	void set_x(float x);
+	void set_x(float x) noexcept;
 
 	/**
 	 *	\brief Sets Y coordinate
@@ -113,7 +105,7 @@ public:
 	 *	Allows to set the Y coordinate.
 	 *	\param y The new value of the vector Y coordinate.
 	 */
-	void set_y(float y);
+	void set_y(float y) noexcept;
 	
 	/**
 	 *	\brief Checks whether the vector is zero
@@ -122,7 +114,7 @@ public:
 	 *	zero.
 	 *	\return `true` if the vector is zero, `false` otherwise.
 	 */
-	bool is_zero() const;
+	bool is_zero() const noexcept;
 	
 	/**
 	 *	\brief The vector length
@@ -132,7 +124,7 @@ public:
 	 *	fast.
 	 *	\return The vector length.
 	 */
-	float length() const;
+	float length() const noexcept;
 
 	/**
 	 *	\brief The squared vector length
@@ -140,7 +132,7 @@ public:
 	 *	Is used to get the squared vector length. Is more effective than the length() function.
 	 *	\return The squared vector length.
 	 */
-	float length_sq() const;
+	float length_sq() const noexcept;
 	
 	/**
 	 *	\brief An angle between the vector and the positive direction of X-axis
@@ -166,7 +158,7 @@ public:
 	 *	any other.
 	 *	\return `true` if two vectors are collinear, `false` otherwise.
 	 */
-	bool is_collinear(const Vector2& vector) const;
+	bool is_collinear(const Vector2& vector) const noexcept;
 
 	/**
 	 *	\brief Checks whether two vectors are co-directed
@@ -175,7 +167,7 @@ public:
 	 *	have the same direction. A zero vector is co-directed to any other.
 	 *	\return `true` if two vectors are co-directed, `false` otherwise.
 	 */
-	bool is_co_directed(const Vector2& vector) const;
+	bool is_co_directed(const Vector2& vector) const noexcept;
 
 	/**
 	 *	\brief Checks whether two vectors are orthogonal
@@ -184,7 +176,7 @@ public:
 	 *	orthogonal to any other.
 	 *	\return `true` if two vectors are orthogonal, `false` otherwise.
 	 */
-	bool is_orthogonal(const Vector2& vector) const;
+	bool is_orthogonal(const Vector2& vector) const noexcept;
 	
 			/* OPERATORS */
 	
@@ -199,20 +191,7 @@ public:
 	 *	\param A vector that will be copied.
 	 *	\return A reference to itself.
 	 */
-	Vector2& operator=(const Vector2& vector);
-
-	/**
-	 *	\brief Moves a vector
-	 *	
-	 *	Moves a passed value to the vector. Return itself, so you can use constructions like
-	 *	this:
-	 *	\code
-	 *		vector = other_vector = Vector2(-2.5f, 7.5f);
-	 *	\endcode
-	 *	\param vector An r-value that will be moved.
-	 *	\return A reference to itself.
-	 */
-	Vector2& operator=(Vector2&& vector);
+	Vector2& operator=(const Vector2& vector) noexcept;
 	
 	/**
 	 *	\brief Just... returns itself
@@ -221,7 +200,7 @@ public:
 	 *	l-value, but `+some_vector` is r-value.
 	 *	\return A copy of itself.
 	 */
-	const Vector2 operator+() const;
+	const Vector2 operator+() const noexcept;
 
 	/**
 	 *	\brief Creates a vector with opposite signs of coordinates
@@ -230,7 +209,7 @@ public:
 	 *	`vector * -1`.
 	 *	\returns A vector with opposite signs of coordinates.
 	 */
-	const Vector2 operator-() const;
+	const Vector2 operator-() const noexcept;
 	
 	/**
 	 *	\brief Sum of two vectors
@@ -240,7 +219,7 @@ public:
 	 *	\param vector A second summand.
 	 *	\return The sum of two vectors.
 	 */
-	const Vector2 operator+(const Vector2& vector) const;
+	const Vector2 operator+(const Vector2& vector) const noexcept;
 
 	/**
 	 *	\brief Difference of two vectors
@@ -250,7 +229,7 @@ public:
 	 *	\param vector A subtrahend.
 	 *	\return The difference of two vectors.
 	 */
-	const Vector2 operator-(const Vector2& vector) const;
+	const Vector2 operator-(const Vector2& vector) const noexcept;
 
 	/**
 	 *	\brief Product of the vector and a number
@@ -260,7 +239,7 @@ public:
 	 *	\param value A multiplier.
 	 *	\return The product of the vector and a number.
 	 */
-	const Vector2 operator*(float value) const;
+	const Vector2 operator*(float value) const noexcept;
 	
 	/**
 	 *	\brief Product of a vector and a number
@@ -271,7 +250,7 @@ public:
 	 *	\param vector A vector.
 	 *	\return The product of a vector and a number.
 	 */
-	friend const Vector2 operator*(float value, const Vector2& vector);
+	friend const Vector2 operator*(float value, const Vector2& vector) noexcept;
 
 	/**
 	 *	\brief Coordinate-wise product of two vectors
@@ -281,7 +260,7 @@ public:
 	 *	\param vector A multiplier.
 	 *	\return The coordinate-wise product of two vectors.
 	 */
-	const Vector2 operator*(const Vector2& vector) const;
+	const Vector2 operator*(const Vector2& vector) const noexcept;
 
 	/**
 	 *	\brief Dot product of two vectors
@@ -300,7 +279,7 @@ public:
 	 *	\param vector A second multiplier.
 	 *	\return The dot product of two vectors.
 	 */
-	const float operator&(const Vector2& vector) const;
+	const float operator&(const Vector2& vector) const noexcept;
 
 	/**
 	 *	\brief Quotient of the vector and a number
@@ -309,6 +288,7 @@ public:
 	 *	\f$\{x, y\} / v = \{\frac{x}{v}, \frac{y}{v}\}\f$.
 	 *	\param value A divisor.
 	 *	\return The quotient of the vector and a number.
+	 *	\throw std::domain_error Value is zero.
 	 */
 	const Vector2 operator/(float value) const;
 
@@ -319,6 +299,7 @@ public:
 	 *	\f$\{x_1, y_1\} / \{x_2, y_2\} = \{\frac{x_1}{x_2}, \frac{y_1}{y_2}\}\f$.
 	 *	\param vector A divisor.
 	 *	\return The coordinate-wise quotient of two vectors.
+	 *	\throw std::domain_error One of the argument coordinates is zero.
 	 */
 	const Vector2 operator/(const Vector2& vector) const;
 	
@@ -334,7 +315,7 @@ public:
 	 *	\param vector A second summand.
 	 *	\return A reference to itself.
 	 */
-	Vector2& operator+=(const Vector2& vector);
+	Vector2& operator+=(const Vector2& vector) noexcept;
 
 	/**
 	 *	\brief Subtracts a passed vector from itself
@@ -348,7 +329,7 @@ public:
 	 *	\param angle A subtrahend.
 	 *	\return A reference to itself.
 	 */
-	Vector2& operator-=(const Vector2& vector);
+	Vector2& operator-=(const Vector2& vector) noexcept;
 
 	/**
 	 *	\brief Multiplies itself by a passed number
@@ -362,7 +343,7 @@ public:
 	 *	\param angle A multiplier.
 	 *	\return A reference to itself.
 	 */
-	Vector2& operator*=(float value);
+	Vector2& operator*=(float value) noexcept;
 
 	/**
 	 *	\brief Separately multiplies its own X and Y coordinates by coordinates of a passed vector
@@ -376,7 +357,7 @@ public:
 	 *	\param vector A multiplier.
 	 *	\return A reference to itself.
 	 */
-	Vector2& operator*=(const Vector2& vector);
+	Vector2& operator*=(const Vector2& vector) noexcept;
 
 	/**
 	 *	\brief Divides itself by a passed number
@@ -389,6 +370,7 @@ public:
 	 *	\endcode
 	 *	\param angle A divisor.
 	 *	\return A reference to itself.
+	 *	\throw std::domain_error Value is zero.
 	 */
 	Vector2& operator/=(float value);
 
@@ -403,6 +385,7 @@ public:
 	 *	\endcode
 	 *	\param vector A divisor.
 	 *	\return A reference to itself.
+	 *	\throw std::domain_error One of the argument coordinates is zero.
 	 */
 	Vector2& operator/=(const Vector2& vector);
 	
@@ -413,7 +396,7 @@ public:
 	 *	\param vector A vector to compare.
 	 *	\return `true` if vectors are equal, `false` otherwise.
 	 */
-	bool operator==(const Vector2& vector) const;
+	bool operator==(const Vector2& vector) const noexcept;
 
 	/**
 	 *	\brief Checks whether two vectors are not equal
@@ -422,7 +405,7 @@ public:
 	 *	\param vector A vector to compare.
 	 *	\return `true` if vectors are not equal, `false` otherwise.
 	 */
-	bool operator!=(const Vector2& vector) const;
+	bool operator!=(const Vector2& vector) const noexcept;
 	
 			/* CONSTANTS */
 	

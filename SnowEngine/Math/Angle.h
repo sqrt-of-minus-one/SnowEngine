@@ -40,7 +40,7 @@ public:
 	 *	
 	 *	Creates a zero angle.
 	 */
-	Angle();
+	Angle() noexcept;
 
 	/**
 	 *	\brief Copy constructor
@@ -48,15 +48,7 @@ public:
 	 *	Copies an angle.
 	 *	\param angle An angle that will be copied.
 	 */
-	Angle(const Angle& angle);
-
-	/**
-	 *	\brief Move constructor
-	 *	
-	 *	Moves an angle value.
-	 *	\param angle An r-value reference to an angle whose value will be moved.
-	 */
-	Angle(Angle&& angle);
+	Angle(const Angle& angle) noexcept;
 
 	/**
 	 *	\brief Creates an angle with the specified value in degrees
@@ -76,7 +68,7 @@ public:
 	 *	\endcode
 	 *	\param degrees A value of new angle in degrees
 	 */
-	Angle(float degrees);
+	Angle(float degrees) noexcept;
 
 			/* METHODS FROM Object */
 
@@ -86,7 +78,7 @@ public:
 	 *	Creates a string with format `<val>_deg`, where `<val>` is the angle value in degrees.
 	 *	\return A string with the angle value.
 	 */
-	virtual const std::string to_string() const override;
+	virtual const std::string to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the angle
@@ -95,7 +87,7 @@ public:
 	 *	is converted to integer.
 	 *	\return Hash code of the angle.
 	 */
-	virtual int hash_code() const override;
+	virtual int hash_code() const noexcept override;
 
 			/* METHODS */
 
@@ -105,7 +97,7 @@ public:
 	 *	Can be used to get the angle value in degrees.
 	 *	\return The angle value in degrees.
 	 */
-	float get_degrees() const;
+	float get_degrees() const noexcept;
 
 	/**
 	 *	\brief Returns the angle value in radians
@@ -113,7 +105,7 @@ public:
 	 *	Can be used to get the angle value in radians.
 	 *	\return The angle value in radians.
 	 */
-	float get_radians() const;
+	float get_radians() const noexcept;
 
 	/**
 	 *	\brief Returns the angle value in gradians
@@ -121,7 +113,7 @@ public:
 	 *	Can be used to get the angle value in gradians.
 	 *	\return The angle value in gradians.
 	 */
-	float get_gradians() const;
+	float get_gradians() const noexcept;
 
 	/**
 	 *	\brief Sets the angle value in degrees
@@ -129,7 +121,7 @@ public:
 	 *	Can be used to change the angle value.
 	 *	\param degrees A new angle value in degrees.
 	 */
-	void set_degrees(float degrees);
+	void set_degrees(float degrees) noexcept;
 
 	/**
 	 *	\brief Sets the angle value in radians
@@ -137,7 +129,7 @@ public:
 	 *	Can be used to change the angle value.
 	 *	\param radians A new angle value in radians.
 	 */
-	void set_radians(float radians);
+	void set_radians(float radians) noexcept;
 
 	/**
 	 *	\brief Sets the angle value in gradians
@@ -145,7 +137,7 @@ public:
 	 *	Can be used to change the angle value.
 	 *	\param radians A new angle value in gradians.
 	 */
-	void set_gradians(float gradians);
+	void set_gradians(float gradians) noexcept;
 
 	/**
 	 *	\brief Adjusts an angle value in order for it to be inside [0, 360) degrees
@@ -172,7 +164,7 @@ public:
 	 *	\endcode
 	 *	\return A reference to itself.
 	 */
-	Angle& normalize_360();
+	Angle& normalize_360() noexcept;
 
 	/**
 	 *	\brief Adjusts an angle value in order for it to be inside (-180, 180] degrees
@@ -199,7 +191,7 @@ public:
 	 *	\endcode
 	 *	\return A reference to itself.
 	 */
-	Angle& normalize_180();
+	Angle& normalize_180() noexcept;
 
 	/**
 	 *	\brief An angle with value inside [0, 360) degrees
@@ -227,7 +219,7 @@ public:
 	 *	\endcode
 	 *	\return A normalized angle.
 	 */
-	const Angle get_normalized_360() const;
+	const Angle get_normalized_360() const noexcept;
 
 	/**
 	 *	\brief An angle with value inside (-180, 180] degrees.
@@ -255,7 +247,7 @@ public:
 	 *	\endcode
 	 *	\return A normalized angle.
 	 */
-	const Angle get_normalized_180() const;
+	const Angle get_normalized_180() const noexcept;
 
 	/**
 	 *	\brief An absolute value of the angle
@@ -264,7 +256,7 @@ public:
 	 *	you get the angle with positive value.
 	 *	\return An absolute value of the angle.
 	 */
-	const Angle abs() const;
+	const Angle abs() const noexcept;
 
 			/* OPERATORS */
 
@@ -279,19 +271,7 @@ public:
 	 *	\param angle An angle that will be copied.
 	 *	\return A reference to itself.
 	 */
-	Angle& operator=(const Angle& angle);
-
-	/**
-	 *	\brief Moves the angle value
-	 *
-	 *	Moves the angle value. Returns itself, so you can use constructions like this:
-	 *	\code
-	 *		angle1 = angle2 = 50_deg;
-	 *	\endcode
-	 *	\param angle An r-value reference to an angle whose value will be moved.
-	 *	\return A reference to itself.
-	 */
-	Angle& operator=(Angle&& angle);
+	Angle& operator=(const Angle& angle) noexcept;
 	
 	/**
 	 *	\brief Returns itself
@@ -305,7 +285,7 @@ public:
 	 *	information.
 	 *	\return A copy of itself.
 	 */
-	const Angle operator+() const;
+	const Angle operator+() const noexcept;
 
 	/**
 	 *	\brief Returns an angle with opposite sign
@@ -317,7 +297,7 @@ public:
 	 *	\endcode
 	 *	\return An angle with opposite sign.
 	 */
-	const Angle operator-() const;
+	const Angle operator-() const noexcept;
 
 	/**
 	 *	\brief Adds angles
@@ -326,7 +306,7 @@ public:
 	 *	\param angle A second summand.
 	 *	\return The sum of two angles.
 	 */
-	const Angle operator+(const Angle& angle) const;
+	const Angle operator+(const Angle& angle) const noexcept;
 
 	/**
 	 *	\brief Subtracts angles
@@ -335,7 +315,7 @@ public:
 	 *	\param angle A subtrahend.
 	 *	\return The difference of two angles.
 	 */
-	const Angle operator-(const Angle& angle) const;
+	const Angle operator-(const Angle& angle) const noexcept;
 
 	/**
 	 *	\brief Multiplies the angle and a number
@@ -344,7 +324,7 @@ public:
 	 *	\param value A multiplier.
 	 *	\return The product of the angle and a number.
 	 */
-	const Angle operator*(float value) const;
+	const Angle operator*(float value) const noexcept;
 
 	/**
 	 *	\brief Multiplies a number and an angle
@@ -354,7 +334,7 @@ public:
 	 *	\param angle An angle.
 	 *	\return The product of a number and an angle.
 	 */
-	friend const Angle operator*(float value, const Angle& angle);
+	friend const Angle operator*(float value, const Angle& angle) noexcept;
 
 	/**
 	 *	\brief Divides the angle by a number
@@ -362,6 +342,7 @@ public:
 	 *	Allows to get the quotient of the angle and a number.
 	 *	\param value A divisor.
 	 *	\return The quotient of the angle and a number.
+	 *	\throw std::domain_error Value is equal to zero.
 	 */
 	const Angle operator/(float value) const;
 
@@ -377,7 +358,7 @@ public:
 	 *	\param angle A summand.
 	 *	\return A reference to itself.
 	 */
-	Angle& operator+=(const Angle& angle);
+	Angle& operator+=(const Angle& angle) noexcept;
 
 	/**
 	 *	\brief Subtracts a passed angle from itself
@@ -391,7 +372,7 @@ public:
 	 *	\param angle A subtrahend.
 	 *	\return A reference to itself.
 	 */
-	Angle& operator-=(const Angle& angle);
+	Angle& operator-=(const Angle& angle) noexcept;
 	
 	/**
 	 *	\brief Multiplies itself by a passed number
@@ -405,7 +386,7 @@ public:
 	 *	\param angle A multiplier.
 	 *	\return A reference to itself.
 	 */
-	Angle& operator*=(float value);
+	Angle& operator*=(float value) noexcept;
 
 	/**
 	 *	\brief Divides itself by a passed number
@@ -418,6 +399,7 @@ public:
 	 *	\endcode
 	 *	\param angle A divisor.
 	 *	\return A reference to itself.
+	 *	\throw std::domain_error Value is equal to zero.
 	 */
 	Angle& operator/=(float value);
 
@@ -438,7 +420,7 @@ public:
 	 *	\param angle An angle to compare.
 	 *	\return `true` if angles are equal, `false` otherwise.
 	 */
-	bool operator==(const Angle& angle) const;
+	bool operator==(const Angle& angle) const noexcept;
 
 	/**
 	 *	\brief Checks whether two angles are different
@@ -461,7 +443,7 @@ public:
 	 *	\param angle An angle to compare.
 	 *	\return `true` if angles are not equal, `false` otherwise.
 	 */
-	bool operator!=(const Angle& angle) const;
+	bool operator!=(const Angle& angle) const noexcept;
 
 	/**
 	 *	\brief Checks whether the angle is less than a passed one
@@ -484,7 +466,7 @@ public:
 	 *	\param angle An angle to compare.
 	 *	\return `true` if the angle is less than a passed one, `false` otherwise.
 	 */
-	bool operator<(const Angle& angle) const;
+	bool operator<(const Angle& angle) const noexcept;
 
 	/**
 	 *	\brief Checks whether the angle is greater than a passed one
@@ -508,7 +490,7 @@ public:
 	 *	\param angle An angle to compare.
 	 *	\return `true` if the angle is greater than a passed one, `false` otherwise.
 	 */
-	bool operator>(const Angle& angle) const;
+	bool operator>(const Angle& angle) const noexcept;
 
 	/**
 	 *	\brief Checks whether the angle is less than or equal to a passed one
@@ -532,7 +514,7 @@ public:
 	 *	\param angle An angle to compare.
 	 *	\return `true` if the angle is less than or equal to a passed one, `false` otherwise.
 	 */
-	bool operator<=(const Angle& angle) const;
+	bool operator<=(const Angle& angle) const noexcept;
 
 	/**
 	 *	\brief Checks whether the angle is greater than or equal to a passed one
@@ -556,7 +538,7 @@ public:
 	 *	\param angle An angle to compare.
 	 *	\return `true` if the angle is greater than or equal to a passed one, `false` otherwise.
 	 */
-	bool operator>=(const Angle& angle) const;
+	bool operator>=(const Angle& angle) const noexcept;
 		
 			/* LITERALS */
 
@@ -575,7 +557,7 @@ public:
 	 *	\param degrees A value in degrees.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _deg(long double degrees);
+	friend Angle operator"" _deg(long double degrees) noexcept;
 
 	/**
 	 *	\brief Literal for degrees
@@ -592,7 +574,7 @@ public:
 	 *	\param degrees A value in degrees.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _deg(unsigned long long degrees);
+	friend Angle operator"" _deg(unsigned long long degrees) noexcept;
 
 	/**
 	 *	\brief Literal for radians
@@ -609,7 +591,7 @@ public:
 	 *	\param radians A value in radians.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _rad(long double radians);
+	friend Angle operator"" _rad(long double radians) noexcept;
 
 	/**
 	 *	\brief Literal for radians
@@ -626,7 +608,7 @@ public:
 	 *	\param radians A value in radians.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _rad(unsigned long long radians);
+	friend Angle operator"" _rad(unsigned long long radians) noexcept;
 
 	/**
 	 *	\brief Literal for gradians
@@ -643,7 +625,7 @@ public:
 	 *	\param gradians A value in gradians.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _grad(long double gradians);
+	friend Angle operator"" _grad(long double gradians) noexcept;
 
 	/**
 	 *	\brief Literal for gradians
@@ -660,7 +642,7 @@ public:
 	 *	\param gradians A value in gradians.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _grad(unsigned long long gradians);
+	friend Angle operator"" _grad(unsigned long long gradians) noexcept;
 
 			/* CONSTANTS */
 
@@ -689,12 +671,12 @@ private:
 	float value_deg_;
 };
 
-Angle operator"" _deg(long double degrees);
-Angle operator"" _deg(unsigned long long degrees);
-Angle operator"" _rad(long double radians);
-Angle operator"" _rad(unsigned long long radians);
-Angle operator"" _grad(long double gradians);
-Angle operator"" _grad(unsigned long long gradians);
+Angle operator"" _deg(long double degrees) noexcept;
+Angle operator"" _deg(unsigned long long degrees) noexcept;
+Angle operator"" _rad(long double radians) noexcept;
+Angle operator"" _rad(unsigned long long radians) noexcept;
+Angle operator"" _grad(long double gradians) noexcept;
+Angle operator"" _grad(unsigned long long gradians) noexcept;
 
 }
 

@@ -35,7 +35,7 @@ public:
 	 *	The virtual method that creates a string from the object.
 	 *	\return A string.
 	 */
-	virtual const std::string to_string() const = 0;
+	virtual const std::string to_string() const noexcept = 0;
 
 	/**
 	 *	\brief Allows to get hash code of the object
@@ -44,7 +44,7 @@ public:
 	 *	but two different objects can also have the same hash.
 	 *	\return Hash code of the object.
 	 */
-	virtual int hash_code() const = 0;
+	virtual int hash_code() const noexcept = 0;
 };
 
 }

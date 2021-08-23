@@ -12,29 +12,29 @@ using namespace snow;
 
 const float math::PI = 3.1415926f;
 
-int math::round(float value)
+int math::round(float value) noexcept
 {
 	return static_cast<int>(value >= 0 ? value + .5f : value - .5f);
 }
 
-int math::floor(float value)
+int math::floor(float value) noexcept
 {
 	int int_value = static_cast<int>(value);
 	return (value == static_cast<float>(int_value) || value >= 0.f) ? int_value : int_value - 1;
 }
 
-int math::ceil(float value)
+int math::ceil(float value) noexcept
 {
 	int int_value = static_cast<int>(value);
 	return (value == static_cast<float>(int_value) || value <= 0.f) ? int_value : int_value + 1;
 }
 
-int math::abs(int value)
+int math::abs(int value) noexcept
 {
 	return value >= 0 ? value : -value;
 }
 
-float math::abs(float value)
+float math::abs(float value) noexcept
 {
 	return value >= 0.f ? value : -value;
 }
