@@ -146,7 +146,7 @@ public:
 	 *	\brief Change the internal size of the map
 	 *	
 	 *	Changes the internal size without changing number of elements. Might work slowly. After
-	 *	executing this method all iterators will continue pointing to their elements but the map
+	 *	executing this method all iterators will continue to point to their elements but the map
 	 *	traversal order will be changed.
 	 *	\param new_size The new internal size.
 	 */

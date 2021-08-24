@@ -134,7 +134,7 @@ public:
 	 *	
 	 *	Increases or decreases the array size. If a new size is more than an old one, a formed
 	 *	space will be filled with default elements (`nullptr`s for pointers, default constructor
-	 *	otherwise). In this case end iterators will be moved in order to continue being end. If a
+	 *	otherwise). In this case end iterators will be moved in order to continue to be end. If a
 	 *	new size is less than an old one, the last elements that didn't fit in the array will be
 	 *	removed. Iterators pointing to removed elements become end (`is_end()` is true).
 	 *	\param new_size The new array size.
@@ -147,7 +147,7 @@ public:
 	 *	\brief Add a new element
 	 *	
 	 *	Inserts a new element into the end of the array. If there are iterators that points to the
-	 *	end (`is_end()` is true), they will continue being end after executing this method.
+	 *	end (`is_end()` is true), they will continue to be end after executing this method.
 	 *	\param element The element that will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
 	 */
@@ -157,7 +157,7 @@ public:
 	 *	\brief Add a new element
 	 *
 	 *	Inserts a new element into the end of the array. If there are iterators that points to the
-	 *	end (`is_end()` is true), they will continue being end after executing this method.
+	 *	end (`is_end()` is true), they will continue to be end after executing this method.
 	 *	\param element The element that will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
 	 */
@@ -168,7 +168,7 @@ public:
 	 *	
 	 *	Inserts a new element into the array. The new element will have the passed index. Moves the
 	 *	subsequent elements towards the end of the array. The iterators will also be moved and
-	 *	continue pointing to their elements.
+	 *	continue to point to their elements.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
 	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
@@ -181,7 +181,7 @@ public:
 	 *	
 	 *	Inserts a new element into the array. The new element will have the passed index. Moves the
 	 *	subsequent elements towards the end of the array. The iterators will also be moved and
-	 *	continue pointing to their elements.
+	 *	continue to point to their elements.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
 	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
@@ -193,7 +193,7 @@ public:
 	 *	\brief Add into the array copies of elements of the passed array
 	 *	
 	 *	Inserts into the end of the array copies of elements of the passed array. If there are
-	 *	iterators that points to the end (`is_end()` is true), they will continue being end after
+	 *	iterators that points to the end (`is_end()` is true), they will continue to be end after
 	 *	executing this method.
 	 *	\param array The array whose elements will be added.
 	 *	\return The number of elements that have been successfully added.
@@ -204,7 +204,7 @@ public:
 	 *	\brief Move into the array elements of the passed array
 	 *
 	 *	Moves into the end of the array elements of the passed array. If there are iterators that
-	 *	points to the end (`is_end()` is true), they will continue being end after executing this
+	 *	points to the end (`is_end()` is true), they will continue to be end after executing this
 	 *	method.
 	 *	\param array The array whose elements will be moved.
 	 *	\return The number of elements that have been successfully added.
@@ -215,19 +215,19 @@ public:
 	 *	\brief Remove an element with the passed index
 	 *	
 	 *	Removes element that has the passed index. The subsequent elements are moved and fill
-	 *	a formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	a formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed element will point to the next element after executing this method.
 	 *	\param index The index of an element that will be removed.
 	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
 	 *	the index is out of the array bounds).
 	 */
-	virtual bool remove(int index);
+	bool remove(int index);
 
 	/**
 	 *	\brief Remove an element by iterator
 	 *	
 	 *	Removes an element that the iterator points to. The subsequent elements are moved and fill
-	 *	a formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	a formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed element will point to the next element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
 	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
@@ -239,7 +239,7 @@ public:
 	 *	\brief Remove an element by iterator
 	 *	
 	 *	Removes an element that the iterator points to. The subsequent elements are moved and fill
-	 *	a formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	a formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed element will point to the next element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
 	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
@@ -251,7 +251,7 @@ public:
 	 *	\brief Remove elements in the passed range
 	 *	
 	 *	Removes elements that are in the passed range. The subsequent elements are moved and fill a
-	 *	formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed elements will point to the next element after executing this method.
 	 *	\param from The beginning of range that will be removed.
 	 *	\param to The index of an element after the last element in the range that will be removed.
@@ -264,7 +264,7 @@ public:
 	 *	\brief Remove elements in the passed range
 	 *
 	 *	Removes elements that are in the passed range. The subsequent elements are moved and fill a
-	 *	formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed elements will point to the next element after executing this method.
 	 *	\param from The iterator pointing to the first element that will be removed.
 	 *	\param to The iterator pointing after the last element that will be removed. This element
@@ -277,7 +277,7 @@ public:
 	 *	\brief Remove elements in the passed range
 	 *
 	 *	Removes elements that are in the passed range. The subsequent elements are moved and fill a
-	 *	formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed elements will point to the next element after executing this method.
 	 *	\param from The iterator pointing to the first element that will be removed.
 	 *	\param to The iterator pointing after the last element that will be removed. This element
@@ -287,41 +287,63 @@ public:
 	int remove(const ConstArrayIterator<T>& from, const ConstArrayIterator<T>& to);
 
 	/**
+	 *	\brief Remove any element that is equal to the passed one
+	 *
+	 *	Compares elements of the array with the passed one and removes any match. All iterators
+	 *	will continue to point to their elements. Iterators that pointed to the removed element
+	 *	will point to the next element after executing this method.
+	 *	\param element The object to compare.
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
+	 *	array doesn't contain the passed object).
+	 */
+	bool remove_any(const T& element);
+
+	/**
 	 *	\brief Remove the first element that is equal to the passed one
 	 *	
 	 *	Compares elements of the array with the passed one starting from the beginning and
-	 *	removes the first match. All iterators will continue pointing to their elements. Iterators
+	 *	removes the first match. All iterators will continue to point to their elements. Iterators
 	 *	that pointed to the removed element will point to the next element after executing this
 	 *	method.
 	 *	\param element The object to compare.
 	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
 	 *	array doesn't contain the passed object).
 	 */
-	virtual bool remove_first(const T& element);
+	bool remove_first(const T& element);
 
 	/**
 	 *	\brief Remove the last element that is equal to the passed one
 	 *	
 	 *	Compares elements of the array with the passed one starting from the end and removes
-	 *	the first match. All iterators will continue pointing to their elements. Iterators that 
+	 *	the first match. All iterators will continue to point to their elements. Iterators that 
 	 *	that pointed to the removed element will point to the next element after executing this
 	 *	method.
 	 *	\param element The object to compare.
 	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
 	 *	array doesn't contain the passed object).
 	 */
-	virtual bool remove_last(const T& element);
+	bool remove_last(const T& element);
 
 	/**
 	 *	\brief Remove all elements that are equal to the passed one
 	 *	
 	 *	Compares all elements of the array with the passed one and removes all matches. All
-	 *	iterators will continue pointing to their elements. Iterators that pointed to the removed
+	 *	iterators will continue to point to their elements. Iterators that pointed to the removed
 	 *	elements will point to the next element after executing this method.
 	 *	\param element The object to compare.
 	 *	\return Number of elements that have been successfully removed.
 	 */
 	virtual int remove_all(const T& element) override;
+
+	/**
+	 *	\brief Find any element that is equal to the passed one
+	 *	
+	 *	Compares elements of the array with the passed one. If any match is found, returns its
+	 *	index.
+	 *	\param element The desired element.
+	 *	\return An index of a match; a negative value if no match has been found.
+	 */
+	virtual int find_any(const T& element) const;
 
 	/**
 	 *	\brief Find the first element that is equal to the passed one
@@ -516,6 +538,8 @@ private:
 	int size_;
 	std::unique_ptr<T[]> array_;
 
+	bool add_to_end_(const T& element);
+	bool add_to_end_(T&& element);
 	void check_real_size_to_add_(int required_size);
 
 	mutable std::list<ArrayIterator<T>*> iterators_;
@@ -732,7 +756,7 @@ bool Array<T>::add(const T& element, int index)
 	{
 		if (index == size_)
 		{
-			return add(element);
+			return add_to_end_(element);
 		}
 		else
 		{
@@ -767,7 +791,7 @@ bool Array<T>::add(T&& element, int index)
 	{
 		if (index == size_)
 		{
-			return add(std::forward<T>(element));
+			return add_to_end_(std::forward<T>(element));
 		}
 		else
 		{
@@ -914,6 +938,12 @@ int Array<T>::remove(const ConstArrayIterator<T>& from, const ConstArrayIterator
 }
 
 template<typename T>
+bool Array<T>::remove_any(const T& element)
+{
+	return remove(find_any(element));
+}
+
+template<typename T>
 bool Array<T>::remove_first(const T& element)
 {
 	return remove(find_first(element));
@@ -952,6 +982,12 @@ int Array<T>::remove_all(const T& element)
 		}
 	}
 	return 0;
+}
+
+template<typename T>
+int Array<T>::find_any(const T& element) const
+{
+	return find_first(element);
 }
 
 template<typename T>
@@ -1156,6 +1192,18 @@ template<typename T>
 ConstArrayIterator<T> Array<T>::iterator_to_const(const ArrayIterator<T>& iterator) noexcept
 {
 	return ConstArrayIterator<T>(iterator.container_, iterator.index_, iterator.is_valid_);
+}
+
+template<typename T>
+bool Array<T>::add_to_end_(const T& element)
+{
+	return Array<T>::add(element);
+}
+
+template<typename T>
+bool Array<T>::add_to_end_(T&& element)
+{
+	return Array<T>::add(std::forward<T>(element));
 }
 
 template<typename T>

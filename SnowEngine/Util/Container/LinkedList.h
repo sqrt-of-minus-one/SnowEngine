@@ -178,7 +178,7 @@ public:
 	 *	\brief Add a new element
 	 *
 	 *	Inserts a new element into the end of the linked list. If there are iterators that points
-	 *	to the end (`is_end()` is true), they will continue being end after executing this method.
+	 *	to the end (`is_end()` is true), they will continue to be end after executing this method.
 	 *	\param element The element that will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
 	 */
@@ -188,7 +188,7 @@ public:
 	 *	\brief Add a new element
 	 *
 	 *	Inserts a new element into the end of the linked list. If there are iterators that points
-	 *	to the end (`is_end()` is true), they will continue being end after executing this method.
+	 *	to the end (`is_end()` is true), they will continue to be end after executing this method.
 	 *	\param element The element that will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
 	 */
@@ -300,7 +300,7 @@ public:
 	 *	\brief Remove an element with the passed index
 	 *
 	 *	Removes element that has the passed index. The subsequent elements are moved and fill
-	 *	a formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	a formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed element will point to the next element after executing this method.
 	 *	It is fasted to do it using an iterator if you have one.
 	 *	\param index The index of an element that will be removed.
@@ -313,7 +313,7 @@ public:
 	 *	\brief Remove an element by an iterator
 	 *	
 	 *	Removes element that the passed iterator points to. The subsequent elements are moved and
-	 *	fill a formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	fill a formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed element (including the passed one) will point to the next element
 	 *	after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
@@ -326,7 +326,7 @@ public:
 	 *	\brief Remove an element by an iterator
 	 *
 	 *	Removes element that the passed iterator points to. The subsequent elements are moved and
-	 *	fill a formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	fill a formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed element (including the passed one) will point to the next element
 	 *	after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
@@ -339,7 +339,7 @@ public:
 	 *	\brief Remove elements in the passed range
 	 *
 	 *	Removes elements that are in the passed range. The subsequent elements are moved and fill a
-	 *	formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed elements will point to the next element after executing this method.
 	 *	It is faster to do this using iterators if you have them.
 	 *	\param from The beginning of range that will be removed.
@@ -353,7 +353,7 @@ public:
 	 *	\brief Remove elements in the passed range
 	 *
 	 *	Removes elements that are in the passed range. The subsequent elements are moved and fill a
-	 *	formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed elements will point to the next element after executing this method.
 	 *	\param from The iterator pointing to the first element that will be removed.
 	 *	\param to The iterator pointing after the last element that will be removed. This element
@@ -366,7 +366,7 @@ public:
 	 *	\brief Remove elements in the passed range
 	 *
 	 *	Removes elements that are in the passed range. The subsequent elements are moved and fill a
-	 *	formed space. All iterators will continue pointing to their elements. Iterators that
+	 *	formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed elements will point to the next element after executing this method.
 	 *	\param from The iterator pointing to the first element that will be removed.
 	 *	\param to The iterator pointing after the last element that will be removed. This element
@@ -379,7 +379,7 @@ public:
 	 *	\brief Remove the first element that is equal to the passed one
 	 *
 	 *	Compares elements of the linked list with the passed one starting from the beginning and
-	 *	removes the first match. All iterators will continue pointing to their elements. Iterators
+	 *	removes the first match. All iterators will continue to point to their elements. Iterators
 	 *	that pointed to the removed element will point to the next element after executing this
 	 *	method.
 	 *	\param element The object to compare.
@@ -392,7 +392,7 @@ public:
 	 *	\brief Remove the last element that is equal to the passed one
 	 *
 	 *	Compares elements of the linked list with the passed one starting from the end and removes
-	 *	the first match. All iterators will continue pointing to their elements. Iterators that
+	 *	the first match. All iterators will continue to point to their elements. Iterators that
 	 *	that pointed to the removed element will point to the next element after executing this
 	 *	method.
 	 *	\param element The object to compare.
@@ -405,7 +405,7 @@ public:
 	 *	\brief Remove all elements that are equal to the passed one
 	 *
 	 *	Compares all elements of the linked list with the passed one and removes all matches. All
-	 *	iterators will continue pointing to their elements. Iterators that pointed to the removed
+	 *	iterators will continue to point to their elements. Iterators that pointed to the removed
 	 *	elements will point to the next element after executing this method.
 	 *	\param element The object to compare.
 	 *	\return Number of elements that have been successfully removed.
