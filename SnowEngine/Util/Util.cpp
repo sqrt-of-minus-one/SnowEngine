@@ -8,22 +8,22 @@
 
 using namespace snow;
 
-const std::string util::to_string(int var) noexcept
+std::string util::to_string(int var) noexcept
 {
 	return std::to_string(var);
 }
 
-const std::string util::to_string(float var) noexcept
+std::string util::to_string(float var) noexcept
 {
 	return std::to_string(var);
 }
 
-const std::string util::to_string(char var) noexcept
+std::string util::to_string(char var) noexcept
 {
 	return { var };
 }
 
-const std::string util::to_string(bool var) noexcept
+std::string util::to_string(bool var) noexcept
 {
 	return var ? "true" : "false";
 }

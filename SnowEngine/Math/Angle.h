@@ -78,7 +78,7 @@ public:
 	 *	Creates a string with format `<val>_deg`, where `<val>` is the angle value in degrees.
 	 *	\return A string with the angle value.
 	 */
-	virtual const std::string to_string() const noexcept override;
+	virtual std::string to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the angle

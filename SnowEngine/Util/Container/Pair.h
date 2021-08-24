@@ -83,7 +83,7 @@ public:
 	 *	method.
 	 *	\return A result string.
 	 */
-	virtual const std::string to_string() const noexcept override;
+	virtual std::string to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the pair
@@ -230,7 +230,7 @@ Pair<T_First, T_Second>::Pair(T_First&& first, T_Second&& second) :
 {}
 
 template<typename T_First, typename T_Second>
-const std::string Pair<T_First, T_Second>::to_string() const noexcept
+std::string Pair<T_First, T_Second>::to_string() const noexcept
 {
 	return "[" + util::to_string(first_) + ": " + util::to_string(second_) + "]";
 }

@@ -28,7 +28,7 @@ namespace util
  *	\param var Integer that will be converted to string.
  *	\return A string that contains the passed integer.
  */
-const std::string to_string(int var) noexcept;
+std::string to_string(int var) noexcept;
 
 /**
  *	\brief `float` to string
@@ -37,7 +37,7 @@ const std::string to_string(int var) noexcept;
  *	\param var Float that will be converted to string.
  *	\return A string that contains the passed float.
  */
-const std::string to_string(float var) noexcept;
+std::string to_string(float var) noexcept;
 
 /**
  *	\brief `char` to string
@@ -46,7 +46,7 @@ const std::string to_string(float var) noexcept;
  *	\param var Character that will be converted to string.
  *	\return A string that contains the passed character.
  */
-const std::string to_string(char var) noexcept;
+std::string to_string(char var) noexcept;
 
 /**
  *	\brief `bool` to string
@@ -55,7 +55,7 @@ const std::string to_string(char var) noexcept;
  *	\param var Boolean that will be converted to string.
  *	\return `"true"` if the passed value is true, `"false"` otherwise.
  */
-const std::string to_string(bool var) noexcept;
+std::string to_string(bool var) noexcept;
 
 /**
  *	\brief Pointer to string
@@ -65,7 +65,7 @@ const std::string to_string(bool var) noexcept;
  *	\return `"NULL"` if the pointer is null, `util::to_string(*var)` otherwise.
  */
 template<typename T>
-const std::string to_string(T* var) noexcept;
+std::string to_string(T* var) noexcept;
 
 /**
  *	\brief Object to string
@@ -76,7 +76,7 @@ const std::string to_string(T* var) noexcept;
  *	\return Result of object's `to_string()` method.
  */
 template<typename T>
-const std::string to_string(T var) noexcept;
+std::string to_string(T var) noexcept;
 
 /**
  *	\brief Hash code of `int`
@@ -142,7 +142,7 @@ int hash_code(T var) noexcept;
 		/* DEFINITIONS */
 
 template<typename T>
-const std::string util::to_string(T* var) noexcept
+std::string util::to_string(T* var) noexcept
 {
 	if (var)
 	{
@@ -155,7 +155,7 @@ const std::string util::to_string(T* var) noexcept
 }
 
 template<typename T>
-const std::string util::to_string(T var) noexcept
+std::string util::to_string(T var) noexcept
 {
 	return var.to_string();
 }

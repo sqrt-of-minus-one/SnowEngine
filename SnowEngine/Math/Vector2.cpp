@@ -29,7 +29,7 @@ Vector2::Vector2(float x, float y) noexcept :
 	y_(y)
 {}
 
-const std::string Vector2::to_string() const noexcept
+std::string Vector2::to_string() const noexcept
 {
 	return "{" + std::to_string(x_) + ", " + std::to_string(y_) + "}";
 }

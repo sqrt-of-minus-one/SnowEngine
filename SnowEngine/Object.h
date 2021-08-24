@@ -35,7 +35,7 @@ public:
 	 *	The virtual method that creates a string from the object.
 	 *	\return A string.
 	 */
-	virtual const std::string to_string() const noexcept = 0;
+	virtual std::string to_string() const noexcept = 0;
 
 	/**
 	 *	\brief Allows to get hash code of the object

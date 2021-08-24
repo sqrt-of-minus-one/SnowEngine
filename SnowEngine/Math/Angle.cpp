@@ -24,7 +24,7 @@ Angle::Angle(float degrees) noexcept :
 	value_deg_(degrees)
 {}
 
-const std::string Angle::to_string() const noexcept
+std::string Angle::to_string() const noexcept
 {
 	return std::to_string(value_deg_) + "_deg";
 }

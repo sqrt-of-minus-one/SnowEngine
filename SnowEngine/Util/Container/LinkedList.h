@@ -101,7 +101,7 @@ public:
 	 *	used to convert elements to string.
 	 *	\return A result string in the format `"{ x, x, ..., x }"`. `"{ }"` if the list is empty.
 	 */
-	virtual const std::string to_string() const noexcept override;
+	virtual std::string to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the linked list
@@ -715,7 +715,7 @@ LinkedList<T>::~LinkedList() noexcept
 }
 
 template<typename T>
-const std::string LinkedList<T>::to_string() const noexcept
+std::string LinkedList<T>::to_string() const noexcept
 {
 	if (is_empty())
 	{

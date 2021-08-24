@@ -45,7 +45,7 @@ Vector3::Vector3(float x, float y, float z) noexcept :
 	z_(z)
 {}
 
-const std::string Vector3::to_string() const noexcept
+std::string Vector3::to_string() const noexcept
 {
 	return "{" + std::to_string(x_) + ", " + std::to_string(y_) + ", " + std::to_string(z_) + "}";
 }

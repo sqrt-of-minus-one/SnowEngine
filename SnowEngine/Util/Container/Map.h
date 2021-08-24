@@ -100,7 +100,7 @@ public:
 	 *	\return A result string in the format `"{ [k: v], [k: v], ..., [k: v] }"` (`k` is key, `v`
 	 *	is value). `"{ }"` if the map is empty.
 	 */
-	virtual const std::string to_string() const noexcept override;
+	virtual std::string to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the map
@@ -573,7 +573,7 @@ Map<T_Key, T_Value>::~Map() noexcept
 }
 
 template<typename T_Key, typename T_Value>
-const std::string Map<T_Key, T_Value>::to_string() const noexcept
+std::string Map<T_Key, T_Value>::to_string() const noexcept
 {
 	if (size_ <= 0)
 	{

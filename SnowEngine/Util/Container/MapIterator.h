@@ -76,7 +76,7 @@ public:
 	 *	\endcode
 	 *	\return A result string.
 	 */
-	virtual const std::string to_string() const noexcept override;
+	virtual std::string to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of an element of the iterator
@@ -319,7 +319,7 @@ BaseMapIterator_<T_Container, T_Key, T_Value>::~BaseMapIterator_() noexcept
 }
 
 template<typename T_Container, typename T_Key, typename T_Value>
-const std::string BaseMapIterator_<T_Container, T_Key, T_Value>::to_string() const noexcept
+std::string BaseMapIterator_<T_Container, T_Key, T_Value>::to_string() const noexcept
 {
 	return util::to_string(get());
 }

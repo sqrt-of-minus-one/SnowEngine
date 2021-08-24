@@ -81,7 +81,7 @@ public:
 	 *	\endcode
 	 *	\return A result string.
 	 */
-	virtual const std::string to_string() const noexcept override;
+	virtual std::string to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of an element of the iterator
@@ -336,7 +336,7 @@ BaseLinkedListIterator_<T_Container, T_Element, T_Node>::~BaseLinkedListIterator
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-const std::string BaseLinkedListIterator_<T_Container, T_Element, T_Node>::to_string() const noexcept
+std::string BaseLinkedListIterator_<T_Container, T_Element, T_Node>::to_string() const noexcept
 {
 	return util::to_string(get());
 }
