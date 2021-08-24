@@ -2,11 +2,13 @@
 #include <conio.h>
 
 #include "Util/Container/SortedArray.h"
+#include "Util/Container/Map.h"
 
 #define PRINT std::cout << sarray.to_string() << std::endl
 
 int main()
 {
+	snow::Map<int, int> map;
 	snow::Array<int> array;
 
 	array.add(8);

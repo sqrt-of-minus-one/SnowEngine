@@ -15,6 +15,7 @@
 
 #include <list>
 
+#include "Array.h"
 #include "MapIterator.h"
 #include "Pair.h"
 
@@ -643,20 +644,23 @@ void Map<T_Key, T_Value>::clear() noexcept
 template<typename T_Key, typename T_Value>
 void Map<T_Key, T_Value>::resize(int new_size)
 {
-	Array<Pair<T_Key, T_Value>> pairs(size_);
-	for (auto& i : map_)
+	if (internal_size_ != new_size)
 	{
-		for (auto& j : i)
+		Array<Pair<T_Key, T_Value>> pairs(size_);
+		for (auto& i : map_)
 		{
-			pairs.add(std::move(j));
+			for (auto& j : i)
+			{
+				pairs.add(std::move(j));
+			}
 		}
-	}
-	internal_size_ = new_size;
-	map_.clear();
-	map_.resize(new_size);
-	for (const auto& i : pairs)
-	{
-		add(std::move(i));
+		internal_size_ = new_size;
+		map_.clear();
+		map_.resize(new_size);
+		for (const auto& i : pairs)
+		{
+			add(std::move(i));
+		}
 	}
 }
 
@@ -1090,8 +1094,9 @@ bool Map<T_Key, T_Value>::operator==(const Map<T_Key, T_Value>& map) const
 {
 	if (size_ == map.size_)
 	{
-		// Todo: use sorted container
-		return true;
+		Map<T_Key, T_Value> copy = map;
+		copy.resize(internal_size_);
+		return get_pairs() == copy.get_pairs();
 	}
 	else
 	{

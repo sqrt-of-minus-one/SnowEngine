@@ -16,8 +16,6 @@
 #include "../../Object.h"
 #include "Container.h"
 
-#include "Array.h"
-
 namespace snow
 {
 
