@@ -15,6 +15,8 @@
 
 #include "../Object.h"
 
+#include "Types/String.h"
+
 namespace snow
 {
 
@@ -114,7 +116,7 @@ public:
 	 */
 	void e(const String& message) noexcept;
 private:
-	const String& name_;
+	const String name_;
 	static bool debug_mode_;
 	static int object_counter_;
 	static std::wofstream file_;

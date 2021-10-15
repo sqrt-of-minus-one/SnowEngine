@@ -23,7 +23,7 @@ Log::Log(const String& category_name) noexcept :
 	if (!file_.is_open())
 	{
 		file_.open("Logs/Log.log", std::ios_base::trunc);
-		file_ << L"[" << get_time_string_() << L"][Logging] Log file is opened" << std::endl;
+		file_ << String::format(L"[%s][Logging] Log file is opened"_s, get_time_string_()) << std::endl;
 	}
 }
 
@@ -31,7 +31,7 @@ Log::~Log() noexcept
 {
 	if (--object_counter_ <= 0 && file_.is_open())
 	{
-		file_ << L"[" << get_time_string_() << L"][Logging] Log file is closed" << std::endl;
+		file_ << String::format(L"[%s][Logging] Log file is closed"_s, get_time_string_()) << std::endl;
 		file_.close();
 	}
 }
@@ -43,14 +43,7 @@ String Log::to_string() const noexcept
 
 int Log::hash_code() const noexcept
 {
-	int hash = 0;
-	int one = 1;
-	for (wchar_t i : name_)
-	{
-		hash += one * static_cast<int>(i);
-		one *= -1;
-	}
-	return hash;
+	return name_.hash_code();
 }
 
 void Log::enable_debug_mode() noexcept
@@ -96,14 +89,14 @@ String Log::get_time_string_() noexcept
 	// It's temporary
 	std::time_t current_time = std::time(nullptr);
 	std::tm time = *std::localtime(&current_time);
-	return String::format(L"%d.%d.%d-%d:%d:%d"_s,
+	return String::format(L"%04d.%02d.%02d-%02d:%02d:%02d"_s,
 		time.tm_year + 1900, time.tm_mon + 1, time.tm_mday,
 		time.tm_hour, time.tm_min, time.tm_sec);
 }
 
 void Log::log_(const String& type, const String& message) noexcept
 {
-	String time_str = L"["_s + get_time_string_() + L"]"_s;
+	String time_str = String::format(L"[%s]"_s, get_time_string_());
 
 	file_ << time_str << type << name_ << ": " << message << std::endl;
 	std::wcout << time_str << type << name_ << ": " << message << std::endl;

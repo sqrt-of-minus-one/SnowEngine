@@ -103,8 +103,7 @@ int String::add(const String& string)
 
 bool String::add(wchar_t ch, int pos)
 {
-	*string_ += ch;
-	return true;
+	return add(String(ch), pos);
 }
 
 int String::add(const String& string, int pos)
@@ -940,52 +939,118 @@ String String::format(String string, ...)
 	{
 		if (string[i] == L'%')
 		{
-			if (++i >= string.size())
+			String seq = L'%';
+			bool finish = false;
+			int value = 0;
+			wchar_t char_to_fill = L' ';
+			if (string[i + 1] == L'0')
 			{
-				ret.add(L'%');
-				break;
+				char_to_fill = L'0';
+				seq += L'0';
+				i++;
 			}
-			else
+
+			for (i++; i < string.size() && !finish; i++)
 			{
+				seq += string[i];
 				switch (string[i])
 				{
+				case L'0':
+				case L'1':
+				case L'2':
+				case L'3':
+				case L'4':
+				case L'5':
+				case L'6':
+				case L'7':
+				case L'8':
+				case L'9':
+				{
+					value *= 10;
+					value += static_cast<int>(string[i] - L'0');
+					break;
+				}
 				case L'%':
 				{
-					ret.add(L'%');
+					seq = L'%';
+					finish = true;
+					break;
+				}
+				case L'b':
+				{
+					seq = util::to_string_bin(va_arg(list, int));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
 					break;
 				}
 				case L'c':
 				{
-					ret.add(va_arg(list, wchar_t));
-					break;
-				}
-				case L's':
-				{
-					ret.add(va_arg(list, String));
+					seq = va_arg(list, wchar_t);
+					finish = true;
 					break;
 				}
 				case L'd':
 				case L'i':
 				{
-					ret.add(util::to_string(va_arg(list, int)));
+					seq = util::to_string(va_arg(list, int));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
 					break;
 				}
 				case L'f':
 				{
-					ret.add(util::to_string(va_arg(list, float)));
+					seq = util::to_string(va_arg(list, float));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
+					break;
+				}
+				case L'h':
+				{
+					seq = util::to_string_hex(va_arg(list, int));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
+					break;
+				}
+				case L'o':
+				{
+					seq = util::to_string_oct(va_arg(list, int));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
+					break;
+				}
+				case L's':
+				{
+					seq = va_arg(list, String);
+					finish = true;
 					break;
 				}
 				default:
 				{
-					ret.add(L'%');
-					ret.add(string[i]);
+					finish = true;
 				}
 				}
 			}
+			ret += seq;
+			i--;
 		}
 		else
 		{
-			ret.add(string[i]);
+			ret += string[i];
 		}
 	}
 	va_end(list);
