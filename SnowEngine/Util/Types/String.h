@@ -40,6 +40,9 @@ public:
 	int remove(int from, int to);
 
 	int to_int() const;
+	int to_int_bin() const;
+	int to_int_oct() const;
+	int to_int_hex() const;
 	float to_float() const;
 	bool to_bool() const;
 

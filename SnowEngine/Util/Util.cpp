@@ -36,6 +36,83 @@ String util::to_string(int var) noexcept
 	}
 }
 
+String util::to_string_bin(int var) noexcept
+{
+	if (var == 0)
+	{
+		return String(L"0");
+	}
+	else
+	{
+		String res;
+		int a = math::abs(var);
+		while (a > 0)
+		{
+			res += static_cast<wchar_t>(static_cast<int>(L'0') + a % 2);
+			a /= 2;
+		}
+		if (var < 0)
+		{
+			res += L'-';
+		}
+		return res.reverse();
+	}
+}
+
+String util::to_string_oct(int var) noexcept
+{
+	if (var == 0)
+	{
+		return String(L"0");
+	}
+	else
+	{
+		String res;
+		int a = math::abs(var);
+		while (a > 0)
+		{
+			res += static_cast<wchar_t>(static_cast<int>(L'0') + a % 8);
+			a /= 8;
+		}
+		if (var < 0)
+		{
+			res += L'-';
+		}
+		return res.reverse();
+	}
+}
+
+String util::to_string_hex(int var) noexcept
+{
+	if (var == 0)
+	{
+		return String(L"0");
+	}
+	else
+	{
+		String res;
+		int a = math::abs(var);
+		while (a > 0)
+		{
+			int t = a % 16;
+			if (t < 10)
+			{
+				res += static_cast<wchar_t>(static_cast<int>(L'0') + t);
+			}
+			else
+			{
+				res += static_cast<wchar_t>(static_cast<int>(L'A') + t - 10);
+			}
+			a /= 16;
+		}
+		if (var < 0)
+		{
+			res += L'-';
+		}
+		return res.reverse();
+	}
+}
+
 String util::to_string(float var) noexcept
 {
 	return std::to_wstring(var);

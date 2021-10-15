@@ -113,6 +113,32 @@ int String::add(const String& string, int pos)
 	return string.size();
 }
 
+bool String::remove(int pos)
+{
+	if (pos >= 0 && pos < size())
+	{
+		string_->erase(pos, 1);
+		return true;
+	}
+	else
+	{
+		throw std::out_of_range("Character index is out of the string bounds");
+	}
+}
+
+int String::remove(int from, int to)
+{
+	if (from >= 0 && to <= size() && from < to)
+	{
+		string_->erase(from, to - from);
+		return to - from;
+	}
+	else
+	{
+		throw std::invalid_argument("An invalid range was passed");
+	}
+}
+
 int String::to_int() const
 {
 	if (!is_empty())
@@ -166,8 +192,8 @@ int String::to_int() const
 				{
 					res *= 10;
 					res += static_cast<int>(i - L'0');
-					break;
 				}
+				break;
 			}
 			case L' ':
 			case L'\'':
@@ -189,6 +215,247 @@ int String::to_int() const
 	else
 	{
 		throw std::invalid_argument("Couldn't convert a string to integer");
+	}
+}
+
+int String::to_int_bin() const
+{
+	if (!is_empty())
+	{
+		int res = 0;
+		bool is_first = true;
+		bool is_negative = false;
+		bool was_dot = false;
+		for (wchar_t i : *string_)
+		{
+			switch (i)
+			{
+			case L'-':
+			case L'–':
+			{
+				if (is_first)
+				{
+					is_negative = true;
+				}
+				else
+				{
+					throw std::invalid_argument("Couldn't convert a string to integer as binary");
+				}
+				break;
+			}
+			case L'.':
+			case L',':
+			{
+				if (!was_dot)
+				{
+					was_dot = true;
+				}
+				else
+				{
+					throw std::invalid_argument("Couldn't convert a string to integer as binary");
+				}
+				break;
+			}
+			case L'0':
+			case L'1':
+			{
+				if (!was_dot)
+				{
+					res *= 2;
+					res += static_cast<int>(i - L'0');
+				}
+				break;
+			}
+			case L' ':
+			case L'\'':
+			case L'`':
+			case L'\t':
+			{
+				// We don't need to reset is_first flag
+				continue;
+			}
+			default:
+			{
+				throw std::invalid_argument("Couldn't convert a string to integer as binary");
+			}
+			}
+			is_first = false;
+		}
+		return res;
+	}
+	else
+	{
+		throw std::invalid_argument("Couldn't convert a string to integer as binary");
+	}
+}
+
+int String::to_int_oct() const
+{
+	if (!is_empty())
+	{
+		int res = 0;
+		bool is_first = true;
+		bool is_negative = false;
+		bool was_dot = false;
+		for (wchar_t i : *string_)
+		{
+			switch (i)
+			{
+			case L'-':
+			case L'–':
+			{
+				if (is_first)
+				{
+					is_negative = true;
+				}
+				else
+				{
+					throw std::invalid_argument("Couldn't convert a string to integer as octal");
+				}
+				break;
+			}
+			case L'.':
+			case L',':
+			{
+				if (!was_dot)
+				{
+					was_dot = true;
+				}
+				else
+				{
+					throw std::invalid_argument("Couldn't convert a string to integer as octal");
+				}
+				break;
+			}
+			case L'0':
+			case L'1':
+			case L'2':
+			case L'3':
+			case L'4':
+			case L'5':
+			case L'6':
+			case L'7':
+			{
+				if (!was_dot)
+				{
+					res *= 8;
+					res += static_cast<int>(i - L'0');
+				}
+				break;
+			}
+			case L' ':
+			case L'\'':
+			case L'`':
+			case L'\t':
+			{
+				// We don't need to reset is_first flag
+				continue;
+			}
+			default:
+			{
+				throw std::invalid_argument("Couldn't convert a string to integer as octal");
+			}
+			}
+			is_first = false;
+		}
+		return res;
+	}
+	else
+	{
+		throw std::invalid_argument("Couldn't convert a string to integer as octal");
+	}
+}
+
+int String::to_int_hex() const
+{
+	if (!is_empty())
+	{
+		int res = 0;
+		bool is_first = true;
+		bool is_negative = false;
+		bool was_dot = false;
+		for (wchar_t i : *string_)
+		{
+			switch (i)
+			{
+			case L'-':
+			case L'–':
+			{
+				if (is_first)
+				{
+					is_negative = true;
+				}
+				else
+				{
+					throw std::invalid_argument("Couldn't convert a string to integer as hexademical");
+				}
+				break;
+			}
+			case L'.':
+			case L',':
+			{
+				if (!was_dot)
+				{
+					was_dot = true;
+				}
+				else
+				{
+					throw std::invalid_argument("Couldn't convert a string to integer as hexademical");
+				}
+				break;
+			}
+			case L'0':
+			case L'1':
+			case L'2':
+			case L'3':
+			case L'4':
+			case L'5':
+			case L'6':
+			case L'7':
+			case L'8':
+			case L'9':
+			{
+				if (!was_dot)
+				{
+					res *= 16;
+					res += static_cast<int>(i - L'0');
+				}
+				break;
+			}
+			case L'A':
+			case L'B':
+			case L'C':
+			case L'D':
+			case L'E':
+			case L'F':
+			{
+				if (!was_dot)
+				{
+					res *= 16;
+					res += static_cast<int>(i - L'A') + 10;
+				}
+				break;
+			}
+			case L' ':
+			case L'\'':
+			case L'`':
+			case L'\t':
+			{
+				// We don't need to reset is_first flag
+				continue;
+			}
+			default:
+			{
+				throw std::invalid_argument("Couldn't convert a string to integer as hexademical");
+			}
+			}
+			is_first = false;
+		}
+		return res;
+	}
+	else
+	{
+		throw std::invalid_argument("Couldn't convert a string to integer as hexademical");
 	}
 }
 

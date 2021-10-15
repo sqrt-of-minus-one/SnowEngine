@@ -1,14 +1,12 @@
 #include <iostream>
 #include <conio.h>
 
-#include "Util/Log.h"
-#include "Util/Container/SortedArray.h"
-#include "Util/Container/Map.h"
+#include "Util/Types/String.h"
+#include "Util/Util.h"
 
 int main()
 {
-	snow::Log log(L"Cat");
-	log.i(L"Привет, мир!");
+	std::wcout << L"11D8"_s.to_int_hex();
 
 	_getch();
 	return 0;

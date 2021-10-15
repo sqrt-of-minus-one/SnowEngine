@@ -32,6 +32,10 @@ namespace util
  */
 String to_string(int var) noexcept;
 
+String to_string_bin(int var) noexcept;
+String to_string_oct(int var) noexcept;
+String to_string_hex(int var) noexcept;
+
 /**
  *	\brief `float` to string
  *
