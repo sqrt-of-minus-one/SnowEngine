@@ -8,9 +8,8 @@
 
 #include "Angle.h"
 #include "Math.h"
-
-#include <utility>
-#include <cmath>
+#include "../Util/Types/String.h"
+#include "../Util/Util.h"
 
 using namespace snow;
 
@@ -29,9 +28,9 @@ Vector2::Vector2(float x, float y) noexcept :
 	y_(y)
 {}
 
-std::string Vector2::to_string() const noexcept
+String Vector2::to_string() const noexcept
 {
-	return "{" + std::to_string(x_) + ", " + std::to_string(y_) + "}";
+	return L"{"_s + util::to_string(x_) + L", "_s + util::to_string(y_) + L"}"_s;
 }
 
 int Vector2::hash_code() const noexcept

@@ -114,7 +114,7 @@ float math::sec(const Angle& angle)
 	float c = cos(angle);
 	if (c == 0.f)
 	{
-		throw std::domain_error("Secant of " + angle.to_string() + " does not exist");
+		throw std::domain_error("Secant of passed angle does not exist");
 	}
 	return 1.f / c;
 }
@@ -124,7 +124,7 @@ float math::cosec(const Angle& angle)
 	float s = sin(angle);
 	if (s == 0.f)
 	{
-		throw std::domain_error("Cosecant of " + angle.to_string() + " does not exist");
+		throw std::domain_error("Cosecant of passed angle does not exist");
 	}
 	return 1.f / s;
 }
@@ -136,7 +136,7 @@ float math::tg(const Angle& angle)
 	float s = sin(angle);
 	if (s == 1.f)
 	{
-		throw std::domain_error("Tangent of " + angle.to_string() + " does not exist");
+		throw std::domain_error("Tangent of passed angle does not exist");
 	}
 	return s / sqrt(1 - s * s);
 }
@@ -148,7 +148,7 @@ float math::ctg(const Angle& angle)
 	float c = cos(angle);
 	if (c == 1.f)
 	{
-		throw std::domain_error("Cotangent of " + angle.to_string() + " does not exist");
+		throw std::domain_error("Cotangent of passed angle does not exist");
 	}
 	return c / sqrt(1 - c * c);
 }
@@ -160,7 +160,7 @@ Angle math::arcsin(float value)
 	// Uses Taylor series to find an arcsine
 	if (value < -1.f || value > 1.f)
 	{
-		throw std::domain_error("Arcsine of " + std::to_string(value) + " does not exist");
+		throw std::domain_error("Arcsine of passed value does not exist");
 	}
 
 	if (value < 0.f)
@@ -211,7 +211,7 @@ Angle math::arccos(float value)
 	// Uses Taylor series to find an arccosine
 	if (value < -1.f || value > 1.f)
 	{
-		throw std::domain_error("Arccosine of " + std::to_string(value) + " does not exist");
+		throw std::domain_error("Arccosine of passed value does not exist");
 	}
 
 	if (value == 1.f)
@@ -259,7 +259,7 @@ Angle math::arcsec(float value)
 {
 	if (value > -1.f && value < 1.f)
 	{
-		throw std::domain_error("Arcsecant of " + std::to_string(value) + " does not exist");
+		throw std::domain_error("Arcsecant of passed value does not exist");
 	}
 	return arccos(1 / value);
 }
@@ -270,7 +270,7 @@ Angle math::arccosec(float value)
 {
 	if (value > -1.f && value < 1.f)
 	{
-		throw std::domain_error("Arccosecant of " + std::to_string(value) + " does not exist");
+		throw std::domain_error("Arccosecant of passed value does not exist");
 	}
 	return arcsin(1 / value);
 }

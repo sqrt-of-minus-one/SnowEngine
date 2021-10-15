@@ -101,7 +101,7 @@ public:
 	 *	used to convert elements to string.
 	 *	\return A result string in the format `"{ x, x, ..., x }"`. `"{ }"` if the list is empty.
 	 */
-	virtual std::string to_string() const noexcept override;
+	virtual String to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the linked list
@@ -434,17 +434,6 @@ public:
 	virtual int find_last_by_index(const T& element) const;
 
 	/**
-	 *	\brief Find all elements that are equal to the passed one
-	 *
-	 *	Compares all elements of the linked list with the passed one. Returns indexes of all found
-	 *	matches.
-	 *	\param element The desired element.
-	 *	\return A linked list with indexes of all found matches. If no match is found, the list is
-	 *	empty.
-	 */
-	virtual LinkedList<int> find_all(const T& element) const;
-
-	/**
 	 *	\brief Find the first element that is equal to the passed one
 	 *
 	 *	Compares elements of the linked list with the passed one starting from the beginning. If a
@@ -715,20 +704,20 @@ LinkedList<T>::~LinkedList() noexcept
 }
 
 template<typename T>
-std::string LinkedList<T>::to_string() const noexcept
+String LinkedList<T>::to_string() const noexcept
 {
 	if (is_empty())
 	{
-		return "{ }";
+		return L"{ }"_s;
 	}
 	else
 	{
-		std::string str = "{ ";
+		std::string str = L"{ "_s;
 		for (auto p = begin(); !p.is_last(); p.next())
 		{
-			str += p.to_string() + ", ";
+			str += p.to_string() + L", "_s;
 		}
-		return str + util::to_string(get_last()) + " }";
+		return str + util::to_string(get_last()) + L" }"_s;
 	}
 }
 
@@ -1265,21 +1254,6 @@ int LinkedList<T>::find_last_by_index(const T& element) const
 		}
 	}
 	return -1;
-}
-
-template<typename T>
-LinkedList<int> LinkedList<T>::find_all(const T& element) const
-{
-	LinkedList<int> result;
-	int index = 0;
-	for (std::shared_ptr<LinkedListNode_<T>> i = begin_; i; i = i->next, index++)
-	{
-		if (i->value == element)
-		{
-			result.add(index);
-		}
-	}
-	return result;
 }
 
 template<typename T>

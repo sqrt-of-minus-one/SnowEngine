@@ -9,9 +9,8 @@
 #include "Vector2.h"
 #include "Angle.h"
 #include "Math.h"
-
-#include <utility>
-#include <cmath>
+#include "../Util/Types/String.h"
+#include "../Util/Util.h"
 
 using namespace snow;
 
@@ -45,9 +44,9 @@ Vector3::Vector3(float x, float y, float z) noexcept :
 	z_(z)
 {}
 
-std::string Vector3::to_string() const noexcept
+String Vector3::to_string() const noexcept
 {
-	return "{" + std::to_string(x_) + ", " + std::to_string(y_) + ", " + std::to_string(z_) + "}";
+	return L"{"_s + util::to_string(x_) + L", "_s + util::to_string(y_) + L", "_s + util::to_string(z_) + L"}"_s;
 }
 
 int Vector3::hash_code() const noexcept

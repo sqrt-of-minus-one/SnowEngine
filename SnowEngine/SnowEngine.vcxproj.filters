@@ -18,6 +18,9 @@
     <Filter Include="Source Files\Util\Container">
       <UniqueIdentifier>{26f48234-c177-446f-bbb9-1e5e25961017}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Types">
+      <UniqueIdentifier>{828309da-bd61-4113-a5a7-2c35579de08a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Math.h">
@@ -68,6 +71,9 @@
     <ClInclude Include="Util\Log.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="Util\Types\String.h">
+      <Filter>Source Files\Util\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math\Math.cpp">
@@ -90,6 +96,9 @@
     </ClCompile>
     <ClCompile Include="Util\Log.cpp">
       <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Types\String.cpp">
+      <Filter>Source Files\Util\Types</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,11 +13,13 @@
  *	This file contains the definition of the Object class.
  */
 
-#include <string>
 #include <stdexcept>
+#include <memory>
 
 namespace snow
 {
+
+class String;
 
 /**
  *	\brief The base class of all SnowEngine classes
@@ -35,7 +37,7 @@ public:
 	 *	The virtual method that creates a string from the object.
 	 *	\return A string.
 	 */
-	virtual std::string to_string() const noexcept = 0;
+	virtual String to_string() const noexcept = 0;
 
 	/**
 	 *	\brief Allows to get hash code of the object

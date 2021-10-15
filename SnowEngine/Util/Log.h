@@ -33,14 +33,14 @@ public:
 	 *	Creates a new Log class that is associated with the passed log category.
 	 *	\param category_name Log category name.	
 	 */
-	Log(const std::string& category_name);
+	Log(const String& category_name) noexcept;
 
 	/**
 	 *	\brief Destructor of the logger
 	 *	
 	 *	If necessary, closes the log file.
 	 */
-	~Log();
+	~Log() noexcept;
 
 	/**
 	 *	\brief Convert to string
@@ -48,7 +48,7 @@ public:
 	 *	Returns a log category name
 	 *	\return A name.
 	 */
-	virtual std::string to_string() const noexcept override;
+	virtual String to_string() const noexcept override;
 
 	/**
 	 *	\brief Allows to get hash code of the object
@@ -88,7 +88,7 @@ public:
 	 *	Creates a debug log entry. It won't be logged if debug mode is disabled.
 	 *	\param message The log message.
 	 */
-	void d(const std::string& message);
+	void d(const String& message) noexcept;
 
 	/**
 	 *	\brief Log info message
@@ -96,7 +96,7 @@ public:
 	 *	Creates an info log entry.
 	 *	\param message The log message.
 	 */
-	void i(const std::string& message);
+	void i(const String& message) noexcept;
 
 	/**
 	 *	\brief Log warning message
@@ -104,7 +104,7 @@ public:
 	 *	Creates a warning log entry.
 	 *	\param message The log message.
 	 */
-	void w(const std::string& message);
+	void w(const String& message) noexcept;
 
 	/**
 	 *	\brief Log error message
@@ -112,15 +112,15 @@ public:
 	 *	Creates an error log entry.
 	 *	\param message The log message.
 	 */
-	void e(const std::string& message);
+	void e(const String& message) noexcept;
 private:
-	std::string name_;
+	const String& name_;
 	static bool debug_mode_;
 	static int object_counter_;
-	static std::ofstream file_;
+	static std::wofstream file_;
 
-	static std::string get_time_string_();
-	void log_(const std::string& type, const std::string& message);
+	static String get_time_string_() noexcept;
+	void log_(const String& type, const String& message) noexcept;
 };
 
 }

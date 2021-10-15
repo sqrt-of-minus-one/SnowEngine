@@ -6,26 +6,49 @@
 
 #include "Util.h"
 
+#include "Types/String.h"
+#include "../Math/Math.h"
+
+#include <string>
+
 using namespace snow;
 
-std::string util::to_string(int var) noexcept
+String util::to_string(int var) noexcept
 {
-	return std::to_string(var);
+	if (var == 0)
+	{
+		return String(L"0");
+	}
+	else
+	{
+		String res;
+		int a = math::abs(var);
+		while (a > 0)
+		{
+			res += static_cast<wchar_t>(static_cast<int>(L'0') + a % 10);
+			a /= 10;
+		}
+		if (var < 0)
+		{
+			res += L'-';
+		}
+		return res.reverse();
+	}
 }
 
-std::string util::to_string(float var) noexcept
+String util::to_string(float var) noexcept
 {
-	return std::to_string(var);
+	return std::to_wstring(var);
 }
 
-std::string util::to_string(char var) noexcept
+String util::to_string(wchar_t var) noexcept
 {
-	return { var };
+	return String(var);
 }
 
-std::string util::to_string(bool var) noexcept
+String util::to_string(bool var) noexcept
 {
-	return var ? "true" : "false";
+	return var ? L"true"_s : L"false"_s;
 }
 
 
@@ -39,7 +62,7 @@ int util::hash_code(float var) noexcept
 	return static_cast<int>(var);
 }
 
-int util::hash_code(char var) noexcept
+int util::hash_code(wchar_t var) noexcept
 {
 	return static_cast<int>(var);
 }

@@ -190,16 +190,6 @@ public:
 	virtual int find_last(const T& element) const override;
 
 	/**
-	 *	\brief Find all elements that are equal to the passed one
-	 *
-	 *	Returns indexes of all elements that are equal to the passed one.
-	 *	\param element The desired element.
-	 *	\return A linked list with indexes of all found matches. If no match is found, the list is
-	 *	empty.
-	 */
-	virtual LinkedList<int> find_all(const T& element) const override;
-
-	/**
 	 *	\brief Whether the array contains the passed element
 	 *
 	 *	Checks whether the array has an element that is equal to the passed one.
@@ -420,25 +410,6 @@ int SortedArray<T>::find_last(const T& element) const
 	{
 		return -1;
 	}
-}
-
-template<typename T>
-LinkedList<int> SortedArray<T>::find_all(const T& element) const
-{
-	LinkedList<int> res;
-	int found = get_index_to_add_(element);
-	int first = found;
-	int last = found;
-	if (found > 0 && comparator_((*this)[found - 1], element) == 0)
-	{
-		while (--first > 0 && comparator_((*this)[first - 1], element) == 0);
-		while (++last < Array<T>::size() && comparator_((*this)[last], element) == 0);
-		for (int i = first; i < last; i++)
-		{
-			res.add(i);
-		}
-	}
-	return res;
 }
 
 template<typename T>

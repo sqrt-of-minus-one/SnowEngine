@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "Math.h"
+#include "../Util/Util.h"
+#include "../Util/Types/String.h"
 
 using namespace snow;
 
@@ -24,9 +26,9 @@ Angle::Angle(float degrees) noexcept :
 	value_deg_(degrees)
 {}
 
-std::string Angle::to_string() const noexcept
+String Angle::to_string() const noexcept
 {
-	return std::to_string(value_deg_) + "_deg";
+	return util::to_string(value_deg_) + L"_deg";
 }
 
 int Angle::hash_code() const noexcept
@@ -198,32 +200,32 @@ bool Angle::operator>=(const Angle& angle) const noexcept
 	return value_deg_ >= angle.value_deg_;
 }
 
-Angle snow::operator"" _deg(long double degrees) noexcept
+Angle snow::operator""_deg(long double degrees) noexcept
 {
 	return Angle(static_cast<float>(degrees));
 }
 
-Angle snow::operator"" _deg(unsigned long long degrees) noexcept
+Angle snow::operator""_deg(unsigned long long degrees) noexcept
 {
 	return Angle(static_cast<float>(degrees));
 }
 
-Angle snow::operator"" _rad(long double radians) noexcept
+Angle snow::operator""_rad(long double radians) noexcept
 {
 	return Angle(static_cast<float>(radians) * 180.f / math::PI);
 }
 
-Angle snow::operator"" _rad(unsigned long long radians) noexcept
+Angle snow::operator""_rad(unsigned long long radians) noexcept
 {
 	return Angle(static_cast<float>(radians) * 180.f / math::PI);
 }
 
-Angle snow::operator"" _grad(long double gradians) noexcept
+Angle snow::operator""_grad(long double gradians) noexcept
 {
 	return Angle(static_cast<float>(gradians) * .9f);
 }
 
-Angle snow::operator"" _grad(unsigned long long gradians) noexcept
+Angle snow::operator""_grad(unsigned long long gradians) noexcept
 {
 	return Angle(static_cast<float>(gradians) * .9f);
 }

@@ -8,33 +8,35 @@
 
 #include "Log.h"
 
+#include "Types/String.h"
+
 #include <fstream>
 #include <iostream>
 #include <ctime>
 
 using namespace snow;
 
-Log::Log(const std::string& category_name) :
+Log::Log(const String& category_name) noexcept :
 	name_(category_name)
 {
 	object_counter_++;
 	if (!file_.is_open())
 	{
 		file_.open("Logs/Log.log", std::ios_base::trunc);
-		file_ << "[" << get_time_string_() << "][Logging] Log file is opened" << std::endl;
+		file_ << L"[" << get_time_string_() << L"][Logging] Log file is opened" << std::endl;
 	}
 }
 
-Log::~Log()
+Log::~Log() noexcept
 {
 	if (--object_counter_ <= 0 && file_.is_open())
 	{
-		file_ << "[" << get_time_string_() << "][Logging] Log file is closed" << std::endl;
+		file_ << L"[" << get_time_string_() << L"][Logging] Log file is closed" << std::endl;
 		file_.close();
 	}
 }
 
-std::string Log::to_string() const noexcept
+String Log::to_string() const noexcept
 {
 	return name_;
 }
@@ -43,7 +45,7 @@ int Log::hash_code() const noexcept
 {
 	int hash = 0;
 	int one = 1;
-	for (char i : name_)
+	for (wchar_t i : name_)
 	{
 		hash += one * static_cast<int>(i);
 		one *= -1;
@@ -66,44 +68,45 @@ bool Log::is_debug_mode_enabled() noexcept
 	return debug_mode_;
 }
 
-void Log::d(const std::string& message)
+void Log::d(const String& message) noexcept
 {
 	if (debug_mode_)
 	{
-		log_("[Debug  ] ", message);
+		log_(L"[Debug  ] "_s, message);
 	}
 }
 
-void Log::i(const std::string& message)
+void Log::i(const String& message) noexcept
 {
-	log_("[Info   ] ", message);
+	log_(L"[Info   ] "_s, message);
 }
 
-void Log::w(const std::string& message)
+void Log::w(const String& message) noexcept
 {
-	log_("[Warning] ", message);
+	log_(L"[Warning] "_s, message);
 }
 
-void Log::e(const std::string& message)
+void Log::e(const String& message) noexcept
 {
-	log_("[ERROR  ] ", message);
+	log_(L"[ERROR  ] "_s, message);
 }
 
-std::string Log::get_time_string_()
+String Log::get_time_string_() noexcept
 {
 	// It's temporary
 	std::time_t current_time = std::time(nullptr);
 	std::tm time = *std::localtime(&current_time);
-	return std::to_string(time.tm_year + 1900) + "." + std::to_string(time.tm_mon + 1) + "." + std::to_string(time.tm_mday) + "-" +
-		std::to_string(time.tm_hour) + ":" + std::to_string(time.tm_min) + ":" + std::to_string(time.tm_sec);
+	return String::format(L"%d.%d.%d-%d:%d:%d"_s,
+		time.tm_year + 1900, time.tm_mon + 1, time.tm_mday,
+		time.tm_hour, time.tm_min, time.tm_sec);
 }
 
-void Log::log_(const std::string& type, const std::string& message)
+void Log::log_(const String& type, const String& message) noexcept
 {
-	std::string time_str = "[" + get_time_string_() + "]";
+	String time_str = L"["_s + get_time_string_() + L"]"_s;
 
 	file_ << time_str << type << name_ << ": " << message << std::endl;
-	std::cout << time_str << type << name_ << ": " << message << std::endl;
+	std::wcout << time_str << type << name_ << ": " << message << std::endl;
 }
 
 #ifdef _DEBUG
@@ -113,4 +116,4 @@ bool Log::debug_mode_ = false;
 #endif
 
 int Log::object_counter_ = 0;
-std::ofstream Log::file_;
+std::wofstream Log::file_;

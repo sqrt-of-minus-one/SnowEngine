@@ -100,7 +100,7 @@ public:
 	 *	\return A result string in the format `"{ [k: v], [k: v], ..., [k: v] }"` (`k` is key, `v`
 	 *	is value). `"{ }"` if the map is empty.
 	 */
-	virtual std::string to_string() const noexcept override;
+	virtual String to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the map
@@ -303,16 +303,6 @@ public:
 	 *	a default constructor.
 	 */
 	T_Key find(const T_Value& element, bool& out_success) const;
-
-	/**
-	 *	\brief Find all elements that are equal to the passed one
-	 *
-	 *	Compares all elements of the array with the passed one. Returns keys of all found matches.
-	 *	\param element The desired element.
-	 *	\return A linked list with keys of all found matches. If no match is found, the list is
-	 *	empty.
-	 */
-	LinkedList<T_Key> find_all(const T_Value& element) const;
 
 	/**
 	 *	\brief Whether the map contains an element with the passed elements
@@ -573,24 +563,24 @@ Map<T_Key, T_Value>::~Map() noexcept
 }
 
 template<typename T_Key, typename T_Value>
-std::string Map<T_Key, T_Value>::to_string() const noexcept
+String Map<T_Key, T_Value>::to_string() const noexcept
 {
 	if (size_ <= 0)
 	{
-		return "{ }";
+		return L"{ }"_s;
 	}
 	else
 	{
-		std::string ret = "{ ";
+		std::string ret = L"{ "_s;
 		for (const auto& i : map_)
 		{
 			for (const auto& j : i)
 			{
-				ret += j.to_string() + ", ";
+				ret += j.to_string() + L", "_s;
 			}
 		}
-		ret[ret.length() - 2] = ' ';
-		ret[ret.length() - 1] = '}';
+		ret[ret.length() - 2] = L' ';
+		ret[ret.length() - 1] = L'}';
 		return ret;
 	}
 }
@@ -881,20 +871,6 @@ T_Key Map<T_Key, T_Value>::find(const T_Value& element, bool& out_success) const
 	}
 	out_success = false;
 	return T_Key();
-}
-
-template<typename T_Key, typename T_Value>
-LinkedList<T_Key> Map<T_Key, T_Value>::find_all(const T_Value& element) const
-{
-	LinkedList<T_Key> ret;
-	for (auto i = begin(); !i.is_end(); i.next())
-	{
-		if (i.get() == element)
-		{
-			ret.add(i.get_key());
-		}
-	}
-	return ret;
 }
 
 template<typename T_Key, typename T_Value>

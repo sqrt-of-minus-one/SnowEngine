@@ -18,6 +18,8 @@
 namespace snow
 {
 
+class String;
+
 namespace util
 {
 
@@ -28,7 +30,7 @@ namespace util
  *	\param var Integer that will be converted to string.
  *	\return A string that contains the passed integer.
  */
-std::string to_string(int var) noexcept;
+String to_string(int var) noexcept;
 
 /**
  *	\brief `float` to string
@@ -37,7 +39,7 @@ std::string to_string(int var) noexcept;
  *	\param var Float that will be converted to string.
  *	\return A string that contains the passed float.
  */
-std::string to_string(float var) noexcept;
+String to_string(float var) noexcept;
 
 /**
  *	\brief `char` to string
@@ -46,7 +48,7 @@ std::string to_string(float var) noexcept;
  *	\param var Character that will be converted to string.
  *	\return A string that contains the passed character.
  */
-std::string to_string(char var) noexcept;
+String to_string(wchar_t var) noexcept;
 
 /**
  *	\brief `bool` to string
@@ -55,7 +57,7 @@ std::string to_string(char var) noexcept;
  *	\param var Boolean that will be converted to string.
  *	\return `"true"` if the passed value is true, `"false"` otherwise.
  */
-std::string to_string(bool var) noexcept;
+String to_string(bool var) noexcept;
 
 /**
  *	\brief Pointer to string
@@ -65,7 +67,37 @@ std::string to_string(bool var) noexcept;
  *	\return `"NULL"` if the pointer is null, `util::to_string(*var)` otherwise.
  */
 template<typename T>
-std::string to_string(T* var) noexcept;
+String to_string(T* var) noexcept;
+
+/**
+ *	\brief Unique pointer to string
+ *
+ *	Converts the value of the passed pointer to string.
+ *	\param var Pointer to the value that will be converted to string.
+ *	\return `"NULL"` if the pointer is null, `util::to_string(*var)` otherwise.
+ */
+template<typename T>
+String to_string(const std::unique_ptr<T>& var) noexcept;
+
+/**
+ *	\brief Shared pointer to string
+ *
+ *	Converts the value of the passed pointer to string.
+ *	\param var Pointer to the value that will be converted to string.
+ *	\return `"NULL"` if the pointer is null, `util::to_string(*var)` otherwise.
+ */
+template<typename T>
+String to_string(const std::shared_ptr<T>& var) noexcept;
+
+/**
+ *	\brief Weak pointer to string
+ *
+ *	Converts the value of the passed pointer to string.
+ *	\param var Pointer to the value that will be converted to string.
+ *	\return `"NULL"` if the pointer is null, `util::to_string(*var)` otherwise.
+ */
+template<typename T>
+String to_string(const std::weak_ptr<T>& var) noexcept;
 
 /**
  *	\brief Object to string
@@ -76,7 +108,7 @@ std::string to_string(T* var) noexcept;
  *	\return Result of object's `to_string()` method.
  */
 template<typename T>
-std::string to_string(T var) noexcept;
+String to_string(const T& var) noexcept;
 
 /**
  *	\brief Hash code of `int`
@@ -103,7 +135,7 @@ int hash_code(float var) noexcept;
  *	\param var Character whose hash code will be calculated.
  *	\return A hash code of the passed character.
  */
-int hash_code(char var) noexcept;
+int hash_code(wchar_t var) noexcept;
 
 /**
  *	\brief Hash code of `bool`
@@ -126,6 +158,39 @@ template<typename T>
 int hash_code(T* var) noexcept;
 
 /**
+ *	\brief Hash code of unique pointer
+ *
+ *	Calculates a hash code of the passed pointer. To do it the function converts the pointer to
+ *	integer.
+ *	\param var The pointer whose hash code will be calculated.
+ *	\return A hash code of the passed pointer.
+ */
+template<typename T>
+int hash_code(const std::unique_ptr<T>& var) noexcept;
+
+/**
+ *	\brief Hash code of shared pointer
+ *
+ *	Calculates a hash code of the passed pointer. To do it the function converts the pointer to
+ *	integer.
+ *	\param var The pointer whose hash code will be calculated.
+ *	\return A hash code of the passed pointer.
+ */
+template<typename T>
+int hash_code(const std::shared_ptr<T>& var) noexcept;
+
+/**
+ *	\brief Hash code of weak pointer
+ *
+ *	Calculates a hash code of the passed pointer. To do it the function converts the pointer to
+ *	integer.
+ *	\param var The pointer whose hash code will be calculated.
+ *	\return A hash code of the passed pointer.
+ */
+template<typename T>
+int hash_code(const std::weak_ptr<T>& var) noexcept;
+
+/**
  *	\brief Hash code of object
  *
  *	Calculates a hash code of the passed object. The object must have `hash_code()` method (any
@@ -134,7 +199,7 @@ int hash_code(T* var) noexcept;
  *	\return A hash code of the passed object.
  */
 template<typename T>
-int hash_code(T var) noexcept;
+int hash_code(const T& var) noexcept;
 
 }
 
@@ -142,7 +207,7 @@ int hash_code(T var) noexcept;
 		/* DEFINITIONS */
 
 template<typename T>
-std::string util::to_string(T* var) noexcept
+String util::to_string(T* var) noexcept
 {
 	if (var)
 	{
@@ -155,7 +220,25 @@ std::string util::to_string(T* var) noexcept
 }
 
 template<typename T>
-std::string util::to_string(T var) noexcept
+String util::to_string(const std::unique_ptr<T>& var) noexcept
+{
+	return to_string(var.get());
+}
+
+template<typename T>
+String util::to_string(const std::shared_ptr<T>& var) noexcept
+{
+	return to_string(var.get());
+}
+
+template<typename T>
+String util::to_string(const std::weak_ptr<T>& var) noexcept
+{
+	return to_string(var.lock().get());
+}
+
+template<typename T>
+String util::to_string(const T& var) noexcept
 {
 	return var.to_string();
 }
@@ -163,11 +246,29 @@ std::string util::to_string(T var) noexcept
 template<typename T>
 int util::hash_code(T* var) noexcept
 {
-	return static_cast<int>(var);
+	return reinterpret_cast<int>(var);
 }
 
 template<typename T>
-int util::hash_code(T var) noexcept
+int util::hash_code(const std::unique_ptr<T>& var) noexcept
+{
+	return hash_code(var.get());
+}
+
+template<typename T>
+int util::hash_code(const std::shared_ptr<T>& var) noexcept
+{
+	return hash_code(var.get());
+}
+
+template<typename T>
+int util::hash_code(const std::weak_ptr<T>& var) noexcept
+{
+	return hash_code(var.lock().get());
+}
+
+template<typename T>
+int util::hash_code(const T& var) noexcept
 {
 	return var.hash_code();
 }

@@ -84,7 +84,7 @@ public:
 	 *	coordinates of the vector.
 	 *	\return A string with the vector value.
 	 */
-	virtual std::string to_string() const noexcept override;
+	virtual String to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the vector

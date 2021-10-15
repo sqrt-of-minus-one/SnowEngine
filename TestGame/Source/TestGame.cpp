@@ -7,8 +7,8 @@
 
 int main()
 {
-	snow::Log log("Cat");
-	log.d("Hello world!");
+	snow::Log log(L"Cat");
+	log.i(L"Привет, мир!");
 
 	_getch();
 	return 0;

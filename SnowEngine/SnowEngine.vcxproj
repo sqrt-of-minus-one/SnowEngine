@@ -34,6 +34,7 @@
     <ClInclude Include="Util\Container\Pair.h" />
     <ClInclude Include="Util\Container\SortedArray.h" />
     <ClInclude Include="Util\Log.h" />
+    <ClInclude Include="Util\Types\String.h" />
     <ClInclude Include="Util\Util.h" />
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +44,7 @@
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Util\Log.cpp" />
+    <ClCompile Include="Util\Types\String.cpp" />
     <ClCompile Include="Util\Util.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

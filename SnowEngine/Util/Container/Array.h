@@ -92,7 +92,7 @@ public:
 	 *	to convert elements to string.
 	 *	\return A result string in the format `"{ x, x, ..., x }"`. `"{ }"` if the array is empty.
 	 */
-	virtual std::string to_string() const noexcept override;
+	virtual String to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the array
@@ -366,17 +366,6 @@ public:
 	virtual int find_last(const T& element) const;
 
 	/**
-	 *	\brief Find all elements that are equal to the passed one
-	 *	
-	 *	Compares all elements of the array with the passed one. Returns indexes of all found
-	 *	matches.
-	 *	\param element The desired element.
-	 *	\return A linked list with indexes of all found matches. If no match is found, the list is
-	 *	empty.
-	 */
-	virtual LinkedList<int> find_all(const T& element) const;
-
-	/**
 	 *	\brief Whether the array contains the passed element
 	 *
 	 *	Checks whether the array has an element that is equal to the passed one.
@@ -446,7 +435,7 @@ public:
 	 *	Creates a constant iterator that points to the last element of the array.
 	 *	\return The constant iterator to the last element of the array.
 	 */
-	ConstArrayIterator<T> end() const noexcept;
+	ConstArrayIterator<T> last() const noexcept;
 
 	/**
 	 *	\brief Create a constant iterator pointing after the last element
@@ -455,7 +444,7 @@ public:
 	 *	(this iterator is end: `is_end()` is true).
 	 *	\return The constant iterator after the last element of the array.
 	 */
-	ConstArrayIterator<T> last() const noexcept;
+	ConstArrayIterator<T> end() const noexcept;
 
 	/**
 	 *	\brief Create a constant iterator pointing to the specified element
@@ -602,20 +591,20 @@ Array<T>::~Array() noexcept
 }
 
 template<typename T>
-std::string Array<T>::to_string() const noexcept
+String Array<T>::to_string() const noexcept
 {
 	if (is_empty())
 	{
-		return "{ }";
+		return L"{ }"_s;
 	}
 	else
 	{
-		std::string str = "{ ";
+		std::string str = L"{ "_s;
 		for (int i = 0; i < size_ - 1; i++)
 		{
-			str += util::to_string(array_[i]) + ", ";
+			str += util::to_string(array_[i]) + L", "_s;
 		}
-		return str + util::to_string(array_[size_ - 1]) + " }";
+		return str + util::to_string(array_[size_ - 1]) + L" }"_s;
 	}
 }
 
@@ -1014,20 +1003,6 @@ int Array<T>::find_last(const T& element) const
 		}
 	}
 	return -1;
-}
-
-template<typename T>
-LinkedList<int> Array<T>::find_all(const T& element) const
-{
-	LinkedList<int> result;
-	for (int i = 0; i < size_; i++)
-	{
-		if (array_[i] == element)
-		{
-			result.add(i);
-		}
-	}
-	return result;
 }
 
 template<typename T>

@@ -78,7 +78,7 @@ public:
 	 *	Creates a string with format `<val>_deg`, where `<val>` is the angle value in degrees.
 	 *	\return A string with the angle value.
 	 */
-	virtual std::string to_string() const noexcept override;
+	virtual String to_string() const noexcept override;
 
 	/**
 	 *	\brief Hash code of the angle
@@ -557,7 +557,7 @@ public:
 	 *	\param degrees A value in degrees.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _deg(long double degrees) noexcept;
+	friend Angle operator""_deg(long double degrees) noexcept;
 
 	/**
 	 *	\brief Literal for degrees
@@ -574,7 +574,7 @@ public:
 	 *	\param degrees A value in degrees.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _deg(unsigned long long degrees) noexcept;
+	friend Angle operator""_deg(unsigned long long degrees) noexcept;
 
 	/**
 	 *	\brief Literal for radians
@@ -591,7 +591,7 @@ public:
 	 *	\param radians A value in radians.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _rad(long double radians) noexcept;
+	friend Angle operator""_rad(long double radians) noexcept;
 
 	/**
 	 *	\brief Literal for radians
@@ -608,7 +608,7 @@ public:
 	 *	\param radians A value in radians.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _rad(unsigned long long radians) noexcept;
+	friend Angle operator""_rad(unsigned long long radians) noexcept;
 
 	/**
 	 *	\brief Literal for gradians
@@ -625,7 +625,7 @@ public:
 	 *	\param gradians A value in gradians.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _grad(long double gradians) noexcept;
+	friend Angle operator""_grad(long double gradians) noexcept;
 
 	/**
 	 *	\brief Literal for gradians
@@ -642,7 +642,7 @@ public:
 	 *	\param gradians A value in gradians.
 	 *	\return An angle with a specified value.
 	 */
-	friend Angle operator"" _grad(unsigned long long gradians) noexcept;
+	friend Angle operator""_grad(unsigned long long gradians) noexcept;
 
 			/* CONSTANTS */
 
@@ -671,15 +671,15 @@ private:
 	float value_deg_;
 };
 
-Angle operator"" _deg(long double degrees) noexcept;
-Angle operator"" _deg(unsigned long long degrees) noexcept;
-Angle operator"" _rad(long double radians) noexcept;
-Angle operator"" _rad(unsigned long long radians) noexcept;
-Angle operator"" _grad(long double gradians) noexcept;
-Angle operator"" _grad(unsigned long long gradians) noexcept;
+Angle operator""_deg(long double degrees) noexcept;
+Angle operator""_deg(unsigned long long degrees) noexcept;
+Angle operator""_rad(long double radians) noexcept;
+Angle operator""_rad(unsigned long long radians) noexcept;
+Angle operator""_grad(long double gradians) noexcept;
+Angle operator""_grad(unsigned long long gradians) noexcept;
 
 }
 
-using snow::operator"" _deg;
-using snow::operator"" _rad;
-using snow::operator"" _grad;
+using snow::operator""_deg;
+using snow::operator""_rad;
+using snow::operator""_grad;
