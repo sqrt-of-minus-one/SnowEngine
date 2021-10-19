@@ -28,12 +28,35 @@ namespace util
  *	
  *	Converts the passed integer to string.
  *	\param var Integer that will be converted to string.
- *	\return A string that contains the passed integer.
+ *	\return A string that represents the passed integer.
  */
 String to_string(int var) noexcept;
 
+/**
+ *	\brief `int` to string in binary system
+ *	
+ *	Converts the passed integer to string as binary number.
+ *	\param var Integer that will be converted to string.
+ *	\return A string that represents the passed binary integer.
+ */
 String to_string_bin(int var) noexcept;
+
+/**
+ *	\brief `int` to string in octal system
+ *	
+ *	Converts the passed integer to string as octal number.
+ *	\param var Integer that will be converted to string.
+ *	\return A string that represents the passed octal integer.
+ */
 String to_string_oct(int var) noexcept;
+
+/**
+ *	\brief `int` to string in hexadecimal system
+ *	
+ *	Converts the passed integer to string as hexadecimal number.
+ *	\param var Integer that will be converted to string.
+ *	\return A string that represents the passed hexadecimal integer.
+ */
 String to_string_hex(int var) noexcept;
 
 /**

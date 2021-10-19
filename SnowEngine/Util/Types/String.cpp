@@ -121,7 +121,7 @@ bool String::remove(int pos)
 	}
 	else
 	{
-		throw std::out_of_range("Character index is out of the string bounds");
+		return false;
 	}
 }
 
@@ -134,7 +134,7 @@ int String::remove(int from, int to)
 	}
 	else
 	{
-		throw std::invalid_argument("An invalid range was passed");
+		return 0;
 	}
 }
 
@@ -545,6 +545,10 @@ float String::to_float() const
 
 bool String::to_bool() const
 {
+	if (is_empty())
+	{
+			return false;
+	}
 	String lower = to_lower();
 	if (lower == L"true" || lower == L"t" || lower == L"1")
 	{
@@ -822,6 +826,25 @@ String String::operator+(const String& string) const
 	String ret = *this;
 	ret.add(string);
 	return ret;
+}
+
+String operator+(wchar_t ch, const String& string)
+{
+	String ret(string);
+	ret.add(ch, 0);
+	return ret;
+}
+
+String operator+(const wchar_t* ch, const String& string)
+{
+	String ret(string);
+	ret.add(ch, 0);
+	return ret;
+}
+
+String operator+(std::wstring& std_str, const String& string)
+{
+	return String(std_str) + string;
 }
 
 String& String::operator+=(wchar_t ch)
