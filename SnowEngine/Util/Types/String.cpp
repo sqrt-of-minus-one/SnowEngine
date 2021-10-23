@@ -9,42 +9,39 @@
 #include "../Util.h"
 
 #include <iostream>
-#include <string>
 #include <cwctype>
 #include <cstdarg>
 
 using namespace snow;
 
 String::String() noexcept :
-	string_(new std::wstring)
+	string_()
 {}
 
 String::String(const String& string) noexcept :
-	string_(new std::wstring)
-{
-	*string_ = *string.string_;
-}
+	string_(string.string_)
+{}
 
 String::String(String&& string) noexcept :
 	string_(std::move(string.string_))
 {}
 
 String::String(wchar_t ch) noexcept :
-	string_(new std::wstring)
+	string_()
 {
-	string_->push_back(ch);
+	string_.push_back(ch);
 }
 
 String::String(const wchar_t* string) noexcept :
-	string_(new std::wstring(string))
+	string_(string)
 {}
 
 String::String(const std::wstring& string) noexcept :
-	string_(new std::wstring(string))
+	string_(string)
 {}
 
 String::String(std::wstring&& string) noexcept :
-	string_(new std::wstring(std::move(string)))
+	string_(std::move(string))
 {}
 
 String String::to_string() const noexcept
@@ -56,7 +53,7 @@ int String::hash_code() const noexcept
 {
 	int code = 0;
 	int one = 1;
-	for (wchar_t i : *string_)
+	for (wchar_t i : string_)
 	{
 		code += one * static_cast<int>(i);
 		one = -one;
@@ -66,12 +63,12 @@ int String::hash_code() const noexcept
 
 std::wstring String::to_std_string() const noexcept
 {
-	return *string_;
+	return string_;
 }
 
 int String::size() const noexcept
 {
-	return string_->length();
+	return string_.length();
 }
 
 bool String::is_empty() const noexcept
@@ -81,23 +78,23 @@ bool String::is_empty() const noexcept
 
 void String::clear() noexcept
 {
-	string_->clear();
+	string_.clear();
 }
 
 void String::shrink_to_fit()
 {
-	string_->shrink_to_fit();
+	string_.shrink_to_fit();
 }
 
 bool String::add(wchar_t ch)
 {
-	string_->push_back(ch);
+	string_.push_back(ch);
 	return true;
 }
 
 int String::add(const String& string)
 {
-	string_->append(*string.string_);
+	string_.append(string.string_);
 	return string.size();
 }
 
@@ -108,7 +105,7 @@ bool String::add(wchar_t ch, int pos)
 
 int String::add(const String& string, int pos)
 {
-	string_->insert(pos, *string.string_);
+	string_.insert(pos, string.string_);
 	return string.size();
 }
 
@@ -116,7 +113,7 @@ bool String::remove(int pos)
 {
 	if (pos >= 0 && pos < size())
 	{
-		string_->erase(pos, 1);
+		string_.erase(pos, 1);
 		return true;
 	}
 	else
@@ -129,7 +126,7 @@ int String::remove(int from, int to)
 {
 	if (from >= 0 && to <= size() && from < to)
 	{
-		string_->erase(from, to - from);
+		string_.erase(from, to - from);
 		return to - from;
 	}
 	else
@@ -146,7 +143,7 @@ int String::to_int() const
 		bool is_first = true;
 		bool is_negative = false;
 		bool was_dot = false;
-		for (wchar_t i : *string_)
+		for (wchar_t i : string_)
 		{
 			switch (i)
 			{
@@ -225,7 +222,7 @@ int String::to_int_bin() const
 		bool is_first = true;
 		bool is_negative = false;
 		bool was_dot = false;
-		for (wchar_t i : *string_)
+		for (wchar_t i : string_)
 		{
 			switch (i)
 			{
@@ -296,7 +293,7 @@ int String::to_int_oct() const
 		bool is_first = true;
 		bool is_negative = false;
 		bool was_dot = false;
-		for (wchar_t i : *string_)
+		for (wchar_t i : string_)
 		{
 			switch (i)
 			{
@@ -373,7 +370,7 @@ int String::to_int_hex() const
 		bool is_first = true;
 		bool is_negative = false;
 		bool was_dot = false;
-		for (wchar_t i : *string_)
+		for (wchar_t i : string_)
 		{
 			switch (i)
 			{
@@ -467,7 +464,7 @@ float String::to_float() const
 		bool is_first = true;
 		bool is_negative = false;
 		bool was_dot = false;
-		for (wchar_t i : *string_)
+		for (wchar_t i : string_)
 		{
 			switch (i)
 			{
@@ -575,7 +572,7 @@ int String::find_first(wchar_t ch) const
 {
 	for (int i = 0; i < size(); i++)
 	{
-		if ((*string_)[i] == ch)
+		if (string_[i] == ch)
 		{
 			return i;
 		}
@@ -587,7 +584,7 @@ int String::find_last(wchar_t ch) const
 {
 	for (int i = size() - 1; i >= 0; i--)
 	{
-		if ((*string_)[i] == ch)
+		if (string_[i] == ch)
 		{
 			return i;
 		}
@@ -664,7 +661,7 @@ bool String::contains(const String& string) const
 int String::count(wchar_t ch) const
 {
 	int res = 0;
-	for (wchar_t i : *string_)
+	for (wchar_t i : string_)
 	{
 		if (i == ch)
 		{
@@ -702,7 +699,7 @@ String String::substring(int from, int to) const
 {
 	if (from >= 0 && to <= size() && from < to)
 	{
-		return String(string_->substr(from, to - from));
+		return String(string_.substr(from, to - from));
 	}
 	else
 	{
@@ -742,61 +739,61 @@ String String::to_upper() const
 
 std::wstring::iterator String::begin() noexcept
 {
-	return string_->begin();
+	return string_.begin();
 }
 
 std::wstring::iterator String::end() noexcept
 {
-	return string_->end();
+	return string_.end();
 }
 
 std::wstring::const_iterator String::begin() const noexcept
 {
-	return string_->cbegin();
+	return string_.cbegin();
 }
 
 std::wstring::const_iterator String::end() const noexcept
 {
-	return string_->cend();
+	return string_.cend();
 }
 
 std::wstring::const_iterator String::cbegin() const noexcept
 {
-	return string_->cbegin();
+	return string_.cbegin();
 }
 
 std::wstring::const_iterator String::cend() const noexcept
 {
-	return string_->cend();
+	return string_.cend();
 }
 
 String& String::operator=(wchar_t ch) noexcept
 {
-	*string_ = ch;
+	string_ = ch;
 	return *this;
 }
 
 String& String::operator=(const wchar_t* ch) noexcept
 {
-	*string_ = ch;
+	string_ = ch;
 	return *this;
 }
 
 String& String::operator=(const std::wstring& string) noexcept
 {
-	*string_ = string;
+	string_ = string;
 	return *this;
 }
 
 String& String::operator=(std::wstring&& string) noexcept
 {
-	*string_ = std::move(string);
+	string_ = std::move(string);
 	return *this;
 }
 
 String& String::operator=(const String& string) noexcept
 {
-	*string_ = *string.string_;
+	string_ = string.string_;
 	return *this;
 }
 
@@ -808,17 +805,17 @@ String& String::operator=(String&& string) noexcept
 
 String String::operator+(wchar_t ch) const
 {
-	return String(*string_ + ch);
+	return String(string_ + ch);
 }
 
 String String::operator+(const wchar_t* ch) const
 {
-	return String(*string_ + std::wstring(ch));
+	return String(string_ + std::wstring(ch));
 }
 
 String String::operator+(const std::wstring& string) const
 {
-	return String(*string_ + string);
+	return String(string_ + string);
 }
 
 String String::operator+(const String& string) const
@@ -828,21 +825,21 @@ String String::operator+(const String& string) const
 	return ret;
 }
 
-String operator+(wchar_t ch, const String& string)
+String snow::operator+(wchar_t ch, const String& string)
 {
 	String ret(string);
 	ret.add(ch, 0);
 	return ret;
 }
 
-String operator+(const wchar_t* ch, const String& string)
+String snow::operator+(const wchar_t* ch, const String& string)
 {
 	String ret(string);
 	ret.add(ch, 0);
 	return ret;
 }
 
-String operator+(std::wstring& std_str, const String& string)
+String snow::operator+(const std::wstring& std_str, const String& string)
 {
 	return String(std_str) + string;
 }
@@ -871,12 +868,12 @@ String& String::operator+=(const String& string)
 	return *this;
 }
 
-bool String::operator==(wchar_t ch) noexcept
+bool String::operator==(wchar_t ch) const noexcept
 {
 	return size() == 1 && (*this)[0] == ch;
 }
 
-bool String::operator==(const wchar_t* ch) noexcept
+bool String::operator==(const wchar_t* ch) const noexcept
 {
 	for (int i = 0; i < size(); i++)
 	{
@@ -888,32 +885,32 @@ bool String::operator==(const wchar_t* ch) noexcept
 	return true;
 }
 
-bool String::operator==(const std::wstring& string) noexcept
+bool String::operator==(const std::wstring& string) const noexcept
 {
-	return *string_ == string;
+	return string_ == string;
 }
 
-bool String::operator==(const String& string) noexcept
+bool String::operator==(const String& string) const noexcept
 {
-	return *string_ == *string.string_;
+	return string_ == string.string_;
 }
 
-bool String::operator!=(wchar_t ch) noexcept
-{
-	return !(*this == ch);
-}
-
-bool String::operator!=(const wchar_t* ch) noexcept
+bool String::operator!=(wchar_t ch) const noexcept
 {
 	return !(*this == ch);
 }
 
-bool String::operator!=(const std::wstring& string) noexcept
+bool String::operator!=(const wchar_t* ch) const noexcept
+{
+	return !(*this == ch);
+}
+
+bool String::operator!=(const std::wstring& string) const noexcept
 {
 	return !(*this == string);
 }
 
-bool String::operator!=(const String& string) noexcept
+bool String::operator!=(const String& string) const noexcept
 {
 	return !(*this == string);
 }
@@ -922,7 +919,7 @@ wchar_t& String::operator[](int index)
 {
 	if (index >= 0 && index < size())
 	{
-		return (*string_)[index];
+		return string_[index];
 	}
 	else
 	{
@@ -934,7 +931,7 @@ const wchar_t& String::operator[](int index) const
 {
 	if (index >= 0 && index < size())
 	{
-		return (*string_)[index];
+		return string_[index];
 	}
 	else
 	{
@@ -944,7 +941,7 @@ const wchar_t& String::operator[](int index) const
 
 std::wostream& snow::operator<<(std::wostream& stream, const String& string)
 {
-	return stream << *string.string_;
+	return stream << string.string_;
 }
 
 int String::compare(const String& first, const String& second)

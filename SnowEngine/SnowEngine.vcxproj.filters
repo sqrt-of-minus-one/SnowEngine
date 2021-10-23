@@ -21,6 +21,12 @@
     <Filter Include="Source Files\Util\Types">
       <UniqueIdentifier>{828309da-bd61-4113-a5a7-2c35579de08a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\SnowFlake">
+      <UniqueIdentifier>{e8be045c-756b-49a0-84a2-90b57dd56fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Util\SnowCat">
+      <UniqueIdentifier>{9ec49e51-c3ad-413f-8895-396dbfeb0a0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Math.h">
@@ -68,11 +74,20 @@
     <ClInclude Include="Util\Container\SortedArray.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Log.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
     <ClInclude Include="Util\Types\String.h">
       <Filter>Source Files\Util\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SnowFlake\Text.h">
+      <Filter>Source Files\Util\SnowFlake</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SnowCat\Log.h">
+      <Filter>Source Files\Util\SnowCat</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SnowFlake\Lang.h">
+      <Filter>Source Files\Util\SnowFlake</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Config.h">
+      <Filter>Source Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -94,11 +109,20 @@
     <ClCompile Include="Util\Util.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Util\Log.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
     <ClCompile Include="Util\Types\String.cpp">
       <Filter>Source Files\Util\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\SnowFlake\Text.cpp">
+      <Filter>Source Files\Util\SnowFlake</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\SnowCat\Log.cpp">
+      <Filter>Source Files\Util\SnowCat</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\SnowFlake\Lang.cpp">
+      <Filter>Source Files\Util\SnowFlake</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Config.cpp">
+      <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

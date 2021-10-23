@@ -15,6 +15,8 @@
 
 #include "../../Object.h"
 
+#include <string>
+
 namespace snow
 {
 
@@ -670,7 +672,7 @@ public:
 	 *	\param ch The character to compare.
 	 *	\return `true` if the string is equal to the character, `false` otherwise.
 	 */
-	bool operator==(wchar_t ch) noexcept;
+	bool operator==(wchar_t ch) const noexcept;
 
 	/**
 	 *	\brief Compare two strings
@@ -679,7 +681,7 @@ public:
 	 *	\param ch The row string to compare.
 	 *	\return `true` if the strings are equal, `false` otherwise.
 	 */
-	bool operator==(const wchar_t* ch) noexcept;
+	bool operator==(const wchar_t* ch) const noexcept;
 
 	/**
 	 *	\brief Compare two strings
@@ -688,7 +690,7 @@ public:
 	 *	\param string The standard `std::wstring` to compare.
 	 *	\return `true` if the strings are equal, `false` otherwise.
 	 */
-	bool operator==(const std::wstring& string) noexcept;
+	bool operator==(const std::wstring& string) const noexcept;
 
 	/**
 	 *	\brief Compare two strings
@@ -697,7 +699,7 @@ public:
 	 *	\param string The string to compare.
 	 *	\return `true` if the strings are equal, `false` otherwise.
 	 */
-	bool operator==(const String& string) noexcept;
+	bool operator==(const String& string) const noexcept;
 
 	/**
 	 *	\brief Compare the string and the character
@@ -706,7 +708,7 @@ public:
 	 *	\param ch The character to compare.
 	 *	\return `true` if the string is not equal to the character, `false` otherwise.
 	 */
-	bool operator!=(wchar_t ch) noexcept;
+	bool operator!=(wchar_t ch) const noexcept;
 
 	/**
 	 *	\brief Compare two strings
@@ -715,7 +717,7 @@ public:
 	 *	\param ch The row string to compare.
 	 *	\return `true` if the strings are not equal, `false` otherwise.
 	 */
-	bool operator!=(const wchar_t* ch) noexcept;
+	bool operator!=(const wchar_t* ch) const noexcept;
 
 	/**
 	 *	\brief Compare two strings
@@ -724,7 +726,7 @@ public:
 	 *	\param string The standard `std::wstring` to compare.
 	 *	\return `true` if the strings are not equal, `false` otherwise.
 	 */
-	bool operator!=(const std::wstring& string) noexcept;
+	bool operator!=(const std::wstring& string) const noexcept;
 
 	/**
 	 *	\brief Compare two strings
@@ -733,7 +735,7 @@ public:
 	 *	\param string The string to compare.
 	 *	\return `true` if the strings are not equal, `false` otherwise.
 	 */
-	bool operator!=(const String& string) noexcept;
+	bool operator!=(const String& string) const noexcept;
 
 	/**
 	 *	\brief Get the specified character of the string
@@ -834,7 +836,7 @@ public:
 	static String format(String string, ...);
 
 private:
-	std::unique_ptr<std::wstring> string_;
+	std::wstring string_;
 };
 
 String operator""_s(const wchar_t* string, std::size_t length) noexcept;

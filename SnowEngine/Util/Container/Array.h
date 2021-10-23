@@ -599,7 +599,7 @@ String Array<T>::to_string() const noexcept
 	}
 	else
 	{
-		std::string str = L"{ "_s;
+		String str = L"{ "_s;
 		for (int i = 0; i < size_ - 1; i++)
 		{
 			str += util::to_string(array_[i]) + L", "_s;

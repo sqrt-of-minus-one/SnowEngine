@@ -24,6 +24,7 @@
     <ClInclude Include="Math\Vector2.h" />
     <ClInclude Include="Math\Vector3.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Util\Config.h" />
     <ClInclude Include="Util\Container\Array.h" />
     <ClInclude Include="Util\Container\ArrayIterator.h" />
     <ClInclude Include="Util\Container\Container.h" />
@@ -33,7 +34,9 @@
     <ClInclude Include="Util\Container\MapIterator.h" />
     <ClInclude Include="Util\Container\Pair.h" />
     <ClInclude Include="Util\Container\SortedArray.h" />
-    <ClInclude Include="Util\Log.h" />
+    <ClInclude Include="Util\SnowCat\Log.h" />
+    <ClInclude Include="Util\SnowFlake\Lang.h" />
+    <ClInclude Include="Util\SnowFlake\Text.h" />
     <ClInclude Include="Util\Types\String.h" />
     <ClInclude Include="Util\Util.h" />
   </ItemGroup>
@@ -43,7 +46,10 @@
     <ClCompile Include="Math\Vector2.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Util\Log.cpp" />
+    <ClCompile Include="Util\Config.cpp" />
+    <ClCompile Include="Util\SnowCat\Log.cpp" />
+    <ClCompile Include="Util\SnowFlake\Lang.cpp" />
+    <ClCompile Include="Util\SnowFlake\Text.cpp" />
     <ClCompile Include="Util\Types\String.cpp" />
     <ClCompile Include="Util\Util.cpp" />
   </ItemGroup>

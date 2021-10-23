@@ -4,11 +4,26 @@
  //  File: Log.cpp                     //
 ////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////SnowCat//////////////////
+////// \// \////////     ///   ///  ///    //  ///   ///  ///    //   //         ////////////////
+/////       ///////  //////    //  //  //  //  //    //  //  /////    /////  //////////////////////
+////  o   o  //////    ///  /  /  //  //  ///  /  /  /  //  /////  =  ////  /////////////////////
+////    0    ////////  //  //    //  //  ////    //    //  /////      ///  ////   SnowEngine   ////
+/////  / \  ////     ///  ///   ///    //////   ///   ///    //  ///  //  //// logging system ///
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ *	\file
+ *	\brief The cpp-file of the SnowCat logger
+ *
+ *	This file contains the definitions of the Log class methods.
+ */
+
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Log.h"
 
-#include "Types/String.h"
+#include "../Config.h"
 
 #include <fstream>
 #include <iostream>
@@ -22,8 +37,8 @@ Log::Log(const String& category_name) noexcept :
 	object_counter_++;
 	if (!file_.is_open())
 	{
-		file_.open("Logs/Log.log", std::ios_base::trunc);
-		file_ << String::format(L"[%s][Logging] Log file is opened"_s, get_time_string_()) << std::endl;
+		file_.open((Config::get_log_path() + L"/Log.log").to_std_string(), std::ios_base::trunc);
+		file_ << String::format(L"[%s][SnowCat] SnowCat log file is opened (meow!)"_s, get_time_string_()) << std::endl;
 	}
 }
 
@@ -31,7 +46,7 @@ Log::~Log() noexcept
 {
 	if (--object_counter_ <= 0 && file_.is_open())
 	{
-		file_ << String::format(L"[%s][Logging] Log file is closed"_s, get_time_string_()) << std::endl;
+		file_ << String::format(L"[%s][SnowCat] SnowCat log file is closed"_s, get_time_string_()) << std::endl;
 		file_.close();
 	}
 }
@@ -86,7 +101,6 @@ void Log::e(const String& message) noexcept
 
 String Log::get_time_string_() noexcept
 {
-	// It's temporary
 	std::time_t current_time = std::time(nullptr);
 	std::tm time = *std::localtime(&current_time);
 	return String::format(L"%04d.%02d.%02d-%02d:%02d:%02d"_s,

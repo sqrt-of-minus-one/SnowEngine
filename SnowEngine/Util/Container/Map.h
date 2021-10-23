@@ -571,7 +571,7 @@ String Map<T_Key, T_Value>::to_string() const noexcept
 	}
 	else
 	{
-		std::string ret = L"{ "_s;
+		String ret = L"{ "_s;
 		for (const auto& i : map_)
 		{
 			for (const auto& j : i)
@@ -579,8 +579,8 @@ String Map<T_Key, T_Value>::to_string() const noexcept
 				ret += j.to_string() + L", "_s;
 			}
 		}
-		ret[ret.length() - 2] = L' ';
-		ret[ret.length() - 1] = L'}';
+		ret[ret.size() - 2] = L' ';
+		ret[ret.size() - 1] = L'}';
 		return ret;
 	}
 }

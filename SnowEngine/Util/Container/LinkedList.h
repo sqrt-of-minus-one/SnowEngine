@@ -712,7 +712,7 @@ String LinkedList<T>::to_string() const noexcept
 	}
 	else
 	{
-		std::string str = L"{ "_s;
+		String str = L"{ "_s;
 		for (auto p = begin(); !p.is_last(); p.next())
 		{
 			str += p.to_string() + L", "_s;
