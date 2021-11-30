@@ -781,7 +781,10 @@ String& String::operator=(const wchar_t* ch) noexcept
 
 String& String::operator=(const std::wstring& string) noexcept
 {
-	string_ = string;
+	std::wstring str = L"Lo";
+	str = string;
+	string_ = L"Hello";
+	string_ = str;
 	return *this;
 }
 

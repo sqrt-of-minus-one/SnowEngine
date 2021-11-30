@@ -7,6 +7,7 @@
 #include "Config.h"
 
 #include <fstream>
+#include <filesystem>
 
 using namespace snow;
 
@@ -14,6 +15,17 @@ void Config::init()
 {
 	if (!was_init_)
 	{
+		if (!std::filesystem::exists(L"config.ini"))
+		{
+			std::wofstream file(L"config.ini");
+			file <<
+L"[default]\n\
+log_path = Logs\n\
+lang_path = Localization\n\
+default_lang = en_UK\n";
+			file.close();
+		}
+
 		std::wifstream file(L"config.ini");
 		std::wstring category;
 		std::wstring str;
@@ -112,10 +124,6 @@ end_loop:;
 						}
 						else if (field == L"default_lang")
 						{
-							while (value.back() == L'\\' || value.back() == L'/')
-							{
-								value.pop_back();
-							}
 							default_lang_ = value;
 						}
 					}
@@ -125,26 +133,41 @@ end_loop:;
 		file.close();
 
 		was_init_ = true;
+		if (!std::filesystem::exists(lang_path_.to_std_string()))
+		{
+			std::filesystem::create_directories(lang_path_.to_std_string());
+		}
+		if (!std::filesystem::exists((lang_path_ + L'\\' + default_lang_ + L".lang").to_std_string()))
+		{
+			std::wofstream file((lang_path_ + L'\\' + default_lang_ + L".lang").to_std_string());
+			file << L"lang.name: English (United Kingdom)" << std::endl <<
+				L"lang.code: " << default_lang_.to_std_string() << std::endl <<
+				L"lang.test: Hello World!" << std::endl;
+			file.close();
+		}
 	}
 }
 
 const String& Config::get_log_path()
 {
+	init();
 	return log_path_;
 }
 
 const String& Config::get_lang_path()
 {
+	init();
 	return lang_path_;
 }
 
 const String& Config::get_default_lang()
 {
+	init();
 	return default_lang_;
 }
 
 bool Config::was_init_(false);
 
-String Config::log_path_(L"Logs");
-String Config::lang_path_(L"Localization");
-String Config::default_lang_(L"en_UK");
+String Config::log_path_(L"Logs"_s);
+String Config::lang_path_(L"Localization"_s);
+String Config::default_lang_(L"en_UK"_s);

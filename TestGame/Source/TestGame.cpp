@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <conio.h>
+#include <filesystem>
 
 #include "Util/SnowFlake/Lang.h"
 #include "Util/SnowCat/Log.h"
@@ -9,12 +10,9 @@
 
 int main()
 {
-	snow::Config::init();
+	snow::Lang::set_lang(L"en_UK"_s);
+	std::wcout << snow::Lang::get_string(L"lang.test"_s);
 
-	snow::Log log(L"Cat");
-	log.i(snow::Lang::get_string(L"Hello!"_s));
-
-	snow::Lang::set_lang(L"RU_ru"_s);
 	_getch();
 	return 0;
 }

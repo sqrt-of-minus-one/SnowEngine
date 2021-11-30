@@ -28,6 +28,7 @@
 #include <fstream>
 #include <iostream>
 #include <ctime>
+#include <filesystem>
 
 using namespace snow;
 
@@ -37,7 +38,11 @@ Log::Log(const String& category_name) noexcept :
 	object_counter_++;
 	if (!file_.is_open())
 	{
-		file_.open((Config::get_log_path() + L"/Log.log").to_std_string(), std::ios_base::trunc);
+		if (!std::filesystem::exists(Config::get_log_path().to_std_string()))
+		{
+			std::filesystem::create_directories(Config::get_log_path().to_std_string());
+		}
+		file_.open((Config::get_log_path() + L"\\Log.log").to_std_string(), std::ios_base::trunc);
 		file_ << String::format(L"[%s][SnowCat] SnowCat log file is opened (meow!)"_s, get_time_string_()) << std::endl;
 	}
 }
