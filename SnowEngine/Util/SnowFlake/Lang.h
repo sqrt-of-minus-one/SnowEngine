@@ -85,9 +85,10 @@ public:
 	/**
 	 *	\brief Get a string in the current language
 	 *	
-	 *	Allows to get a string in the language that is active now.
+	 *	Allows to get a string in the language that is active now. 
 	 *	\param key The key of the required string.
-	 *	\return The required string in the current language.
+	 *	\return The required string in the current language. If there is no string with the passed
+	 *	key, returns the key.
 	 */
 	String get_string(const String& key);
 

@@ -1027,35 +1027,49 @@ bool LinkedList<T>::add_before(T&& element, const ConstLinkedListIterator<T>& it
 template<typename T>
 bool LinkedList<T>::add_to_begin(const T& element)
 {
-	std::shared_ptr<LinkedListNode_<T>> new_node = std::make_shared<LinkedListNode_<T>>(element);
-	new_node->next = begin_;
-	begin_->prev = new_node;
-	begin_ = new_node;
-	size_++;
-
-	FOR_ITERATORS_(i,
+	if (size_ > 0)
 	{
-		i->index_++;
-	})
+		std::shared_ptr<LinkedListNode_<T>> new_node = std::make_shared<LinkedListNode_<T>>(element);
+		new_node->next = begin_;
+		begin_->prev = new_node;
+		begin_ = new_node;
+		size_++;
 
-	return true;
+		FOR_ITERATORS_(i,
+		{
+			i->index_++;
+		})
+
+		return true;
+	}
+	else
+	{
+		return add(element);
+	}
 }
 
 template<typename T>
 bool LinkedList<T>::add_to_begin(T&& element)
 {
-	std::shared_ptr<LinkedListNode_<T>> new_node = std::make_shared<LinkedListNode_<T>>(std::move(element));
-	new_node->next = begin_;
-	begin_->prev = new_node;
-	begin_ = new_node;
-	size_++;
-
-	FOR_ITERATORS_(i,
+	if (size_ > 0)
 	{
-		i->index_++;
-	})
+		std::shared_ptr<LinkedListNode_<T>> new_node = std::make_shared<LinkedListNode_<T>>(std::move(element));
+		new_node->next = begin_;
+		begin_->prev = new_node;
+		begin_ = new_node;
+		size_++;
 
-	return true;
+		FOR_ITERATORS_(i,
+		{
+			i->index_++;
+		})
+
+		return true;
+	}
+	else
+	{
+		return add(std::forward<T>(element));
+	}
 }
 
 template<typename T>

@@ -92,6 +92,15 @@
     <ClInclude Include="Util\Game.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="Util\Container\Deque.h">
+      <Filter>Source Files\Util\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Container\Queue.h">
+      <Filter>Source Files\Util\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Container\Stack.h">
+      <Filter>Source Files\Util\Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math\Math.cpp">

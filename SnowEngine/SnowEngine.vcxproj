@@ -28,12 +28,15 @@
     <ClInclude Include="Util\Container\Array.h" />
     <ClInclude Include="Util\Container\ArrayIterator.h" />
     <ClInclude Include="Util\Container\Container.h" />
+    <ClInclude Include="Util\Container\Deque.h" />
     <ClInclude Include="Util\Container\LinkedList.h" />
     <ClInclude Include="Util\Container\LinkedListIterator.h" />
     <ClInclude Include="Util\Container\Map.h" />
     <ClInclude Include="Util\Container\MapIterator.h" />
     <ClInclude Include="Util\Container\Pair.h" />
+    <ClInclude Include="Util\Container\Queue.h" />
     <ClInclude Include="Util\Container\SortedArray.h" />
+    <ClInclude Include="Util\Container\Stack.h" />
     <ClInclude Include="Util\Game.h" />
     <ClInclude Include="Util\SnowCat\Log.h" />
     <ClInclude Include="Util\SnowFlake\Lang.h" />
