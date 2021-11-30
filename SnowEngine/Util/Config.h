@@ -11,23 +11,22 @@
 namespace snow
 {
 
-class Config
+class Config : public Object
 {
 public:
-	Config() = delete;
+	Config();
 
-	static void init();
+	virtual String to_string() const noexcept override;
+	virtual int hash_code() const noexcept override;
 
-	static const String& get_log_path();
-	static const String& get_lang_path();
-	static const String& get_default_lang();
+	const String& get_log_path();
+	const String& get_lang_path();
+	const String& get_default_lang();
 
 private:
-	static bool was_init_;
-
-	static String log_path_;
-	static String lang_path_;
-	static String default_lang_;
+	String log_path_;
+	String lang_path_;
+	String default_lang_;
 
 };
 

@@ -125,9 +125,7 @@ public:
 	void e(const String& message) noexcept;
 private:
 	const String name_;
-	static bool debug_mode_;
 	static int object_counter_;
-	static std::wofstream file_;
 
 	static String get_time_string_() noexcept;
 	void log_(const String& type, const String& message) noexcept;

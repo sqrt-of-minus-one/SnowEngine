@@ -34,6 +34,7 @@
     <ClInclude Include="Util\Container\MapIterator.h" />
     <ClInclude Include="Util\Container\Pair.h" />
     <ClInclude Include="Util\Container\SortedArray.h" />
+    <ClInclude Include="Util\Game.h" />
     <ClInclude Include="Util\SnowCat\Log.h" />
     <ClInclude Include="Util\SnowFlake\Lang.h" />
     <ClInclude Include="Util\SnowFlake\Text.h" />
@@ -47,6 +48,7 @@
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Util\Config.cpp" />
+    <ClCompile Include="Util\Game.cpp" />
     <ClCompile Include="Util\SnowCat\Log.cpp" />
     <ClCompile Include="Util\SnowFlake\Lang.cpp" />
     <ClCompile Include="Util\SnowFlake\Text.cpp" />

@@ -23,17 +23,17 @@ namespace snow
 class Lang
 {
 public:
-	Lang() = delete;
+	Lang();
 
-	static const String& get_current_lang();
-	static bool set_lang(const String& lang);
+	const String& get_current_lang();
+	bool set_lang(const String& lang);
 
-	static String get_string(const String& key);
+	String get_string(const String& key);
 
 private:
-	static String current_lang_;
-	static Map<String, String> strings_;
-	static Log lang_log_;
+	String current_lang_;
+	Map<String, String> strings_;
+	Log lang_log_;
 
 };
 

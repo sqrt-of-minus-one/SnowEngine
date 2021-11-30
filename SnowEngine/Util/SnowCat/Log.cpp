@@ -23,7 +23,7 @@
 
 #include "Log.h"
 
-#include "../Config.h"
+#include "../Game.h"
 
 #include <fstream>
 #include <iostream>
@@ -36,23 +36,25 @@ Log::Log(const String& category_name) noexcept :
 	name_(category_name)
 {
 	object_counter_++;
-	if (!file_.is_open())
+	if (!Game::log_file_.is_open())
 	{
-		if (!std::filesystem::exists(Config::get_log_path().to_std_string()))
+		if (!std::filesystem::exists(Game::config.get_log_path().to_std_string()))
 		{
-			std::filesystem::create_directories(Config::get_log_path().to_std_string());
+			std::filesystem::create_directories(Game::config.get_log_path().to_std_string());
 		}
-		file_.open((Config::get_log_path() + L"\\Log.log").to_std_string(), std::ios_base::trunc);
-		file_ << String::format(L"[%s][SnowCat] SnowCat log file is opened (meow!)"_s, get_time_string_()) << std::endl;
+		std::wstring tmp = (Game::config.get_log_path() + L"\\Log.log").to_std_string();
+		Game::log_file_.open(tmp);
+		tmp = String::format(L"[%s][SnowCat] SnowCat log file is opened (meow!)"_s, get_time_string_()).to_std_string();
+		Game::log_file_ << tmp << std::endl;
 	}
 }
 
 Log::~Log() noexcept
 {
-	if (--object_counter_ <= 0 && file_.is_open())
+	if (--object_counter_ <= 0 && Game::log_file_.is_open())
 	{
-		file_ << String::format(L"[%s][SnowCat] SnowCat log file is closed"_s, get_time_string_()) << std::endl;
-		file_.close();
+		Game::log_file_ << String::format(L"[%s][SnowCat] SnowCat log file is closed"_s, get_time_string_()) << std::endl;
+		Game::log_file_.close();
 	}
 }
 
@@ -68,22 +70,22 @@ int Log::hash_code() const noexcept
 
 void Log::enable_debug_mode() noexcept
 {
-	debug_mode_ = true;
+	Game::debug_mode_ = true;
 }
 
 void Log::disable_debug_mode() noexcept
 {
-	debug_mode_ = false;
+	Game::debug_mode_ = false;
 }
 
 bool Log::is_debug_mode_enabled() noexcept
 {
-	return debug_mode_;
+	return Game::debug_mode_;
 }
 
 void Log::d(const String& message) noexcept
 {
-	if (debug_mode_)
+	if (Game::debug_mode_)
 	{
 		log_(L"[Debug  ] "_s, message);
 	}
@@ -117,15 +119,8 @@ void Log::log_(const String& type, const String& message) noexcept
 {
 	String time_str = String::format(L"[%s]"_s, get_time_string_());
 
-	file_ << time_str << type << name_ << ": " << message << std::endl;
+	Game::log_file_ << time_str << type << name_ << ": " << message << std::endl;
 	std::wcout << time_str << type << name_ << ": " << message << std::endl;
 }
 
-#ifdef _DEBUG
-bool Log::debug_mode_ = true;
-#else
-bool Log::debug_mode_ = false;
-#endif
-
 int Log::object_counter_ = 0;
-std::wofstream Log::file_;
