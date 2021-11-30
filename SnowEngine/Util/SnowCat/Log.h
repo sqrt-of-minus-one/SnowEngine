@@ -31,7 +31,7 @@ namespace snow
 /**
  *	\brief The class of the logger
  *	
- *	Every Log object is associated with a log category.
+ *	Every Log object is associated with a log category. Use `config.ini` file to set log directory.
  */
 class Log : public Object
 {

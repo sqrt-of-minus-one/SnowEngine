@@ -29,6 +29,16 @@ Lang::Lang() :
 	set_lang(Game::config.get_default_lang());
 }
 
+String Lang::to_string() const noexcept
+{
+	return current_lang_;
+}
+
+int Lang::hash_code() const noexcept
+{
+	return current_lang_.hash_code();
+}
+
 const String& Lang::get_current_lang()
 {
 	return current_lang_;
