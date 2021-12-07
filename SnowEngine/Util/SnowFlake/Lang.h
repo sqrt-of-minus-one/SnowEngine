@@ -92,6 +92,15 @@ public:
 	 */
 	String get_string(const String& key);
 
+	/**
+	 *	\brief Whether the passed key is valid
+	 *	
+	 *	Checks if the passed key is contained in the list of strings of the current language.
+	 *	\param key The key to check.
+	 *	\return	`true` if the key is valid, `false` otherwise.
+	 */
+	bool is_valid(const String& key);
+
 private:
 	String current_lang_;
 	Map<String, String> strings_;

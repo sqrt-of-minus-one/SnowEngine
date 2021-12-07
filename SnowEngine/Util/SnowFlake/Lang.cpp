@@ -92,3 +92,8 @@ String Lang::get_string(const String& key)
 		return key;
 	}
 }
+
+bool Lang::is_valid(const String& key)
+{
+	return strings_.contains(key);
+}

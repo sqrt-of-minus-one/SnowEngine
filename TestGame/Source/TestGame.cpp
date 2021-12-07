@@ -9,18 +9,13 @@
 #include "Util/Container/Deque.h"
 #include "Util/Container/Queue.h"
 #include "Util/Container/Stack.h"
+#include "Util/SnowFlake/Text.h"
 
 int main()
 {
-	snow::Game::lang.set_lang(L"en_UK"_s);
+	snow::Text text = snow::String(L"lang.test");
 
-	snow::Stack<int> not_deque;
-	not_deque.push(5);
-	not_deque.push(3);
-	not_deque.push(7);
-	not_deque.push(4);
-	not_deque.pop();
-	std::wcout << not_deque.to_string();
+	std::wcout << text.to_string();
 
 	_getch();
 	return 0;
