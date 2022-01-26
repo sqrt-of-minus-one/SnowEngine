@@ -847,6 +847,31 @@ String snow::operator+(const std::wstring& std_str, const String& string)
 	return String(std_str) + string;
 }
 
+String String::operator*(int value) const
+{
+	if (value <= 0)
+	{
+		return String();
+	}
+
+	String res = string_;
+	int i;
+	for (i = 1; 2 * i <= value; i *= 2)
+	{
+		res += res;
+	}
+	for (; i < value; i++)
+	{
+		res += string_;
+	}
+	return res;
+}
+
+String snow::operator*(int value, const String& string)
+{
+	return string * value;
+}
+
 String& String::operator+=(wchar_t ch)
 {
 	add(ch);
@@ -868,6 +893,12 @@ String& String::operator+=(const std::wstring& string)
 String& String::operator+=(const String& string)
 {
 	add(string);
+	return *this;
+}
+
+String& String::operator*=(int value)
+{
+	*this = *this * value;
 	return *this;
 }
 

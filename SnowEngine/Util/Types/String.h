@@ -599,6 +599,10 @@ public:
 	 *	\return The resultant string.
 	 */
 	friend String operator+(const std::wstring& std_str, const String& string);
+
+	String operator*(int value) const;
+
+	friend String operator*(int value, const String& string);
 	
 	/**
 	 *	\brief Add the character to the end of the string
@@ -664,6 +668,8 @@ public:
 	 *	\return The reference to itself.
 	 */
 	String& operator+=(const String& string);
+
+	String& operator*=(int value);
 
 	/**
 	 *	\brief Compare the string and the character

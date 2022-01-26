@@ -14,14 +14,7 @@
 
 int main()
 {
-	snow::Text text = snow::String(L"lang.test");
-
-	std::wcout << snow::math::clamp(55, 33, 66) << std::endl <<
-		snow::math::clamp(55, 33, 55) << std::endl <<
-		snow::math::clamp(55, 33, 44) << std::endl <<
-		snow::math::clamp(55, 77, 66) << std::endl <<
-		snow::math::clamp(55, 66, 33) << std::endl <<
-		snow::math::clamp(55, 66, 44) << std::endl;
+	std::wcout << (L"SnOw"_s * 7);
 
 	_getch();
 	return 0;
