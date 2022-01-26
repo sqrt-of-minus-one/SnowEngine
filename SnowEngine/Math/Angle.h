@@ -7,14 +7,14 @@
 /**
  *	\file
  *	\~english
- *	\brief The file with Angle class
+ *	\brief The file with `Angle` class
  *	
- *	This file contains the definition of the Angle class.
+ *	This file contains the definition of the `Angle` class.
  *	
  *	\~russian
- *	\brief Файл с классом Angle
+ *	\brief Файл с классом `Angle`
  *	
- *	Этот файл содержит определение класса Angle.
+ *	Этот файл содержит определение класса `Angle`.
  */
 
 #pragma once
@@ -26,7 +26,7 @@ namespace snow
 
 /**
  *	\~english
- *	\brief Class for angles
+ *	\brief The class for angles
  *	
  *	SnowEngine angle class. Supports degrees, radians and gradians. You can use literals to create
  *	an angle:
@@ -594,7 +594,7 @@ public:
 	 *
 	 *	Allows to get the production of the angle and the number.
 	 *	\param value The multiplier.
-	 *	\return The product of the angle and a number.
+	 *	\return The product of the angle and the number.
 	 *
 	 *	\~russian
 	 *	\brief Умножает угол на число
@@ -653,11 +653,11 @@ public:
 	 *		angle1 += angle2;
 	 *		angle1 = angle1 + angle2;
 	 *	\endcode
-	 *	\param angle A summand.
+	 *	\param angle The summand.
 	 *	\return A reference to itself.
 
 	 *	\~russian
-	 *	\brief Прибавляет к своему значению переданный угол
+	 *	\brief Прибавляет к себе переданный угол
 	 *	
 	 *	Находит сумму двух углов и присаивает себе её значение.
 	 *	\code
@@ -680,11 +680,11 @@ public:
 	 *		angle1 -= angle2;
 	 *		angle1 = angle1 - angle2;
 	 *	\endcode
-	 *	\param angle A subtrahend.
+	 *	\param angle The subtrahend.
 	 *	\return A reference to itself.
 
 	 *	\~russian
-	 *	\brief Вычитает из своего значения переданный угол
+	 *	\brief Вычитает из себя переданный угол
 	 *
 	 *	Находит разность двух углов и присаивает себе её значение.
 	 *	\code
@@ -707,7 +707,7 @@ public:
 	 *		angle *= num;
 	 *		angle = angle * num;
 	 *	\endcode
-	 *	\param value A multiplier.
+	 *	\param value The multiplier.
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
@@ -734,7 +734,7 @@ public:
 	 *		angle /= num;
 	 *		angle = angle / num;
 	 *	\endcode
-	 *	\param value A divisor.
+	 *	\param value The divisor.
 	 *	\return A reference to itself.
 	 *	\throw std::domain_error Value is equal to zero.
 	 *
