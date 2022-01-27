@@ -426,7 +426,7 @@ public:
 	 *	\~english
 	 *	\brief Product of a vector and a number
 	 *
-	 *	Multiplies both of vector coordinates by a number:
+	 *	Multiplies both of the vector coordinates by a number:
 	 *	\f$v \cdot \{x, y\}= \{v \cdot x, v \cdot y\}\f$.
 	 *	\param value The multiplier.
 	 *	\param vector The vector.
@@ -539,7 +539,7 @@ public:
 	 *
 	 *	По отдельности делит X и Y координаты двух векторов:
 	 *	\f$\{x_1; y_1\} / \{x_2; y_2\} = \{\frac{x_1}{x_2}; \frac{y_1}{y_2}\}\f$.
-	 *	\param vector The divisor.
+	 *	\param vector Делитель.
 	 *	\return Результат покоординатного деления двух векторов.
 	 *	\throw std::domain_error Одна из координат делителя равна нулю.
 	 */
@@ -606,10 +606,10 @@ public:
 	 *	Finds the product of the vector and a number and assigns it to itself.
 	 *	\code
 	 *		// These strings do the same:
-	 *		angle *= num;
-	 *		angle = angle * num;
+	 *		vector *= num;
+	 *		vector = vector * num;
 	 *	\endcode
-	 *	\param angle The multiplier.
+	 *	\param value The multiplier.
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
@@ -618,10 +618,10 @@ public:
 	 *	Находит произведение вектора и числа и присваивает себе его значение.
 	 *	\code
 	 *		// Эти строки делают одно и то же:
-	 *		angle *= num;
-	 *		angle = angle * num;
+	 *		vector *= num;
+	 *		vector = vector * num;
 	 *	\endcode
-	 *	\param angle Множитель.
+	 *	\param value Множитель.
 	 *	\return Ссылка на себя.
 	 */
 	Vector2& operator*=(float value) noexcept;
@@ -631,8 +631,7 @@ public:
 	 *	\brief Separately multiplies its own X and Y coordinates by coordinates of a passed vector
 	 *
 	 *	Finds the coordinate-wise product of two vectors and assigns it to itself.
-	 *	\warning Do not confuse this operation and dot product. If you need the latter, use
-	 *	operator `&=`.
+	 *	\warning Do not confuse this operation and dot product.
 	 *	\code
 	 *		// These strings do the same:
 	 *		vector *= another_vector;
@@ -645,8 +644,7 @@ public:
 	 *	\brief По отдельности умножает свои X и Y координаты на координаты переданного вектора
 	 *
 	 *	Находит покоординатное произведение двух векторов и присваивает себе его значение.
-	 *	\warning Не путайте эту операцию со скалярным произведением. Если вам нужно последнее,
-	 *	используйте оператор `&=`.
+	 *	\warning Не путайте эту операцию со скалярным произведением.
 	 *	\code
 	 *		// Эти строки делают одно и то же:
 	 *		vector *= another_vector;
@@ -664,10 +662,10 @@ public:
 	 *	Finds the quotient of the vector and a number and assigns it to itself.
 	 *	\code
 	 *		// These strings do the same:
-	 *		angle /= num;
-	 *		angle = angle / num;
+	 *		vector /= num;
+	 *		vector = vector / num;
 	 *	\endcode
-	 *	\param angle The divisor.
+	 *	\param value The divisor.
 	 *	\return A reference to itself.
 	 *	\throw std::domain_error The divisor is zero.
 	 *
@@ -677,10 +675,10 @@ public:
 	 *	Находит частное вектора и числа и присваивает себе его значение.
 	 *	\code
 	 *		// Эти строки делают одно и то же:
-	 *		angle /= num;
-	 *		angle = angle / num;
+	 *		vector /= num;
+	 *		vector = vector / num;
 	 *	\endcode
-	 *	\param angle Делитель.
+	 *	\param value Делитель.
 	 *	\return Ссылка на себя.
 	 *	\throw std::domain_error Делитель равен нулю.
 	 */
@@ -719,7 +717,7 @@ public:
 	 *	\~english
 	 *	\brief Checks whether two vectors are equal
 	 *	
-	 *	Two vectors are equal if their X and Y coordinates are equal.
+	 *	Two vectors are equal if their X and Y coordinates are pairwise equal.
 	 *	\param vector A vector to compare.
 	 *	\return `true` if vectors are equal, `false` otherwise.
 	 *
@@ -736,14 +734,14 @@ public:
 	 *	\~english
 	 *	\brief Checks whether two vectors are not equal
 	 *
-	 *	Two vectors are equal if their X and Y coordinates are equal.
+	 *	Two vectors are equal if their X and Y coordinates are pairwise equal.
 	 *	\param vector A vector to compare.
 	 *	\return `true` if vectors are not equal, `false` otherwise.
 	 *
 	 *	\~russian
 	 *	\brief Проверяет, различаются ли два вектора
 	 *
-	 *	Два вектора равны, если равны их X и Y координаты.
+	 *	Два вектора равны, если попарно равны их X и Y координаты.
 	 *	\param vector Вектор для сравнения.
 	 *	\return `true`, если векторы не равны, иначе `false`.
 	 */
