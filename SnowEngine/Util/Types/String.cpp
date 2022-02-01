@@ -68,7 +68,7 @@ std::wstring String::to_std_string() const noexcept
 
 int String::size() const noexcept
 {
-	return string_.length();
+	return static_cast<int>(string_.length());
 }
 
 bool String::is_empty() const noexcept

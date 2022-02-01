@@ -60,6 +60,15 @@ public:
 	String log_path;
 	String lang_path;
 	String default_lang;
+
+	// Todo: Use int vector
+	int resolutionX;
+	int resolutionY;
+	bool fullscreen;
+	bool resize;
+	bool titlebar;
+	bool titlebar_buttons;
+	String title;
 };
 
 }

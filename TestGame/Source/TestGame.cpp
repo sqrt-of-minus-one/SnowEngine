@@ -14,11 +14,7 @@
 
 int main()
 {
-	snow::Log log(L"Hi");
-	std::wcout << (L"SnOw"_s * 7);
-
-	snow::Game::config.default_lang = L"ru_RU";
-	snow::Game::config.save();
+	snow::Game::start();
 
 	_getch();
 	return 0;

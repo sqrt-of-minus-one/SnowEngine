@@ -30,6 +30,7 @@ public:
 	Game() = delete;
 
 	static void start();
+	static void loop();
 
 	/**
 	 *	\brief The configurations of the game

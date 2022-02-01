@@ -15,7 +15,15 @@ using namespace snow;
 L"[default]\n\
 log_path = Logs\n\
 lang_path = Localization\n\
-default_lang = en_UK\n"
+default_lang = en_UK\n\
+\n\
+[window]\n\
+resolution = 800x600\n\
+fullscreen = false\n\
+resize = true\n\
+titlebar = true\n\
+titlebar_buttons = true\n\
+title = \"The Game (powered by SnowEngine)\"\n"
 
 inline void check_and_write_(std::wofstream& file, String& str)
 {
@@ -50,10 +58,17 @@ inline void check_and_write_(std::wofstream& file, String& str)
 }
 
 Config::Config() :
-	// Default values
 	log_path(L"Logs"_s),
 	lang_path(L"Localization"_s),
-	default_lang(L"en_UK"_s)
+	default_lang(L"en_UK"_s),
+
+	resolutionX(800),
+	resolutionY(600),
+	fullscreen(false),
+	resize(true),
+	titlebar(true),
+	titlebar_buttons(true),
+	title(L"The Game (powered by SnowEngine)")
 {
 	if (!std::filesystem::exists(L"config.ini"))
 	{
@@ -89,7 +104,14 @@ String Config::to_string() const noexcept
 		String(L"[default]") +
 		L"\nlog_path = " + log_path +
 		L"\nlang_path = " + lang_path +
-		L"\ndefault_lang = " + default_lang;
+		L"\ndefault_lang = " + default_lang +
+		L"\n\n[window]" +
+		L"\nresolution = " + resolutionX + L"x" + resolutionY +
+		L"\nfullscreen = " + (fullscreen ? L"true" : L"false") +
+		L"\nresize = " + (resize ? L"true" : L"false") +
+		L"\ntitlebar = " + (titlebar ? L"true" : L"false") +
+		L"\ntitlebar_buttons = " + (titlebar_buttons ? L"true" : L"false") +
+		L"\ntitle = " + title;
 }
 
 int Config::hash_code() const noexcept
@@ -100,16 +122,23 @@ int Config::hash_code() const noexcept
 void Config::save()
 {
 	std::wofstream file(L"config.ini");
-	file << L"[default]" << std::endl << "log_path = ";
+	file << L"[default]" << std::endl << L"log_path = ";
 	check_and_write_(file, log_path);
 
-	file << std::endl << "lang_path = ";
+	file << std::endl << L"lang_path = ";
 	check_and_write_(file, lang_path);
 
-	file << std::endl << "default_lang = ";
+	file << std::endl << L"default_lang = ";
 	check_and_write_(file, default_lang);
 
-	file << std::endl;
+	file << std::endl << std::endl << L"[window]" << std::endl <<
+		L"resolution = " << resolutionX << L"x" << resolutionY << std::endl <<
+		L"fullscreen = " << (fullscreen ? L"true" : L"false") << std::endl <<
+		L"resize = " << (resize ? L"true" : L"false") << std::endl <<
+		L"titlebar = " << (titlebar ? L"true" : L"false") << std::endl <<
+		L"titlebar_buttons = " << (titlebar_buttons ? L"true" : L"false") << std::endl <<
+		L"title = ";
+	check_and_write_(file, title);
 	file.close();
 }
 
@@ -219,6 +248,49 @@ end_loop:;
 					else if (field == L"default_lang")
 					{
 						default_lang = value;
+					}
+				}
+				else if (category == L"[window]")
+				{
+					if (field == L"resolution")
+					{
+						String val = value;
+						int x_pos = val.find_first(L'x');
+						try
+						{
+							resolutionX = val.substring(0, x_pos).to_int();
+							resolutionY = val.substring(x_pos + 1, val.size()).to_int();
+							if (resolutionX <= 0 || resolutionY <= 0)
+							{
+								resolutionX = 800;
+								resolutionY = 600;
+							}
+						}
+						catch (std::invalid_argument e)
+						{
+							resolutionX = 800;
+							resolutionY = 600;
+						}
+					}
+					else if (field == L"fullscreen")
+					{
+						fullscreen = (value == L"true" || value == L"1");
+					}
+					else if (field == L"resize")
+					{
+						resize = (value == L"true" || value == L"1");
+					}
+					else if (field == L"titlebar")
+					{
+						titlebar = (value == L"true" || value == L"1");
+					}
+					else if (field == L"titlebar_buttons")
+					{
+						titlebar_buttons = (value == L"true" || value == L"1");
+					}
+					else if (field == L"title")
+					{
+						title = value;
 					}
 				}
 			}
