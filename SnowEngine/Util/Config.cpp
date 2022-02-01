@@ -11,33 +11,121 @@
 
 using namespace snow;
 
-Config::Config() :
-	log_path_(L"Logs"_s),
-	lang_path_(L"Localization"_s),
-	default_lang_(L"en_UK"_s)
-{
-	if (!std::filesystem::exists(L"config.ini"))
-	{
-		std::wofstream file(L"config.ini");
-		file <<
+#define DEFAULT_CONFIG \
 L"[default]\n\
 log_path = Logs\n\
 lang_path = Localization\n\
-default_lang = en_UK\n";
+default_lang = en_UK\n"
+
+inline void check_and_write_(std::wofstream& file, String& str)
+{
+	String tmp = str;
+	bool has_sp = false;
+	for (int i = 0; i < tmp.size(); i++)
+	{
+		switch (tmp[i])
+		{
+		case '"':
+		{
+			tmp.add(L'\\', i);
+			i++;
+			break;
+		}
+		case ' ':
+		case '\t':
+		{
+			has_sp = true;
+			break;
+		}
+		}
+	}
+	if (has_sp)
+	{
+		file << '"' << tmp << '"';
+	}
+	else
+	{
+		file << tmp;
+	}
+}
+
+Config::Config() :
+	// Default values
+	log_path(L"Logs"_s),
+	lang_path(L"Localization"_s),
+	default_lang(L"en_UK"_s)
+{
+	if (!std::filesystem::exists(L"config.ini"))
+	{
+		// Create a config file if it doesn't exist
+		std::wofstream file(L"config.ini");
+
+		// Default content
+		file << DEFAULT_CONFIG;
 		file.close();
 	}
+	else
+	{
+		load();
+	}
 
+	if (!std::filesystem::exists(lang_path.to_std_string()))
+	{
+		std::filesystem::create_directories(lang_path.to_std_string());
+	}
+	if (!std::filesystem::exists((lang_path + L'\\' + default_lang + L".lang").to_std_string()))
+	{
+		std::wofstream file((lang_path + L'\\' + default_lang + L".lang").to_std_string());
+		file << L"lang.name: English (United Kingdom)" << std::endl <<
+			L"lang.code: " << default_lang.to_std_string() << std::endl <<
+			L"lang.test: Hello World!" << std::endl;
+		file.close();
+	}
+}
+
+String Config::to_string() const noexcept
+{
+	return
+		String(L"[default]") +
+		L"\nlog_path = " + log_path +
+		L"\nlang_path = " + lang_path +
+		L"\ndefault_lang = " + default_lang;
+}
+
+int Config::hash_code() const noexcept
+{
+	return log_path.hash_code() - lang_path.hash_code() + default_lang.hash_code();
+}
+
+void Config::save()
+{
+	std::wofstream file(L"config.ini");
+	file << L"[default]" << std::endl << "log_path = ";
+	check_and_write_(file, log_path);
+
+	file << std::endl << "lang_path = ";
+	check_and_write_(file, lang_path);
+
+	file << std::endl << "default_lang = ";
+	check_and_write_(file, default_lang);
+
+	file << std::endl;
+	file.close();
+}
+
+void Config::load()
+{
 	std::wifstream file(L"config.ini");
 	std::wstring category;
 	std::wstring str;
-	int line = 0;
+	int line = 0; // Line number
 	while (std::getline(file, str))
 	{
 		line++;
 		std::wstring field, value;
-		bool is_now_value = false;
-		bool inside_quot = false;
-		int i;
+		bool is_now_value = false; // True if we are reading value now
+		bool inside_quot = false; // True if what we are reading now is inside ""
+		unsigned int i;
 		for (i = 0; i < str.length(); i++)
 		{
 			switch (str[i])
@@ -47,7 +135,8 @@ default_lang = en_UK\n";
 			{
 				if (!inside_quot)
 				{
-					goto end_loop;
+					// If we're not inside "", it's a comment. Skip it
+					goto end_loop; // Yes, goto is bad, but...
 				}
 				break;
 			}
@@ -55,6 +144,7 @@ default_lang = en_UK\n";
 			{
 				if (!is_now_value)
 				{
+					// After = a value begins
 					is_now_value = true;
 					continue;
 				}
@@ -73,6 +163,7 @@ default_lang = en_UK\n";
 			{
 				if (is_now_value && i + 1 < str.length() - 1 && str[i + 1] == L'"')
 				{
+					// Characters \" can be used to write " inside value
 					i++;
 				}
 				break;
@@ -82,6 +173,7 @@ default_lang = en_UK\n";
 			{
 				if (!inside_quot)
 				{
+					// Ignore spaces outside ""
 					continue;
 				}
 				break;
@@ -101,6 +193,7 @@ end_loop:;
 		{
 			if (field.front() == L'[' && field.back() == L']')
 			{
+				// The category name is inside []
 				category = field;
 			}
 			else if (!value.empty())
@@ -113,7 +206,7 @@ end_loop:;
 						{
 							value.pop_back();
 						}
-						log_path_ = value;
+						log_path = value;
 					}
 					else if (field == L"lang_path")
 					{
@@ -121,57 +214,15 @@ end_loop:;
 						{
 							value.pop_back();
 						}
-						lang_path_ = value;
+						lang_path = value;
 					}
 					else if (field == L"default_lang")
 					{
-						default_lang_ = value;
+						default_lang = value;
 					}
 				}
 			}
 		}
 	}
 	file.close();
-
-	if (!std::filesystem::exists(lang_path_.to_std_string()))
-	{
-		std::filesystem::create_directories(lang_path_.to_std_string());
-	}
-	if (!std::filesystem::exists((lang_path_ + L'\\' + default_lang_ + L".lang").to_std_string()))
-	{
-		std::wofstream file((lang_path_ + L'\\' + default_lang_ + L".lang").to_std_string());
-		file << L"lang.name: English (United Kingdom)" << std::endl <<
-			L"lang.code: " << default_lang_.to_std_string() << std::endl <<
-			L"lang.test: Hello World!" << std::endl;
-		file.close();
-	}
-}
-
-String Config::to_string() const noexcept
-{
-	return
-		String(L"[default]") +
-		L"\nlog_path = " + log_path_ +
-		L"\nlang_path = " + lang_path_ +
-		L"\ndefault_lang = " + default_lang_;
-}
-
-int Config::hash_code() const noexcept
-{
-	return log_path_.hash_code() - lang_path_.hash_code() + default_lang_.hash_code();
-}
-
-const String& Config::get_log_path()
-{
-	return log_path_;
-}
-
-const String& Config::get_lang_path()
-{
-	return lang_path_;
-}
-
-const String& Config::get_default_lang()
-{
-	return default_lang_;
 }

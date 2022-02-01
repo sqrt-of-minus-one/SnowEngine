@@ -26,7 +26,7 @@ Lang::Lang() :
 	strings_(),
 	lang_log_(L"SnowFlake"_s)
 {
-	set_lang(Game::config.get_default_lang());
+	set_lang(Game::config.default_lang);
 }
 
 String Lang::to_string() const noexcept
@@ -48,7 +48,7 @@ bool Lang::set_lang(const String& lang)
 {
 	if (lang != current_lang_)
 	{
-		String file_path = Game::config.get_lang_path() + L'\\' + lang + L".lang";
+		String file_path = Game::config.lang_path + L'\\' + lang + L".lang";
 		std::wifstream file(file_path.to_std_string());
 		if (file.is_open())
 		{

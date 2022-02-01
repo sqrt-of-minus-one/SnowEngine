@@ -54,35 +54,12 @@ public:
 	 */
 	virtual int hash_code() const noexcept override;
 
-	/**
-	 *	\brief Get the log path
-	 *	
-	 *	Allows to get the path to the directory where logs are saved.
-	 *	\return The path to the log directory.
-	 */
-	const String& get_log_path();
+	void save();
+	void load();
 
-	/**
-	 *	\brief Get the languages path
-	 *	
-	 *	Allows to get the path to the directory where localization files are stored.
-	 *	\return The path to the languages directory.
-	 */
-	const String& get_lang_path();
-
-	/**
-	 *	\brief Get the default language
-	 *	
-	 *	Allows to get the code of the default language.
-	 *	\return The default language.
-	 */
-	const String& get_default_lang();
-
-private:
-	String log_path_;
-	String lang_path_;
-	String default_lang_;
-
+	String log_path;
+	String lang_path;
+	String default_lang;
 };
 
 }

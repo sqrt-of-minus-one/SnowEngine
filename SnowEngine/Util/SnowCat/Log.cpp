@@ -38,11 +38,11 @@ Log::Log(const String& category_name) noexcept :
 	object_counter_++;
 	if (!Game::log_file_.is_open())
 	{
-		if (!std::filesystem::exists(Game::config.get_log_path().to_std_string()))
+		if (!std::filesystem::exists(Game::config.log_path.to_std_string()))
 		{
-			std::filesystem::create_directories(Game::config.get_log_path().to_std_string());
+			std::filesystem::create_directories(Game::config.log_path.to_std_string());
 		}
-		std::wstring tmp = (Game::config.get_log_path() + L"\\Log.log").to_std_string();
+		std::wstring tmp = (Game::config.log_path + L"\\Log.log").to_std_string();
 		Game::log_file_.open(tmp);
 		tmp = String::format(L"[%s][SnowCat] SnowCat log file is opened (meow!)"_s, get_time_string_()).to_std_string();
 		Game::log_file_ << tmp << std::endl;

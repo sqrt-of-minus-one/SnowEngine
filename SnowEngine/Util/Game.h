@@ -29,6 +29,8 @@ class Game
 public:
 	Game() = delete;
 
+	static void start();
+
 	/**
 	 *	\brief The configurations of the game
 	 *	
