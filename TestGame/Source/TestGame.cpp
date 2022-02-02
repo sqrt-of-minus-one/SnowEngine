@@ -1,7 +1,5 @@
 #include <iostream>
-#include <fstream>
 #include <conio.h>
-#include <filesystem>
 
 #include "Math/Angle.h"
 #include "Util/SnowCat/Log.h"

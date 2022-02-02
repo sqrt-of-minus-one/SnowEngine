@@ -53,6 +53,7 @@ private:
 	friend class Log;
 	static bool debug_mode_;
 	static std::wofstream log_file_;
+	static std::unique_ptr<Log> game_log_;
 };
 
 }

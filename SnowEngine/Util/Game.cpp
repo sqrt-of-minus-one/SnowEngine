@@ -17,6 +17,7 @@ void Game::start()
 {
 	std::thread loop_thread(loop);
 	loop_thread.detach();
+	game_log_->i(L"The game has been started"_s);
 }
 
 void Game::loop()
@@ -40,6 +41,7 @@ void Game::loop()
 		window.draw(shape);
 		window.display();
 	}
+	game_log_->i(L"The main window has been closed"_s);
 }
 
 std::wofstream Game::log_file_;
@@ -51,3 +53,4 @@ bool Game::debug_mode_ = false;
 
 Config Game::config;
 Lang Game::lang;
+std::unique_ptr<Log> Game::game_log_ = std::make_unique<Log>(L"Main"_s);

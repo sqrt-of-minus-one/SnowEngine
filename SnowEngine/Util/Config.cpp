@@ -9,23 +9,12 @@
 #include <fstream>
 #include <filesystem>
 
+#include "Util.h"
+
 using namespace snow;
 
-#define DEFAULT_CONFIG \
-L"[default]\n\
-log_path = Logs\n\
-lang_path = Localization\n\
-default_lang = en_UK\n\
-\n\
-[window]\n\
-resolution = 800x600\n\
-fullscreen = false\n\
-resize = true\n\
-titlebar = true\n\
-titlebar_buttons = true\n\
-title = \"The Game (powered by SnowEngine)\"\n"
-
-inline void check_and_write_(std::wofstream& file, String& str)
+// Check string: replace " with \"; if string has spaces of tabs, add " to the beginning and the end
+inline String check_string_(const String& str)
 {
 	String tmp = str;
 	bool has_sp = false;
@@ -49,19 +38,20 @@ inline void check_and_write_(std::wofstream& file, String& str)
 	}
 	if (has_sp)
 	{
-		file << '"' << tmp << '"';
+		return L"\"" + tmp + L"\"";
 	}
 	else
 	{
-		file << tmp;
+		return tmp;
 	}
 }
 
 Config::Config() :
+		// Default
 	log_path(L"Logs"_s),
 	lang_path(L"Localization"_s),
 	default_lang(L"en_UK"_s),
-
+		// Window
 	resolution(800, 600),
 	fullscreen(false),
 	resize(true),
@@ -71,12 +61,7 @@ Config::Config() :
 {
 	if (!std::filesystem::exists(L"config.ini"))
 	{
-		// Create a config file if it doesn't exist
-		std::wofstream file(L"config.ini");
-
-		// Default content
-		file << DEFAULT_CONFIG;
-		file.close();
+		save();
 	}
 	else
 	{
@@ -100,44 +85,31 @@ Config::Config() :
 String Config::to_string() const noexcept
 {
 	return
-		String(L"[default]") +
-		L"\nlog_path = " + log_path +
-		L"\nlang_path = " + lang_path +
-		L"\ndefault_lang = " + default_lang +
-		L"\n\n[window]" +
-		L"\nresolution = " + resolution.get_x() + L"x" + resolution.get_y() +
+		L"[default]"_s +
+		L"\nlog_path = " + check_string_(log_path) +
+		L"\nlang_path = " + check_string_(lang_path) +
+		L"\ndefault_lang = " + check_string_(default_lang) +
+		L"\n" +
+		L"\n[window]" +
+		L"\nresolution = " + util::to_string(resolution.get_x()) + L"x" + util::to_string(resolution.get_y()) +
 		L"\nfullscreen = " + (fullscreen ? L"true" : L"false") +
 		L"\nresize = " + (resize ? L"true" : L"false") +
 		L"\ntitlebar = " + (titlebar ? L"true" : L"false") +
 		L"\ntitlebar_buttons = " + (titlebar_buttons ? L"true" : L"false") +
-		L"\ntitle = " + title;
+		L"\ntitle = " + check_string_(title);
 }
 
 int Config::hash_code() const noexcept
 {
-	return log_path.hash_code() - lang_path.hash_code() + default_lang.hash_code();
+	return log_path.hash_code() - lang_path.hash_code() + default_lang.hash_code() - resolution.hash_code() +
+		static_cast<int>(fullscreen) - static_cast<int>(resize) + static_cast<int>(titlebar) - static_cast<int>(titlebar_buttons) +
+		title.hash_code();
 }
 
 void Config::save()
 {
 	std::wofstream file(L"config.ini");
-	file << L"[default]" << std::endl << L"log_path = ";
-	check_and_write_(file, log_path);
-
-	file << std::endl << L"lang_path = ";
-	check_and_write_(file, lang_path);
-
-	file << std::endl << L"default_lang = ";
-	check_and_write_(file, default_lang);
-
-	file << std::endl << std::endl << L"[window]" << std::endl <<
-		L"resolution = " << resolution.get_x() << L"x" << resolution.get_y() << std::endl <<
-		L"fullscreen = " << (fullscreen ? L"true" : L"false") << std::endl <<
-		L"resize = " << (resize ? L"true" : L"false") << std::endl <<
-		L"titlebar = " << (titlebar ? L"true" : L"false") << std::endl <<
-		L"titlebar_buttons = " << (titlebar_buttons ? L"true" : L"false") << std::endl <<
-		L"title = ";
-	check_and_write_(file, title);
+	file << to_string();
 	file.close();
 }
 
