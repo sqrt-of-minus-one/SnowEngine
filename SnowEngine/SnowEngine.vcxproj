@@ -21,8 +21,10 @@
   <ItemGroup>
     <ClInclude Include="Math\Angle.h" />
     <ClInclude Include="Math\Math.h" />
-    <ClInclude Include="Math\Vector2.h" />
-    <ClInclude Include="Math\Vector3.h" />
+    <ClInclude Include="Math\Vector\Point2.h" />
+    <ClInclude Include="Math\Vector\Point3.h" />
+    <ClInclude Include="Math\Vector\Vector2.h" />
+    <ClInclude Include="Math\Vector\Vector3.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Util\Config.h" />
     <ClInclude Include="Util\Container\Array.h" />
@@ -47,8 +49,10 @@
   <ItemGroup>
     <ClCompile Include="Math\Angle.cpp" />
     <ClCompile Include="Math\Math.cpp" />
-    <ClCompile Include="Math\Vector2.cpp" />
-    <ClCompile Include="Math\Vector3.cpp" />
+    <ClCompile Include="Math\Vector\Point2.cpp" />
+    <ClCompile Include="Math\Vector\Point3.cpp" />
+    <ClCompile Include="Math\Vector\Vector2.cpp" />
+    <ClCompile Include="Math\Vector\Vector3.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Util\Config.cpp" />
     <ClCompile Include="Util\Game.cpp" />

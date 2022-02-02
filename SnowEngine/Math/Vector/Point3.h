@@ -1,0 +1,796 @@
+﻿    ////////////////////////////////////////
+   //      SnowEngine by SnegirSoft      //
+  //                                    //
+ //  File: Point3.h                   //
+////////////////////////////////////////
+
+#pragma once
+
+/**
+ *	\file
+ *	\~english
+ *	\brief The file with `Point3` class
+ *	
+ *	This file contains the definition of the `Point3` class.
+ *	
+ *	\~russian
+ *	\brief Файл с классом `Point3`
+ *	
+ *	Этот файл содержит определение класса `Point3`.
+ */
+
+#include "../../Object.h"
+
+namespace snow
+{
+
+class Point2;
+class Vector3;
+
+/**
+ *	\~english
+ *	\brief The class of three-dimensional point (integer vector)
+ *
+ *	This class is used for working with three-dimensional points (vectors of integer).
+ *
+ *	\~russian
+ *	\brief Класс трёхмерной точки (целочисленного вектора)
+ *
+ *	Этот класс используется для работы с трёхмерными точками (целочисленными веторами).
+ */
+class Point3 : public Object
+{
+public:
+			/* CONSTRUCTORS */
+
+	/**
+	 *	\~english
+	 *	\brief The default constructor
+	 *
+	 *	Creates a zero point \f$\{0, 0, 0\}\f$.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор по умолчанию
+	 *
+	 *	Создаёт нулевую точку \f$\{0; 0; 0\}\f$.
+	*/
+	Point3() noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The copy constructor
+	 *
+	 *	Creates a copy of the point.
+	 *	\param point The point that will be copied.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор копирования
+	 *
+	 *	Создаёт копию точки.
+	 *	\param point Точка, которая будет скопирована.
+	 */
+	Point3(const Point3& point) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The copy constructor for 2D-point
+	 *	
+	 *	Creates a 3D-point whose X and Y coordinates are equal to a passed 2D-point value. Z
+	 *	coordinate is set to zero.
+	 *	\param point The 2D-point that will be copied.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор копирования для 2D-точки
+	 *
+	 *	Создаёт 3D-точку, чьи X и Y координаты равны значению переданной 2D-точки. Координата
+	 *	Z устанавливается равной нулю.
+	 *	\param point 2D-точка, чьё значение будет скопировано.
+	 */
+	Point3(const Point2& point) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Creates a 3D-point based on a 2D-point and Z value
+	 *
+	 *	Copies X and Y coordinates of a passed 2D-point and pastes them to a new 3D-point. Sets a
+	 *	passed number as Z coordinate.
+	 *	\param point The 2D-point whose X and Y coordinates will be copied.
+	 *	\param z Z coordinate of the point.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт 3D-точку на основе 2D-точки и значения Z
+	 *
+	 *	Копирует X и Y координаты переданной 2D-точки и вставляет их в новую 3D-точку.
+	 *	Устанавливает переданное число в качестве координаты Z.
+	 *	\param point 2D-точка, чьи X и Y координаты будут скопированы.
+	 *	\param z Координата Z точки.
+	 */
+	Point3(const Point2& point, int z) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Creates a point with the specified value
+	 *
+	 *	Creates a point with the specified value.
+	 *	\param x Point X value.
+	 *	\param y Point Y value.
+	 *	\param z Point Z value.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт точку с заданным значением
+	 *
+	 *	Создаёт точку с заданным значением.
+	 *	\param x Координата X точки.
+	 *	\param y Координата Y точки.
+	 *	\param z Координата Z точки.
+	 */
+	Point3(int x, int y, int z) noexcept;
+
+			/* METHODS FROM Object */
+
+	/**
+	 *	\~english
+	 *	\brief Converts the point into a string
+	 *
+	 *	Creates a string with format `{<x>, <y>, <z>}`, where `<x>`, `<y>`, and `<z>` are
+	 *	coordinates of the point.
+	 *	\return The string with the point value.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует точку в строку
+	 *	
+	 *	Создаёт строку в формате `{<x>, <y>, <z>}`, где `<x>`, `<y>` и `<z>` — координаты точки.
+	 *	\return Строка с координатами точки.
+	 */
+	virtual String to_string() const noexcept override;
+
+	/**
+	 *	\~english
+	 *	\brief Hash code of the point
+	 *
+	 *	Hash code of the point is the sum of its coordinates.
+	 *	\return Hash code of the point.
+	 *
+	 *	\~russian
+	 *	\brief Хеш-код точки
+	 *
+	 *	Хеш-код точки — это сумма её координат.
+	 *	\return Хеш-код точки.
+	*/
+	 virtual int hash_code() const noexcept override;
+	
+			/* METHODS */
+	
+	/**
+	 *	\~english
+	 *	\brief X coordinate
+	 *
+	 *	Allows to get the X coordinate of the point.
+	 *	\return The X coordinate of the point.
+	 *
+	 *	\~russian
+	 *	\brief Координата X
+	 *
+	 *	Позволяет получить координату X точки.
+	 *	\return Координата X точки.
+	 */
+	int get_x() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Y coordinate
+	 *
+	 *	Allows to get the Y coordinate of the point.
+	 *	\return The Y coordinate of the point.
+	 *
+	 *	\~russian
+	 *	\brief Координата Y
+	 *
+	 *	Позволяет получить координату Y точки.
+	 *	\return Координата Y точки.
+	 */
+	int get_y() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Z coordinate
+	 *
+	 *	Allows to get the Z coordinate of the point.
+	 *	\return The Z coordinate of the point.
+	 *
+	 *	\~russian
+	 *	\brief Координата Z
+	 *
+	 *	Позволяет получить координату Z точки.
+	 *	\return Координата Z точки.
+	 */
+	int get_z() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Sets X coordinate
+	 *
+	 *	Allows to change the X coordinate of the point.
+	 *	\param x The new value of the X coordinate of the point.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает координату X
+	 *
+	 *	Позволяет изменить координату X точки.
+	 *	\param x Новое значение координаты X точки.
+	 */
+	void set_x(int x) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Sets Y coordinate
+	 *
+	 *	Allows to change the Y coordinate of the point.
+	 *	\param y The new value of the Y coordinate of the point.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает координату Y
+	 *
+	 *	Позволяет изменить координату Y точки.
+	 *	\param y Новое значение координаты Y точки.
+	 */
+	void set_y(int y) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Sets Z coordinate
+	 *
+	 *	Allows to change the Z coordinate of the point.
+	 *	\param y The new value of the Z coordinate of the point.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает координату Z
+	 *
+	 *	Позволяет изменить координату Z точки.
+	 *	\param y Новое значение координаты Z точки.
+	 */
+	void set_z(int z) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Checks whether the point is zero
+	 *
+	 *	The point is zero if its X, Y, and Z coordinates are equal to zero.
+	 *	\return `true` if the point is zero, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, является ли точка нулевой
+	 *
+	 *	Точка является нулевой, если её X, Y и Z координаты равны нулю.
+	 *	\return `true`, если точка нулевая, иначе `false`.
+	 */
+	bool is_zero() const noexcept;
+	
+			/* OPERATORS */
+
+	/**
+	 *	\~english
+	 *	\brief Copies a point
+	 *
+	 *	Assigns a passed value to the point.
+	 *	\param point The point that will be copied.
+	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Копирует точку
+	 *
+	 *	Присваивает переданное значение точке.
+	 *	\param point Точка, которая будет скопирована.
+	 *	\return Ссылка на себя.
+	 */
+	Point3& operator=(const Point3& point) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Just… returns itself
+	 *
+	 *	I don't know how, but maybe it can be useful when you need an r-value: `some_point` is
+	 *	l-value, but `+some_point` is r-value.
+	 *	\return A copy of itself.
+	 *
+	 *	\~russian
+	 *	\brief Просто… возвращает себя
+	 *
+	 *	Не знаю как, но, быть может, это окажется полезным, если вам нужно r-value: `some_point` —
+	 *	это l-value, но `+some_point` — уже r-value.
+	 *	\return Копия самой себя.
+	 */
+	const Point3 operator+() const noexcept;
+	
+	/**
+	 *	\~english
+	 *	\brief Creates a point with opposite signs of coordinates
+	 *	
+	 *	Copies the point and changes signs of both coordinates. Returns the same result as
+	 *	`point * -1`.
+	 *	\return A point with opposite signs of coordinates.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт точку с противоположными знаками у координат.
+	 *	
+	 *	Копирует точку и меняет знаки обеих координат на противоположные. Возвращает тот же
+	 *	результат, что и `point * -1`.
+	 *	\return Точка с противоположными знаками у координат.
+	 */
+	const Point3 operator-() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Adds points
+	 *
+	 *	Separately adds X, Y, and Z coordinates of two points:
+	 *	\f$\{x_1, y_1, z_1\} + \{x_2, y_2, z_2\} = \{x_1 + x_2, y_1 + y_2, z_1 + z_2\}\f$.
+	 *	\param point The second summand.
+	 *	\return The sum of two points.
+	 *
+	 *	\~russian
+	 *	\brief Складывает точки
+	 *
+	 *	По отдельности складывает координаты X, Y и Z двух точек:
+	 *	\f$\{x_1; y_1; z_1\} + \{x_2; y_2; z_2\} = \{x_1 + x_2; y_1 + y_2; z_1 + z_2\}\f$.
+	 *	\param point Второе слагаемое.
+	 *	\return Сумма двух точек.
+	 */
+	const Point3 operator+(const Point3& point) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Substracts points
+	 *
+	 *	Separately subtracts X, Y, and Z coordinates of two points:
+	 *	\f$\{x_1, y_1, z_1\} - \{x_2, y_2, z_2\} = \{x_1 - x_2, y_1 - y_2, z_1 - z_2\}\f$.
+	 *	\param point The subtrahend.
+	 *	\return The difference of two points.
+	 *
+	 *	\~russian
+	 *	\brief Вычитает точки
+	 *
+	 *	По отдельности вычитает координаты X, Y и Z двух точек:
+	 *	\f$\{x_1; y_1; z_1\} - \{x_2; y_2; z_2\} = \{x_1 - x_2; y_1 - y_2; z_1 - z_2\}\f$.
+	 *	\param point Вычитаемое.
+	 *	\return Разность двух точек.
+	 */
+	const Point3 operator-(const Point3& point) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Multiplies the point and a number
+	 *
+	 *	Multiplies each of the point coordinates by a passed value:
+	 *	\f$\{x, y, z\} \cdot v = \{x \cdot v, y \cdot v, z \cdot v\}\f$.
+	 *	\param value The multiplier.
+	 *	\return The product of the point and the number.
+	 *
+	 *	\~russian
+	 *	\brief Умножает точку на число
+	 *
+	 *	Умножает каждую из координат точки на переданное число:
+	 *	\f$\{x; y; z\} \cdot v = \{x \cdot v; y \cdot v; z \cdot v\}\f$.
+	 *	\param value Множитель.
+	 *	\return Произведение точки и числа.
+	 */
+	const Point3 operator*(int value) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Product of a point and a number
+	 *
+	 *	Multiplies each of the point coordinates by a number:
+	 *	\f$v \cdot \{x, y, z\}= \{v \cdot x, v \cdot y, v \cdot z\}\f$.
+	 *	\param value The multiplier.
+	 *	\param point The point.
+	 *	\return The product of the point and the number.
+	 *
+	 *	\~russian
+	 *	\brief Умножает точку на число
+	 *
+	 *	Умножает каждую из координат точки на число:
+	 *	\f$v \cdot \{x; y; z\}= \{v \cdot x; v \cdot y; v \cdot z\}\f$.
+	 *	\param value Множитель.
+	 *	\param point Точка.
+	 *	\return Произведение точки и числа.
+	 */
+	friend const Point3 operator*(int value, const Point3& point) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Coordinate-wise multiplies points
+	 *
+	 *	Separately multiplies X, Y, and Z coordinates of two points:
+	 *	\f$\{x_1, y_1, z_1\} * \{x_2, y_2, z_2\} = \{x_1 \cdot x_2, y_1 \cdot y_2, z_1 \cdot
+	 *	z_2\}\f$.
+	 *	\warning Do not confuse this operation and dot product. If you need the latter, use
+	 *	operator `&` of the `Vector3` class.
+	 *	\param point The multiplier.
+	 *	\return The coordinate-wise product of two points.
+	 *
+	 *	\~russian
+	 *	\brief Покоординатно умножает точки
+	 *
+	 *	По отдельности умножает координаты X, Y и Z двух точек:
+	 *	\f$\{x_1; y_1; z_1\} * \{x_2; y_2; z_2\} = \{x_1 \cdot x_2; y_1 \cdot y_2; z_1 \cdot
+	 *	z_2\}\f$.
+	 *	\warning Не путайте эту операцию со скалярным произведением. Если вам нужно последнее,
+	 *	используйте оператор `&` класса `Vector3`.
+	 *	\param point Множитель.
+	 *	\return Покоординатное произведение двух точек.
+	 */
+	const Point3 operator*(const Point3& point) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Divides the point by a number
+	 *
+	 *	Divides each of the point coordinates by a passed value:
+	 *	\f$\{x, y, z\} / v = \{\frac{x}{v}, \frac{y}{v}, \frac{z}{v}\}\f$.
+	 *	\warning The integer division is used: `Point2(5, 7, 9) / 2 == Point2(2, 3, 4)`.
+	 *	\param value The divisor.
+	 *	\return The quotient of the point and the number.
+	 *	\throw std::domain_error The divisor is zero.
+	 *
+	 *	\~russian
+	 *	\brief Делит точку на число
+	 *
+	 *	Делит каждую координату точки на переданное число.
+	 *	\f$\{x; y; z\} / v = \{\frac{x}{v}; \frac{y}{v}; \frac{z}{v}\}\f$.
+	 *	\warning Используется целочисленное деление: `Point2(5, 7, 9) / 2 == Point2(2, 3, 4)`.
+	 *	\param value Делитель.
+	 *	\return Частное точки и числа.
+	 *	\throw std::domain_error Делитель равен нулю.
+	 */
+	const Point3 operator/(int value) const;
+
+	/**
+	 *	\~english
+	 *	\brief Coordinate-wise divides points
+	 *
+	 *	Separately divides X and Y coordinates of two points:
+	 *	\f$\{x_1, y_1, z_1\} / \{x_2, y_2, z_2\} = \{\frac{x_1}{x_2}, \frac{y_1}{y_2},
+	 *	\frac{z_1}{z_2}\}\f$.
+	 *	\warning The integer division is used: `Point2(5, 7, 9) / Point2(2, 3, 5) ==
+	 *	Point2(2, 2, 1)`.
+	 *	\param point The divisor.
+	 *	\return The coordinate-wise quotient of two points.
+	 *	\throw std::domain_error One of the coordinates of the divisor is zero.
+	 *
+	 *	\~russian
+	 *	\brief Покоординатно делит точки
+	 *
+	 *	По отдельности делит X и Y координаты двух точек:
+	 *	\f$\{x_1; y_1; z_1\} / \{x_2; y_2; z_2\} = \{\frac{x_1}{x_2}; \frac{y_1}{y_2};
+	 *	\frac{z_1}{z_2}\}\f$.
+	 *	\warning Используется целочисленное деление: `Point2(5, 7, 9) / Point2(2, 3, 5) ==
+	 *	Point2(2, 2, 1)`.
+	 *	\param point Делитель.
+	 *	\return Результат покоординатного деления двух точек.
+	 *	\throw std::domain_error Одна из координат делителя равна нулю.
+	 */
+	const Point3 operator/(const Point3& point) const;
+
+	/**
+	 *	\~english
+	 *	\brief Adds a passed point to itself
+	 *
+	 *	Finds the sum of two points and assigns it to itself.
+	 *	\code
+	 *		// These strings do the same:
+	 *		point += another_point;
+	 *		point = point + another_point;
+	 *	\endcode
+	 *	\param point The second summand.
+	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Прибавляет к своему значению переданную точку
+	 *
+	 *	Находит сумму двух точек и присваивает себе её значение.
+	 *	\code
+	 *		// Эти строки делают одно и то же:
+	 *		point += another_point;
+	 *		point = point + another_point;
+	 *	\endcode
+	 *	\param point Второе слагаемое.
+	 *	\return Ссылка на себя.
+	 */
+	Point3& operator+=(const Point3& point) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Subtracts a passed point from itself
+	 *
+	 *	Finds the difference of two points and assigns it to itself.
+	 *	\code
+	 *		// These strings do the same:
+	 *		point -= another_point;
+	 *		point = point - another_point;
+	 *	\endcode
+	 *	\param point The subtrahend.
+	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Вычитает из своего значения переданную точку
+	 *
+	 *	Находит разность двух точек и присваивает себе её значение.
+	 *	\code
+	 *		// Эти строки делают одно и то же:
+	 *		point -= another_point;
+	 *		point = point - another_point;
+	 *	\endcode
+	 *	\param point Вычитаемое.
+	 *	\return Ссылка на себя.
+	 */
+	Point3& operator-=(const Point3& point) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Multiplies itself by a passed number
+	 *
+	 *	Finds the product of the point and a number and assigns it to itself.
+	 *	\code
+	 *		// These strings do the same:
+	 *		point *= num;
+	 *		point = point * num;
+	 *	\endcode
+	 *	\param value The multiplier.
+	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Умножает себя на переданное число
+	 *
+	 *	Находит произведение точки и числа и присваивает себе его значение.
+	 *	\code
+	 *		// Эти строки делают одно и то же:
+	 *		point *= num;
+	 *		point = point * num;
+	 *	\endcode
+	 *	\param value Множитель.
+	 *	\return Ссылка на себя.
+	 */
+	Point3& operator*=(int value) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Separately multiplies its own X and Y coordinates by coordinates of a passed point
+	 *
+	 *	Finds the coordinate-wise product of two points and assigns it to itself.
+	 *	\warning Do not confuse this operation and dot product.
+	 *	\code
+	 *		// These strings do the same:
+	 *		point *= another_point;
+	 *		point = point * another_point;
+	 *	\endcode
+	 *	\param point The multiplier.
+	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief По отдельности умножает свои X и Y координаты на координаты переданной точки
+	 *
+	 *	Находит покоординатное произведение двух точек и присваивает себе его значение.
+	 *	\warning Не путайте эту операцию со скалярным произведением.
+	 *	\code
+	 *		// Эти строки делают одно и то же:
+	 *		point *= another_point;
+	 *		point = point * another_point;
+	 *	\endcode
+	 *	\param point Множитель.
+	 *	\return Ссылка на себя.
+	 */
+	Point3& operator*=(const Point3& point) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Divides itself by a passed number
+	 *
+	 *	Finds the quotient of the point and a number and assigns it to itself.
+	 *	\code
+	 *		// These strings do the same:
+	 *		point /= num;
+	 *		point = point / num;
+	 *	\endcode
+	 *	\warning The integer division is used: `Point2(5, 7, 9) / 2 == Point2(2, 3, 4)`.
+	 *	\param value The divisor.
+	 *	\return A reference to itself.
+	 *	\throw std::domain_error The divisor is zero.
+	 *
+	 *	\~russian
+	 *	\brief Делит себя на переданное число
+	 *
+	 *	Находит частное точки и числа и присваивает себе его значение.
+	 *	\code
+	 *		// Эти строки делают одно и то же:
+	 *		point /= num;
+	 *		point = point / num;
+	 *	\endcode
+	 *	\warning Используется целочисленное деление: `Point2(5, 7, 9) / 2 == Point2(2, 3, 4)`.
+	 *	\param value Делитель.
+	 *	\return Ссылка на себя.
+	 *	\throw std::domain_error Делитель равен нулю.
+	 */
+	Point3& operator/=(int value);
+
+	/**
+	 *	\~english
+	 *	\brief Separately divides its own X, Y, and Z coordinates by coordinates of a passed point
+	 *
+	 *	Finds the coordinate-wise quotient of two points and assigns it to itself.
+	 *	\code
+	 *		// These strings do the same:
+	 *		point /= another_point;
+	 *		point = point / another_point;
+	 *	\endcode
+	 *	\warning The integer division is used: `Point2(5, 7, 9) / Point2(2, 3, 5) ==
+	 *	Point2(2, 2, 1)`.
+	 *	\param point The divisor.
+	 *	\return A reference to itself.
+	 *	\throw std::domain_error One of the coordinates of the divisor is zero.
+	 *
+	 *	\~russian
+	 *	\brief По отдельности делит свои координаты X, Y и Z на координаты переданной точки
+	 *
+	 *	Находит покоординатное произведение двух точек и присваивает себе его значение
+	 *	\code
+	 *		// Эти строки делают одно и то же:
+	 *		point /= another_point;
+	 *		point = point / another_point;
+	 *	\endcode
+	 *	\warning Используется целочисленное деление: `Point2(5, 7, 9) / Point2(2, 3, 5) ==
+	 *	Point2(2, 2, 1)`.
+	 *	\param point Делитель.
+	 *	\return Ссылка на себя.
+	 *	\throw std::domain_error Одна из координат делителя равна нулю.
+	 */
+	Point3& operator/=(const Point3& point);
+
+	/**
+	 *	\~english
+	 *	\brief Checks whether two points are equal
+	 *
+	 *	Two points are equal if their X, Y, and Z coordinates are pairwise equal.
+	 *	\param point A point to compare.
+	 *	\return `true` if points are equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, равны ли две точки
+	 *
+	 *	Две точки равны, если попарно равны их координаты X, Y и Z.
+	 *	\param point Точка для сравнения.
+	 *	\return `true`, если точки равны, иначе `false`.
+	 */
+	bool operator==(const Point3& point) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Checks whether two points are not equal
+	 *
+	 *	Two points are equal if their X, Y, and Z coordinates are pairwise equal.
+	 *	\param point A point to compare.
+	 *	\return `true` if points are not equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, различаются ли две точки
+	 *
+	 *	Две точки равны, если попарно равны их координаты X, Y и Z.
+	 *	\param point Точка для сравнения.
+	 *	\return `true`, если точки не равны, иначе `false`.
+	 */
+	bool operator!=(const Point3& point) const noexcept;
+
+			/* CAST OPERATORS */
+
+	/**
+	 *	\~english
+	 *	\brief Cast to `Point2`
+	 *
+	 *	Allows to get a 2D-point with X and Y coordinates of this 3D-point.
+	 *	\code
+	 *		Point3 point3(1, 2, 3);
+	 *		Point2 point2(1, 2);
+	 *		static_cast<Point2>(point3) == point2; // true
+	 *	\endcode
+	 *	\warning Data loss is possible: Z coordinate is ignored.
+	 *	\return The 2D-point with X and Y coordinate of this 3D-point.
+	 *	
+	 *	\~russian
+	 *	\brief Приведение к `Point2`
+	 *
+	 *	Позволяет получить 2D-точку с X и Y координатами этой 3D-точки.
+	 *	\code
+	 *		Point3 point3(1.f, 2.f, 3.f);
+	 *		Point2 point2(1.f, 2.f);
+	 *		static_cast<Point2>(point3) == point2; // true
+	 *	\endcode
+	 *	\warning Возможна потеря данных: координата Z игнорируется.
+	 *	\return 2D-точка с X и Y координатами этой 3D-точки.
+	 */
+	operator Point2() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Cast to `Vector3`
+	 *
+	 *	Allows to get a 3D-vector with float coordinates.
+	 *	\code
+	 *		Point3 point(1, 2, 3);
+	 *		Vector3 vector(1.f, 2.f, 3.f);
+	 *		static_cast<Vector3>(point) == vector; // true
+	 *	\endcode
+	 *	\return The 3D-vector with float coordinates that are equal to the coordinates of this
+	 *	point.
+	 *
+	 *	\~russian
+	 *	\brief Приведение к `Vector3`
+	 *
+	 *	Позволяет получить 3D-вектор с вещественными координатами.
+	 *	\code
+	 *		Point3 point(1, 2, 3);
+	 *		Vector3 vector(1.f, 2.f, 3.f);
+	 *		static_cast<Vector3>(point) == vector; // true
+	 *	\endcode
+	 *	\return 3D-вектор с вещественными координатами, равными координатам этой точки.
+	 */
+	operator Vector3() const noexcept;
+	
+			/* CONSTANTS */
+
+	/**
+	 *	\~english
+	 *	\brief The zero point
+	 *
+	 *	The zero point. Each of its X, Y, and Z coordinates is zero. It's \f$\{0, 0, 0\}\f$.
+	 *
+	 *	\~russian
+	 *	\brief Нулевая точка
+	 *
+	 *	Нулевая точка. Каждая из её координат X, Y и Z равна нулю: \f$\{0; 0; 0\}\f$.
+	 */
+	static const Point3 ZERO;
+
+	/**
+	 *	\~english
+	 *	\brief The ort of the X-axis
+	 *
+	 *	The ort of the abscissa axis. It's \f$\{1, 0, 0\}\f$.
+	 *
+	 *	\~russian
+	 *	\brief Орт оси X
+	 *
+	 *	Орт оси абсцисс: \f$\{1; 0; 0\}\f$.
+	 */
+	static const Point3 I;
+
+	/**
+	 *	\~english
+	 *	\brief The ort of the Y-axis
+	 *
+	 *	The ort of the ordinate axis. It's \f$\{0, 1, 0\}\f$.
+	 *
+	 *	\~russian
+	 *	\brief Орт оси Y
+	 *
+	 *	Орт оси ординат: \f$\{0; 1; 0\}\f$.
+	 */
+	static const Point3 J;
+	
+	/**
+	 *	\~english
+	 *	\brief The ort of the Z-axis
+	 *
+	 *	The ort of the applicate axis. It's \f$\{0, 0, 1\}\f$.
+	 *
+	 *	\~russian
+	 *	\brief Орт оси Z
+	 *
+	 *	Орт оси аппликат: \f$\{0; 0; 1\}\f$.
+	 */
+	static const Point3 K;
+		
+private:
+	int x_, y_, z_;
+};
+
+}

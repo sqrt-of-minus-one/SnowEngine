@@ -7,10 +7,11 @@
 #include "Vector3.h"
 
 #include "Vector2.h"
-#include "Angle.h"
-#include "Math.h"
-#include "../Util/Types/String.h"
-#include "../Util/Util.h"
+#include "Point3.h"
+#include "../Angle.h"
+#include "../Math.h"
+#include "../../Util/Types/String.h"
+#include "../../Util/Util.h"
 
 using namespace snow;
 
@@ -301,6 +302,11 @@ bool Vector3::operator!=(const Vector3& vector) const noexcept
 Vector3::operator Vector2() const noexcept
 {
 	return Vector2(x_, y_);
+}
+
+Vector3::operator Point3() const noexcept
+{
+	return Point3(static_cast<int>(x_), static_cast<int>(y_), static_cast<int>(z_));
 }
 
 const Vector3 Vector3::ZERO(0.f, 0.f, 0.f);

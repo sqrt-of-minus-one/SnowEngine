@@ -14,6 +14,7 @@
  */
 
 #include "Types/String.h"
+#include "../Math/Vector/Point2.h"
 
 namespace snow
 {
@@ -61,9 +62,7 @@ public:
 	String lang_path;
 	String default_lang;
 
-	// Todo: Use int vector
-	int resolutionX;
-	int resolutionY;
+	Point2 resolution;
 	bool fullscreen;
 	bool resize;
 	bool titlebar;

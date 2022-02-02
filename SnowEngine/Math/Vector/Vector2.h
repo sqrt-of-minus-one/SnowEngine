@@ -19,12 +19,13 @@
  *	Этот файл содержит определение класса `Vector2`.
  */
 
-#include "../Object.h"
+#include "../../Object.h"
 
 namespace snow
 {
 
 class Angle;
+class Point2;
 
 /**
  *	\~english
@@ -746,6 +747,36 @@ public:
 	 *	\return `true`, если векторы не равны, иначе `false`.
 	 */
 	bool operator!=(const Vector2& vector) const noexcept;
+
+			/* CAST OPERATORS */
+
+	/**
+	 *	\~english
+	 *	\brief Cast to `Point2`
+	 *
+	 *	Allows to get a 2D-point with integer coordinates.
+	 *	\code
+	 *		Point2 point(1, 2);
+	 *		Vector2 vector(1.5f, 2.f);
+	 *		static_cast<Point2>(vector) == point; // true
+	 *	\endcode
+	 *	\warning Data loss is possible: float is converted to integer.
+	 *	\return The 2D-point with integer coordinates that are equal to the coordinates of this
+	 *	point casted to integer.
+	 *
+	 *	\~russian
+	 *	\brief Приведение к `Point2`
+	 *
+	 *	Позволяет получить 2D-точку с целочисленными координатами.
+	 *	\code
+	 *		Point2 point(1, 2);
+	 *		Vector2 vector(1.5f, 2.f);
+	 *		static_cast<Point2>(vector) == point; // true
+	 *	\endcode
+	 *	\warning Возможна потеря данных: вещественные числа конвертируются в целые.
+	 *	\return 2D-точка с целочисленными координатами, равными целым частям координат этой точки.
+	 */
+	operator Point2() const noexcept;
 	
 			/* CONSTANTS */
 	

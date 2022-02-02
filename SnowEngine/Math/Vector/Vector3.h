@@ -19,12 +19,13 @@
  *	Этот файл содержит определение класса `Vector3`.
  */
 
-#include "../Object.h"
+#include "../../Object.h"
 
 namespace snow
 {
 
 class Vector2;
+class Point3;
 class Angle;
 
 /**
@@ -100,7 +101,7 @@ public:
 	 *	\~russian
 	 *	\brief Создаёт 3D-вектор на основе 2D-вектора и значения Z
 	 *
-	 *	Копирует X и Y координаты переданного 2D-вектора и вставляет из в новый 3D-вектор.
+	 *	Копирует X и Y координаты переданного 2D-вектора и вставляет их в новый 3D-вектор.
 	 *	Устанавливает переданное число в качестве координаты Z.
 	 *	\param vector 2D-вектор, чьи X и Y координаты будут скопированы.
 	 *	\param z Координата Z вектора.
@@ -128,12 +129,6 @@ public:
 
 			/* METHODS FROM Object */
 
-	/**
-	 *	\brief Converts the vector into a string
-	 *
-	 *	Creates a string with format `{<x>, <y>, <z>}`, where `<x>`, `<y>` and `<z>` are
-	 *	coordinates of the vector.
-	 *	\return A string with the vector value.
 	/**
 	 *	\~english
 	 *	\brief Converts the vector into a string
@@ -415,7 +410,7 @@ public:
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
-	 *	\brief Копирует угол
+	 *	\brief Копирует вектор
 	 *
 	 *	Присваивает переданное значение вектору.
 	 *	\param vector Вектор, который будет скопирован.
@@ -936,7 +931,7 @@ public:
 	 *		static_cast<Vector2>(vector3) == vector2; // true
 	 *	\endcode
 	 *	\warning Data loss is possible: Z coordinate is ignored.
-	 *	\return The 2D-vector with X and Y coordinate of this 3D-vector.
+	 *	\return The 2D-vector with X and Y coordinates of this 3D-vector.
 	 *	
 	 *	\~russian
 	 *	\brief Приведение к `Vector2`
@@ -951,6 +946,34 @@ public:
 	 *	\return 2D-вектор с X и Y координатами этого 3D-вектора.
 	 */
 	operator Vector2() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Cast to `Point3`
+	 *
+	 *	Allows to get a 3D-point with integer coordinates.
+	 *	\code
+	 *		Point2 point(1, 2, 3);
+	 *		Vector2 vector(1.5f, 2.f, 3.9f);
+	 *		static_cast<Point2>(vector) == point; // true
+	 *	\endcode
+	 *	\warning Data loss is possible: float is converted to integer.
+	 *	\return The 3D-point with integer coordinates that are equal to the coordinates of this
+	 *	point casted to integer.
+	 *
+	 *	\~russian
+	 *	\brief Приведение к `Point3`
+	 *
+	 *	Позволяет получить 3D-точку с целочисленными координатами.
+	 *	\code
+	 *		Point2 point(1, 2, 3);
+	 *		Vector2 vector(1.5f, 2.f, 3.9f);
+	 *		static_cast<Point2>(vector) == point; // true
+	 *	\endcode
+	 *	\warning Возможна потеря данных: вещественные числа конвертируются в целые.
+	 *	\return 3D-точка с целочисленными координатами, равными целым частям координат этой точки.
+	 */
+	operator Point3() const noexcept;
 	
 			/* CONSTANTS */
 

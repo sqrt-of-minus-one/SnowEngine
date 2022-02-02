@@ -21,7 +21,7 @@ void Game::start()
 
 void Game::loop()
 {
-	sf::RenderWindow window(sf::VideoMode(config.resolutionX, config.resolutionY), config.title.to_std_string(),
+	sf::RenderWindow window(sf::VideoMode(config.resolution.get_x(), config.resolution.get_y()), config.title.to_std_string(),
 		sf::Style::Titlebar * config.titlebar | sf::Style::Resize * config.resize |
 		sf::Style::Close * config.titlebar_buttons | sf::Style::Fullscreen * config.fullscreen);
 	sf::CircleShape shape(100.f);

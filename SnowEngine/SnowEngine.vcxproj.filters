@@ -27,6 +27,9 @@
     <Filter Include="Source Files\Util\SnowCat">
       <UniqueIdentifier>{9ec49e51-c3ad-413f-8895-396dbfeb0a0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Math\Vector">
+      <UniqueIdentifier>{b2244079-d40a-4ffa-8fa1-8ec60a45e334}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Math.h">
@@ -37,12 +40,6 @@
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector2.h">
-      <Filter>Source Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector3.h">
-      <Filter>Source Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Util\Container\Container.h">
       <Filter>Source Files\Util\Container</Filter>
@@ -101,6 +98,18 @@
     <ClInclude Include="Util\Container\Stack.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Vector\Vector2.h">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector\Vector3.h">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector\Point2.h">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector\Point3.h">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math\Math.cpp">
@@ -111,12 +120,6 @@
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector2.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector3.cpp">
-      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="Util\Util.cpp">
       <Filter>Source Files\Util</Filter>
@@ -138,6 +141,18 @@
     </ClCompile>
     <ClCompile Include="Util\Game.cpp">
       <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector\Vector2.cpp">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector\Vector3.cpp">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector\Point2.cpp">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector\Point3.cpp">
+      <Filter>Source Files\Math\Vector</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

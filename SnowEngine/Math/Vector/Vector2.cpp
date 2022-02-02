@@ -6,10 +6,11 @@
 
 #include "Vector2.h"
 
-#include "Angle.h"
-#include "Math.h"
-#include "../Util/Types/String.h"
-#include "../Util/Util.h"
+#include "Point2.h"
+#include "../Angle.h"
+#include "../Math.h"
+#include "../../Util/Types/String.h"
+#include "../../Util/Util.h"
 
 using namespace snow;
 
@@ -257,6 +258,11 @@ bool Vector2::operator==(const Vector2& vector) const noexcept
 bool Vector2::operator!=(const Vector2& vector) const noexcept
 {
 	return x_ != vector.x_ || y_ != vector.y_;
+}
+
+Vector2::operator Point2() const noexcept
+{
+	return Point2(static_cast<int>(x_), static_cast<int>(y_));
 }
 
 const Vector2 Vector2::ZERO(0.f, 0.f);

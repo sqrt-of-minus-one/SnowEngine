@@ -62,8 +62,7 @@ Config::Config() :
 	lang_path(L"Localization"_s),
 	default_lang(L"en_UK"_s),
 
-	resolutionX(800),
-	resolutionY(600),
+	resolution(800, 600),
 	fullscreen(false),
 	resize(true),
 	titlebar(true),
@@ -106,7 +105,7 @@ String Config::to_string() const noexcept
 		L"\nlang_path = " + lang_path +
 		L"\ndefault_lang = " + default_lang +
 		L"\n\n[window]" +
-		L"\nresolution = " + resolutionX + L"x" + resolutionY +
+		L"\nresolution = " + resolution.get_x() + L"x" + resolution.get_y() +
 		L"\nfullscreen = " + (fullscreen ? L"true" : L"false") +
 		L"\nresize = " + (resize ? L"true" : L"false") +
 		L"\ntitlebar = " + (titlebar ? L"true" : L"false") +
@@ -132,7 +131,7 @@ void Config::save()
 	check_and_write_(file, default_lang);
 
 	file << std::endl << std::endl << L"[window]" << std::endl <<
-		L"resolution = " << resolutionX << L"x" << resolutionY << std::endl <<
+		L"resolution = " << resolution.get_x() << L"x" << resolution.get_y() << std::endl <<
 		L"fullscreen = " << (fullscreen ? L"true" : L"false") << std::endl <<
 		L"resize = " << (resize ? L"true" : L"false") << std::endl <<
 		L"titlebar = " << (titlebar ? L"true" : L"false") << std::endl <<
@@ -258,18 +257,18 @@ end_loop:;
 						int x_pos = val.find_first(L'x');
 						try
 						{
-							resolutionX = val.substring(0, x_pos).to_int();
-							resolutionY = val.substring(x_pos + 1, val.size()).to_int();
-							if (resolutionX <= 0 || resolutionY <= 0)
+							resolution.set_x(val.substring(0, x_pos).to_int());
+							resolution.set_y(val.substring(x_pos + 1, val.size()).to_int());
+							if (resolution.get_x() <= 0 || resolution.get_y() <= 0)
 							{
-								resolutionX = 800;
-								resolutionY = 600;
+								resolution.set_x(800);
+								resolution.set_y(600);
 							}
 						}
 						catch (std::invalid_argument e)
 						{
-							resolutionX = 800;
-							resolutionY = 600;
+							resolution.set_x(800);
+							resolution.set_y(600);
 						}
 					}
 					else if (field == L"fullscreen")
