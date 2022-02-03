@@ -38,6 +38,7 @@ Log::Log(const String& category_name) noexcept :
 	object_counter_++;
 	if (!Game::log_file_.is_open())
 	{
+		std::lock_guard<std::mutex> log_grd(Game::log_file_mtx_);
 		if (!std::filesystem::exists(Game::config.log_path.to_std_string()))
 		{
 			std::filesystem::create_directories(Game::config.log_path.to_std_string());
@@ -53,6 +54,7 @@ Log::~Log() noexcept
 {
 	if (--object_counter_ <= 0 && Game::log_file_.is_open())
 	{
+		std::lock_guard<std::mutex> log_grd(Game::log_file_mtx_);
 		Game::log_file_ << String::format(L"[%s][SnowCat] SnowCat log file is closed"_s, get_time_string_()) << std::endl;
 		Game::log_file_.close();
 	}
@@ -117,10 +119,11 @@ String Log::get_time_string_() noexcept
 
 void Log::log_(const String& type, const String& message) noexcept
 {
-	String time_str = String::format(L"[%s]"_s, get_time_string_());
+	std::lock_guard<std::mutex> log_grd(Game::log_file_mtx_);
+	String time_str = get_time_string_();
 
-	Game::log_file_ << time_str << type << name_ << ": " << message << std::endl;
-	std::wcout << time_str << type << name_ << ": " << message << std::endl;
+	Game::log_file_ << L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
+	std::wcout << L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
 }
 
 int Log::object_counter_ = 0;

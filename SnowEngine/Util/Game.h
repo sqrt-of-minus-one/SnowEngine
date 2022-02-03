@@ -13,6 +13,8 @@
  *	This file contains the definition of the Game class.
  */
 
+#include <mutex>
+
 #include "Config.h"
 #include "SnowFlake/Lang.h"
 
@@ -49,11 +51,11 @@ public:
 	static Lang lang;
 
 private:
-	// Special static fields
 	friend class Log;
 	static bool debug_mode_;
+	static std::mutex log_file_mtx_;
 	static std::wofstream log_file_;
-	static std::unique_ptr<Log> game_log_;
+	static std::unique_ptr<Log> main_log_;
 };
 
 }
