@@ -60,6 +60,7 @@ class BaseArrayIterator_ :
 	friend class Array;
 
 public:
+			/* CONSTRUCTORS */
 
 	/**
 	 *	\~english
@@ -103,6 +104,8 @@ public:
 	 *	Деструктор итератора массива.
 	 */
 	~BaseArrayIterator_() noexcept;
+
+			/* METHODS FROM Object */
 
 	/**
 	 *	\~english
@@ -157,6 +160,9 @@ public:
 	 *	\return Хеш-код элемента.
 	 */
 	virtual int hash_code() const noexcept override;
+
+			/* METHODS FROM IIterator &
+				METHODS */
 
 	/**
 	 *	\~english
@@ -274,13 +280,6 @@ public:
 	virtual bool is_last() const noexcept override;
 
 	/**
-	 *	\brief Whether the iterator points after the last element of the array
-	 *
-	 *	The iterator is end if it points to a space that is after the last element. In this case
-	 *	`is_element_valid()` method returns `false`.
-	 *	\return `true` if the iterator points after the last element of the array.
-	 */
-	/**
 	 *	\~english
 	 *	\brief Checks whether the iterator points after the last element of the array
 	 *
@@ -336,6 +335,8 @@ public:
 	 *	\throw std::logic_error Итератор недействителен.
 	 */
 	virtual bool prev() override;
+
+			/* OPERATORS */
 
 	/**
 	 *	\~english
@@ -493,6 +494,9 @@ private:
 };
 
 }
+
+
+		/* DEFINITIONS */
 
 /**
  *	\~english
