@@ -15,12 +15,12 @@ using namespace snow;
 
 void Game::start()
 {
-	std::thread loop_thread(loop);
+	std::thread loop_thread(loop_);
 	loop_thread.detach();
 	main_log_->i(L"The game has been started"_s);
 }
 
-void Game::loop()
+void Game::loop_()
 {
 	sf::RenderWindow window(sf::VideoMode(config.resolution.get_x(), config.resolution.get_y()), config.title.to_std_string(),
 		sf::Style::Titlebar * config.titlebar | sf::Style::Resize * config.resize |

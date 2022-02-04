@@ -30,129 +30,156 @@
     <Filter Include="Source Files\Math\Vector">
       <UniqueIdentifier>{b2244079-d40a-4ffa-8fa1-8ec60a45e334}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Actor">
+      <UniqueIdentifier>{b51887ee-4e17-426d-bb81-42205d01b570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component">
+      <UniqueIdentifier>{a8b83ddd-cdbc-4a52-bf8f-194eed55ff48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Level">
+      <UniqueIdentifier>{2fcd97b7-6828-4dd8-b19f-e639c1df55dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math\Math.h">
+    <ClInclude Include="Source\Math\Math.h">
       <Filter>Source Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Angle.h">
+    <ClInclude Include="Source\Math\Angle.h">
       <Filter>Source Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
+    <ClInclude Include="Source\Object.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\Container.h">
+    <ClInclude Include="Source\Util\Container\Container.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Util.h">
+    <ClInclude Include="Source\Util\Util.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\Array.h">
+    <ClInclude Include="Source\Util\Container\Array.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\LinkedList.h">
+    <ClInclude Include="Source\Util\Container\LinkedList.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\ArrayIterator.h">
+    <ClInclude Include="Source\Util\Container\ArrayIterator.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\LinkedListIterator.h">
+    <ClInclude Include="Source\Util\Container\LinkedListIterator.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\Map.h">
+    <ClInclude Include="Source\Util\Container\Map.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\MapIterator.h">
+    <ClInclude Include="Source\Util\Container\MapIterator.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\Pair.h">
+    <ClInclude Include="Source\Util\Container\Pair.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\SortedArray.h">
+    <ClInclude Include="Source\Util\Container\SortedArray.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Types\String.h">
+    <ClInclude Include="Source\Util\Types\String.h">
       <Filter>Source Files\Util\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Util\SnowFlake\Text.h">
+    <ClInclude Include="Source\Util\SnowFlake\Text.h">
       <Filter>Source Files\Util\SnowFlake</Filter>
     </ClInclude>
-    <ClInclude Include="Util\SnowCat\Log.h">
+    <ClInclude Include="Source\Util\SnowCat\Log.h">
       <Filter>Source Files\Util\SnowCat</Filter>
     </ClInclude>
-    <ClInclude Include="Util\SnowFlake\Lang.h">
+    <ClInclude Include="Source\Util\SnowFlake\Lang.h">
       <Filter>Source Files\Util\SnowFlake</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Config.h">
+    <ClInclude Include="Source\Util\Config.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Game.h">
+    <ClInclude Include="Source\Util\Game.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\Deque.h">
+    <ClInclude Include="Source\Util\Container\Deque.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\Queue.h">
+    <ClInclude Include="Source\Util\Container\Queue.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Container\Stack.h">
+    <ClInclude Include="Source\Util\Container\Stack.h">
       <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector\Vector2.h">
+    <ClInclude Include="Source\Math\Vector\Vector2.h">
       <Filter>Source Files\Math\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector\Vector3.h">
+    <ClInclude Include="Source\Math\Vector\Vector3.h">
       <Filter>Source Files\Math\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector\Point2.h">
+    <ClInclude Include="Source\Math\Vector\Point2.h">
       <Filter>Source Files\Math\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector\Point3.h">
+    <ClInclude Include="Source\Math\Vector\Point3.h">
       <Filter>Source Files\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Level\Level.h">
+      <Filter>Source Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Component.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Actor.h">
+      <Filter>Source Files\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Math\Math.cpp">
+    <ClCompile Include="Source\Math\Math.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Angle.cpp">
+    <ClCompile Include="Source\Math\Angle.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
+    <ClCompile Include="Source\Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Util\Util.cpp">
+    <ClCompile Include="Source\Util\Util.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Util\Types\String.cpp">
+    <ClCompile Include="Source\Util\Types\String.cpp">
       <Filter>Source Files\Util\Types</Filter>
     </ClCompile>
-    <ClCompile Include="Util\SnowFlake\Text.cpp">
+    <ClCompile Include="Source\Util\SnowFlake\Text.cpp">
       <Filter>Source Files\Util\SnowFlake</Filter>
     </ClCompile>
-    <ClCompile Include="Util\SnowCat\Log.cpp">
+    <ClCompile Include="Source\Util\SnowCat\Log.cpp">
       <Filter>Source Files\Util\SnowCat</Filter>
     </ClCompile>
-    <ClCompile Include="Util\SnowFlake\Lang.cpp">
+    <ClCompile Include="Source\Util\SnowFlake\Lang.cpp">
       <Filter>Source Files\Util\SnowFlake</Filter>
     </ClCompile>
-    <ClCompile Include="Util\Config.cpp">
+    <ClCompile Include="Source\Util\Config.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Util\Game.cpp">
+    <ClCompile Include="Source\Util\Game.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Vector\Vector2.cpp">
+    <ClCompile Include="Source\Math\Vector\Vector2.cpp">
       <Filter>Source Files\Math\Vector</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Vector\Vector3.cpp">
+    <ClCompile Include="Source\Math\Vector\Vector3.cpp">
       <Filter>Source Files\Math\Vector</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Vector\Point2.cpp">
+    <ClCompile Include="Source\Math\Vector\Point2.cpp">
       <Filter>Source Files\Math\Vector</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Vector\Point3.cpp">
+    <ClCompile Include="Source\Math\Vector\Point3.cpp">
       <Filter>Source Files\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Level\Level.cpp">
+      <Filter>Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Component.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Actor.cpp">
+      <Filter>Source Files\Actor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -32,7 +32,6 @@ public:
 	Game() = delete;
 
 	static void start();
-	static void loop();
 
 	/**
 	 *	\brief The configurations of the game
@@ -51,6 +50,8 @@ public:
 	static Lang lang;
 
 private:
+	static void loop_();
+
 	friend class Log;
 	static bool debug_mode_;
 	static std::mutex log_file_mtx_;
