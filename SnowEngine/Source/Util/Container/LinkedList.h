@@ -14,6 +14,8 @@
 
 #include "LinkedListIterator.h"
 
+#include <list>
+
 namespace snow
 {
 

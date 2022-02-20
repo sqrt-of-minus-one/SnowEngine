@@ -242,7 +242,7 @@ String util::to_string(T* var) noexcept
 	}
 	else
 	{
-		return "NULL";
+		return L"NULL";
 	}
 }
 
