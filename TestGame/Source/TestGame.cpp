@@ -1,18 +1,18 @@
 #include <iostream>
 #include <conio.h>
 
-#include "Source/Math/Angle.h"
-#include "Source/Util/SnowCat/Log.h"
-#include "Source/Util/Util.h"
 #include "Source/Util/Game.h"
-#include "Source/Util/Container/Deque.h"
-#include "Source/Util/Container/Queue.h"
-#include "Source/Util/Container/Stack.h"
-#include "Source/Util/SnowFlake/Text.h"
+#include "Source/Util/Function/Event.h"
 
 int main()
 {
 	snow::Game::start();
+
+	snow::Event<> event;
+
+	event.bind([]() {std::wcout << L"L"; });
+	event.bind([]() {std::wcout << L"K\n"; });
+	event.execute();
 
 	_getch();
 	return 0;

@@ -42,6 +42,8 @@
     <ClInclude Include="Source\Util\Container\Queue.h" />
     <ClInclude Include="Source\Util\Container\SortedArray.h" />
     <ClInclude Include="Source\Util\Container\Stack.h" />
+    <ClInclude Include="Source\Util\Function\Event.h" />
+    <ClInclude Include="Source\Util\Function\Function.h" />
     <ClInclude Include="Source\Util\Game.h" />
     <ClInclude Include="Source\Util\SnowCat\Log.h" />
     <ClInclude Include="Source\Util\SnowFlake\Lang.h" />

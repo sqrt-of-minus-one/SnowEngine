@@ -39,6 +39,9 @@
     <Filter Include="Source Files\Level">
       <UniqueIdentifier>{2fcd97b7-6828-4dd8-b19f-e639c1df55dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Function">
+      <UniqueIdentifier>{b60d83fe-a935-48dc-9254-24cebbd55e78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -127,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="Source\Actor\Actor.h">
       <Filter>Source Files\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Function\Event.h">
+      <Filter>Source Files\Util\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Function\Function.h">
+      <Filter>Source Files\Util\Function</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
