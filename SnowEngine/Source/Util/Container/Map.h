@@ -90,7 +90,7 @@ public:
 	 *
 	 *	The destructor is used to invalidate all iterators.
 	 */
-	~Map() noexcept;
+	virtual ~Map() noexcept;
 
 	/**
 	 *	\brief Converts the map content to string

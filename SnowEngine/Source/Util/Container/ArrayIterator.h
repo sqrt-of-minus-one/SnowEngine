@@ -65,7 +65,7 @@ public:
 	 *	
 	 *	The destructor of the array iterator.
 	 */
-	~BaseArrayIterator_() noexcept;
+	virtual ~BaseArrayIterator_() noexcept;
 
 	/**
 	 *	\brief Converts an element of the iterator to string

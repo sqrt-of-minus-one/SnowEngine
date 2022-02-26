@@ -68,7 +68,7 @@ public:
 	 *
 	 *	The destructor of the linked list iterator.
 	 */
-	~BaseLinkedListIterator_() noexcept;
+	virtual ~BaseLinkedListIterator_() noexcept;
 
 	/**
 	 *	\brief Converts an element of the iterator to string

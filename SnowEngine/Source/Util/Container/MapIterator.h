@@ -64,7 +64,7 @@ public:
 	 *
 	 *	The destructor of the map iterator.
 	 */
-	~BaseMapIterator_() noexcept;
+	virtual ~BaseMapIterator_() noexcept;
 
 	/**
 	 *	\brief Converts an element of the iterator to string

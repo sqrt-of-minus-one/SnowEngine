@@ -15,6 +15,7 @@
 
 #include <stdexcept>
 #include <memory>
+#include <set>
 
 namespace snow
 {
@@ -29,6 +30,9 @@ class String;
 class Object
 {
 public:
+	Object() noexcept;
+	virtual ~Object() noexcept;
+
 			/* METHODS */
 
 	/**
@@ -47,6 +51,11 @@ public:
 	 *	\return Hash code of the object.
 	 */
 	virtual int hash_code() const noexcept = 0;
+
+	static bool is_valid(const Object* object) noexcept;
+
+private:
+	static std::set<const Object*> existing_objects_;
 };
 
 }

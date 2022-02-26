@@ -94,7 +94,7 @@ public:
 	 *
 	 *	The destructor is used to invalidate all iterators.
 	 */
-	~LinkedList() noexcept;
+	virtual ~LinkedList() noexcept;
 
 	/**
 	 *	\brief Converts the linked list content to string

@@ -50,7 +50,7 @@ public:
 	 *	
 	 *	If necessary, closes the log file.
 	 */
-	~Log() noexcept;
+	virtual ~Log() noexcept;
 
 	/**
 	 *	\brief Convert to string
