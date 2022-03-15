@@ -302,7 +302,7 @@ public:
 	 *	\brief Moves the iterator forward
 	 *
 	 *	Increases the iterator index so that it points to the next element. The iterator won't be
-	 *	changed if it already points after the last element.
+	 *	changed if it is already pointing after the last element.
 	 *	\return `true` if the new element of the iterator is valid (is not end), `false` otherwise.
 	 *	\throw std::logic_error The iterator is not valid.
 	 *	
@@ -319,10 +319,10 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Moves the iterator forward
+	 *	\brief Moves the iterator backward
 	 *
 	 *	Decreases the iterator index so that it points to the previous element. The iterator won't
-	 *	be changed if it already points to the first element.
+	 *	be changed if it is already pointing to the first element.
 	 *	\return `true` if the iterator has been moved, `false` otherwise.
 	 *	\throw std::logic_error The iterator is not valid.
 	 *	
@@ -362,7 +362,7 @@ public:
 	 *	\brief The prefix increment of the iterator
 	 *
 	 *	Increases the iterator index so that it points to the next element. The iterator won't be
-	 *	changed if it already points after the last element.
+	 *	changed if it is already pointing after the last element.
 	 *	\return The moved iterator.
 	 *	\throw std::logic_error The iterator is not valid.
 	 *
@@ -371,7 +371,7 @@ public:
 	 *
 	 *	Увеличивает индекс итератора, чтобы он указывал на следующий элемент. Итератор не будет
 	 *	изменён, если он уже указывает после последнего элемента.
-	 *	\return Перемещённый итератор
+	 *	\return Перемещённый итератор.
 	 *	\throw std::logic_error Итератор недействителен.
 	 */
 	BaseArrayIterator_<T_Container, T_Element> operator++();
@@ -380,7 +380,7 @@ public:
 	 *	\brief The prefix decrement of the iterator
 	 *
 	 *	Decreases the iterator index so that it points to the previous element. The iterator won't
-	 *	be changed if it already points to the first element.
+	 *	be changed if it is already pointing after the last element.
 	 *	\return The moved iterator.
 	 *	\throw std::logic_error The iterator is not valid.
 	 *
@@ -389,18 +389,17 @@ public:
 	 *
 	 *	Уменьшает индекс итератора, чтобы он указывал на предыдущий элемент. Итератор не будет
 	 *	изменён, если он уже указывает на первый элемент.
-	 *	\return Перемещённый итератор
+	 *	\return Перемещённый итератор.
 	 *	\throw std::logic_error Итератор недействителен.
 	 */
 	BaseArrayIterator_<T_Container, T_Element> operator--();
-
 
 	/**
 	 *	\~english
 	 *	\brief The postfix increment of the iterator
 	 *
 	 *	Increases the iterator index so that it points to the next element. The iterator won't be
-	 *	changed if it already points after the last element.
+	 *	changed if it is already pointing after the last element.
 	 *	\return The iterator before moving.
 	 *	\throw std::logic_error The iterator is not valid.
 	 *
@@ -409,7 +408,7 @@ public:
 	 *
 	 *	Увеличивает индекс итератора, чтобы он указывал на следующий элемент. Итератор не будет
 	 *	изменён, если он уже указывает после последнего элемента.
-	 *	\return Итератор до перемещения
+	 *	\return Итератор до перемещения.
 	 *	\throw std::logic_error Итератор недействителен.
 	 */
 	BaseArrayIterator_<T_Container, T_Element> operator++(int);
@@ -418,7 +417,7 @@ public:
 	 *	\brief The postfix decrement of the iterator
 	 *
 	 *	Decreases the iterator index so that it points to the previous element. The iterator won't
-	 *	be changed if it already points to the first element.
+	 *	be changed if it is already pointing after the last element.
 	 *	\return The iterator before moving.
 	 *	\throw std::logic_error The iterator is not valid.
 	 *
@@ -427,7 +426,7 @@ public:
 	 *
 	 *	Уменьшает индекс итератора, чтобы он указывал на предыдущий элемент. Итератор не будет
 	 *	изменён, если он уже указывает на первый элемент.
-	 *	\return Итератор до перемещения
+	 *	\return Итератор до перемещения.
 	 *	\throw std::logic_error Итератор недействителен.
 	 */
 	BaseArrayIterator_<T_Container, T_Element> operator--(int);
@@ -486,6 +485,7 @@ public:
 	virtual T_Element* operator->() const override;
 
 private:
+	// A new iterator can only be created by the container
 	BaseArrayIterator_(T_Container& array, int index, bool is_valid = true) noexcept;
 
 	T_Container& container_;
@@ -495,14 +495,11 @@ private:
 
 }
 
-
-		/* DEFINITIONS */
-
 /**
  *	\~english
  *	\brief The iterator of a constant array
  *	
- *	This iterator allows to read elements of an array but doesn't allow to modify them or the
+ *	This iterator allows to read elements of an array, but doesn't allow to modify them or the
  *	array. Can be created by a constant array (or using `iterator_to_const` method).
  *	\tparam T Type of the array elements.
  *	

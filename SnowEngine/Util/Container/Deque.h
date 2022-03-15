@@ -1,4 +1,4 @@
-    ////////////////////////////////////////
+﻿    ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
  //  File: Deque.h                     //
@@ -8,9 +8,15 @@
 
 /**
  *	\file
- *	\brief The file of the Deque class
+ *	\~english
+ *	\brief The file with `Deque` class
  *	
- *	This file contains the definition of the SnowEngine Deque class.
+ *	This file contains the definition of the `Deque` class.
+ *	
+ *	\~russian
+ *	\brief Файл с классом `Deque`
+ *	
+ *	Этот файл содержит определение класса `Deque`.
  */
 
 #include "LinkedList.h"
@@ -19,12 +25,21 @@ namespace snow
 {
 
 /**
- *	\brief The class of the SnowEngine deque
+ *	\~english
+ *	\brief The class of deque
  *	
- *	This deque is based on linked list (the LinkedList class). It allows you to push elements into
+ *	This deque is based on linked list (the `LinkedList` class). It allows you to push elements into
  *	its beginning and its end, and pop elements from the beginning and the end.
- *	\tparam T The type of elements that are contained in the deque. This type must meet the same
- *	conditions as the template of the LinkedList class.
+ *	\tparam T Type of the deque elements. This type must meet the same conditions as the template
+ *	of the `LinkedList` class.
+ *	
+ *	\~russian
+ *	\breif Класс двусторонней очереди
+ *	
+ *	Эта двусторонняя очередь основана на связном списке (класс `LinkedList`). Она позволяет
+ *	добавлять элементы в начало и конец, а также удалять элементы с начала и конца.
+ *	\tparam T Тип элементов двусторонней очереди. Этот тип должен удовлетворять тем же условиям,
+ *	что и шаблон класса `LinkedList`.
  */
 template<typename T>
 class Deque :
@@ -32,221 +47,417 @@ class Deque :
 	public IContainer<T>
 {
 public:
+			/* CONSTRUCTORS */
 
 	/**
+	 *	\~english
 	 *	\brief The default constructor
 	 *	
 	 *	Creates an empty deque.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор по умолчанию
+	 *	
+	 *	Создаёт пустую двустороннюю очередь.
 	 */
 	Deque() noexcept;
 
 	/**
-	 *	\brief Copy constructor
+	 *	\~english
+	 *	\brief The copy constructor
 	 *	
-	 *	Creates a new deque as the copy of the passed one.
-	 *	\param deque The deque for copying.
+	 *	Copies the deque.
+	 *	\param deque The deque that will be copied.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор копирования
+	 *	
+	 *	Копирует двустороннюю очередь.
+	 *	\param deque Двусторонняя очередь, которая будет скопирован.
 	 */
 	Deque(const Deque<T>& deque) noexcept;
 
 	/**
+	 *	\~english
 	 *	\brief The move constructor
 	 *	
-	 *	Creates a new deque by moving the value of the passed one.
-	 *	\param deque The deque whose value will be moved.
+	 *	Moves elements to a new deque from the passed one.
+	 *	\param deque The deque whose elements will be moved.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор перемещения
+	 *	
+	 *	Перемещает элементы в новую двустороннюю очередь из переданной.
+	 *	\param deque Двусторонняя очередь, чьи элементы будут перемещены.
 	 */
 	Deque(Deque<T>&& deque) noexcept;
 	
+			/* METHODS FROM Object */
+
 	/**
-	 *	\brief Convert the deque to string
+	 *	\~english
+	 *	\brief Converts the deque into a string
 	 *	
-	 *	Uses `to_string()` method of the internal linked list to convert itself to string.
-	 *	\return The resultant string.
+	 *	Uses the `to_string` method of the internal linked list to convert itself to a string.
+	 *	\return A result string.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует массив в строку
+	 *
+	 *	Использует метод `to_string` внутреннего связного списка, чтобы сконвертировать себя в
+	 *	строку.
+	 *	\return Итоговая строка.
 	 */
 	virtual String to_string() const noexcept override;
 
 	/**
-	 *	\brief The hash code
+	 *	\~english
+	 *	\brief Hash code of the deque
 	 *	
-	 *	The hash code of the deque is the hash code of the internal linked list.
-	 *	\return The hash code of the deque.
+	 *	Hash code of the deque is hash code of the internal linked list.
+	 *	\return Hash code of the deque.
+	 *	
+	 *	\~russian
+	 *	\brief Хеш-код двусторонней очереди
+	 *	
+	 *	Хеш-код двусторонней очереди — это хеш-код внутреннего связного списка.
+	 *	\return Хеш-код двусторонней очереди.
 	 */
 	virtual int hash_code() const noexcept override;
+
+			/* METHODS FROM IContainer &
+				METHODS */
 	
 	/**
-	 *	\brief Get the size of the deque
-	 *	
-	 *	Allows to the the number of elements in the deque.
+	 *	\~english
+	 *	\brief The size of the deque
+	 *
+	 *	Allows to get the number of elements in the deque.
 	 *	\return The number of elements in the deque.
+	 *
+	 *	\~russian
+	 *	\brief Размер двусторонней очереди
+	 *
+	 *	Позволяет получить количество элеменов в двусторонней очереди.
+	 *	\return Количество элеменов в двусторонней очереди.
 	 */
 	virtual int size() const noexcept override;
 
 	/**
-	 *	\brief Check whether the deque is empty
-	 *	
-	 *	Checks if the deque doesn't contains any elements.
-	 *	\return `true` if the deque is empty, `false` otherwise.
+	 *	\~english
+	 *	\brief Checks whether the deque is empty
+	 *
+	 *	Checks whether the deque is empty.
+	 *	\return `true` if the deque does not contain any element, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, пуста ли односторонняя очередь
+	 *
+	 *	Проверяет, пуста ли односторонняя очередь.
+	 *	\return `true`, если односторонняя очередь не содержит никаких элементов, иначе `false`.
 	 */
 	virtual bool is_empty() const noexcept override;
 
 	/**
-	 *	\brief Clear the deque
+	 *	\~english
+	 *	\brief Clears the deque
 	 *
-	 *	Removes all the elements of the deque.
+	 *	Removes all of the elements in the deque.
+	 *	
+	 *	\~russian
+	 *	\brief Очищает двустороннюю очередь
+	 *
+	 *	Удаляет все элементы двусторонней очереди.
 	 */
 	virtual void clear() noexcept override;
 	
 	/**
-	 *	\brief Get the first element of the deque
+	 *	\~english
+	 *	\brief The first element of the deque
 	 *	
-	 *	Allows to get an access (read and modify) to the first element of the deque.
-	 *	\return The reference to the first element.
+	 *	Allows to access the first element of the deque.
+	 *	\return A reference to the first element.
 	 *	\throw std::out_of_range The deque is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Первый элемент двусторонней очереди
+	 *	
+	 *	Позволяет получить доступ к первому элементу двусторонней очереди.
+	 *	\return Ссылка на первый элемент.
+	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
 	T& get_begin();
 	
 	/**
-	 *	\brief Get the last element of the deque
+	 *	\~english
+	 *	\brief The last element of the deque
 	 *	
-	 *	Allows to get an access (read and modify) to the last element of the deque.
-	 *	\return The reference to the last element.
+	 *	Allows to access the last element of the deque.
+	 *	\return A reference to the last element.
 	 *	\throw std::out_of_range The deque is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Последний элемент двусторонней очереди
+	 *	
+	 *	Позволяет получить доступ к последнему элементу двусторонней очереди.
+	 *	\return Ссылка на последний элемент.
+	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
 	T& get_last();
 	
 	/**
-	 *	\brief Get the first element of the deque
+	 *	\~english
+	 *	\brief The first element of the deque
 	 *	
-	 *	Allows to get the value of the first element of the deque.
-	 *	\return The constant reference to the first element.
+	 *	Allows to read the first element of the deque.
+	 *	\return A constant reference to the first element.
 	 *	\throw std::out_of_range The deque is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Первый элемент двусторонней очереди
+	 *	
+	 *	Позволяет прочитать первый элемент двусторонней очереди.
+	 *	\return Константная ссылка на первый элемент.
+	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
 	const T& get_begin() const;
 	
 	/**
-	 *	\brief Get the last element of the deque
+	 *	\~english
+	 *	\brief The last element of the deque
 	 *	
-	 *	Allows to get the value of the last element of the deque.
-	 *	\return The constant reference to the last element.
+	 *	Allows to read the last element of the deque.
+	 *	\return A constant reference to the last element.
 	 *	\throw std::out_of_range The deque is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Последний элемент двусторонней очереди
+	 *	
+	 *	Позволяет прочитать последний элемент двусторонней очереди.
+	 *	\return Константная ссылка на последний элемент.
+	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
 	const T& get_last() const;
 	
 	/**
-	 *	\brief Pop the first element of the deque
+	 *	\~english
+	 *	\brief Removes the first element of the deque and returns it
 	 *	
 	 *	Removes the first element of the deque and returns its value.
 	 *	\return The value of the removed element.
 	 *	\throw std::out_of_range The deque is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Удаляет первый элемент двусторонней очереди и возвращает его
+	 *	
+	 *	Удаляет первый элемент двусторонней очереди и возвращает его значение.
+	 *	\return Значение удалённого элемента.
+	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
 	T pop_begin();
 	
 	/**
-	 *	\brief Pop the last element of the deque
+	 *	\~english
+	 *	\brief Removes the last element of the deque and returns it
 	 *	
 	 *	Removes the last element of the deque and returns its value.
 	 *	\return The value of the removed element.
 	 *	\throw std::out_of_range The deque is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Удаляет последний элемент двусторонней очереди и возвращает его
+	 *	
+	 *	Удаляет последний элемент двусторонней очереди и возвращает его значение.
+	 *	\return Значение удалённого элемента.
+	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
 	T pop_last();
 
 	/**
-	 *	\brief Insert the element into the beginning of the deque.
+	 *	\~english
+	 *	\brief Inserts the element into the beginning of the deque
 	 *	
 	 *	Inserts the passed element into the beginning of the deque.
-	 *	\param T The element that will be inserted.
+	 *	\param element The element that will be inserted.
+	 *	
+	 *	\~russian
+	 *	\brief Вставляет элемент в начало двусторонней очереди
+	 *	
+	 *	Вставляет переданный элемент в начало двусторонней очереди.
+	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push_begin(const T& element);
 
 	/**
-	 *	\brief Insert the element into the end of the deque.
+	 *	\~english
+	 *	\brief Inserts the element into the end of the deque
 	 *	
 	 *	Inserts the passed element into the end of the deque.
-	 *	\param T The element that will be inserted.
+	 *	\param element The element that will be inserted.
+	 *	
+	 *	\~russian
+	 *	\brief Вставляет элемент в конец двусторонней очереди
+	 *	
+	 *	Вставляет переданный элемент в конец двусторонней очереди.
+	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push_last(const T& element);
 
 	/**
-	 *	\brief Insert the element into the beginning of the deque.
+	 *	\~english
+	 *	\brief Inserts the element into the beginning of the deque
 	 *	
 	 *	Inserts the passed element into the beginning of the deque.
-	 *	\param T The element that will be inserted.
+	 *	\param element The element that will be inserted.
+	 *	
+	 *	\~russian
+	 *	\brief Вставляет элемент в начало двусторонней очереди
+	 *	
+	 *	Вставляет переданный элемент в начало двусторонней очереди.
+	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push_begin(T&& element);
 
 	/**
-	 *	\brief Insert the element into the end of the deque.
+	 *	\~english
+	 *	\brief Inserts the element into the end of the deque
 	 *	
 	 *	Inserts the passed element into the end of the deque.
-	 *	\param T The element that will be inserted.
+	 *	\param element The element that will be inserted.
+	 *	
+	 *	\~russian
+	 *	\brief Вставляет элемент в конец двусторонней очереди
+	 *	
+	 *	Вставляет переданный элемент в конец двусторонней очереди.
+	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push_last(T&& element);
 	
 	/**
-	 *	\brief Remove all elements that are equal to the passed one
+	 *	\~english
+	 *	\brief Removes all elements that are equal to the passed one
 	 *	
-	 *	Compares every element of the deque with the passed one and removes all mathces.
-	 *	\param element The element to compare.
-	 *	\return The number of removed elements.
+	 *	Compares every element of the deque with the passed one and removes all matches.
+	 *	\param element The object to compare.
+	 *	\return Number of elements that have been successfully removed.
+	 *
+	 *	\~russian
+	 *	\brief Удаляет все элементы, равные переданному
+	 *
+	 *	Сравнивает каждый элемент двусторонней очереди с переданным и удаляет все совпадения.
+	 *	\param element Объект для сравнения.
+	 *	\return Количество успешно удалённых элементов.
 	 */
 	virtual int remove_all(const T& element) override;
 	
 	/**
-	 *	\brief Check whether the deque contains the passed element
+	 *	\~english
+	 *	\brief Checks whether the deque contains the passed element
+	 *
+	 *	Checks whether the deque has an element that is equal to the passed one.
+	 *	\param element The desired element.
+	 *	\return `true` if the deque contains the passed element, `false` otherwise.
 	 *	
-	 *	Compares elements of the deque with the passed one until a match is found.
-	 *	\param element The element to compare.
-	 *	\return `true` if a match is found, `false` otherwise.
+	 *	\~russian
+	 *	\brief Проверяет, содержит ли двусторонняя очередь переданный элемент
+	 *	
+	 *	Проверяет, содержит ли двусторонняя очередь элемент, равный переданному.
+	 *	\param element Искомый элемент.
+	 *	\return `true`, если двусторонняя очередь содержит переданный элемент, иначе `false`.
 	 */
 	virtual bool contains(const T& element) const override;
 	
 	/**
-	 *	\brief Count how many elements of the deque is equal to the passed one
+	 *	\~english
+	 *	\brief How many elements of the deque are equal to the passed one
 	 *	
-	 *	Compares elements of the deque with the passed one and counts matches.
-	 *	\param element The element to compare.
-	 *	\return The number of matches.
+	 *	Counts elements that are equal to the passed one.
+	 *	\param element The desired element.
+	 *	\return Number of matches.
+	 *	
+	 *	\~russian
+	 *	\brief Сколько элементов двусторонней очередь равны переданному
+	 *	
+	 *	Подсчитывает элементы, равные переданному.
+	 *	\param element Требуемый элемент.
+	 *	\return Количество совпадений.
 	 */
 	virtual int count(const T& element) const override;
 	
+			/* OPERATORS */
+
 	/**
+	 *	\~english
 	 *	\brief The copy assignment operator
 	 *	
-	 *	Clears the deque and assigns it the passed one.
+	 *	Clears the deque and inserts into it copies of elements of the passed deque.
 	 *	\param deque The deque to assign.
 	 *	\return A reference to itself.
-	 */	
+	 *	
+	 *	\~russian
+	 *	\brief Оператор присваивания копированием
+	 *	
+	 *	Очищает двустороннюю очередь и вставляет в неё копии элементов переданной очереди.
+	 *	\param deque Двусторонняя очередь для присваивания.
+	 *	\return Ссылка на себя.
+	 */
 	Deque<T>& operator=(const Deque<T>& deque);
 
 	/**
+	 *	\~english
 	 *	\brief The move assignment operator
 	 *	
-	 *	Clears the deque and moves elements of the passed one into it.
-	 *	\param deque The deque whose elements will be moved.
+	 *	Clears the deque and moves into it elements of the passed deque.
+	 *	\param deque The deque to assign.
 	 *	\return A reference to itself.
+	 *	
+	 *	\~russian
+	 *	\brief Оператор присваивания перемещением
+	 *	
+	 *	Очищает двустороннюю очередь и перемещает в неё элементы переданной очереди.
+	 *	\param deque Двусторонняя очередь для присваивания.
+	 *	\return Ссылка на себя.
 	 */
 	Deque<T>& operator=(Deque<T>&& deque);
 	
 	/**
-	 *	\brief Whether two deques are equal
+	 *	\~english
+	 *	\brief Checks whether two deques are equal
 	 *	
-	 *	Two deques are equal if they have the same elements in the same order.
+	 *	Two deques are equal if all of their elements are equal and have the same order.
 	 *	\param deque The deque to compare.
 	 *	\return `true` if two deques are equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, равны ли две двусторонние очереди
+	 *
+	 *	Две двусторонние очереди равны, если их элементы равны и находятся в одинаковом порядке.
+	 *	\param deque Двусторонняя очередь для сравнения.
+	 *	\return `true`, если две двусторонние очереди равны, иначе `false`.
 	 */
 	bool operator==(const Deque<T>& deque) const;
 	
 	/**
-	 *	\brief Whether two deques are not equal
+	 *	\~english
+	 *	\brief Checks whether two deques are not equal
 	 *	
-	 *	Two deques are equal if they have the same elements in the same order.
+	 *	Two deques are equal if all of their elements are equal and have the same order.
 	 *	\param deque The deque to compare.
 	 *	\return `true` if two deques are not equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, различаются ли две двусторонние очереди
+	 *
+	 *	Две двусторонние очереди равны, если их элементы равны и находятся в одинаковом порядке.
+	 *	\param deque Двусторонняя очередь для сравнения.
+	 *	\return `true`, если две двусторонние очереди не равны, иначе `false`.
 	 */
 	bool operator!=(const Deque<T>& deque) const;
 
 private:
 	LinkedList<T> list;
 };
+
 
 		/* DEFINITIONS */
 

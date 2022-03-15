@@ -168,9 +168,9 @@ public:
 	 *	
 	 *	Hash code is calculated using `util::hash_code` function and formula:
 	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot hash_code(a[i]))
+	 *		\sum^{n}_{i = 0} ((-1)^i \cdot a[i]) = a[0] - a[1] + a[2] - ...
 	 *	\f]
-	 *	\f$n\f$ is the array size, \f$a[i]\f$ is i-th element of the array.
+	 *	\f$n\f$ is the array size, \f$a[i]\f$ is the hash code of i-th element of the array.
 	 *	\return Hash code of the array.
 	 *	
 	 *	\~russian
@@ -178,9 +178,9 @@ public:
 	 *
 	 *	Хеш-код вычисляется с использованием `util::hash_code` по формуле:
 	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot hash_code(a[i]))
+	 *		\sum^{n}_{i = 0} ((-1)^i \cdot (a[i]) = a[0] - a[1] + a[2] - ...
 	 *	\f]
-	 *	\f$n\f$ — размер массива, \f$a[i]\f$ — i-й элемент массива.
+	 *	\f$n\f$ — размер массива, \f$a[i]\f$ — хеш-код i-го элемент массива.
 	 *	\return Хеш-код массива.
 	 */
 	virtual int hash_code() const noexcept override;
@@ -864,6 +864,8 @@ public:
 	 *	\throw std::out_of_range Индекс выходит за границы массива.
 	 */
 	ConstArrayIterator<T> create_iterator(int index) const;
+
+			/* OPERATORS */
 
 	/**
 	 *	\~english
