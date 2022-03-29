@@ -180,7 +180,7 @@ public:
 	 *	\f[
 	 *		\sum^{n}_{i = 0} ((-1)^i \cdot (a[i]) = a[0] - a[1] + a[2] - ...
 	 *	\f]
-	 *	\f$n\f$ — размер массива, \f$a[i]\f$ — хеш-код i-го элемент массива.
+	 *	\f$n\f$ — размер массива, \f$a[i]\f$ — хеш-код i-го элемента массива.
 	 *	\return Хеш-код массива.
 	 */
 	virtual int hash_code() const noexcept override;
@@ -419,8 +419,8 @@ public:
 	 *	
 	 *	Removes an element that the passed iterator points to. The subsequent elements are moved
 	 *	and fill a formed space. All iterators will continue to point to their elements. Iterators
-	 *	that pointed to the removed element will point to the next element after executing this
-	 *	method.
+	 *	that pointed to the removed element (including the passed one) will point to the next
+	 *	element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
 	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
 	 *	the iterator points to an element of other array).
@@ -430,8 +430,8 @@ public:
 	 *	
 	 *	Удаляет элемент, на который указывает переданный итератор. Следующие элементы при этом
 	 *	сдвигаются и заполняют образованное пространство. Все итераторы продолжат указывать на свои
-	 *	элементы. Итераторы, указывавшие на удалённый элемент, после выполнения метода будут
-	 *	указывать на следующий.
+	 *	элементы. Итераторы, указывавшие на удалённый элемент (включая переданный), после
+	 *	выполнения метода будут указывать на следующий.
 	 *	\param element Итератор, указывающий на элемент, который будет удалён.
 	 *	\return `true`, если элемент был успешно удалён, иначе `false` (например, если итератор
 	 *	указывает на элемент другого массива).
@@ -444,8 +444,8 @@ public:
 	 *
 	 *	Removes an element that the passed iterator points to. The subsequent elements are moved
 	 *	and fill a formed space. All iterators will continue to point to their elements. Iterators
-	 *	that pointed to the removed element will point to the next element after executing this
-	 *	method.
+	 *	that pointed to the removed element (including the passed one) will point to the next
+	 *	element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
 	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
 	 *	the iterator points to an element of other array).
@@ -455,8 +455,8 @@ public:
 	 *
 	 *	Удаляет элемент, на который указывает переданный итератор. Следующие элементы при этом
 	 *	сдвигаются и заполняют образованное пространство. Все итераторы продолжат указывать на свои
-	 *	элементы. Итераторы, указывавшие на удалённый элемент, после выполнения метода будут
-	 *	указывать на следующий.
+	 *	элементы. Итераторы, указывавшие на удалённый элемент (включая переданный), после
+	 *	выполнения метода будут указывать на следующий.
 	 *	\param element Итератор, указывающий на элемент, который будет удалён.
 	 *	\return `true`, если элемент был успешно удалён, иначе `false` (например, если итератор
 	 *	указывает на элемент другого массива).
@@ -469,8 +469,8 @@ public:
 	 *	
 	 *	Removes elements that are in the specified range. The subsequent elements are moved and
 	 *	fill a formed space. All iterators will continue to point to their elements. Iterators that
-	 *	pointed to one of the removed elements will point to the next element after executing this
-	 *	method.
+	 *	pointed to one of the removed elements will point to the first element after the removed
+	 *	range after executing this method.
 	 *	\param from The beginning of the range that will be removed.
 	 *	\param to The end of the range that will be removed. An element with this index won't be
 	 *	removed, but the previous one will.
@@ -482,7 +482,7 @@ public:
 	 *	Удаляет элементы, которых входят в заданный диапазон. Последующие элементы при этом
 	 *	сдвигаются и заполняют образованное пространство. Все итераторы продолжат указывать на свои
 	 *	элементы. Итераторы, указывавшие на один из удалённых элементов, после выполнения метода
-	 *	будут указывать на следующий элемент.
+	 *	будут указывать на первый элемент после удалённого диапазона.
 	 *	\param from Начало диапазона, который будет удалён.
 	 *	\param to Конец диапазона, который будет удалён. Элемент с этим индектом удалён не будет, а
 	 *	предыдущий — будет.
@@ -496,8 +496,8 @@ public:
 	 *
 	 *	Removes elements that are in the specified range. The subsequent elements are moved and
 	 *	fill a formed space. All iterators will continue to point to their elements. Iterators that
-	 *	pointed to one of the removed elements will point to the next element after executing this
-	 *	method.
+	 *	pointed to one of the removed elements will point to the first element after the removed
+	 *	range after executing this method.
 	 *	\param from The iterator pointing to the first element in the range that will be removed.
 	 *	\param to The iterator pointing after the last element in the range that will be removed.
 	 *	This element won't be removed.
@@ -509,7 +509,7 @@ public:
 	 *	Удаляет элементы, которых входят в заданный диапазон. Последующие элементы при этом
 	 *	сдвигаются и заполняют образованное пространство. Все итераторы продолжат указывать на свои
 	 *	элементы. Итераторы, указывавшие на один из удалённых элементов, после выполнения метода
-	 *	будут указывать на следующий элемент.
+	 *	будут указывать на первый элемент после удалённого диапазона.
 	 *	\param from Итератор, указывающий на первый элемент диапазона, который будет удалён.
 	 *	\param to Итератор, указывающий после последнего элемента диапазона, который будет удалён.
 	 *	Этот элемент не будет удалён.
@@ -523,8 +523,8 @@ public:
 	 *
 	 *	Removes elements that are in the specified range. The subsequent elements are moved and
 	 *	fill a formed space. All iterators will continue to point to their elements. Iterators that
-	 *	pointed to one of the removed elements will point to the next element after executing this
-	 *	method.
+	 *	pointed to one of the removed elements will point to the first element after the removed
+	 *	range after executing this method.
 	 *	\param from The iterator pointing to the first element in the range that will be removed.
 	 *	\param to The iterator pointing after the last element in the range that will be removed.
 	 *	This element won't be removed.
@@ -536,7 +536,7 @@ public:
 	 *	Удаляет элементы, которых входят в заданный диапазон. Последующие элементы при этом
 	 *	сдвигаются и заполняют образованное пространство. Все итераторы продолжат указывать на свои
 	 *	элементы. Итераторы, указывавшие на один из удалённых элементов, после выполнения метода
-	 *	будут указывать на следующий элемент.
+	 *	будут указывать на первый элемент после удалённого диапазона.
 	 *	\param from Итератор, указывающий на первый элемент диапазона, который будет удалён.
 	 *	\param to Итератор, указывающий после последнего элемента диапазона, который будет удалён.
 	 *	Этот элемент не будет удалён.
@@ -635,6 +635,7 @@ public:
 	 */
 	virtual int remove_all(const T& element) override;
 
+	// This method can be useful in the SortedArray class
 	/**
 	 *	\~english
 	 *	\brief Finds one element that is equal to the passed one
