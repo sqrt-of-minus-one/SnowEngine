@@ -69,7 +69,7 @@ public:
  *	обеспечивает быструю вставку и удаление любого элемента. Связный список занимает больше места,
  *	чем массив. У этого класса есть методы, позволяющие работать со списком, используя индексы
  *	элементов, однако они могут быть значительно медленнее тех, что используют итераторы.
- *	\tparam T Тип элементов связного списка. Если вам нужно хранить в массиве объекты некоторога
+ *	\tparam T Тип элементов связного списка. Если вам нужно хранить в массиве объекты некоторого
  *	класса, настоятельно рекомендуется хранить указатели на них. Если `T` не примитивный тип, для
  *	него должны быть определены методы `to_string` и `hash_code` (у любого `snow::Object` они
  *	есть). Если `T` не указатель, у него также должны быть определёны конструктор по умолчанию,
@@ -149,8 +149,8 @@ public:
 	 *	\~english
 	 *	\brief Converts the linked list into a string
 	 *	
-	 *	Creates a string representing the list of all elements. `util::to_string()` is used
-	 *	to convert elements to string.
+	 *	Creates a string representing the list of all elements. `util::to_string` is used to
+	 *	convert elements to string.
 	 *	\return A result string in the format `{ x, x, ..., x }`. `{ }` if the linked list is
 	 *	empty.
 	 *	

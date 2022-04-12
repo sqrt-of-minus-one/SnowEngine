@@ -50,7 +50,7 @@ namespace snow
  *	середины или начала происходят медленно, поэтому их следует избегать. Если вам необходимо
  *	вставлять или удалять элементы в середину или начало, класс `LinkedList` может оказаться более
  *	подходящим.
- *	\tparam T Тип элементов массива. Если вам нужно хранить в массиве объекты некоторога класса,
+ *	\tparam T Тип элементов массива. Если вам нужно хранить в массиве объекты некоторого класса,
  *	настоятельно рекомендуется хранить указатели на них. Если `T` не примитивный тип, для него
  *	должны быть определены методы `to_string` и `hash_code` (у любого `snow::Object` они есть).
  *	Если `T` не указатель, у него также должны быть определёны конструктор по умолчанию, оператор
@@ -149,8 +149,8 @@ public:
 	 *	\~english
 	 *	\brief Converts the array into a string
 	 *	
-	 *	Creates a string representing the list of the array elements. `util::to_string()` is used
-	 *	to convert elements to string.
+	 *	Creates a string representing the list of the array elements. `util::to_string` is used to
+	 *	convert elements to string.
 	 *	\return A result string in the format `{ x, x, ..., x }`. `{ }` if the array is empty.
 	 *	
 	 *	\~russian
