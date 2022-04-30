@@ -2,32 +2,40 @@
 #include <conio.h>
 
 #include "Source/Util/Game.h"
-#include "Source/Util/Function/Delegate.h"
+#include "Source/Util/Function/Event.h"
 
 int main()
 {
 	snow::Game::start();
 
-	snow::Delegate<void, int> delegate;
-	delegate(4);
-	delegate.bind([](int a)
+	snow::Event<int> event;
+
+	event.execute(1);
+
+	event.bind([](int n)
 		{
-			std::wcout << a;
+			std::wcout << n << std::endl;
 		});
 
-	delegate(5);
-	delegate.unbind();
+	event.execute(2);
 
-	snow::Delegate<snow::String> d;
-	d.bind<snow::Delegate<void, int>>(delegate, &snow::Delegate<void, int>::to_string);
-
-	std::wcout << d();
-
-	d.bind([]()
+	event.bind([](int n)
 		{
-			return L"\nHello!"_s;
+			std::wcout << n << n << std::endl;
 		});
-	std::wcout << d();
+
+	event.execute(3);
+
+	event.bind([](int n)
+		{
+			std::wcout << n << n << n << std::endl;
+		});
+
+	event.execute(4);
+
+	event.unbind(1);
+	
+	event.execute(5);
 
 	_getch();
 	return 0;
