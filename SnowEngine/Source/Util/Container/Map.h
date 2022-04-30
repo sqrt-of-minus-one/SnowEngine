@@ -1,4 +1,4 @@
-    ////////////////////////////////////////
+﻿    ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
  //  File: Map.h                       //
@@ -8,9 +8,15 @@
 
 /**
  *	\file
- *	\brief The file of the map
+ *	\~english
+ *	\brief The file with `Map` class
  *	
- *	This file contains the definition of the Map class.
+ *	This file contains the definition of the `Map` class.
+ *	
+ *	\~russian
+ *	\brief Файл с классом `Map`
+ *	
+ *	Этот файл содержит определение класса `Map`.
  */
 
 #include <list>
@@ -23,10 +29,10 @@ namespace snow
 {
 
 /**
- *	\brief The SnowEngine map
+ *	\brief The class of map
  *	
- *	Each element of this container is associated with a key and each key corresponds to a single
- *	element. Each element can be accessed using its key. A map provides a fast access to an
+ *	This class is used as the map. Each element of the map is associated with a key and each key
+ *	corresponds to a single element. Each element can be accessed using its key. A map provides a fast access to an
  *	arbitrary element, fast inserting and removing. When you initialise a map, you can specify its
  *	internal size. Note that the more elements there are, the slower operations with a map are. For
  *	maximum speed, it is recommended that the number of elements doesn't exceed half of the
