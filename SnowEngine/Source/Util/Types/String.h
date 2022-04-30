@@ -845,6 +845,12 @@ private:
 	std::wstring string_;
 };
 
+// I don't know why, but without these four strings it doesn't work...
+String operator+(wchar_t ch, const String& string);
+String operator+(const wchar_t* ch, const String& string);
+String operator+(const std::wstring& std_str, const String& string);
+String operator*(int value, const String& string);
+
 String operator""_s(const wchar_t* string, std::size_t length) noexcept;
 
 }

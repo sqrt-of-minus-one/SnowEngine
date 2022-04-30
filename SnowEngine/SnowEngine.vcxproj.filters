@@ -131,10 +131,7 @@
     <ClInclude Include="Source\Actor\Actor.h">
       <Filter>Source Files\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Util\Function\Event.h">
-      <Filter>Source Files\Util\Function</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Function\Function.h">
+    <ClInclude Include="Source\Util\Function\Delegate.h">
       <Filter>Source Files\Util\Function</Filter>
     </ClInclude>
   </ItemGroup>
@@ -189,6 +186,9 @@
     </ClCompile>
     <ClCompile Include="Source\Actor\Actor.cpp">
       <Filter>Source Files\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Function\Event.h">
+      <Filter>Source Files\Util\Function</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
