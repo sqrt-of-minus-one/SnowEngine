@@ -22,6 +22,12 @@
 namespace snow
 {
 
+template<typename T>
+std::unique_ptr<T>& assign_(std::unique_ptr<T>& first, const std::unique_ptr<T>& second);
+
+template<typename T>
+T& assign_(T& first, const T& second);
+
 /**
  *	\~english
  *	\brief The interface that is implemented by SnowEngine containers' iterators
@@ -357,5 +363,20 @@ public:
 	 */
 	virtual int count(const T& element) const = 0;
 };
+
+
+			/* DEFINITIONS */
+
+template<typename T>
+std::unique_ptr<T>& assign_(std::unique_ptr<T>& first, const std::unique_ptr<T>& second)
+{
+	throw std::logic_error("Using of this method is not allowed for containers of unique_ptr's");
+}
+
+template<typename T>
+T& assign_(T& first, const T& second)
+{
+	return first = second;
+}
 
 }

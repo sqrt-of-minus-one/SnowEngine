@@ -47,6 +47,20 @@ public:
 	std::shared_ptr<LinkedListNode_<T>> next;
 };
 
+template<typename T>
+struct LinkedListNode_<std::unique_ptr<T>>
+{
+public:
+	LinkedListNode_(const LinkedListNode_<std::unique_ptr<T>>&) noexcept;
+	LinkedListNode_(LinkedListNode_<std::unique_ptr<T>>&&) noexcept = default;
+	LinkedListNode_(const std::unique_ptr<T>& val) noexcept;
+	LinkedListNode_(std::unique_ptr<T>&& val) noexcept;
+
+	T value;
+	std::weak_ptr<LinkedListNode_<std::unique_ptr<T>>> prev;
+	std::shared_ptr<LinkedListNode_<std::unique_ptr<T>>> next;
+};
+
 }
 
 /**
@@ -71,12 +85,13 @@ public:
  *	обеспечивает быструю вставку и удаление любого элемента. Связный список занимает больше места,
  *	чем массив. У этого класса есть методы, позволяющие работать со списком, используя индексы
  *	элементов, однако они могут быть значительно медленнее тех, что используют итераторы.
- *	\tparam T Тип элементов связного списка. Если вам нужно хранить в массиве объекты некоторого
- *	класса, настоятельно рекомендуется хранить указатели на них. Если `T` не примитивный тип, для
- *	него должны быть определены методы `to_string` и `hash_code` (у любого `snow::Object` они
- *	есть). Если `T` не указатель, у него также должны быть определёны конструктор по умолчанию,
- *	оператор присваивания (`=`) и оператор равенства (`==`). Предполагается, что конструктор по
- *	умолчанию и конструктор копирования не выбрасывают никаких исключений.
+ *	\tparam T Тип элементов связного списка. Если вам нужно хранить в связном списке объекты
+ *	некоторого класса, настоятельно рекомендуется хранить указатели на них. Если `T` не
+ *	примитивный тип, для него должны быть определены методы `to_string` и `hash_code` (у любого
+ *	`snow::Object` они есть). Если `T` не указатель, у него также должны быть определёны
+ *	конструктор по умолчанию, оператор присваивания (`=`) и оператор равенства (`==`).
+ *	Предполагается, что конструктор по умолчанию и конструктор копирования не выбрасывают никаких
+ *	исключений.
  */
 template<typename T>
 class LinkedList :
@@ -107,12 +122,17 @@ public:
 	 *	\brief The copy constructor
 	 *	
 	 *	Copies the linked list.
+	 *	\warning This constructor must not be used if the linked list contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param list The linked list that will be copied.
 	 *	
 	 *	\~russian
 	 *	\brief Конструктор копирования
 	 *	
 	 *	Копирует связный список.
+	 *	\warning Этот конструктор не должен быть использован, если связный список содержит
+	 *	`unique_ptr`ы (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param list Связный список, который будет скопирован.
 	 */
 	LinkedList(const LinkedList<T>& list) noexcept;
@@ -309,6 +329,8 @@ public:
 	 *	
 	 *	Inserts a new element into the end of the linked list. If there are iterators that point to
 	 *	the end (`is_end` is true), they will continue to be end after executing this method.
+	 *	\warning This method must not be used if the linked list contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
 	 *	
@@ -317,6 +339,9 @@ public:
 	 *	
 	 *	Вставляет новый элемент в конец связного списка. Если есть итераторы, указывающие на конец 
 	 *	(`is_end` истинно), после выполнения метода они продолжат указывать на конец.
+	 *	\warning Этот метод не должен быть использован, если связный список содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 *	\return `true`, если элемент был успешно добавлен, иначе `false`.
 	 */
@@ -348,6 +373,8 @@ public:
 	 *	Inserts a new element into the linked list. The new element will have the passed index. 
 	 *	All iterators will continue to point to their elements. This method is pretty slow, it is
 	 *	faster to put the element using an iterator if you have one.
+	 *	\warning This method must not be used if the linked list contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
 	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
@@ -359,6 +386,9 @@ public:
 	 *	Вставляет новый элемент в связный список. Новый элемент будет иметь переданный индекс.
 	 *	Все итераторы продолжат указывать на свои элементы. Этот метод довольно медленный, быстрее
 	 *	вставить элемент с использованием итератора, если таковой имеется.
+	 *	\warning Этот метод не должен быть использован, если связный список содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 *	\param index Индекс, который новый элемент будет иметь.
 	 *	\return `true`, если элемент был успешно добавлен, иначе `false` (например, если индекс
@@ -398,6 +428,8 @@ public:
 	 *	Inserts into the end of the linked list copies of elements of the passed linked list. If
 	 *	there are iterators that points to the end (`is_end` is true), they will continue to be end
 	 *	after executing this method.
+	 *	\warning This method must not be used if the linked list contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param list The linked list whose elements will be added.
 	 *	\return The number of elements that have been successfully added.
 	 *	
@@ -407,6 +439,9 @@ public:
 	 *	Вставляет в конец связного списка копии элементов переданного связного списка. Если есть
 	 *	итераторы, указывающие на конец (`is_end` истинно), после выполнения метода они продолжат
 	 *	указывать на конец.
+	 *	\warning Этот метод не должен быть использован, если связный список содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param list Связный список, чьи элементы будут добавлены.
 	 *	\return Количество успешно добавленных элементов.
 	 */
@@ -440,6 +475,8 @@ public:
 	 *	Inserts a new element before the one that the passed iterator points to. If there are
 	 *	iterators that point to the end (`is_end` is true), they will continue to be end after
 	 *	executing this method.
+	 *	\warning This method must not be used if the linked list contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\param iterator The iterator pointing to an element before which the new one will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
@@ -450,6 +487,9 @@ public:
 	 *	Вставляет новый элемент перед тем, на который указывает переданный итератор. Если есть
 	 *	итераторы, указывающие на конец (`is_end` истинно), после выполнения метода они продолжат
 	 *	указывать на конец.
+	 *	\warning Этот метод не должен быть использован, если связный список содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 *	\param iterator Итератор, указывающий на элемент, перед которым будет вставлен новый.
 	 *	\return `true`, если элемент был успешно добавлен, иначе `false`.
@@ -486,6 +526,8 @@ public:
 	 *	Inserts a new element before the one that the passed iterator points to. If there are
 	 *	iterators that point to the end (`is_end` is true), they will continue to be end after
 	 *	executing this method.
+	 *	\warning This method must not be used if the linked list contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\param iterator The iterator pointing to an element before which the new one will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
@@ -496,6 +538,9 @@ public:
 	 *	Вставляет новый элемент перед тем, на который указывает переданный итератор. Если есть
 	 *	итераторы, указывающие на конец (`is_end` истинно), после выполнения метода они продолжат
 	 *	указывать на конец.
+	 *	\warning Этот метод не должен быть использован, если связный список содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 *	\param iterator Итератор, указывающий на элемент, перед которым будет вставлен новый.
 	 *	\return `true`, если элемент был успешно добавлен, иначе `false`.
@@ -532,6 +577,8 @@ public:
 	 *	Inserts the passed element into the beginning of the linked list. If there are iterators
 	 *	that point to the end (`is_end` is true), they will continue to be end after executing this
 	 *	method.
+	 *	\warning This method must not be used if the linked list contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be inserted.
 	 *	
 	 *	\~russian
@@ -539,6 +586,9 @@ public:
 	 *	
 	 *	Вставляет переданный элемент в начало связного списка. Если есть итераторы, указывающие на
 	 *	конец (`is_end` истинно), после выполнения метода они продолжат указывать на конец.
+	 *	\warning Этот метод не должен быть использован, если связный список содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 */
 	virtual bool add_to_begin(const T& element);
@@ -1102,6 +1152,8 @@ public:
 	 *	
 	 *	Clears the linked list and inserts into it copies of elements of the passed linked list.
 	 *	Invalidates all iterators.
+	 *	\warning This operator must not be used if the linked list contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param list The linked list to assign.
 	 *	\return A reference to itself.
 	 *	
@@ -1110,6 +1162,9 @@ public:
 	 *	
 	 *	Очищает связный список и вставляет в него копии элементов переданного связного списка.
 	 *	Аннулирует все итераторы.
+	 *	\warning Этот оператор не должен быть использован, если связный список содержит
+	 *	`unique_ptr`ы (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param list Связный список для присваивания.
 	 *	\return Ссылка на себя.
 	 */
@@ -1257,6 +1312,31 @@ LinkedListNode_<T>::LinkedListNode_(const T& val) noexcept :
 
 template<typename T>
 LinkedListNode_<T>::LinkedListNode_(T&& val) noexcept :
+	value(std::move(val)),
+	prev(),
+	next()
+{}
+
+template<typename T>
+LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(const LinkedListNode_<std::unique_ptr<T>>& val) noexcept :
+	value(),
+	prev(),
+	next()
+{
+	throw std::logic_error("Using of this method is not allowed for containers of unique_ptr's");
+}
+
+template<typename T>
+LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(const std::unique_ptr<T>& val) noexcept :
+	value(),
+	prev(),
+	next()
+{
+	throw std::logic_error("Using of this method is not allowed for containers of unique_ptr's");
+}
+
+template<typename T>
+LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(std::unique_ptr<T>&& val) noexcept :
 	value(std::move(val)),
 	prev(),
 	next()

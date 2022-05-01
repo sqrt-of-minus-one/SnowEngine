@@ -517,13 +517,13 @@ void SortedArray<T>::insertion_sort_(int left, int right)
 {
 	for (int i = left + 1; i <= right; i++)
 	{
-		T tmp = (*this)[i];
+		T tmp = std::move((*this)[i]);
 		int j;
 		for (j = i; j > left && comparator_((*this)[j - 1], tmp) >= 0; j--)
 		{
-			(*this)[j] = (*this)[j - 1];
+			(*this)[j] = std::move((*this)[j - 1]);
 		}
-		(*this)[j] = tmp;
+		(*this)[j] = std::move(tmp);
 	}
 }
 
@@ -576,7 +576,7 @@ int SortedArray<T>::partition_(int left, int right, const T& pivot)
 template<typename T>
 void SortedArray<T>::swap_(int index_1, int index_2)
 {
-	T tmp = (*this)[index_2];
+	T tmp = std::move((*this)[index_2]);
 	(*this)[index_2] = std::move((*this)[index_1]);
 	(*this)[index_1] = std::move(tmp);
 }

@@ -86,12 +86,17 @@ public:
 	 *	\brief The copy constructor
 	 *	
 	 *	Copies the array.
+	 *	\warning This constructor must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param array The array that will be copied.
 	 *	
 	 *	\~russian
 	 *	\brief Конструктор копирования
 	 *	
 	 *	Копирует массив.
+	 *	\warning Этот конструктор не должен быть использован, если массив содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param array Массив, который будет скопирован.
 	 */
 	Array(const Array<T>& array) noexcept;
@@ -265,6 +270,8 @@ public:
 	 *	
 	 *	Inserts a new element into the end of the array. If there are iterators that point to the
 	 *	end (`is_end` is true), they will continue to be end after executing this method.
+	 *	\warning This method must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
 	 *	
@@ -273,6 +280,9 @@ public:
 	 *	
 	 *	Вставляет новый элемент в конец массива. Если есть итераторы, указывающие на конец 
 	 *	(`is_end` истинно), после выполнения метода они продолжат указывать на конец.
+	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 *	\return `true`, если элемент был успешно добавлен, иначе `false`.
 	 */
@@ -304,6 +314,8 @@ public:
 	 *	Inserts a new element into the array. The new element will have the passed index. Moves the
 	 *	subsequent elements towards the end of the array. The iterators will also be moved and
 	 *	continue to point to their elements.
+	 *	\warning This method must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
 	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
@@ -315,6 +327,9 @@ public:
 	 *	Вставляет новый элемент в массив. Новый элемент будет иметь переданный индекс. Передвигает
 	 *	последующие элементы к концу массива. Итераторы также будут передвинуты и продолжат
 	 *	указывать на свои элементы.
+	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 *	\param index Индекс, который новый элемент будет иметь.
 	 *	\return `true`, если элемент был успешно добавлен, иначе `false` (например, если индекс
@@ -354,6 +369,8 @@ public:
 	 *	Inserts into the end of the array copies of elements of the passed array. If there are
 	 *	iterators that points to the end (`is_end` is true), they will continue to be end after
 	 *	executing this method.
+	 *	\warning This method must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param array The array whose elements will be added.
 	 *	\return The number of elements that have been successfully added.
 	 *	
@@ -363,6 +380,9 @@ public:
 	 *	Вставляет в конец массива копии элементов переданного массива. Если есть итераторы,
 	 *	указывающие на конец (`is_end` истинно), после выполнения метода они продолжат указывать на
 	 *	конец.
+	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param array Массив, чьи элементы будут добавлены.
 	 *	\return Количество успешно добавленных элементов.
 	 */
@@ -874,6 +894,8 @@ public:
 	 *	
 	 *	Clears the array and inserts into it copies of elements of the passed array. Invalidates
 	 *	all iterators.
+	 *	\warning This operator must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param array The array to assign.
 	 *	\return A reference to itself.
 	 *	
@@ -882,6 +904,9 @@ public:
 	 *	
 	 *	Очищает массив и вставляет в него копии элементов переданного массива. Аннулирует все
 	 *	итераторы.
+	 *	\warning Этот оператор не должен быть использован, если массив содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
 	 *	\param array Массив для присваивания.
 	 *	\return Ссылка на себя.
 	 */
@@ -1037,7 +1062,7 @@ Array<T>::Array(const Array<T>& array) noexcept :
 {
 	for (int i = 0; i < size_; i++)
 	{
-		array_[i] = array.array_[i];
+		assign_(array_[i], array.array_[i]);
 	}
 }
 
@@ -1174,7 +1199,7 @@ template<typename T>
 bool Array<T>::add(const T& element)
 {
 	check_real_size_to_add_(size_ + 1);
-	array_[size_] = element;
+	assign_(array_[size_], element);
 
 	FOR_ITERATORS_(i,
 	{
@@ -1236,7 +1261,7 @@ bool Array<T>::add(const T& element, int index)
 				}
 			})
 
-			array_[index] = element;
+			assign_(array_[index], element);
 			return true;
 		}
 	}
@@ -1286,7 +1311,7 @@ int Array<T>::add(const Array<T>& array)
 		int old_size = size_;
 		for (int i = 0; i < array.size_; i++)
 		{
-			array_[size_++] = array.array_[i];
+			assign_(array_[size_++], array.array_[i]);
 		}
 
 		FOR_ITERATORS_(i,
@@ -1569,7 +1594,7 @@ Array<T>& Array<T>::operator=(const Array<T>& array)
 	array_.reset(new T[real_size_]);
 	for (int i = 0; i < size_; i++)
 	{
-		array_[i] = array.array_[i];
+		assign_(array_[i], array.array_[i]);
 	}
 	return *this;
 }

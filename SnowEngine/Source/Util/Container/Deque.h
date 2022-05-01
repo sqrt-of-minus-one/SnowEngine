@@ -67,12 +67,17 @@ public:
 	 *	\brief The copy constructor
 	 *	
 	 *	Copies the deque.
+	 *	\warning This constructor must not be used if the deque contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param deque The deque that will be copied.
 	 *	
 	 *	\~russian
 	 *	\brief Конструктор копирования
 	 *	
 	 *	Копирует двустороннюю очередь.
+	 *	\warning Этот конструктор не должен быть использован, если двусторонняя очередь содержит
+	 *	`unique_ptr`ы (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param deque Двусторонняя очередь, которая будет скопирован.
 	 */
 	Deque(const Deque<T>& deque) noexcept;
@@ -278,12 +283,17 @@ public:
 	 *	\brief Inserts the element into the beginning of the deque
 	 *	
 	 *	Inserts the passed element into the beginning of the deque.
+	 *	\warning This method must not be used if the deque contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be inserted.
 	 *	
 	 *	\~russian
 	 *	\brief Вставляет элемент в начало двусторонней очереди
 	 *	
 	 *	Вставляет переданный элемент в начало двусторонней очереди.
+	 *	\warning Этот метод не должен быть использован, если двусторонняя очередь содержит
+	 *	`unique_ptr`ы (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push_begin(const T& element);
@@ -293,12 +303,17 @@ public:
 	 *	\brief Inserts the element into the end of the deque
 	 *	
 	 *	Inserts the passed element into the end of the deque.
+	 *	\warning This method must not be used if the deque contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be inserted.
 	 *	
 	 *	\~russian
 	 *	\brief Вставляет элемент в конец двусторонней очереди
 	 *	
 	 *	Вставляет переданный элемент в конец двусторонней очереди.
+	 *	\warning Этот метод не должен быть использован, если двусторонняя очередь содержит
+	 *	`unique_ptr`ы (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push_last(const T& element);
@@ -391,6 +406,8 @@ public:
 	 *	\brief The copy assignment operator
 	 *	
 	 *	Clears the deque and inserts into it copies of elements of the passed deque.
+	 *	\warning This operator must not be used if the deque contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param deque The deque to assign.
 	 *	\return A reference to itself.
 	 *	
@@ -398,6 +415,9 @@ public:
 	 *	\brief Оператор присваивания копированием
 	 *	
 	 *	Очищает двустороннюю очередь и вставляет в неё копии элементов переданной очереди.
+	 *	\warning Этот оператор не должен быть использован, если двусторонняя очередь содержит
+	 *	`unique_ptr`ы (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param deque Двусторонняя очередь для присваивания.
 	 *	\return Ссылка на себя.
 	 */

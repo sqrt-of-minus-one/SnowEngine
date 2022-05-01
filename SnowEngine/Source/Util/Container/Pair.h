@@ -25,6 +25,32 @@
 namespace snow
 {
 
+namespace
+{
+
+// Do not use this struct directly
+template<typename T>
+struct Wrap_
+{
+public:
+	Wrap_(const T& v) noexcept;
+	Wrap_(T&& v) noexcept;
+
+	T var;
+};
+
+template<typename T>
+struct Wrap_<std::unique_ptr<T>>
+{
+public:
+	Wrap_(const std::unique_ptr<T>& v) noexcept;
+	Wrap_(std::unique_ptr<T>&& v) noexcept;
+
+	std::unique_ptr<T> var;
+};
+
+}
+
 /**
  *	\~english
  *	\brief The container to keep two objects
@@ -75,12 +101,17 @@ public:
 	 *	\brief The copy constructor
 	 *	
 	 *	Copies the pair.
+	 *	\warning This constructor must not be used if one of the pair variables is `unique_ptr`
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param pair The pair that will be copied.
 	 *	
 	 *	\~russian
 	 *	\brief Конструктор копирования
 	 *	
 	 *	Копирует пару.
+	 *	\warning Этот конструктор не должен быть использован, если одна из переменных пары
+	 *	является `unique_ptr`ом (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param pair Пара, которая будет скопирована.
 	 */
 	Pair(const Pair<T_First, T_Second>& pair) noexcept;
@@ -105,6 +136,8 @@ public:
 	 *	\brief The elementwise copy constructor
 	 *	
 	 *	Copies the passed values into a new pair.
+	 *	\warning This constructor must not be used if one of the pair variables is `unique_ptr`
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param first The value for the first variable.
 	 *	\param second The value for the second variable.
 	 *	
@@ -112,6 +145,9 @@ public:
 	 *	\brief Поэлементный конструктор копирования
 	 *	
 	 *	Копирует переданные значения в новую пару.
+	 *	\warning Этот метод не должен быть использован, если одна из переменных пары является
+	 *	`unique_ptr`ом (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param first Значение для первой переменной.
 	 *	\param second Значение для второй переменной.
 	 */
@@ -133,6 +169,50 @@ public:
 	 *	\param second Значение для второй переменной.
 	 */
 	Pair(T_First&& first, T_Second&& second);
+
+	/**
+	 *	\~english
+	 *	\brief The elementwise copy/move constructor
+	 *
+	 *	Copies the first value and moves the second value into a new pair.
+	 *	\warning This constructor must not be used if the first pair variable is `unique_ptr`
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param first The value for the first variable.
+	 *	\param second The value for the second variable.
+	 *
+	 *	\~russian
+	 *	\brief Поэлементный конструктор копирования/перемещения
+	 *
+	 *	Копирует первое значение и перемещает второе значение в новую пару.
+	 *	\warning Этот конструктор не должен быть использован, если первая переменная пары является
+	 *	`unique_ptr`ом (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
+	 *	\param first Значение для первой переменной.
+	 *	\param second Значение для второй переменной.
+	 */
+	Pair(const T_First& first, T_Second&& second);
+
+	/**
+	 *	\~english
+	 *	\brief The elementwise move/copy constructor
+	 *
+	 *	Moves the first value and copies the second value into a new pair.
+	 *	\warning This constructor must not be used if the second pair variable is `unique_ptr`
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param first The value for the first variable.
+	 *	\param second The value for the second variable.
+	 *
+	 *	\~russian
+	 *	\brief Поэлементный конструктор перемещения/копирования
+	 *
+	 *	Перемещает первое значение и копирует второе значение в новую пару.
+	 *	\warning Этот конструктор не должен быть использован, если вторая переменная пары является
+	 *	`unique_ptr`ом (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
+	 *	\param first Значение для первой переменной.
+	 *	\param second Значение для второй переменной.
+	 */
+	Pair(T_First&& first, const T_Second& second);
 	
 			/* METHODS FROM Object */
 
@@ -233,12 +313,17 @@ public:
 	 *	\brief Sets the first variable
 	 *	
 	 *	Allows to set the first variable of the pair.
+	 *	\warning This method must not be used if the first pair variable is `unique_ptr`
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param first The new value of the first variable.
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает первую переменную
 	 *
 	 *	Позволяет установить первую переменную пары.
+	 *	\warning Этот метод не должен быть использован, если первая переменная пары является
+	 *	`unique_ptr`ом (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param first Новое значение первой переменной.
 	 */
 	void set_first(const T_First& first);
@@ -248,12 +333,17 @@ public:
 	 *	\brief Sets the second variable
 	 *
 	 *	Allows to set the second variable of the pair.
+	 *	\warning This method must not be used if the second pair variable is `unique_ptr`
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param second The new value of the second variable.
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает вторую переменную
 	 *
 	 *	Позволяет установить вторую переменную пары.
+	 *	\warning Этот метод не должен быть использован, если вторая переменная пары является
+	 *	`unique_ptr`ом (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param second Новое значение второй переменной.
 	 */
 	void set_second(const T_Second& second);
@@ -295,6 +385,8 @@ public:
 	 *	\brief The copy assignment operator
 	 *
 	 *	Replaces variables of the pair with copies of variables of the passed one.
+	 *	\warning This operator must not be used if one of the pair variables is `unique_ptr`
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param pair The pair that will be copied.
 	 *	\return A reference to itself.
 	 *
@@ -302,6 +394,9 @@ public:
 	 *	\brief Конструктор присваивания копированием
 	 *
 	 *	Заменяет переменные данной пары на копии переменных переданной.
+	 *	\warning Этот оператор не должен быть использован, если одна из переменных пары является
+	 *	`unique_ptr`ом (может быть выброшено исключение `std::logic_error`). Вместо этого
+	 *	используйте семантику перемещения.
 	 *	\param angle Пара, которая будет скопирована.
 	 *	\return Ссылка на себя.
 	 */
@@ -363,12 +458,36 @@ public:
 	bool operator!=(const Pair<T_First, T_Second>& pair) const;
 
 private:
-	T_First first_;
-	T_Second second_;
+	Wrap_<T_First> first_;
+	Wrap_<T_Second> second_;
 };
 
 
-		/* DEFINITIONS */
+		/* DEFINITIONS OF Wrap_ */
+
+template<typename T>
+Wrap_<T>::Wrap_(const T& v) noexcept :
+	var(v)
+{}
+
+template<typename T>
+Wrap_<T>::Wrap_(T&& v) noexcept :
+	var(std::move(v))
+{}
+
+template<typename T>
+Wrap_<std::unique_ptr<T>>::Wrap_(const std::unique_ptr<T>& v) noexcept :
+	var()
+{
+	throw std::logic_error("Using of this method is not allowed for containers of unique_ptr's");
+}
+
+template<typename T>
+Wrap_<std::unique_ptr<T>>::Wrap_(std::unique_ptr<T>&& v) noexcept :
+	var(std::move(v))
+{}
+
+		/* DEFINITIONS OF Pair */
 
 template<typename T_First, typename T_Second>
 Pair<T_First, T_Second>::Pair() noexcept :
@@ -378,14 +497,14 @@ Pair<T_First, T_Second>::Pair() noexcept :
 
 template<typename T_First, typename T_Second>
 Pair<T_First, T_Second>::Pair(const Pair<T_First, T_Second>& pair) noexcept :
-	first_(pair.first_),
-	second_(pair.second_)
+	first_(pair.first_.var),
+	second_(pair.second_.var)
 {}
 
 template<typename T_First, typename T_Second>
 Pair<T_First, T_Second>::Pair(Pair<T_First, T_Second>&& pair) noexcept :
-	first_(std::move(pair.first_)),
-	second_(std::move(pair.second_))
+	first_(std::move(pair.first_.var)),
+	second_(std::move(pair.second_.var))
 {}
 
 template<typename T_First, typename T_Second>
@@ -401,85 +520,97 @@ Pair<T_First, T_Second>::Pair(T_First&& first, T_Second&& second) :
 {}
 
 template<typename T_First, typename T_Second>
+Pair<T_First, T_Second>::Pair(const T_First& first, T_Second&& second) :
+	first_(first),
+	second_(std::move(second))
+{}
+
+template<typename T_First, typename T_Second>
+Pair<T_First, T_Second>::Pair(T_First&& first, const T_Second& second) :
+	first_(std::move(first)),
+	second_(second)
+{}
+
+template<typename T_First, typename T_Second>
 String Pair<T_First, T_Second>::to_string() const noexcept
 {
-	return L"["_s + util::to_string(first_) + L": "_s + util::to_string(second_) + L"]"_s;
+	return L"["_s + util::to_string(first_.var) + L": "_s + util::to_string(second_.var) + L"]"_s;
 }
 
 template<typename T_First, typename T_Second>
 int Pair<T_First, T_Second>::hash_code() const noexcept
 {
-	return util::hash_code(first_) - util::hash_code(second_);
+	return util::hash_code(first_.var) - util::hash_code(second_.var);
 }
 
 template<typename T_First, typename T_Second>
 T_First& Pair<T_First, T_Second>::get_first() noexcept
 {
-	return first_;
+	return first_.var;
 }
 
 template<typename T_First, typename T_Second>
 T_Second& Pair<T_First, T_Second>::get_second() noexcept
 {
-	return second_;
+	return second_.var;
 }
 
 template<typename T_First, typename T_Second>
 const T_First& Pair<T_First, T_Second>::get_first() const noexcept
 {
-	return first_;
+	return first_.var;
 }
 
 template<typename T_First, typename T_Second>
 const T_Second& Pair<T_First, T_Second>::get_second() const noexcept
 {
-	return second_;
+	return second_.var;
 }
 
 template<typename T_First, typename T_Second>
 void Pair<T_First, T_Second>::set_first(const T_First& first)
 {
-	first_ = first;
+	assign_(first_.var, first);
 }
 
 template<typename T_First, typename T_Second>
 void Pair<T_First, T_Second>::set_second(const T_Second& second)
 {
-	second_ = second;
+	assign_(second_.var, second);
 }
 
 template<typename T_First, typename T_Second>
 void Pair<T_First, T_Second>::set_first(T_First&& first)
 {
-	first_ = std::move(first);
+	first_.var = std::move(first);
 }
 
 template<typename T_First, typename T_Second>
 void Pair<T_First, T_Second>::set_second(T_Second&& second)
 {
-	second_ = std::move(second);
+	second_.var = std::move(second);
 }
 
 template<typename T_First, typename T_Second>
 Pair<T_First, T_Second>& Pair<T_First, T_Second>::operator=(const Pair<T_First, T_Second>& pair)
 {
-	first_ = pair.first_;
-	second_ = pair.second_;
+	assign_(first_.var, pair.first_.var);
+	assign_(second_.var, pair.second_.var);
 	return *this;
 }
 
 template<typename T_First, typename T_Second>
 Pair<T_First, T_Second>& Pair<T_First, T_Second>::operator=(Pair<T_First, T_Second>&& pair)
 {
-	first_ = std::move(pair.first_);
-	second_ = std::move(pair.second_);
+	first_.var = std::move(pair.first_.var);
+	second_.var = std::move(pair.second_.var);
 	return *this;
 }
 
 template<typename T_First, typename T_Second>
 bool Pair<T_First, T_Second>::operator==(const Pair<T_First, T_Second>& pair) const
 {
-	return first_ == pair.first_ && second_ == pair.second_;
+	return first_.var == pair.first_.var && second_.var == pair.second_.var;
 }
 
 template<typename T_First, typename T_Second>

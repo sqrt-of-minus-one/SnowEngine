@@ -65,6 +65,7 @@ class Delegate : public Object
 public:
 	Delegate();
 	Delegate(const Delegate<T_Ret, T_Args...>& delegate);
+	//Delegate(Delegate<T_Ret, T_Args...>&& delegate);
 
 	virtual String to_string() const noexcept override;
 	virtual int hash_code() const noexcept override;
@@ -151,7 +152,7 @@ T_Ret MethodContainer_<T_Class, T_Ret, T_Args...>::execute(T_Args ...args)
 }
 
 template<typename T_Class, typename T_Ret, typename... T_Args>
-inline std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> MethodContainer_<T_Class, T_Ret, T_Args...>::copy() const
+std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> MethodContainer_<T_Class, T_Ret, T_Args...>::copy() const
 {
 	return std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>>(new MethodContainer_<T_Class, T_Ret, T_Args...>(object, function));
 }
@@ -178,6 +179,12 @@ Delegate<T_Ret, T_Args...>::Delegate(const Delegate<T_Ret, T_Args...>& delegate)
 		func_ = delegate.func_->copy();
 	}
 }
+
+/*template<typename T_Ret, typename... T_Args>
+Delegate<T_Ret, T_Args...>::Delegate(Delegate<T_Ret, T_Args...>&& delegate) :
+	func_(std::move(delegate.func_)),
+	is_method_(delegate.is_method_)
+{}*/
 
 template<typename T_Ret, typename... T_Args>
 String Delegate<T_Ret, T_Args...>::to_string() const noexcept
