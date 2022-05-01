@@ -19,44 +19,56 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math\Angle.h" />
-    <ClInclude Include="Math\Math.h" />
-    <ClInclude Include="Math\Vector2.h" />
-    <ClInclude Include="Math\Vector3.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="Util\Config.h" />
-    <ClInclude Include="Util\Container\Array.h" />
-    <ClInclude Include="Util\Container\ArrayIterator.h" />
-    <ClInclude Include="Util\Container\Container.h" />
-    <ClInclude Include="Util\Container\Deque.h" />
-    <ClInclude Include="Util\Container\LinkedList.h" />
-    <ClInclude Include="Util\Container\LinkedListIterator.h" />
-    <ClInclude Include="Util\Container\Map.h" />
-    <ClInclude Include="Util\Container\MapIterator.h" />
-    <ClInclude Include="Util\Container\Pair.h" />
-    <ClInclude Include="Util\Container\Queue.h" />
-    <ClInclude Include="Util\Container\SortedArray.h" />
-    <ClInclude Include="Util\Container\Stack.h" />
-    <ClInclude Include="Util\Game.h" />
-    <ClInclude Include="Util\SnowCat\Log.h" />
-    <ClInclude Include="Util\SnowFlake\Lang.h" />
-    <ClInclude Include="Util\SnowFlake\Text.h" />
-    <ClInclude Include="Util\Types\String.h" />
-    <ClInclude Include="Util\Util.h" />
+    <ClInclude Include="Source\Actor\Actor.h" />
+    <ClInclude Include="Source\Component\Component.h" />
+    <ClInclude Include="Source\Level\Level.h" />
+    <ClInclude Include="Source\Math\Angle.h" />
+    <ClInclude Include="Source\Math\Math.h" />
+    <ClInclude Include="Source\Math\Vector\Point2.h" />
+    <ClInclude Include="Source\Math\Vector\Point3.h" />
+    <ClInclude Include="Source\Math\Vector\Vector2.h" />
+    <ClInclude Include="Source\Math\Vector\Vector3.h" />
+    <ClInclude Include="Source\Object.h" />
+    <ClInclude Include="Source\Util\Config.h" />
+    <ClInclude Include="Source\Util\Container\Array.h" />
+    <ClInclude Include="Source\Util\Container\ArrayIterator.h" />
+    <ClInclude Include="Source\Util\Container\Container.h" />
+    <ClInclude Include="Source\Util\Container\Deque.h" />
+    <ClInclude Include="Source\Util\Container\LinkedList.h" />
+    <ClInclude Include="Source\Util\Container\LinkedListIterator.h" />
+    <ClInclude Include="Source\Util\Container\Map.h" />
+    <ClInclude Include="Source\Util\Container\MapIterator.h" />
+    <ClInclude Include="Source\Util\Container\Pair.h" />
+    <ClInclude Include="Source\Util\Container\Queue.h" />
+    <ClInclude Include="Source\Util\Container\SortedArray.h" />
+    <ClInclude Include="Source\Util\Container\Stack.h" />
+    <ClInclude Include="Source\Util\Function\Delegate.h" />
+    <ClInclude Include="Source\Util\Game.h" />
+    <ClInclude Include="Source\Util\SnowCat\Log.h" />
+    <ClInclude Include="Source\Util\SnowFlake\Lang.h" />
+    <ClInclude Include="Source\Util\SnowFlake\Text.h" />
+    <ClInclude Include="Source\Util\Types\String.h" />
+    <ClInclude Include="Source\Util\Util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Math\Angle.cpp" />
-    <ClCompile Include="Math\Math.cpp" />
-    <ClCompile Include="Math\Vector2.cpp" />
-    <ClCompile Include="Math\Vector3.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Util\Config.cpp" />
-    <ClCompile Include="Util\Game.cpp" />
-    <ClCompile Include="Util\SnowCat\Log.cpp" />
-    <ClCompile Include="Util\SnowFlake\Lang.cpp" />
-    <ClCompile Include="Util\SnowFlake\Text.cpp" />
-    <ClCompile Include="Util\Types\String.cpp" />
-    <ClCompile Include="Util\Util.cpp" />
+    <ClCompile Include="Source\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Component\Component.cpp" />
+    <ClCompile Include="Source\Level\Level.cpp" />
+    <ClCompile Include="Source\Math\Angle.cpp" />
+    <ClCompile Include="Source\Math\Math.cpp" />
+    <ClCompile Include="Source\Math\Vector\Point2.cpp" />
+    <ClCompile Include="Source\Math\Vector\Point3.cpp" />
+    <ClCompile Include="Source\Math\Vector\Vector2.cpp" />
+    <ClCompile Include="Source\Math\Vector\Vector3.cpp" />
+    <ClCompile Include="Source\Object.cpp" />
+    <ClCompile Include="Source\Util\Config.cpp" />
+    <ClCompile Include="Source\Util\Function\Event.h" />
+    <ClCompile Include="Source\Util\Game.cpp" />
+    <ClCompile Include="Source\Util\SnowCat\Log.cpp" />
+    <ClCompile Include="Source\Util\SnowFlake\Lang.cpp" />
+    <ClCompile Include="Source\Util\SnowFlake\Text.cpp" />
+    <ClCompile Include="Source\Util\Types\String.cpp" />
+    <ClCompile Include="Source\Util\Util.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -82,7 +94,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -131,11 +143,18 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/std:c++17 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\SFML\SFML-2.5.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\SFML\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -146,11 +165,18 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/std:c++17 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\SFML\SFML-2.5.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\SFML\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -163,6 +189,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/std:c++17 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\SFML\SFML-2.5.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,6 +197,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\SFML\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -182,6 +215,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/std:c++17 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\SFML\SFML-2.5.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -189,6 +223,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\SFML\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
