@@ -161,10 +161,10 @@ public:
 	 *	\return `true` if the deque does not contain any element, `false` otherwise.
 	 *
 	 *	\~russian
-	 *	\brief Проверяет, пуста ли односторонняя очередь
+	 *	\brief Проверяет, пуста ли двусторонняя очередь
 	 *
-	 *	Проверяет, пуста ли односторонняя очередь.
-	 *	\return `true`, если односторонняя очередь не содержит никаких элементов, иначе `false`.
+	 *	Проверяет, пуста ли двусторонняя очередь.
+	 *	\return `true`, если двусторонняя очередь не содержит никаких элементов, иначе `false`.
 	 */
 	virtual bool is_empty() const noexcept override;
 
@@ -264,7 +264,7 @@ public:
 	 *	\return Значение удалённого элемента.
 	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
-	T pop_begin();
+	T&& pop_begin();
 	
 	/**
 	 *	\~english
@@ -281,7 +281,7 @@ public:
 	 *	\return Значение удалённого элемента.
 	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
-	T pop_last();
+	T&& pop_last();
 
 	/**
 	 *	\~english
@@ -556,7 +556,7 @@ const T& Deque<T>::get_last() const
 }
 
 template<typename T>
-T Deque<T>::pop_begin()
+T&& Deque<T>::pop_begin()
 {
 	T ret = list.get_begin();
 	list.remove(list.begin());
@@ -564,7 +564,7 @@ T Deque<T>::pop_begin()
 }
 
 template<typename T>
-T Deque<T>::pop_last()
+T&& Deque<T>::pop_last()
 {
 	T ret = list.get_last();
 	list.remove(list.last());

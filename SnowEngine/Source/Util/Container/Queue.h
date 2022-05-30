@@ -8,9 +8,15 @@
 
 /**
  *	\file
- *	\brief The file of the Queue class
+ *	\~english
+ *	\brief The file with `Queue` class
  *	
- *	This file contains the definition of the SnowEngine Queue class.
+ *	This file contains the definition of the `Queue` class.
+ *	
+ *	\~russian
+ *	\brief Файл с классом `Queue`
+ *	
+ *	Этот файл содержит определение класса `Queue`.
  */
 
 #include "LinkedList.h"
@@ -19,12 +25,26 @@ namespace snow
 {
 
 /**
- *	\brief The class of the SnowEngine queue
+ *	\~english
+ *	\brief The class of queue
  *	
- *	This queue is based on linked list (the LinkedList class). It allows you to push elements only
- *	into its end, and pop elements only from its the beginning.
- *	\tparam T The type of elements that are contained in the queue. This type must meet the same
- *	conditions as the template of the LinkedList class.
+ *	This queue is based on linked list (the `LinkedList` class). It allows you to push elements
+ *	only into its end, and pop elements only from the beginning.
+ *	\warning If the queue contains `unique_ptr`'s, methods that copy the queue elements (for
+ *	example, the copy constructor) must not be called (`std::logic_error` exception can be thrown).
+ *	\tparam T Type of the queue elements. This type must meet the same conditions as the template
+ *	of the `LinkedList` class.
+ *	
+ *	\~russian
+ *	\breif Класс очереди
+ *	
+ *	Эта очередь основана на связном списке (класс `LinkedList`). Она позволяет добавлять элементы
+ *	только в её конец, а также удалять элементы только с начала.
+ *	\warning Если очередь содержит `unique_ptr`ы, то методы, копирующие элементы очереди,
+ *	(например, конструктор копирования) не должны вызываться (может быть выброшено исключение
+ *	`std::logic_error`).
+ *	\tparam T Тип элементов очереди. Этот тип должен удовлетворять тем же условиям, что и шаблон
+ *	класса `LinkedList`.
  */
 template<typename T>
 class Queue :
@@ -32,177 +52,351 @@ class Queue :
 	public IContainer<T>
 {
 public:
+			/* CONSTRUCTORS */
 
 	/**
+	 *	\~english
 	 *	\brief The default constructor
 	 *	
 	 *	Creates an empty queue.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор по умолчанию
+	 *	
+	 *	Создаёт пустую очередь.
 	 */
 	Queue() noexcept;
 
 	/**
-	 *	\brief Copy constructor
-	 *	
-	 *	Creates a new queue as the copy of the passed one.
-	 *	\param queue The queue for copying.
+	 *	\~english
+	 *	\brief The copy constructor
+	 *
+	 *	Copies the queue.
+	 *	\warning This constructor must not be used if the queue contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param queue The queue that will be copied.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор копирования
+	 *
+	 *	Копирует очередь.
+	 *	\warning Этот конструктор не должен быть использован, если очередь содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param queue Очередь, которая будет скопирован.
 	 */
 	Queue(const Queue<T>& queue) noexcept;
 
 	/**
+	 *	\~english
 	 *	\brief The move constructor
-	 *	
-	 *	Creates a new queue by moving the value of the passed one.
-	 *	\param queue The queue whose value will be moved.
+	 *
+	 *	Moves elements to a new queue from the passed one.
+	 *	\param queue The queue whose elements will be moved.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор перемещения
+	 *
+	 *	Перемещает элементы в новую очередь из переданной.
+	 *	\param queue Очередь, чьи элементы будут перемещены.
 	 */
 	Queue(Queue<T>&& queue) noexcept;
 	
+			/* METHODS FROM Object */
+
 	/**
-	 *	\brief Convert the queue to string
+	 *	\~english
+	 *	\brief Converts the queue into a string
 	 *	
-	 *	Uses `to_string()` method of the internal linked list to convert itself to string.
-	 *	\return The resultant string.
+	 *	Uses the `to_string` method of the internal linked list to convert itself to a string.
+	 *	\return A result string.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует массив в строку
+	 *
+	 *	Использует метод `to_string` внутреннего связного списка, чтобы сконвертировать себя в
+	 *	строку.
+	 *	\return Итоговая строка.
 	 */
 	virtual String to_string() const noexcept override;
 
 	/**
-	 *	\brief The hash code
-	 *	
-	 *	The hash code of the queue is the hash code of the internal linked list.
-	 *	\return The hash code of the queue.
+	 *	\~english
+	 *	\brief Hash code of the queue
+	 *
+	 *	Hash code of the queue is hash code of the internal linked list.
+	 *	\return Hash code of the queue.
+	 *
+	 *	\~russian
+	 *	\brief Хеш-код очереди
+	 *
+	 *	Хеш-код очереди — это хеш-код внутреннего связного списка.
+	 *	\return Хеш-код очереди.
 	 */
 	virtual int hash_code() const noexcept override;
+
+			/* METHODS FROM IContainer &
+				METHODS */
 	
 	/**
-	 *	\brief Get the size of the queue
-	 *	
-	 *	Allows to the the number of elements in the queue.
+	 *	\~english
+	 *	\brief The size of the queue
+	 *
+	 *	Allows to get the number of elements in the queue.
 	 *	\return The number of elements in the queue.
+	 *
+	 *	\~russian
+	 *	\brief Размер очереди
+	 *
+	 *	Позволяет получить количество элеменов в очереди.
+	 *	\return Количество элеменов в очереди.
 	 */
 	virtual int size() const noexcept override;
 
 	/**
-	 *	\brief Check whether the queue is empty
-	 *	
-	 *	Checks if the queue doesn't contains any elements.
-	 *	\return `true` if the queue is empty, `false` otherwise.
+	 *	\~english
+	 *	\brief Checks whether the queue is empty
+	 *
+	 *	Checks whether the queue is empty.
+	 *	\return `true` if the queue does not contain any element, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, пуста ли очередь
+	 *
+	 *	Проверяет, пуста ли очередь.
+	 *	\return `true`, если очередь не содержит никаких элементов, иначе `false`.
 	 */
 	virtual bool is_empty() const noexcept override;
 
 	/**
-	 *	\brief Clear the queue
+	 *	\~english
+	 *	\brief Clears the queue
 	 *
-	 *	Removes all the elements of the queue.
+	 *	Removes all of the elements in the queue.
+	 *
+	 *	\~russian
+	 *	\brief Очищает очередь
+	 *
+	 *	Удаляет все элементы очереди.
 	 */
 	virtual void clear() noexcept override;
-	
-	/**
-	 *	\brief Get the first element of the queue
-	 *	
-	 *	Allows to get an access (read and modify) to the first element of the queue.
-	 *	\return The reference to the first element.
-	 *	\throw std::out_of_range The queue is empty.
-	 */
-	T& get();
-	
-	/**
-	 *	\brief Get the first element of the queue
-	 *	
-	 *	Allows to get the value of the first element of the queue.
-	 *	\return The constant reference to the first element.
-	 *	\throw std::out_of_range The queue is empty.
-	 */
-	const T& get() const;
-	
-	/**
-	 *	\brief Pop the first element of the queue
-	 *	
-	 *	Removes the first element of the queue and returns its value.
-	 *	\return The value of the removed element.
-	 */
-	T pop();
 
 	/**
-	 *	\brief Insert the element into the end of the queue.
-	 *	
-	 *	Inserts the passed element into the end of the queue.
-	 *	\param T The element that will be inserted.
+	 *	\~english
+	 *	\brief The next element of the queue
+	 *
+	 *	Allows to access the next element of the queue.
+	 *	\return A reference to the next element.
+	 *	\throw std::out_of_range The queue is empty.
+	 *
+	 *	\~russian
+	 *	\brief Следующий элемент очереди
+	 *
+	 *	Позволяет получить доступ к следующему элементу очереди.
+	 *	\return Ссылка на следующий элемент.
+	 *	\throw std::out_of_range Очередь пуста.
+	 */
+	T& get();
+
+	/**
+	 *	\~english
+	 *	\brief The next element of the queue
+	 *
+	 *	Allows to read the next element of the queue.
+	 *	\return A constant reference to the next element.
+	 *	\throw std::out_of_range The queue is empty.
+	 *
+	 *	\~russian
+	 *	\brief Следующий элемент очереди
+	 *
+	 *	Позволяет прочитать следующий элемент очереди.
+	 *	\return Константная ссылка на следующий элемент.
+	 *	\throw std::out_of_range Очередь пуста.
+	 */
+	const T& get() const;
+
+	/**
+	 *	\~english
+	 *	\brief Removes the next element of the queue and returns it
+	 *
+	 *	Removes the next element of the queue and returns its value.
+	 *	\return The value of the removed element.
+	 *	\throw std::out_of_range The queue is empty.
+	 *
+	 *	\~russian
+	 *	\brief Удаляет следующий элемент очереди и возвращает его
+	 *
+	 *	Удаляет следующий элемент очереди и возвращает его значение.
+	 *	\return Значение удалённого элемента.
+	 *	\throw std::out_of_range Очередь пуста.
+	 */
+	T&& pop();
+
+	/**
+	 *	\~english
+	 *	\brief Inserts the element in the queue
+	 *
+	 *	Inserts the passed element in the queue.
+	 *	\warning This method must not be used if the queue contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param element The element that will be inserted.
+	 *
+	 *	\~russian
+	 *	\brief Вставляет элемент в очередь
+	 *
+	 *	Вставляет переданный элемент в очередь.
+	 *	\warning Этот метод не должен быть использован, если очередь содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push(const T& element);
 
 	/**
-	 *	\brief Insert the element into the end of the queue.
-	 *	
-	 *	Inserts the passed element into the end of the queue.
-	 *	\param T The element that will be inserted.
+	 *	\~english
+	 *	\brief Inserts the element in the queue
+	 *
+	 *	Inserts the passed element in the queue.
+	 *	\param element The element that will be inserted.
+	 *
+	 *	\~russian
+	 *	\brief Вставляет элемент в очередь
+	 *
+	 *	Вставляет переданный элемент в очередь.
+	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push(T&& element);
-	
+
 	/**
-	 *	\brief Remove all elements that are equal to the passed one
-	 *	
-	 *	Compares every element of the queue with the passed one and removes all mathces.
-	 *	\param element The element to compare.
-	 *	\return The number of removed elements.
+	 *	\~english
+	 *	\brief Removes all elements that are equal to the passed one
+	 *
+	 *	Compares every element of the queue with the passed one and removes all matches.
+	 *	\param element The object to compare.
+	 *	\return Number of elements that have been successfully removed.
+	 *
+	 *	\~russian
+	 *	\brief Удаляет все элементы, равные переданному
+	 *
+	 *	Сравнивает каждый элемент очереди с переданным и удаляет все совпадения.
+	 *	\param element Объект для сравнения.
+	 *	\return Количество успешно удалённых элементов.
 	 */
 	virtual int remove_all(const T& element) override;
-	
+
 	/**
-	 *	\brief Check whether the queue contains the passed element
-	 *	
-	 *	Compares elements of the queue with the passed one until a match is found.
-	 *	\param element The element to compare.
-	 *	\return `true` if a match is found, `false` otherwise.
+	 *	\~english
+	 *	\brief Checks whether the queue contains the passed element
+	 *
+	 *	Checks whether the queue has an element that is equal to the passed one.
+	 *	\param element The desired element.
+	 *	\return `true` if the queue contains the passed element, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, содержит ли очередь переданный элемент
+	 *
+	 *	Проверяет, содержит ли очередь элемент, равный переданному.
+	 *	\param element Искомый элемент.
+	 *	\return `true`, если очередь содержит переданный элемент, иначе `false`.
 	 */
 	virtual bool contains(const T& element) const override;
-	
+
 	/**
-	 *	\brief Count how many elements of the queue is equal to the passed one
-	 *	
-	 *	Compares elements of the queue with the passed one and counts matches.
-	 *	\param element The element to compare.
-	 *	\return The number of matches.
+	 *	\~english
+	 *	\brief How many elements of the queue are equal to the passed one
+	 *
+	 *	Counts elements that are equal to the passed one.
+	 *	\param element The desired element.
+	 *	\return Number of matches.
+	 *
+	 *	\~russian
+	 *	\brief Сколько элементов очереди равны переданному
+	 *
+	 *	Подсчитывает элементы, равные переданному.
+	 *	\param element Требуемый элемент.
+	 *	\return Количество совпадений.
 	 */
 	virtual int count(const T& element) const override;
 	
+			/* OPERATORS */
+
 	/**
+	 *	\~english
 	 *	\brief The copy assignment operator
 	 *	
-	 *	Clears the queue and assigns it the passed one.
+	 *	Clears the queue and inserts into it copies of elements of the passed queue.
+	 *	\warning This operator must not be used if the queue contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param queue The queue to assign.
 	 *	\return A reference to itself.
-	 */	
+	 *	
+	 *	\~russian
+	 *	\brief Оператор присваивания копированием
+	 *	
+	 *	Очищает очередь и вставляет в неё копии элементов переданной очереди.
+	 *	\warning Этот оператор не должен быть использован, если очередь содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param queue Очередь для присваивания.
+	 *	\return Ссылка на себя.
+	 */
 	Queue<T>& operator=(const Queue<T>& queue);
 
 	/**
+	 *	\~english
 	 *	\brief The move assignment operator
-	 *	
-	 *	Clears the queue and moves elements of the passed one into it.
-	 *	\param queue The queue whose elements will be moved.
+	 *
+	 *	Clears the queue and moves into it elements of the passed queue.
+	 *	\param queue The queue to assign.
 	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Оператор присваивания перемещением
+	 *
+	 *	Очищает очередь и перемещает в неё элементы переданной очереди.
+	 *	\param queue Очередь для присваивания.
+	 *	\return Ссылка на себя.
 	 */
 	Queue<T>& operator=(Queue<T>&& queue);
-	
+
 	/**
-	 *	\brief Whether two queues are equal
-	 *	
-	 *	Two queues are equal if they have the same elements in the same order.
+	 *	\~english
+	 *	\brief Checks whether two queues are equal
+	 *
+	 *	Two queues are equal if all of their elements are equal and have the same order.
 	 *	\param queue The queue to compare.
 	 *	\return `true` if two queues are equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, равны ли две очереди
+	 *
+	 *	Две очереди равны, если их элементы равны и находятся в одинаковом порядке.
+	 *	\param queue Очередь для сравнения.
+	 *	\return `true`, если две очереди равны, иначе `false`.
 	 */
 	bool operator==(const Queue<T>& queue) const;
-	
+
 	/**
-	 *	\brief Whether two queues are not equal
-	 *	
-	 *	Two queues are equal if they have the same elements in the same order.
+	 *	\~english
+	 *	\brief Checks whether two queues are not equal
+	 *
+	 *	Two queues are equal if all of their elements are equal and have the same order.
 	 *	\param queue The queue to compare.
 	 *	\return `true` if two queues are not equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, различаются ли две очереди
+	 *
+	 *	Две очереди равны, если их элементы равны и находятся в одинаковом порядке.
+	 *	\param queue Очередь для сравнения.
+	 *	\return `true`, если две очереди не равны, иначе `false`.
 	 */
 	bool operator!=(const Queue<T>& queue) const;
 
 private:
 	LinkedList<T> list;
 };
+
 
 		/* DEFINITIONS */
 
@@ -264,7 +458,7 @@ const T& Queue<T>::get() const
 }
 
 template<typename T>
-T Queue<T>::pop()
+T&& Queue<T>::pop()
 {
 	T ret = list.get_begin();
 	list.remove(list.begin());

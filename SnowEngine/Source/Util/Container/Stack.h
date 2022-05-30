@@ -8,9 +8,15 @@
 
 /**
  *	\file
- *	\brief The file of the Stack class
- *	
- *	This file contains the definition of the SnowEngine Stack class.
+ *	\~english
+ *	\brief The file with `Stack` class
+ *
+ *	This file contains the definition of the `Stack` class.
+ *
+ *	\~russian
+ *	\brief Файл с классом `Stack`
+ *
+ *	Этот файл содержит определение класса `Stack`.
  */
 
 #include "LinkedList.h"
@@ -26,183 +32,379 @@ namespace snow
  *	\tparam T The type of elements that are contained in the stack. This type must meet the same
  *	conditions as the template of the LinkedList class.
  */
+/**
+ *	\~english
+ *	\brief The class of stack
+ *	
+ *	This stack is based on linked list (the `LinkedList` class). It allows you to push elements
+ *	only into its end, and pop elements only from the end.
+ *	\warning If the stack contains `unique_ptr`'s, methods that copy the stack elements (for
+ *	example, the copy constructor) must not be called (`std::logic_error` exception can be thrown).
+ *	\tparam T Type of the stack elements. This type must meet the same conditions as the template
+ *	of the `LinkedList` class.
+ *	
+ *	\~russian
+ *	\breif Класс стека
+ *	
+ *	Этот стек основан на связном списке (класс `LinkedList`). Он позволяет добавлять элементы
+ *	только в его конец, а также удалять элементы только с конца.
+ *	\warning Если стек содержит `unique_ptr`ы, то методы, копирующие элементы стека, (например,
+ *	конструктор копирования) не должны вызываться (может быть выброшено исключение
+ *	`std::logic_error`).
+ *	\tparam T Тип элементов стека. Этот тип должен удовлетворять тем же условиям, что и шаблон
+ *	класса `LinkedList`.
+ */
 template<typename T>
 class Stack :
 	public Object,
 	public IContainer<T>
 {
 public:
+			/* CONSTRUCTORS */
 
 	/**
+	 *	\~english
 	 *	\brief The default constructor
 	 *	
 	 *	Creates an empty stack.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор по умолчанию
+	 *	
+	 *	Создаёт пустой стек.
 	 */
 	Stack() noexcept;
 
 	/**
-	 *	\brief Copy constructor
-	 *	
-	 *	Creates a new stack as the copy of the passed one.
-	 *	\param stack The stack for copying.
+	 *	\~english
+	 *	\brief The copy constructor
+	 *
+	 *	Copies the stack.
+	 *	\warning This constructor must not be used if the stack contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param stack The stack that will be copied.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор копирования
+	 *
+	 *	Копирует стек.
+	 *	\warning Этот конструктор не должен быть использован, если стек содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param stack Стек, которая будет скопирован.
 	 */
 	Stack(const Stack<T>& stack) noexcept;
 
 	/**
+	 *	\~english
 	 *	\brief The move constructor
-	 *	
-	 *	Creates a new stack by moving the value of the passed one.
-	 *	\param stack The stack whose value will be moved.
+	 *
+	 *	Moves elements to a new stack from the passed one.
+	 *	\param stack The stack whose elements will be moved.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор перемещения
+	 *
+	 *	Перемещает элементы в новый стек из переданного.
+	 *	\param stack Стек, чьи элементы будут перемещены.
 	 */
 	Stack(Stack<T>&& stack) noexcept;
 	
+			/* METHODS FROM Object */
+
 	/**
-	 *	\brief Convert the stack to string
+	 *	\~english
+	 *	\brief Converts the stack into a string
 	 *	
-	 *	Uses `to_string()` method of the internal linked list to convert itself to string.
-	 *	\return The resultant string.
+	 *	Uses the `to_string` method of the internal linked list to convert itself to a string.
+	 *	\return A result string.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует массив в строку
+	 *
+	 *	Использует метод `to_string` внутреннего связного списка, чтобы сконвертировать себя в
+	 *	строку.
+	 *	\return Итоговая строка.
 	 */
 	virtual String to_string() const noexcept override;
 
 	/**
-	 *	\brief The hash code
-	 *	
-	 *	The hash code of the stack is the hash code of the internal linked list.
-	 *	\return The hash code of the stack.
+	 *	\~english
+	 *	\brief Hash code of the stack
+	 *
+	 *	Hash code of the stack is hash code of the internal linked list.
+	 *	\return Hash code of the stack.
+	 *
+	 *	\~russian
+	 *	\brief Хеш-код стека
+	 *
+	 *	Хеш-код стека — это хеш-код внутреннего связного списка.
+	 *	\return Хеш-код стека.
 	 */
 	virtual int hash_code() const noexcept override;
 	
+			/* METHODS FROM IContainer &
+				METHODS */
+	
 	/**
-	 *	\brief Get the size of the stack
-	 *	
-	 *	Allows to the the number of elements in the stack.
+	 *	\~english
+	 *	\brief The size of the stack
+	 *
+	 *	Allows to get the number of elements in the stack.
 	 *	\return The number of elements in the stack.
+	 *
+	 *	\~russian
+	 *	\brief Размер стека
+	 *
+	 *	Позволяет получить количество элеменов в стека.
+	 *	\return Количество элеменов в стека.
 	 */
 	virtual int size() const noexcept override;
 
 	/**
-	 *	\brief Check whether the stack is empty
-	 *	
-	 *	Checks if the stack doesn't contains any elements.
-	 *	\return `true` if the stack is empty, `false` otherwise.
+	 *	\~english
+	 *	\brief Checks whether the stack is empty
+	 *
+	 *	Checks whether the stack is empty.
+	 *	\return `true` if the stack does not contain any element, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, пуст ли стек
+	 *
+	 *	Проверяет, пуст ли стек.
+	 *	\return `true`, если стек не содержит никаких элементов, иначе `false`.
 	 */
 	virtual bool is_empty() const noexcept override;
 
 	/**
-	 *	\brief Clear the stack
+	 *	\~english
+	 *	\brief Clears the stack
 	 *
-	 *	Removes all the elements of the stack.
+	 *	Removes all of the elements in the stack.
+	 *
+	 *	\~russian
+	 *	\brief Очищает стек
+	 *
+	 *	Удаляет все элементы стека.
 	 */
 	virtual void clear() noexcept override;
-	
-	/**
-	 *	\brief Get the last element of the stack
-	 *	
-	 *	Allows to get an access (read and modify) to the last element of the stack.
-	 *	\return The reference to the last element.
-	 *	\throw std::out_of_range The stack is empty.
-	 */
-	T& get();
-	
-	/**
-	 *	\brief Get the last element of the stack
-	 *	
-	 *	Allows to get the value of the last element of the stack.
-	 *	\return The constant reference to the last element.
-	 *	\throw std::out_of_range The stack is empty.
-	 */
-	const T& get() const;
-	
-	/**
-	 *	\brief Pop the last element of the stack
-	 *	
-	 *	Removes the last element of the stack and returns its value.
-	 *	\return The value of the removed element.
-	 */
-	T pop();
 
 	/**
-	 *	\brief Insert the element into the end of the stack.
-	 *	
-	 *	Inserts the passed element into the end of the stack.
-	 *	\param T The element that will be inserted.
+	 *	\~english
+	 *	\brief The next element of the stack
+	 *
+	 *	Allows to access the next element of the stack.
+	 *	\return A reference to the next element.
+	 *	\throw std::out_of_range The stack is empty.
+	 *
+	 *	\~russian
+	 *	\brief Следующий элемент стека
+	 *
+	 *	Позволяет получить доступ к следующему элементу стека.
+	 *	\return Ссылка на следующий элемент.
+	 *	\throw std::out_of_range Стек пуста.
+	 */
+	T& get();
+
+	/**
+	 *	\~english
+	 *	\brief The next element of the stack
+	 *
+	 *	Allows to read the next element of the stack.
+	 *	\return A constant reference to the next element.
+	 *	\throw std::out_of_range The stack is empty.
+	 *
+	 *	\~russian
+	 *	\brief Следующий элемент стека
+	 *
+	 *	Позволяет прочитать следующий элемент стека.
+	 *	\return Константная ссылка на следующий элемент.
+	 *	\throw std::out_of_range Стек пуста.
+	 */
+	const T& get() const;
+
+	/**
+	 *	\~english
+	 *	\brief Removes the next element of the stack and returns it
+	 *
+	 *	Removes the next element of the stack and returns its value.
+	 *	\return The value of the removed element.
+	 *	\throw std::out_of_range The stack is empty.
+	 *
+	 *	\~russian
+	 *	\brief Удаляет следующий элемент стека и возвращает его
+	 *
+	 *	Удаляет следующий элемент стека и возвращает его значение.
+	 *	\return Значение удалённого элемента.
+	 *	\throw std::out_of_range Стек пуста.
+	 */
+	T&& pop();
+
+	/**
+	 *	\~english
+	 *	\brief Inserts the element in the stack
+	 *
+	 *	Inserts the passed element in the stack.
+	 *	\warning This method must not be used if the stack contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param element The element that will be inserted.
+	 *
+	 *	\~russian
+	 *	\brief Вставляет элемент в стек
+	 *
+	 *	Вставляет переданный элемент в стек.
+	 *	\warning Этот метод не должен быть использован, если стек содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push(const T& element);
 
 	/**
-	 *	\brief Insert the element into the end of the stack.
-	 *	
-	 *	Inserts the passed element into the end of the stack.
-	 *	\param T The element that will be inserted.
+	 *	\~english
+	 *	\brief Inserts the element in the stack
+	 *
+	 *	Inserts the passed element in the stack.
+	 *	\param element The element that will be inserted.
+	 *
+	 *	\~russian
+	 *	\brief Вставляет элемент в стек
+	 *
+	 *	Вставляет переданный элемент в стек.
+	 *	\param element Элемент, который будет добавлен.
 	 */
 	bool push(T&& element);
-	
+
 	/**
-	 *	\brief Remove all elements that are equal to the passed one
-	 *	
-	 *	Compares every element of the stack with the passed one and removes all mathces.
-	 *	\param element The element to compare.
-	 *	\return The number of removed elements.
+	 *	\~english
+	 *	\brief Removes all elements that are equal to the passed one
+	 *
+	 *	Compares every element of the stack with the passed one and removes all matches.
+	 *	\param element The object to compare.
+	 *	\return Number of elements that have been successfully removed.
+	 *
+	 *	\~russian
+	 *	\brief Удаляет все элементы, равные переданному
+	 *
+	 *	Сравнивает каждый элемент стека с переданным и удаляет все совпадения.
+	 *	\param element Объект для сравнения.
+	 *	\return Количество успешно удалённых элементов.
 	 */
 	virtual int remove_all(const T& element) override;
-	
+
 	/**
-	 *	\brief Check whether the stack contains the passed element
-	 *	
-	 *	Compares elements of the stack with the passed one until a match is found.
-	 *	\param element The element to compare.
-	 *	\return `true` if a match is found, `false` otherwise.
+	 *	\~english
+	 *	\brief Checks whether the stack contains the passed element
+	 *
+	 *	Checks whether the stack has an element that is equal to the passed one.
+	 *	\param element The desired element.
+	 *	\return `true` if the stack contains the passed element, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, содержит ли стек переданный элемент
+	 *
+	 *	Проверяет, содержит ли стек элемент, равный переданному.
+	 *	\param element Искомый элемент.
+	 *	\return `true`, если стек содержит переданный элемент, иначе `false`.
 	 */
 	virtual bool contains(const T& element) const override;
-	
+
 	/**
-	 *	\brief Count how many elements of the stack is equal to the passed one
-	 *	
-	 *	Compares elements of the stack with the passed one and counts matches.
-	 *	\param element The element to compare.
-	 *	\return The number of matches.
+	 *	\~english
+	 *	\brief How many elements of the stack are equal to the passed one
+	 *
+	 *	Counts elements that are equal to the passed one.
+	 *	\param element The desired element.
+	 *	\return Number of matches.
+	 *
+	 *	\~russian
+	 *	\brief Сколько элементов стека равны переданному
+	 *
+	 *	Подсчитывает элементы, равные переданному.
+	 *	\param element Требуемый элемент.
+	 *	\return Количество совпадений.
 	 */
 	virtual int count(const T& element) const override;
 	
+			/* OPERATORS */
+
 	/**
+	 *	\~english
 	 *	\brief The copy assignment operator
 	 *	
-	 *	Clears the stack and assigns it the passed one.
+	 *	Clears the stack and inserts into it copies of elements of the passed stack.
+	 *	\warning This operator must not be used if the stack contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param stack The stack to assign.
 	 *	\return A reference to itself.
-	 */	
+	 *	
+	 *	\~russian
+	 *	\brief Оператор присваивания копированием
+	 *	
+	 *	Очищает стек и вставляет в неё копии элементов переданного стека.
+	 *	\warning Этот оператор не должен быть использован, если стек содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param stack Стек для присваивания.
+	 *	\return Ссылка на себя.
+	 */
 	Stack<T>& operator=(const Stack<T>& stack);
 
 	/**
+	 *	\~english
 	 *	\brief The move assignment operator
-	 *	
-	 *	Clears the stack and moves elements of the passed one into it.
-	 *	\param stack The stack whose elements will be moved.
+	 *
+	 *	Clears the stack and moves into it elements of the passed stack.
+	 *	\param stack The stack to assign.
 	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Оператор присваивания перемещением
+	 *
+	 *	Очищает стек и перемещает в неё элементы переданного стека.
+	 *	\param stack Стек для присваивания.
+	 *	\return Ссылка на себя.
 	 */
 	Stack<T>& operator=(Stack<T>&& stack);
-	
+
 	/**
-	 *	\brief Whether two stacks are equal
-	 *	
-	 *	Two stacks are equal if they have the same elements in the same order.
+	 *	\~english
+	 *	\brief Checks whether two stacks are equal
+	 *
+	 *	Two stacks are equal if all of their elements are equal and have the same order.
 	 *	\param stack The stack to compare.
 	 *	\return `true` if two stacks are equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, равны ли два стека
+	 *
+	 *	Два стека равны, если их элементы равны и находятся в одинаковом порядке.
+	 *	\param stack Стек для сравнения.
+	 *	\return `true`, если два стека равны, иначе `false`.
 	 */
 	bool operator==(const Stack<T>& stack) const;
-	
+
 	/**
-	 *	\brief Whether two stacks are not equal
-	 *	
-	 *	Two stacks are equal if they have the same elements in the same order.
+	 *	\~english
+	 *	\brief Checks whether two stacks are not equal
+	 *
+	 *	Two stacks are equal if all of their elements are equal and have the same order.
 	 *	\param stack The stack to compare.
 	 *	\return `true` if two stacks are not equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, различаются ли два стека
+	 *
+	 *	Два стека равны, если их элементы равны и находятся в одинаковом порядке.
+	 *	\param stack Стек для сравнения.
+	 *	\return `true`, если два стека не равны, иначе `false`.
 	 */
 	bool operator!=(const Stack<T>& stack) const;
 
 private:
 	LinkedList<T> list;
 };
+
 
 		/* DEFINITIONS */
 
@@ -264,7 +466,7 @@ const T& Stack<T>::get() const
 }
 
 template<typename T>
-T Stack<T>::pop()
+T&& Stack<T>::pop()
 {
 	T ret = list.get_last();
 	list.remove(list.last());
