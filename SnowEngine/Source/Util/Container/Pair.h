@@ -61,6 +61,8 @@ public:
  *	the type is not a pointer, it also must have a default constructor, an assignment operator
  *	(`=`) and an equality operator (`==`). The default and copy constructors are assumed not to
  *	throw any exceptions.
+ *	\warning If one of the pair variables is `unique_ptr`, methods that copy it (for example, the
+ *	copy constructor) must not be called (`std::logic_error` exception can be thrown).
  *	\tparam T_First Type of the first variable in the pair.
  *	\tparam T_Second Type of the second variable in the pair.
  *	
@@ -73,6 +75,9 @@ public:
  *	Если тип не является указателем, у него также должны быть определёны конструктор по умолчанию,
  *	оператор присваивания (`=`) и оператор равенства (`==`). Предполагается, что конструктор по
  *	умолчанию и конструктор копирования не выбрасывают никаких исключений.
+ *	\warning Если одна из переменных пары является `unique_ptr`ом, то методы, копирующие её
+ *	(например, конструктор копирования) не должны вызываться (может быть выброшено исключение
+ *	`std::logic_error`).
  *	\tparam T_First Тип первой переменной пары.
  *	\tparam T_Second Тип второй переменной пары.
  */

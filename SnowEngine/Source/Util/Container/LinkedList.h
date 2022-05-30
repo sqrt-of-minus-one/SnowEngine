@@ -72,6 +72,9 @@ public:
  *	of any element. Linked lists take up more space than arrays. This class has methods that allow
  *	to work with the list using indexes of elements, but they can be significantly slower than
  *	those that use iterators.
+ *	\warning If the linked list contains `unique_ptr`'s, methods that copy the linked list elements
+ *	(for example, the copy constructor) must not be called (`std::logic_error` exception can be
+ *	thrown).
  *	\tparam T Type of the linked list elements. If you need to store objects of some class in the
  *	linked list, it is highly recommended to store pointers to them. If `T` is not a primitive
  *	type, `to_string` and `hash_code` methods must be defined for it (any `snow::Object` has them).
@@ -85,6 +88,9 @@ public:
  *	обеспечивает быструю вставку и удаление любого элемента. Связный список занимает больше места,
  *	чем массив. У этого класса есть методы, позволяющие работать со списком, используя индексы
  *	элементов, однако они могут быть значительно медленнее тех, что используют итераторы.
+ *	\warning Если связный список содержит `unique_ptr`ы, то методы, копирующие элементы связного,
+ *	списка (например, конструктор копирования) не должны вызываться (может быть выброшено
+ *	исключение `std::logic_error`).
  *	\tparam T Тип элементов связного списка. Если вам нужно хранить в связном списке объекты
  *	некоторого класса, настоятельно рекомендуется хранить указатели на них. Если `T` не
  *	примитивный тип, для него должны быть определены методы `to_string` и `hash_code` (у любого
@@ -1143,6 +1149,25 @@ public:
 	 *	\throw std::out_of_range Индекс выходит за границы связного списка.
 	 */
 	ConstLinkedListIterator<T> create_iterator(int index) const;
+
+	/**
+	 *	\~english
+	 *	\brief Converts `LinkedListIterator` to `ConstLinkedListIterator`
+	 *
+	 *	Converts the passed linked list iterator to constant linked list iterator that points to
+	 *	the same element of the same linked list.
+	 *	\param iterator The linked list iterator that will be converted.
+	 *	\return A result constant linked list iterator.
+	 *
+	 *	\~russian
+	 *	\brief Конвертирует `LinkedListIterator` в `ConstLinkedListIterator`
+	 *
+	 *	Конвертирует переданный итератор связного списка в константный итератор связного списка,
+	 *	указывающий на тот же элемент того же связного списка.
+	 *	\param iterator Итератор, который будет сконвертирован.
+	 *	\return Полученный константный итератор.
+	 */
+	static ConstLinkedListIterator<T> iterator_to_const(const LinkedListIterator<T> iterator) noexcept;
 	
 			/* OPERATORS */
 	
@@ -1264,25 +1289,6 @@ public:
 	 *	\throw std::out_of_range Индекс выходит за границы связного списка.
 	 */
 	const T& operator[](int index) const;
-
-	/**
-	 *	\~english
-	 *	\brief Converts `LinkedListIterator` to `ConstLinkedListIterator`
-	 *	
-	 *	Converts the passed linked list iterator to constant linked list iterator that points to
-	 *	the same element of the same linked list.
-	 *	\param iterator The linked list iterator that will be converted.
-	 *	\return A result constant linked list iterator.
-	 *	
-	 *	\~russian
-	 *	\brief Конвертирует `LinkedListIterator` в `ConstLinkedListIterator`
-	 *	
-	 *	Конвертирует переданный итератор связного списка в константный итератор связного списка,
-	 *	указывающий на тот же элемент того же связного списка.
-	 *	\param iterator Итератор, который будет сконвертирован.
-	 *	\return Полученный константный итератор.
-	 */
-	static ConstLinkedListIterator<T> iterator_to_const(const LinkedListIterator<T> iterator) noexcept;
 
 private:
 	std::shared_ptr<LinkedListNode_<T>> begin_;
@@ -2124,6 +2130,11 @@ ConstLinkedListIterator<T> LinkedList<T>::create_iterator(int index) const
 	}
 }
 
+template<typename T>
+ConstLinkedListIterator<T> LinkedList<T>::iterator_to_const(const LinkedListIterator<T> iterator) noexcept
+{
+	return ConstLinkedListIterator<T>(iterator.container_, iterator.index_, iterator.node_.lock(), iterator.is_valid_);
+}
 
 template<typename T>
 LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& linked_list)
@@ -2198,12 +2209,6 @@ const T& LinkedList<T>::operator[](int index) const
 	{
 		throw std::out_of_range("Index is out of linked list bounds");
 	}
-}
-
-template<typename T>
-ConstLinkedListIterator<T> LinkedList<T>::iterator_to_const(const LinkedListIterator<T> iterator) noexcept
-{
-	return ConstLinkedListIterator<T>(iterator.container_, iterator.index_, iterator.node_.lock(), iterator.is_valid_);
 }
 
 template<typename T>

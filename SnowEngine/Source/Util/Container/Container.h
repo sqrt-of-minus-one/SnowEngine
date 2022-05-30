@@ -22,6 +22,7 @@
 namespace snow
 {
 
+// Do not use these functions directly
 template<typename T>
 std::unique_ptr<T>& assign_(std::unique_ptr<T>& first, const std::unique_ptr<T>& second);
 

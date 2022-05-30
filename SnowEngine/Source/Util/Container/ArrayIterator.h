@@ -244,7 +244,7 @@ public:
 	 *	\brief Индекс элемента, на который указывает итератор
 	 *	
 	 *	Позволяет получить индекс элемента, на который указывает итератор.
-	 *	\return Индекс элемента, на который указывает итератор.
+	 *	\return Индекс элемента.
 	 *	\throw std::logic_error Итератор недействителен.
 	 */
 	int get_index() const;
@@ -500,14 +500,16 @@ private:
  *	\brief The iterator of a constant array
  *	
  *	This iterator allows to read elements of an array, but doesn't allow to modify them or the
- *	array. Can be created by a constant array (or using `iterator_to_const` method).
+ *	array. Can be created by a constant array (or using `iterator_to_const` method). Information
+ *	about members is contained in the documentation of the `BaseArrayIterator_` class.
  *	\tparam T Type of the array elements.
  *	
  *	\~russian
  *	\brief Итератор константного массива
  *	
  *	Этот итератор позволяет читать элементы массива, но не позволяет изменять их или массив. Может
- *	быть создан константным массивом (или методом `iterator_to_const`).
+ *	быть создан константным массивом (или методом `iterator_to_const`). Информация о членах
+ *	содержится в документации класса `BaseArrayIterator_`.
  *	\tparam T Тип элементов массива.
  */
 template<typename T>
@@ -517,13 +519,15 @@ using ConstArrayIterator = BaseArrayIterator_<const Array<T>, const T>;
  *	\~english
  *	\brief The iterator of an array
  *	
- *	This iterator allows to access elements of an array (read and modify them).
+ *	This iterator allows to access elements of an array (read and modify them). Information about
+ *	members is contained in the documentation of the `BaseArrayIterator_` class.
  *	\tparam T Type of the array elements.
  *	
  *	\~russian
  *	\brief Итератор массива
  *	
- *	Этот итератор позволяет получать доступ к элеменам массива (читать и изменять их).
+ *	Этот итератор позволяет получать доступ к элеменам массива (читать и изменять их). Информация
+ *	о членах содержится в документации класса `BaseArrayIterator_`.
  *	\tparam T Тип элементов массива.
  */
 template<typename T>

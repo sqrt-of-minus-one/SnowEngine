@@ -52,7 +52,7 @@ struct LinkedListNode_;
  *	
  *	Этот класс используется как шаблон для классов `LinkedListIterator` и `ConstLinkedListIterator`.
  *	\warning Не используйте этот класс напрямую.
- *	\tparam T_Container Тип контейнера (`LinkedListIterator` или `ConstLinkedListIterator`).
+ *	\tparam T_Container Тип контейнера (`LinkedList` или `const LinkedList`).
  *	\tparam T_Element Тип элемента массива (с учётом модификатора `const`).
  */
 template<typename T_Container, typename T_Element, typename T_Node>
@@ -64,7 +64,6 @@ class BaseLinkedListIterator_ :
 	friend class LinkedList;
 
 public:
-
 			/* CONSTRUCTORS */
 
 	/**
@@ -249,7 +248,7 @@ public:
 	 *	\brief Индекс элемента, на который указывает итератор
 	 *	
 	 *	Позволяет получить индекс элемента, на который указывает итератор.
-	 *	\return Индекс элемента, на который указывает итератор.
+	 *	\return Индекс элемента.
 	 *	\throw std::logic_error Итератор недействителен.
 	 */
 	int get_index() const;
@@ -299,7 +298,8 @@ public:
 	 *
 	 *	Итератор указывает в конец, если он указывает на пространство после последнего элемента
 	 *	связного списка. В этом случае метод `is_element_valid` возвращает `false`.
-	 *	\return `true`, если итератор указывает после последнего элемента связного списка, иначе `false`.
+	 *	\return `true`, если итератор указывает после последнего элемента связного списка, иначе
+	 *	`false`.
 	 */
 	virtual bool is_end() const noexcept override;
 
@@ -367,7 +367,7 @@ public:
 	 *	\~english
 	 *	\brief The prefix increment of the iterator
 	 *
-	 *	Changed the iterator so that it points to the next element. The iterator won't be changed
+	 *	Changes the iterator so that it points to the next element. The iterator won't be changed
 	 *	if it is already pointing after the last element.
 	 *	\return The moved iterator.
 	 *	\throw std::logic_error The iterator is not valid.
@@ -508,6 +508,8 @@ private:
  *	
  *	This iterator allows to read elements of a linked list, but doesn't allow to modify them or the
  *	linked list. Can be created by a constant linked list (or using `iterator_to_const` method).
+ *	Information about members is contained in the documentation of the `BaseLinkedListIterator_`
+ *	class.
  *	\tparam T Type of the linked list elements.
  *	
  *	\~russian
@@ -515,6 +517,7 @@ private:
  *	
  *	Этот итератор позволяет читать элементы связного списка, но не позволяет изменять их или
  *	связный список. Может быть создан константным связным списком (или методом `iterator_to_const`).
+ *	Информация о членах содержится в документации класса `BaseLinkedListIterator_`.
  *	\tparam T Тип элементов массива.
  */
 template<typename T>
@@ -524,13 +527,15 @@ using ConstLinkedListIterator = BaseLinkedListIterator_<const LinkedList<T>, con
  *	\~english
  *	\brief The iterator of a linked list
  *	
- *	This iterator allows to access elements of a linked list (read and modify them).
+ *	This iterator allows to access elements of a linked list (read and modify them). Information
+ *	about members is contained in the documentation of the `BaseLinkedListIterator_` class.
  *	\tparam T Type of the linked list elements.
  *	
  *	\~russian
  *	\brief Итератор связного списка
  *	
  *	Этот итератор позволяет получать доступ к элеменам связного списка (читать и изменять их).
+ *	Информация о членах содержится в документации класса `BaseLinkedListIterator_`.
  *	\tparam T Тип элементов связного списка.
  */
 template<typename T>
