@@ -33,9 +33,9 @@ public:
 
 	void unbind(int key);
 
-	void execute(T_Args... args);
+	void execute(T_Args... args) const;
 
-	void operator()(T_Args... args);
+	void operator()(T_Args... args) const;
 
 private:
 	Map<int, std::unique_ptr<Delegate<void, T_Args...>>> functions_;
@@ -105,7 +105,7 @@ void Event<T_Args...>::unbind(int key)
 }
 
 template<typename... T_Args>
-void Event<T_Args...>::execute(T_Args... args)
+void Event<T_Args...>::execute(T_Args... args) const
 {
 	for (auto& i : functions_)
 	{
@@ -114,7 +114,7 @@ void Event<T_Args...>::execute(T_Args... args)
 }
 
 template<typename... T_Args>
-void Event<T_Args...>::operator()(T_Args... args)
+void Event<T_Args...>::operator()(T_Args... args) const
 {
 	execute(args...);
 }

@@ -273,6 +273,82 @@ int ceil(float value) noexcept;
 
 /**
  *	\~english
+ *	\brief Rounds a number closer zero
+ *
+ *	Finds the nearest integer whose absolute value is less than or equal to absolute value of a
+ *	passed number.
+ *	\code
+ *		math::floor_abs(4.f) == 4;
+ *		math::floor_abs(4.2f) == 4;
+ *		math::floor_abs(4.5f) == 4;
+ *		math::floor_abs(4.7f) == 4;
+ *		math::floor_abs(-4.f) == -4;
+ *		math::floor_abs(-4.2f) == -4;
+ *		math::floor_abs(-4.5f) == -4;
+ *		math::floor_abs(-4.7f) == -4;
+ *	\endcode
+ *	\param value A number to round
+ *	\return A rounded value
+ *
+ *	\~russian
+ *	\brief Округляет число ближе к нулю
+ *
+ *	Находит ближайшее целое число, чей модуль меньше или равен модулю переданного.
+ *	\code
+ *		math::floor_abs(4.f) == 4;
+ *		math::floor_abs(4.2f) == 4;
+ *		math::floor_abs(4.5f) == 4;
+ *		math::floor_abs(4.7f) == 4;
+ *		math::floor_abs(-4.f) == -4;
+ *		math::floor_abs(-4.2f) == -4;
+ *		math::floor_abs(-4.5f) == -4;
+ *		math::floor_abs(-4.7f) == -4;
+ *	\endcode
+ *	\param value Округляемое число.
+ *	\return Результат округления.
+ */
+int floor_abs(float value) noexcept;
+
+/**
+ *	\~english
+ *	\brief Rounds a number further from zero
+ *
+ *	Finds the nearest integer whose absolute value is greater than or equal to absolute value of a
+ *	passed number.
+ *	\code
+ *		math::ceil_abs(4.f) == 4;
+ *		math::ceil_abs(4.2f) == 5;
+ *		math::ceil_abs(4.5f) == 5;
+ *		math::ceil_abs(4.7f) == 5;
+ *		math::ceil_abs(-4.f) == -4;
+ *		math::ceil_abs(-4.2f) == -5;
+ *		math::ceil_abs(-4.5f) == -5;
+ *		math::ceil_abs(-4.7f) == -5;
+ *	\endcode
+ *	\param value A number to round
+ *	\return A rounded value
+ *
+ *	\~russian
+ *	\brief Округляет число дальше от нуля
+ *
+ *	Находит ближайшее целое число, чей модуль больше или равен модулю переданного.
+ *	\code
+ *		math::ceil_abs(4.f) == 4;
+ *		math::ceil_abs(4.2f) == 5;
+ *		math::ceil_abs(4.5f) == 5;
+ *		math::ceil_abs(4.7f) == 5;
+ *		math::ceil_abs(-4.f) == -4;
+ *		math::ceil_abs(-4.2f) == -5;
+ *		math::ceil_abs(-4.5f) == -5;
+ *		math::ceil_abs(-4.7f) == -5;
+ *	\endcode
+ *	\param value Округляемое число.
+ *	\return Результат округления.
+ */
+int ceil_abs(float value) noexcept;
+
+/**
+ *	\~english
  *	\brief An absolute value
  *
  *	Return a positive number that is equal to the passed one up to a sign.

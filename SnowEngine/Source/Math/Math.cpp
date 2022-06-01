@@ -41,6 +41,17 @@ int math::ceil(float value) noexcept
 #endif
 }
 
+int math::floor_abs(float value) noexcept
+{
+	return static_cast<int>(value);
+}
+
+int math::ceil_abs(float value) noexcept
+{
+	int result = ceil(abs(value));
+	return value < 0 ? -result : result;
+}
+
 int math::abs(int value) noexcept
 {
 #ifndef SNOW_USE_STD_MATH

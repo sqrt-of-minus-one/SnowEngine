@@ -8,31 +8,49 @@
 
 /**
  *	\file
- *	\brief The file of sorted array
- *	
- *	This file contains the definition of the SortedArray class.
+ *	\~english
+ *	\brief The file with `SortedArray` class
+ *
+ *	This file contains the definition of the `SortedArray` class.
+ *
+ *	\~russian
+ *	\brief Файл с классом `SortedArray`
+ *
+ *	Этот файл содержит определение класса `SortedArray`.
  */
 
 #include "Array.h"
 
-#include <functional>
+#include "../Function/Delegate.h"
 
 namespace snow
 {
 
 /**
- *	\brief The array that is always sorted
+ *	\~english
+ *	\brief The class of the array that is always sorted
  *	
  *	This class is identical to an ordinary array, but is always sorted. Sorting is performed using
- *	a custom comparator function, it returns a positive value if the first object is more than the
- *	second, a negative value if the first object is less than the second, and zero if two objects
+ *	a custom comparator function; it returns a positive value if the first object is more than the
+ *	second; a negative value if the first object is less than the second; and zero if two objects
  *	are equal.
- *	\tparam T Type of the array elements. The requirements are the same as the Array class.
+ *	\tparam T Type of the array elements. The requirements are the same as the `Array` class.
+ *	
+ *	\~russian
+ *	\brief Класс массива, который вседа отсортирован
+ *	
+ *	Этот класс идентичен обычному массиву, но всегда отсортирован. Сортировка производится с
+ *	помощью пользовательской сравнивающей функции; она возвращает положительное значение, если
+ *	первый объект больше второго; отрицательное значение, если первый объект меньше второго; и
+ *	ноль, если два объекта равны.
+ *	\tparam T Тип элементов массива. Требования те же, что и для класса `Array`.
  */
 template<typename T>
 class SortedArray : public Array<T>
 {
 public:
+
+	SortedArray() noexcept;
 	
 	/**
 	 *	\brief Copy constructor
@@ -52,33 +70,6 @@ public:
 	SortedArray(SortedArray<T>&& array) noexcept;
 
 	/**
-	 *	\brief Create an empty sorted array
-	 *	
-	 *	Creates an empty array with the passed comparator.
-	 *	\param comparator The comparator function for the array.
-	 */
-	SortedArray(std::function<int(const T&, const T&)> comparator) noexcept;
-	
-	/**
-	 *	\brief Copy an array
-	 *	
-	 *	Creates a new array using the passed one. Sorts the array using the passed comparator.
-	 *	\param array The array that will be copied.
-	 *	\param comparator The comparator to sort.
-	 */
-	SortedArray(const Array<T>& array, std::function<int(const T&, const T&)> comparator) noexcept;
-
-	/**
-	 *	\brief Move an array
-	 *
-	 *	Creates a new array my moving elements of the passed one. Sorts the array using the passed
-	 *	comparator.
-	 *	\param array The array that will be moved.
-	 *	\param comparator The comparator to sort.
-	 */
-	SortedArray(Array<T>&& array, std::function<int(const T&, const T&)> comparator) noexcept;
-
-	/**
 	 *	\brief Create a sorted array of the passed size
 	 *
 	 *	Creates a sorted array of the passed size and fills it with default elements. If the array
@@ -88,7 +79,13 @@ public:
 	 *	\param size The size of the array.
 	 *	\param comparator The comparator function.
 	 */
-	SortedArray(int size, std::function<int(const T&, const T&)> comparator);
+	SortedArray(int size);
+
+	void set_comparator(const std::function<int(const T&, const T&)>& comparator);
+	void set_comparator(const Delegate<int, const T&, const T&>& comparator);
+
+	template<typename T_Class>
+	void set_comparator(T_Class& object, const std::function<int(T_Class&, const T&, const T&)>& comparator);
 
 	/**
 	 *	\brief Add a new element
@@ -249,7 +246,7 @@ public:
 	virtual SortedArray<T>& operator=(Array<T>&& array) override;
 	
 private:
-	std::function<int(const T&, const T&)> comparator_;
+	mutable Delegate<int, const T&, const T&> comparator_;
 	int get_index_to_add_(const T& element) const;
 	int get_index_to_add_(const T& element, int from, int to) const;
 	void sort_();
@@ -259,10 +256,20 @@ private:
 	int median_(int left, int right);
 	int partition_(int left, int right, const T& pivot);
 	void swap_(int index_1, int index_2);
+
+	static int default_comparator_(const T& first, const T& second);
 };
 
 
 		/* DEFINITIONS */
+
+template<typename T>
+SortedArray<T>::SortedArray() noexcept :
+	Array<T>(),
+	comparator_()
+{
+	comparator_.bind(&default_comparator_);
+}
 
 template<typename T>
 SortedArray<T>::SortedArray(const SortedArray<T>& array) noexcept :
@@ -277,32 +284,34 @@ SortedArray<T>::SortedArray(SortedArray<T>&& array) noexcept :
 {}
 
 template<typename T>
-SortedArray<T>::SortedArray(std::function<int(const T&, const T&)> comparator) noexcept :
-	Array<T>(),
-	comparator_(comparator)
-{}
-
-template<typename T>
-SortedArray<T>::SortedArray(const Array<T>& array, std::function<int(const T&, const T&)> comparator) noexcept :
-	Array<T>(array),
-	comparator_(comparator)
-{
-	sort_();
-}
-
-template<typename T>
-SortedArray<T>::SortedArray(Array<T>&& array, std::function<int(const T&, const T&)> comparator) noexcept :
-	Array<T>(std::forward<Array<T>>(array)),
-	comparator_(comparator)
-{
-	sort_();
-}
-
-template<typename T>
-SortedArray<T>::SortedArray(int size, std::function<int(const T&, const T&)> comparator) :
+SortedArray<T>::SortedArray(int size) :
 	Array<T>(size),
-	comparator_(comparator)
-{}
+	comparator_()
+{
+	comparator_.bind(&default_comparator_);
+}
+
+template<typename T>
+void SortedArray<T>::set_comparator(const std::function<int(const T&, const T&)>& comparator)
+{
+	comparator_.bind(comparator);
+	sort_();
+}
+
+template<typename T>
+void SortedArray<T>::set_comparator(const Delegate<int, const T&, const T&>& comparator)
+{
+	comparator_.bind(comparator);
+	sort_();
+}
+
+template<typename T>
+template<typename T_Class>
+void SortedArray<T>::set_comparator(T_Class& object, const std::function<int(T_Class&, const T&, const T&)>& comparator)
+{
+	comparator_.bind(object, comparator);
+	sort_();
+}
 
 template<typename T>
 bool SortedArray<T>::add(const T& element)
@@ -356,10 +365,10 @@ int SortedArray<T>::remove_all(const T& element)
 	int found = get_index_to_add_(element);
 	int first = found;
 	int last = found;
-	if (found > 0 && comparator_((*this)[found - 1], element) == 0)
+	if (found > 0 && compare((*this)[found - 1], element) == 0)
 	{
-		while (--first > 0 && comparator_((*this)[first - 1], element) == 0);
-		while (++last < Array<T>::size() && comparator_((*this)[last], element) == 0);
+		while (--first > 0 && compare((*this)[first - 1], element) == 0);
+		while (++last < Array<T>::size() && compare((*this)[last], element) == 0);
 		return Array<T>::remove(first, last);
 	}
 	else
@@ -372,7 +381,7 @@ template<typename T>
 int SortedArray<T>::find_any(const T& element) const
 {
 	int found = get_index_to_add_(element);
-	if (found > 0 && comparator_((*this)[--found], element) == 0)
+	if (found > 0 && compare((*this)[--found], element) == 0)
 	{
 		return found;
 	}
@@ -386,9 +395,9 @@ template<typename T>
 int SortedArray<T>::find_first(const T& element) const
 {
 	int found = get_index_to_add_(element);
-	if (found > 0 && comparator_((*this)[found - 1], element) == 0)
+	if (found > 0 && compare((*this)[found - 1], element) == 0)
 	{
-		while (--found > 0 && comparator_((*this)[found - 1], element) == 0);
+		while (--found > 0 && compare((*this)[found - 1], element) == 0);
 		return found;
 	}
 	else
@@ -401,9 +410,9 @@ template<typename T>
 int SortedArray<T>::find_last(const T& element) const
 {
 	int found = get_index_to_add_(element);
-	if (found > 0 && comparator_((*this)[--found], element) == 0)
+	if (found > 0 && compare((*this)[--found], element) == 0)
 	{
-		while (++found < Array<T>::size() && comparator_((*this)[found], element) == 0);
+		while (++found < Array<T>::size() && compare((*this)[found], element) == 0);
 		return found - 1;
 	}
 	else
@@ -416,7 +425,7 @@ template<typename T>
 bool SortedArray<T>::contains(const T& element) const
 {
 	int index = get_index_to_add_(element);
-	return index > 0 && comparator_((*this)[index - 1], element) == 0;
+	return index > 0 && compare((*this)[index - 1], element) == 0;
 }
 
 template<typename T>
@@ -425,10 +434,10 @@ int SortedArray<T>::count(const T& element) const
 	int found = get_index_to_add_(element);
 	int first = found;
 	int last = found;
-	if (found > 0 && comparator_((*this)[found - 1], element) == 0)
+	if (found > 0 && compare((*this)[found - 1], element) == 0)
 	{
-		while (--first > 0 && comparator_((*this)[first - 1], element) == 0);
-		while (++last < Array<T>::size() && comparator_((*this)[last], element) == 0);
+		while (--first > 0 && compare((*this)[first - 1], element) == 0);
+		while (++last < Array<T>::size() && compare((*this)[last], element) == 0);
 		return last - first;
 	}
 	else
@@ -440,13 +449,21 @@ int SortedArray<T>::count(const T& element) const
 template<typename T>
 int SortedArray<T>::compare(const T& first, const T& second) const
 {
-	return comparator_(first, second);
+	try
+	{
+		return comparator_(first, second);
+	}
+	catch (std::logic_error e)
+	{
+		comparator_.bind(&default_comparator_);
+		return comparator_(first, second);
+	}
 }
 
 template<typename T>
 int SortedArray<T>::compare_by_index(int first, int second) const
 {
-	return comparator_((*this)[first], (*this)[second]);
+	return compare((*this)[first], (*this)[second]);
 }
 
 template<typename T>
@@ -475,7 +492,7 @@ template<typename T>
 int SortedArray<T>::get_index_to_add_(const T& element, int from, int to) const
 {
 	int middle = (from + to) / 2;
-	int comp_res = comparator_((*this)[middle], element);
+	int comp_res = compare((*this)[middle], element);
 	if (comp_res == 0)
 	{
 		return middle + 1;
@@ -519,7 +536,7 @@ void SortedArray<T>::insertion_sort_(int left, int right)
 	{
 		T tmp = std::move((*this)[i]);
 		int j;
-		for (j = i; j > left && comparator_((*this)[j - 1], tmp) >= 0; j--)
+		for (j = i; j > left && compare((*this)[j - 1], tmp) >= 0; j--)
 		{
 			(*this)[j] = std::move((*this)[j - 1]);
 		}
@@ -556,9 +573,9 @@ int SortedArray<T>::partition_(int left, int right, const T& pivot)
 	int right_ptr = right - 1;
 	while (true)
 	{
-		while (comparator_((*this)[++left_ptr], pivot) < 0)
+		while (compare((*this)[++left_ptr], pivot) < 0)
 			;
-		while (comparator_((*this)[--right_ptr], pivot) > 0)
+		while (compare((*this)[--right_ptr], pivot) > 0)
 			;
 		if (left_ptr >= right_ptr)
 		{
@@ -579,6 +596,18 @@ void SortedArray<T>::swap_(int index_1, int index_2)
 	T tmp = std::move((*this)[index_2]);
 	(*this)[index_2] = std::move((*this)[index_1]);
 	(*this)[index_1] = std::move(tmp);
+}
+
+template<typename T>
+int SortedArray<T>::default_comparator_(const T& first, const T& second)
+{
+	return util::hash_code(first) - util::hash_code(second);
+}
+
+template<>
+int SortedArray<float>::default_comparator_(const float& first, const float& second)
+{
+	return math::ceil_abs(first - second);
 }
 
 }
