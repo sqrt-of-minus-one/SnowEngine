@@ -31,217 +31,529 @@ namespace snow
  *	\brief The class of the array that is always sorted
  *	
  *	This class is identical to an ordinary array, but is always sorted. Sorting is performed using
- *	a custom comparator function; it returns a positive value if the first object is more than the
- *	second; a negative value if the first object is less than the second; and zero if two objects
- *	are equal.
+ *	a custom comparator function. Default comparator function performs sorting in non-descending
+ *	order of hash codes (in non-descending order of values for `float` type).
+ *	\warning If the array contains `unique_ptr`'s, methods that copy the array elements (for
+ *	example, the copy constructor) must not be called (`std::logic_error` exception can be thrown).
  *	\tparam T Type of the array elements. The requirements are the same as the `Array` class.
  *	
  *	\~russian
  *	\brief Класс массива, который вседа отсортирован
  *	
  *	Этот класс идентичен обычному массиву, но всегда отсортирован. Сортировка производится с
- *	помощью пользовательской сравнивающей функции; она возвращает положительное значение, если
- *	первый объект больше второго; отрицательное значение, если первый объект меньше второго; и
- *	ноль, если два объекта равны.
+ *	помощью пользовательской сравнивающей функции. Сравнивающая функция по умолчанию производит
+ *	сортировку по неубыванию хеш-кодов (по неубыванию значений для типа `float`).
+ *	\warning Если массив содержит `unique_ptr`ы, то методы, копирующие элементы массива,
+ *	(например, конструктор копирования) не должны вызываться (может быть выброшено исключение
+ *	`std::logic_error`).
  *	\tparam T Тип элементов массива. Требования те же, что и для класса `Array`.
  */
 template<typename T>
 class SortedArray : public Array<T>
 {
 public:
-
-	SortedArray() noexcept;
+			/* CONSTRUCTORS */
 	
 	/**
-	 *	\brief Copy constructor
+	 *	\~english
+	 *	\brief The default constructor
 	 *	
-	 *	Creates a new sorted array as a copy of the passed one (its comparator is also copied).
-	 *	\param array The sorted array that will be copied.
+	 *	Creates an empty array with default comparator function.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор по умолчанию
+	 *	
+	 *	Создаёт пустой массив со сравнивающей функцией по умолчанию.
+	 */
+	SortedArray() noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The copy constructor
+	 *
+	 *	Copies the array with its comparator function.
+	 *	\warning This constructor must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param array The array that will be copied.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор копирования
+	 *
+	 *	Копирует массив вместе с его сравнивающей функцией.
+	 *	\warning Этот конструктор не должен быть использован, если массив содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param array Массив, который будет скопирован.
 	 */
 	SortedArray(const SortedArray<T>& array) noexcept;
 
 	/**
-	 *	\brief Move constructor
-	 *	
-	 *	Creates a new sorted array by moving elements of the passed one. The new array will use the
-	 *	comparator of the passed array.
-	 *	\param array The sorted array the will be moved.
+	 *	\~english
+	 *	\brief The move constructor
+	 *
+	 *	Moves elements to a new array from the passed one saving its comparator function.
+	 *	\param array The array whose elements will be moved.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор перемещения
+	 *
+	 *	Перемещает элементы в новый массив из переданного, сохраняя его сравнивающую функцию.
+	 *	\param array Массив, чьи элементы будут перемещены.
 	 */
 	SortedArray(SortedArray<T>&& array) noexcept;
 
 	/**
-	 *	\brief Create a sorted array of the passed size
+	 *	\~english
+	 *	\brief Creates a sorted array of the specified size
 	 *
-	 *	Creates a sorted array of the passed size and fills it with default elements. If the array
-	 *	stores pointers, `nullptr`s will be added. Otherwise inserted elements will be created
-	 *	using a default constructor. It is possible that two objects created by default constructor
-	 *	are not equal, so sorting will be performed.
+	 *	Creates an array of the specified size and fills it with default elements. If the array
+	 *	stores pointers, `nullptr`s are added. Otherwise inserted elements are created using a
+	 *	default constructor. The default comparator function is used.
 	 *	\param size The size of the array.
-	 *	\param comparator The comparator function.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт отсортированный массив заданного размера
+	 *
+	 *	Создаёт массив заданного размера и заполняет его элементами по умолчанию. Если массив
+	 *	хранит указатели, добавляются `nullptr`. Иначе вставляемые элементы будут создаваться с
+	 *	использованием конструктора по умолчанию. Используется сравнивающая функция по умолчанию.
+	 *	\param size Размер массива.
 	 */
 	SortedArray(int size);
 
-	void set_comparator(const std::function<int(const T&, const T&)>& comparator);
-	void set_comparator(const Delegate<int, const T&, const T&>& comparator);
-
-	template<typename T_Class>
-	void set_comparator(T_Class& object, const std::function<int(T_Class&, const T&, const T&)>& comparator);
+			/* METHODS FROM IContainer &
+				METHODS FROM Array */
 
 	/**
-	 *	\brief Add a new element
+	 *	\~english
+	 *	\brief Adds a new element
 	 *
-	 *	Inserts a new element in the array, preserving its sorting.
+	 *	Inserts a new element into the array in a correct place so that the array remains sorted.
+	 *	Moves the subsequent elements towards the end of the array. The iterators will also be
+	 *	moved and continue to point to their elements.
+	 *	\warning This method must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Добавляет новый элемент
+	 *
+	 *	Вставляет новый элемент в массив на соответствующее место, таким образом, чтобы массив
+	 *	оставался отсортированным. Передвигает последующие элементы к концу массива. Итераторы
+	 *	также будут передвинуты и продолжат указывать на свои элементы.
+	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param element Элемент, который будет добавлен.
+	 *	\return `true`, если элемент был успешно добавлен, иначе `false`.
 	 */
 	virtual bool add(const T& element) override;
 
 	/**
-	 *	\brief Add a new element
+	 *	\~english
+	 *	\brief Adds a new element
 	 *
-	 *	Inserts a new element in the array, preserving its sorting.
+	 *	Inserts a new element into the array in a correct place so that the array remains sorted.
+	 *	Moves the subsequent elements towards the end of the array. The iterators will also be
+	 *	moved and continue to point to their elements.
 	 *	\param element The element that will be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Добавляет новый элемент
+	 *
+	 *	Вставляет новый элемент в массив на соответствующее место, таким образом, чтобы массив
+	 *	оставался отсортированным. Передвигает последующие элементы к концу массива. Итераторы
+	 *	также будут передвинуты и продолжат указывать на свои элементы.
+	 *	\param element Элемент, который будет добавлен.
+	 *	\return `true`, если элемент был успешно добавлен, иначе `false`.
 	 */
 	virtual bool add(T&& element) override;
 
 	/**
-	 *	\brief Add a new element
+	 *	\~english
+	 *	\brief Adds a new element
 	 *
-	 *	Inserts a new element in the array. The array will continue to be sorted.
+	 *	Inserts a new element into the array in a correct place so that the array remains sorted.
+	 *	Moves the subsequent elements towards the end of the array. The iterators will also be
+	 *	moved and continue to point to their elements.
+	 *	\warning This method must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
-	 *	\param index This parameter does not affect the insertion.
+	 *	\param index This parameter is ignored.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
-	 *	\warning The array must stay sorted so you cannot insert an element to an arbitrary
-	 *	position.
+	 *
+	 *	\~russian
+	 *	\brief Добавляет новый элемент
+	 *
+	 *	Вставляет новый элемент в массив на соответствующее место, таким образом, чтобы массив
+	 *	оставался отсортированным. Передвигает последующие элементы к концу массива. Итераторы
+	 *	также будут передвинуты и продолжат указывать на свои элементы.
+	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param element Элемент, который будет добавлен.
+	 *	\param index Этот параметр игнорируется.
+	 *	\return `true`, если элемент был успешно добавлен, иначе `false`.
 	 */
 	virtual bool add(const T& element, int index) override;
 
 	/**
-	 *	\brief Add a new element
+	 *	\~english
+	 *	\brief Adds a new element
 	 *
-	 *	Inserts a new element in the array. The array will continue to be sorted.
+	 *	Inserts a new element into the array in a correct place so that the array remains sorted.
+	 *	Moves the subsequent elements towards the end of the array. The iterators will also be
+	 *	moved and continue to point to their elements.
 	 *	\param element The element that will be added.
-	 *	\param index This parameter does not affect the insertion.
+	 *	\param index This parameter is ignored.
 	 *	\return `true` if the element has been successfully added, `false` otherwise.
-	 *	\warning The array must stay sorted so you cannot insert an element to an arbitrary
-	 *	position.
+	 *
+	 *	\~russian
+	 *	\brief Добавляет новый элемент
+	 *
+	 *	Вставляет новый элемент в массив на соответствующее место, таким образом, чтобы массив
+	 *	оставался отсортированным. Передвигает последующие элементы к концу массива. Итераторы
+	 *	также будут передвинуты и продолжат указывать на свои элементы.
+	 *	\param element Элемент, который будет добавлен.
+	 *	\param index Этот параметр игнорируется.
+	 *	\return `true`, если элемент был успешно добавлен, иначе `false`.
 	 */
 	virtual bool add(T&& element, int index) override;
 
 	/**
-	 *	\brief Add into the array copies of elements of the passed array
-	 *
-	 *	Inserts in the array copies of elements of the passed array. The array will continue to be
-	 *	sorted.
+	 *	\~english
+	 *	\brief Adds into the array copies of elements of the passed array
+	 *	
+	 *	Inserts into the array copies of elements of the passed array in correct places so that the
+	 *	array remains sorted. Moves the subsequent elements towards the end of the array. The
+	 *	iterators will also be moved and continue to point to their elements.
+	 *	\warning This method must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param array The array whose elements will be added.
 	 *	\return The number of elements that have been successfully added.
+	 *	
+	 *	\~russian
+	 *	\brief Добавляет в массив копии элементов переданного массива
+	 *	
+	 *	Вставляет в массив копии элементов переданного массива на соответствующие места, таким
+	 *	образом, чтобы массив оставался отсортированным. Передвигает последующие элементы к концу
+	 *	массива. Итераторы также будут передвинуты и продолжат указывать на свои элементы.
+	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param array Массив, чьи элементы будут добавлены.
+	 *	\return Количество успешно добавленных элементов.
 	 */
 	virtual int add(const Array<T>& array) override;
 
 	/**
-	 *	\brief Move into the array elements of the passed array
+	 *	\~english
+	 *	\brief Moves into the array elements of the passed array
 	 *
-	 *	Moves in the array elements of the passed array. The array will continue to be sorted.
+	 *	Moves into the array elements of the passed array in correct places so that the array
+	 *	remains sorted. Moves the subsequent elements towards the end of the array. The iterators
+	 *	will also be moved and continue to point to their elements.
 	 *	\param array The array whose elements will be moved.
 	 *	\return The number of elements that have been successfully added.
+	 *
+	 *	\~russian
+	 *	\brief Перемещает в массив элементы из переданного массива
+	 *
+	 *	Перемещает в массив элементы из переданного массива на соответствующие места, таким
+	 *	образом, чтобы массив оставался отсортированным. Передвигает последующие элементы к концу
+	 *	массива. Итераторы также будут передвинуты и продолжат указывать на свои элементы.
+	 *	\param array Массив, чьи элементы будут перемещены.
+	 *	\return Количество успешно добавленных элементов.
 	 */
 	virtual int add(Array<T>&& array) override;
 
 	/**
-	 *	\brief Remove all elements that are equal to the passed one
+	 *	\~english
+	 *	\brief Removes all elements that are equal to the passed one
 	 *
-	 *	Finds all elements of the array with the passed one and removes them. All iterators will
-	 *	continue to point to their elements. Iterators that pointed to the removed elements will
-	 *	point to the next element after executing this method.
+	 *	Compares every element of the array with the passed one and removes all matches. All
+	 *	iterators will continue to point to their elements. Iterators that pointed to one of the
+	 *	removed elements will point to the next element after executing this method.
 	 *	\param element The object to compare.
 	 *	\return Number of elements that have been successfully removed.
+	 *
+	 *	\~russian
+	 *	\brief Удаляет все элементы, равные переданному
+	 *
+	 *	Сравнивает каждый элемент массива с переданным и удаляет все совпадения. Все итераторы
+	 *	продолжат указывать на свои элементы. Итераторы, указывавшие на один из удалённых
+	 *	элементов, после выполнения метода будут указывать на следующий.
+	 *	\param element Объект для сравнения.
+	 *	\return Количество успешно удалённых элементов.
 	 */
 	virtual int remove_all(const T& element) override;
-
+	
 	/**
-	 *	\brief Find any element that is equal to the passed one
-	 *
-	 *	Returns an index of any element of the array that is equal to the passed one
+	 *	\~english
+	 *	\brief Finds any element that is equal to the passed one
+	 *	
+	 *	Compares elements of the array with the passed one. If a match is found, returns its index.
 	 *	\param element The desired element.
 	 *	\return An index of a match; a negative value if no match has been found.
+	 *	
+	 *	\~russian
+	 *	\brief Находит любой элемент, который равен переданному
+	 *	
+	 *	Сравнивает элементы массива с переданным. Если совпадение найдено, возвращает его индекс.
+	 *	\param element Искомый элемент.
+	 *	\return Индекс совпадения; отрицательное значение, если совпадения найдено не было.
 	 */
 	virtual int find_any(const T& element) const override;
 
 	/**
-	 *	\brief Find the first element that is equal to the passed one
+	 *	\~english
+	 *	\brief Finds the first element that is equal to the passed one
 	 *
-	 *	Returns an index of the first element that is equal to the passed one.
+	 *	Compares elements of the array with the passed one starting from the beginning. If a match
+	 *	is found, returns its index.
 	 *	\param element The desired element.
 	 *	\return An index of the first match; a negative value if no match has been found.
+	 *
+	 *	\~russian
+	 *	\brief Находит первый элемент, который равен переданному
+	 *
+	 *	Сравнивает элементы массива с переданным, начиная с начала. Если совпадение найдено,
+	 *	возвращает его индекс.
+	 *	\param element Искомый элемент.
+	 *	\return Индекс первого совпадения; отрицательное значение, если совпадения найдено не было.
 	 */
 	virtual int find_first(const T& element) const override;
 
 	/**
-	 *	\brief Find the last element that is equal to the passed one
+	 *	\~english
+	 *	\brief Finds the last element that is equal to the passed one
 	 *
-	 *	Returns an index of the last element that is equal to the passed one.
+	 *	Compares elements of the array with the passed one starting from the end. If a match is
+	 *	found, returns its index.
 	 *	\param element The desired element.
 	 *	\return An index of the last match; a negative value if no match has been found.
+	 *
+	 *	\~russian
+	 *	\brief Находит последний элемент, который равен переданному
+	 *
+	 *	Сравнивает элементы массива с переданным, начиная с конца. Если совпадение найдено,
+	 *	возвращает его индекс.
+	 *	\param element Искомый элемент.
+	 *	\return Индекс последнего совпадения; отрицательное значение, если совпадения найдено не
+	 *	было.
 	 */
 	virtual int find_last(const T& element) const override;
 
 	/**
-	 *	\brief Whether the array contains the passed element
+	 *	\~english
+	 *	\brief Checks whether the array contains the passed element
 	 *
 	 *	Checks whether the array has an element that is equal to the passed one.
 	 *	\param element The desired element.
 	 *	\return `true` if the array contains the passed element, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, содержит ли массив переданный элемент
+	 *
+	 *	Проверяет, содержит ли массив элемент, равный переданному.
+	 *	\param element Искомый элемент.
+	 *	\return `true`, если массив содержит переданный элемент, иначе `false`.
 	 */
 	virtual bool contains(const T& element) const override;
 
 	/**
+	 *	\~english
 	 *	\brief How many elements of the array are equal to the passed one
 	 *
 	 *	Counts elements that are equal to the passed one.
 	 *	\param element The desired element.
 	 *	\return Number of matches.
+	 *
+	 *	\~russian
+	 *	\brief Сколько элементов массива равны переданному
+	 *
+	 *	Подсчитывает элементы, равные переданному.
+	 *	\param element Требуемый элемент.
+	 *	\return Количество совпадений.
 	 */
 	virtual int count(const T& element) const override;
+
+			/* METHODS */
+
+	/**
+	 *	\~english
+	 *	\brief Sets the comparator function
+	 *
+	 *	Allows to set the comparator function, which will be used to sort the array. The comparator
+	 *	function must return:
+	 *	- a *positive value* if the first element should be after the second one;
+	 *	- a *negative value* if the first element should be before the second one;
+	 *	- *zero* if the elements are equal.
+	 *	If the comparator function is no longer available, it will be replaced by the default
+	 *	comparator function.
+	 *	\param comparator The reference to the comparator function.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает сравнивающую функцию
+	 *
+	 *	Позволяет установить сравнивающую функцию, которая будет использоваться для сортировки
+	 *	массива. Сравнивающая функция должна возвращать:
+	 *	- *положительное значение*, если первый элемент должен быть после второго;
+	 *	- *отрицательное значение*, если первый элемент должен быть перед вторым;
+	 *	- *ноль*, если элементы равны.
+	 *	Если сравнивающая функция перестаёт быть доступной, она заменяется на сравнивающую функцию
+	 *	по умолчанию.
+	 *	\param comparator Ссылка на сравнивающую функцию.
+	 */
+	void set_comparator(const std::function<int(const T&, const T&)>& comparator);
+
+	/**
+	 *	\~english
+	 *	\brief Sets the comparator function
+	 *
+	 *	Allows to set the comparator function, which will be used to sort the array. The comparator
+	 *	function must return:
+	 *	- a *positive value* if the first element should be after the second one;
+	 *	- a *negative value* if the first element should be before the second one;
+	 *	- *zero* if the elements are equal.
+	 *	If the comparator function is no longer available, it will be replaced by the default
+	 *	comparator function.
+	 *	\param comparator The delegate to the comparator function.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает сравнивающую функцию
+	 *
+	 *	Позволяет установить сравнивающую функцию, которая будет использоваться для сортировки
+	 *	массива. Сравнивающая функция должна возвращать:
+	 *	- *положительное значение*, если первый элемент должен быть после второго;
+	 *	- *отрицательное значение*, если первый элемент должен быть перед вторым;
+	 *	- *ноль*, если элементы равны.
+	 *	Если сравнивающая функция перестаёт быть доступной, она заменяется на сравнивающую функцию
+	 *	по умолчанию.
+	 *	\param comparator Делегат на сравнивающую функцию.
+	 */
+	void set_comparator(const Delegate<int, const T&, const T&>& comparator);
+
+	/**
+	 *	\~english
+	 *	\brief Sets the comparator function
+	 *
+	 *	Allows to set a method as comparator function, which will be used to sort the array. The
+	 *	comparator function must return:
+	 *	- a *positive value* if the first element should be after the second one;
+	 *	- a *negative value* if the first element should be before the second one;
+	 *	- *zero* if the elements are equal.
+	 *	If the comparator function is no longer available, it will be replaced by the default
+	 *	comparator function.
+	 *	\tparam T_Class The class of the object whose method will be used as comparator function.
+	 *	You're allowed to use the `const` modifier here.
+	 *	\param object The object whose method will be used as comparator function.
+	 *	\param comparator The reference to the comparator function.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает сравнивающую функцию
+	 *
+	 *	Позволяет установить метод в качестве сравнивающей функции, которая будет использоваться
+	 *	для сортировки массива. Сравнивающая функция должна возвращать:
+	 *	- *положительное значение*, если первый элемент должен быть после второго;
+	 *	- *отрицательное значение*, если первый элемент должен быть перед вторым;
+	 *	- *ноль*, если элементы равны.
+	 *	Если сравнивающая функция перестаёт быть доступной, она заменяется на сравнивающую функцию
+	 *	по умолчанию.
+	 *	\tparam T_Class Класс объекта, чей метод будет использоваться в качестве сравнивающей
+	 *	функции. Вы можете использовать здесь модификатор `const`.
+	 *	\param object Объект, чей метод будет использоваться в качестве сравнивающей функции.
+	 *	\param comparator Ссылка на сравнивающую функцию.
+	 */
+	template<typename T_Class>
+	void set_comparator(T_Class& object, const std::function<int(T_Class&, const T&, const T&)>& comparator);
 	
 	/**
-	 *	\brief Compares two values using the comparator.
+	 *	\~english
+	 *	\brief Compares two values using the comparator function
 	 *	
-	 *	Uses the comparator to compare two values.
+	 *	Uses the comparator function to compare two values.
 	 *	\param first The first value.
 	 *	\param second The second value.
-	 *	\return A positive number if the first value is more than the second; a negative number if
-	 *	the first value is less than the second; zero if two values are equal.
+	 *	\return A positive number if the first value should be after the second one; a negative
+	 *	number if the first value should be before the second one; zero if the values are equal.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает два значения с помощью сравнивающей функции
+	 *	
+	 *	Использует сравнивающую функцию для сравнения двух значений.
+	 *	\param first Первое значение.
+	 *	\param second Второе значение.
+	 *	\return Положительное число, если первое значение должно быть после второго; отрицательное
+	 *	число, если первое значение должно быть перед вторый; ноль, если значения равны.
 	 */
 	int compare(const T& first, const T& second) const;
 
 	/**
-	 *	\brief Compares two array elements using the comparator.
+	 *	\~english
+	 *	\brief Compares two array elements using the comparator function
 	 *
-	 *	Uses the comparator to compare two elements of the array.
-	 *	\param first The index of the first element.
-	 *	\param second The index of the second element.
-	 *	\return A positive number if the first element is more than the second; a negative number
-	 *	if the first element is less than the second; zero if two elements are equal.
+	 *	Uses the comparator function to compare two array elements.
+	 *	\param first The index of the first value.
+	 *	\param second The index of the second value.
+	 *	\return A positive number if the first value should be after the second one; a negative
+	 *	number if the first value should be before the second one; zero if the values are equal.
+	 *
+	 *	\~russian
+	 *	\brief Сравнивает два элемента массива с помощью сравнивающей функции
+	 *
+	 *	Использует сравнивающую функцию для сравнения двух элементов массива.
+	 *	\param first Индекс первого значения.
+	 *	\param second Индекс второго значения.
+	 *	\return Положительное число, если первое значение должно быть после второго; отрицательное
+	 *	число, если первое значение должно быть перед вторый; ноль, если значения равны.
 	 */
 	int compare_by_index(int first, int second) const;
 
+			/* OPERATORS */
+
 	/**
-	 *	\brief Copy assignment operator
-	 *
-	 *	Clears the array and assigns it the passed one. Invalidates all iterators. Sorts the array.
+	 *	\~english
+	 *	\brief The copy assignment operator
+	 *	
+	 *	Clears the array and inserts into it copies of elements of the passed array. Invalidates
+	 *	all iterators. Sorts the array.
+	 *	\warning This operator must not be used if the array contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param array The array to assign.
 	 *	\return A reference to itself.
+	 *	
+	 *	\~russian
+	 *	\brief Оператор присваивания копированием
+	 *	
+	 *	Очищает массив и вставляет в него копии элементов переданного массива. Аннулирует все
+	 *	итераторы. Сортирует массив.
+	 *	\warning Этот оператор не должен быть использован, если массив содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param array Массив для присваивания.
+	 *	\return Ссылка на себя.
 	 */
 	virtual SortedArray<T>& operator=(const Array<T>& array) override;
 
 	/**
-	 *	\brief Move assignment operator
+	 *	\~english
+	 *	\brief The move assignment operator
 	 *
-	 *	Clears the array and moves elements of the passed one into it. Invalidates all iterators.
+	 *	Clears the array and moves into it elements of the passed array. Invalidates all iterators.
 	 *	Sorts the array.
 	 *	\param array The array to move.
 	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Оператор присваивания перемещением
+	 *
+	 *	Очищает массив и перемещает в него элементы переданного массива. Аннулирует все итераторы.
+	 *	Сортирует массив.
+	 *	\param array Массив для перемещения.
+	 *	\return Ссылка на себя.
 	 */
 	virtual SortedArray<T>& operator=(Array<T>&& array) override;
 	
