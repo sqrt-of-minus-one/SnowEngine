@@ -65,7 +65,6 @@ class Delegate : public Object
 public:
 	Delegate();
 	Delegate(const Delegate<T_Ret, T_Args...>& delegate);
-	//Delegate(Delegate<T_Ret, T_Args...>&& delegate);
 
 	virtual String to_string() const noexcept override;
 	virtual int hash_code() const noexcept override;
@@ -73,15 +72,17 @@ public:
 	bool is_valid() const noexcept;
 
 	void bind(const std::function<T_Ret(T_Args...)>& func);
+	void bind(const Delegate<T_Ret, T_Args...>& func);
 
 	template<typename T_Class>
 	void bind(T_Class& object, const std::function<T_Ret(T_Class&, T_Args...)>& func);
 
 	void unbind();
 
-	T_Ret execute(T_Args... args);
+	T_Ret execute(T_Args... args) const;
 
-	T_Ret operator()(T_Args... args);
+	Delegate<T_Ret, T_Args...>& operator=(const Delegate<T_Ret, T_Args...>& delegate);
+	T_Ret operator()(T_Args... args) const;
 	operator bool() const noexcept;
 
 private:
@@ -180,12 +181,6 @@ Delegate<T_Ret, T_Args...>::Delegate(const Delegate<T_Ret, T_Args...>& delegate)
 	}
 }
 
-/*template<typename T_Ret, typename... T_Args>
-Delegate<T_Ret, T_Args...>::Delegate(Delegate<T_Ret, T_Args...>&& delegate) :
-	func_(std::move(delegate.func_)),
-	is_method_(delegate.is_method_)
-{}*/
-
 template<typename T_Ret, typename... T_Args>
 String Delegate<T_Ret, T_Args...>::to_string() const noexcept
 {
@@ -229,6 +224,21 @@ template<typename T_Ret, typename... T_Args>
 void Delegate<T_Ret, T_Args...>::bind(const std::function<T_Ret(T_Args...)>& func)
 {
 	func_.reset(new FunctionContainer_<T_Ret, T_Args...>(func));
+	is_method_ = false;
+}
+
+template<typename T_Ret, typename... T_Args>
+void Delegate<T_Ret, T_Args...>::bind(const Delegate<T_Ret, T_Args...>& func)
+{
+	if (func.func_)
+	{
+		func_ = func.func_->copy();
+		is_method_ = func.is_method_;
+	}
+	else
+	{
+		func_.reset();
+	}
 }
 
 template<typename T_Ret, typename ...T_Args>
@@ -236,6 +246,7 @@ template<typename T_Class>
 void Delegate<T_Ret, T_Args...>::bind(T_Class& object, const std::function<T_Ret(T_Class&, T_Args...)>& func)
 {
 	func_.reset(new MethodContainer_<T_Class, T_Ret, T_Args...>(&object, func));
+	is_method_ = true;
 }
 
 
@@ -246,7 +257,7 @@ void Delegate<T_Ret, T_Args...>::unbind()
 }
 
 template<typename T_Ret, typename... T_Args>
-T_Ret Delegate<T_Ret, T_Args...>::execute(T_Args ...args)
+T_Ret Delegate<T_Ret, T_Args...>::execute(T_Args ...args) const
 {
 	if (func_)
 	{
@@ -259,7 +270,14 @@ T_Ret Delegate<T_Ret, T_Args...>::execute(T_Args ...args)
 }
 
 template<typename T_Ret, typename... T_Args>
-T_Ret Delegate<T_Ret, T_Args...>::operator()(T_Args ...args)
+Delegate<T_Ret, T_Args...>& Delegate<T_Ret, T_Args...>::operator=(const Delegate<T_Ret, T_Args...>& delegate)
+{
+	bind(delegate);
+	return *this;
+}
+
+template<typename T_Ret, typename... T_Args>
+T_Ret Delegate<T_Ret, T_Args...>::operator()(T_Args ...args) const
 {
 	return execute(args...);
 }
