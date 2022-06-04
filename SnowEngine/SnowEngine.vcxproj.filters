@@ -42,6 +42,9 @@
     <Filter Include="Source Files\Util\Function">
       <UniqueIdentifier>{b60d83fe-a935-48dc-9254-24cebbd55e78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Time">
+      <UniqueIdentifier>{2ce556c7-0e07-42b5-ab97-34b143b30eaa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -134,6 +137,15 @@
     <ClInclude Include="Source\Util\Function\Delegate.h">
       <Filter>Source Files\Util\Function</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\Time\Timer.h">
+      <Filter>Source Files\Util\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Time\TimeInterval.h">
+      <Filter>Source Files\Util\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Time\Time.h">
+      <Filter>Source Files\Util\Time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -189,6 +201,15 @@
     </ClCompile>
     <ClCompile Include="Source\Util\Function\Event.h">
       <Filter>Source Files\Util\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Time\Timer.cpp">
+      <Filter>Source Files\Util\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Time\TimeInterval.cpp">
+      <Filter>Source Files\Util\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Time\Time.cpp">
+      <Filter>Source Files\Util\Time</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

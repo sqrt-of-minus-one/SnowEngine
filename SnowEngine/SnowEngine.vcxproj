@@ -47,6 +47,9 @@
     <ClInclude Include="Source\Util\SnowCat\Log.h" />
     <ClInclude Include="Source\Util\SnowFlake\Lang.h" />
     <ClInclude Include="Source\Util\SnowFlake\Text.h" />
+    <ClInclude Include="Source\Util\Time\Time.h" />
+    <ClInclude Include="Source\Util\Time\TimeInterval.h" />
+    <ClInclude Include="Source\Util\Time\Timer.h" />
     <ClInclude Include="Source\Util\Types\String.h" />
     <ClInclude Include="Source\Util\Util.h" />
   </ItemGroup>
@@ -67,6 +70,9 @@
     <ClCompile Include="Source\Util\SnowCat\Log.cpp" />
     <ClCompile Include="Source\Util\SnowFlake\Lang.cpp" />
     <ClCompile Include="Source\Util\SnowFlake\Text.cpp" />
+    <ClCompile Include="Source\Util\Time\Time.cpp" />
+    <ClCompile Include="Source\Util\Time\TimeInterval.cpp" />
+    <ClCompile Include="Source\Util\Time\Timer.cpp" />
     <ClCompile Include="Source\Util\Types\String.cpp" />
     <ClCompile Include="Source\Util\Util.cpp" />
   </ItemGroup>
