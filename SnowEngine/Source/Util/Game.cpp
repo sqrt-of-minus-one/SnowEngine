@@ -12,7 +12,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Config.h"
-#include "SnowFlake/Lang.h"
+#include "Lang/Lang.h"
 #include "Time/Time.h"
 
 using namespace snow;

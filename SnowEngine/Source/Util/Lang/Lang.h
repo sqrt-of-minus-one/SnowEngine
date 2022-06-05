@@ -21,7 +21,7 @@
  *	This file contains the definition of the Lang class
  */
 
-#include "../SnowCat/Log.h"
+#include "../Log/Log.h"
 #include "../Container/Map.h"
 
 namespace snow
