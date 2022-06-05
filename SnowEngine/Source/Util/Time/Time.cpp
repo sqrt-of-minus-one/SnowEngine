@@ -27,6 +27,26 @@ Time::Time(const Time& time) noexcept :
 	cache_state_(time.cache_state_)
 {}
 
+Time::Time(int year, EMonth month, int day, int hour, int minute, int second,
+	int millisecond, int microsecond, int nanosecond) :
+	point_(),
+	cache_tm_(),
+	cache_state_(false)
+{
+	cache_tm_.tm_year = year - 1900;
+	cache_tm_.tm_mon = static_cast<int>(month) - 1;
+	cache_tm_.tm_mday = day;
+	cache_tm_.tm_hour = hour;
+	cache_tm_.tm_min = minute;
+	cache_tm_.tm_sec = second;
+	std::time_t time = std::mktime(&cache_tm_);
+	std::chrono::time_point<std::chrono::system_clock> system = std::chrono::system_clock::from_time_t(time);
+	point_ += std::chrono::duration_cast<std::chrono::duration<std::chrono::steady_clock::rep, std::chrono::steady_clock::period>>(
+			system.time_since_epoch() - std::chrono::system_clock::now().time_since_epoch()) +
+		std::chrono::steady_clock::now().time_since_epoch();
+	//point_ += std::chrono::nanoseconds(nanosecond) + std::chrono::microseconds(microsecond) + std::chrono::milliseconds(millisecond);
+}
+
 String Time::to_string() const noexcept
 {
 	return String::format(L"%02d.%02d.%04d, %02d:%02d:%02d"_s,
@@ -117,6 +137,11 @@ int Time::year_day() const
 	return cache_tm_.tm_yday;
 }
 
+Time Time::now()
+{
+	return Time(std::chrono::steady_clock::now());
+}
+
 Time& Time::operator=(const Time& time)
 {
 	point_ = time.point_;
@@ -127,23 +152,17 @@ Time& Time::operator=(const Time& time)
 
 Time Time::operator+(const TimeInterval& interval) const
 {
-	Time ret;
-	ret.point_ = point_ + interval.duration_;
-	return ret;
+	return Time(point_ + interval.duration_);
 }
 
 TimeInterval Time::operator-(const Time& time) const
 {
-	TimeInterval ret;
-	ret.duration_ = point_ - time.point_;
-	return ret;
+	return TimeInterval(point_ - time.point_);
 }
 
 Time Time::operator-(const TimeInterval& interval) const
 {
-	Time ret;
-	ret.point_ = point_ + interval.duration_;
-	return ret;
+	return Time(point_ - interval.duration_);
 }
 
 Time& Time::operator+=(const TimeInterval& interval)
@@ -190,11 +209,17 @@ bool Time::operator>=(const Time& interval) const
 	return point_ >= interval.point_;
 }
 
+Time::Time(const std::chrono::time_point<std::chrono::steady_clock>& point) :
+	point_(point),
+	cache_tm_(),
+	cache_state_(false)
+{}
+
 void Time::update_cache_() const
 {
 	std::chrono::time_point<std::chrono::system_clock> system(
 		std::chrono::duration_cast<std::chrono::duration<std::chrono::system_clock::rep, std::chrono::system_clock::period>>(
-			point_.time_since_epoch() + std::chrono::steady_clock::now().time_since_epoch()) +
+			point_.time_since_epoch() - std::chrono::steady_clock::now().time_since_epoch()) +
 		std::chrono::system_clock::now().time_since_epoch());
 	std::time_t time = std::chrono::system_clock::to_time_t(system);
 	cache_tm_ = *std::gmtime(&time);

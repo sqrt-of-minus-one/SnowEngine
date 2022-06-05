@@ -14,10 +14,11 @@
 
 #include "Lang.h"
 
-#include "../Game.h"
-
 #include <filesystem>
 #include <fstream>
+
+#include "../Game.h"
+#include "../Config.h"
 
 using namespace snow;
 

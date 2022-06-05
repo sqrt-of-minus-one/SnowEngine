@@ -11,6 +11,10 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Config.h"
+#include "SnowFlake/Lang.h"
+#include "Time/Time.h"
+
 using namespace snow;
 
 void Game::start()

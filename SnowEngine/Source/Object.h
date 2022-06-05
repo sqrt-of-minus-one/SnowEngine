@@ -55,7 +55,7 @@ public:
 	static bool is_valid(const Object* object) noexcept;
 
 private:
-	static std::set<const Object*> existing_objects_;
+	/*lazy evaluation*/ static std::set<const Object*>& existing_objects_();
 };
 
 }

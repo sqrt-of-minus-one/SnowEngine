@@ -94,32 +94,24 @@ const TimeInterval TimeInterval::operator+() const
 
 const TimeInterval TimeInterval::operator-() const
 {
-	TimeInterval ret;
-	ret.duration_ = -duration_;
-	return ret;
+	return TimeInterval(-duration_);
 }
 
 const TimeInterval TimeInterval::operator+(const TimeInterval& interval) const
 {
-	TimeInterval ret;
-	ret.duration_ = duration_ + interval.duration_;
-	return ret;
+	return TimeInterval(duration_ + interval.duration_);
 }
 
 const TimeInterval TimeInterval::operator-(const TimeInterval& interval) const
 {
-	TimeInterval ret;
-	ret.duration_ = duration_ - interval.duration_;
-	return ret;
+	return TimeInterval(duration_ - interval.duration_);
 }
 
 const TimeInterval TimeInterval::operator*(float value) const
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono::duration_cast<std::chrono::duration<
+	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period>>(duration_ * value);
-	return ret;
+		std::chrono::steady_clock::period>>(duration_ * value));
 }
 
 const TimeInterval snow::operator*(float value, const TimeInterval& interval)
@@ -129,11 +121,9 @@ const TimeInterval snow::operator*(float value, const TimeInterval& interval)
 
 const TimeInterval TimeInterval::operator/(float value) const
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono::duration_cast<std::chrono::duration<
+	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period>>(duration_ / value);
-	return ret;
+		std::chrono::steady_clock::period>>(duration_ / value));
 }
 
 TimeInterval& TimeInterval::operator+=(const TimeInterval& interval)
@@ -196,98 +186,76 @@ bool TimeInterval::operator>=(const TimeInterval& interval)
 
 TimeInterval snow::operator""_ns(long double ns) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono::duration_cast<std::chrono::duration<
+	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period>>(std::chrono_literals::operator""ns(ns));
-	return ret;
+		std::chrono::steady_clock::period>>(std::chrono_literals::operator""ns(ns)));
 }
 
 TimeInterval snow::operator""_ns(unsigned long long ns) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono_literals::operator""ns(ns);
-	return ret;
+	return TimeInterval(std::chrono_literals::operator""ns(ns));
 }
 
 TimeInterval snow::operator""_us(long double us) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono::duration_cast<std::chrono::duration<
+	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period>>(std::chrono_literals::operator""us(us));
-	return ret;
+		std::chrono::steady_clock::period>>(std::chrono_literals::operator""us(us)));
 }
 
 TimeInterval snow::operator""_us(unsigned long long us) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono_literals::operator""us(us);
-	return ret;
+	return TimeInterval(std::chrono_literals::operator""us(us));
 }
 
 TimeInterval snow::operator""_ms(long double ms) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono::duration_cast<std::chrono::duration<
+	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period>>(std::chrono_literals::operator""ms(ms));
-	return ret;
+		std::chrono::steady_clock::period>>(std::chrono_literals::operator""ms(ms)));
 }
 
 TimeInterval snow::operator""_ms(unsigned long long ms) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono_literals::operator""ms(ms);
-	return ret;
+	return TimeInterval(std::chrono_literals::operator""ms(ms));
 }
 
 TimeInterval snow::operator""_s(long double s) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono::duration_cast<std::chrono::duration<
+	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period>>(std::chrono_literals::operator""s(s));
-	return ret;
+		std::chrono::steady_clock::period>>(std::chrono_literals::operator""s(s)));
 }
 
 TimeInterval snow::operator""_s(unsigned long long s) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono_literals::operator""s(s);
-	return ret;
+	return TimeInterval(std::chrono_literals::operator""s(s));
 }
 
 TimeInterval snow::operator""_min(long double min) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono::duration_cast<std::chrono::duration<
+	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period>>(std::chrono_literals::operator""min(min));
-	return ret;
+		std::chrono::steady_clock::period>>(std::chrono_literals::operator""min(min)));
 }
 
 TimeInterval snow::operator""_min(unsigned long long min) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono_literals::operator""min(min);
-	return ret;
+	return TimeInterval(std::chrono_literals::operator""min(min));
 }
 
 TimeInterval snow::operator""_h(long double h) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono::duration_cast<std::chrono::duration<
+	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period>>(std::chrono_literals::operator""h(h));
-	return ret;
+		std::chrono::steady_clock::period>>(std::chrono_literals::operator""h(h)));
 }
 
 TimeInterval snow::operator""_h(unsigned long long h) noexcept
 {
-	TimeInterval ret;
-	ret.duration_ = std::chrono_literals::operator""h(h);
-	return ret;
+	return TimeInterval(std::chrono_literals::operator""h(h));
 }
 
-
+TimeInterval::TimeInterval(const std::chrono::duration<std::chrono::steady_clock::rep, std::chrono::steady_clock::period>& duration) :
+	duration_(duration)
+{}

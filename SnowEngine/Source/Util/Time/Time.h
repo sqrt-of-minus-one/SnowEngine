@@ -47,6 +47,8 @@ class Time : public Object
 public:
 	Time() noexcept;
 	Time(const Time& time) noexcept;
+	Time(int year, EMonth month, int day, int hour = 0, int minute = 0, int second = 0,
+		int millisecond = 0, int microsecond = 0, int nanosecond = 0);
 
 	virtual String to_string() const noexcept override;
 	virtual int hash_code() const noexcept override;
@@ -59,6 +61,8 @@ public:
 	int year() const;
 	EWeekDay week_day() const;
 	int year_day() const;
+
+	static Time now();
 
 	Time& operator=(const Time& time);
 
@@ -77,6 +81,8 @@ public:
 	bool operator>=(const Time& interval) const;
 
 private:
+	Time(const std::chrono::time_point<std::chrono::steady_clock>& point);
+
 	std::chrono::time_point<std::chrono::steady_clock> point_;
 	mutable std::tm cache_tm_;
 	mutable bool cache_state_;

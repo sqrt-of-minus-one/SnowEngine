@@ -70,6 +70,10 @@ public:
 	static const TimeInterval ZERO;
 	
 private:
+	TimeInterval(const std::chrono::duration<
+		std::chrono::steady_clock::rep,
+		std::chrono::steady_clock::period>& duration);
+
 	std::chrono::duration<
 		std::chrono::steady_clock::rep,
 		std::chrono::steady_clock::period> duration_;

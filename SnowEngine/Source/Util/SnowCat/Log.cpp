@@ -23,12 +23,13 @@
 
 #include "Log.h"
 
-#include "../Game.h"
-
 #include <fstream>
 #include <iostream>
 #include <ctime>
 #include <filesystem>
+
+#include "../Game.h"
+#include "../Config.h"
 
 using namespace snow;
 
