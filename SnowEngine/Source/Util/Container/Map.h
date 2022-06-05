@@ -19,11 +19,15 @@
  *	Этот файл содержит определение класса `Map`.
  */
 
+#include "MapIterator.h"
+		// + Object
+		// + IContainer
+
 #include <list>
 
 #include "Array.h"
-#include "MapIterator.h"
 #include "Pair.h"
+#include "LinkedList.h"
 
 namespace snow
 {

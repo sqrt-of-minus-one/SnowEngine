@@ -20,6 +20,7 @@
  */
 
 #include "../../Object.h"
+
 #include "../Util.h"
 
 namespace snow

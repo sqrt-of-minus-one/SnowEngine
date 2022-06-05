@@ -20,6 +20,8 @@
  */
 
 #include "LinkedListIterator.h"
+		// + Object
+		// + IContainer
 
 #include <list>
 

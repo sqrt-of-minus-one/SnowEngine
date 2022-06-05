@@ -19,10 +19,12 @@
  *	Этот файл содержит определение класса `Array`.
  */
 
+#include "ArrayIterator.h"
+		// + Object
+		// + IContainer
+
 #include <list>
 
-#include "ArrayIterator.h"
-#include "LinkedList.h"
 #include "../../Math/Math.h"
 
 namespace snow

@@ -20,6 +20,8 @@
  */
 
 #include "LinkedList.h"
+		// + Object
+		// + IContainer
 
 namespace snow
 {
