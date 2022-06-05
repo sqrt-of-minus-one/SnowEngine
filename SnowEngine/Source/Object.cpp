@@ -10,17 +10,21 @@ using namespace snow;
 
 Object::Object() noexcept
 {
-	existing_objects_.insert(this);
+	existing_objects_().insert(this);
 }
 
 Object::~Object() noexcept
 {
-	existing_objects_.erase(this);
+	existing_objects_().erase(this);
 }
 
 bool Object::is_valid(const Object* object) noexcept
 {
-	return object != nullptr && existing_objects_.count(object) != 0;
+	return object != nullptr && existing_objects_().count(object) != 0;
 }
 
-std::set<const Object*> Object::existing_objects_;
+std::set<const Object*>& Object::existing_objects_()
+{
+	static std::set<const Object*> existing_objects;
+	return existing_objects;
+}

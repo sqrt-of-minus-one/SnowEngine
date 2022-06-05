@@ -18,6 +18,7 @@ namespace snow
 namespace
 {
 
+// Do not use this interface directly
 template<typename T_Ret, typename... T_Args>
 struct IFunctionContainer_
 {
@@ -28,6 +29,7 @@ public:
 	virtual int hash() const = 0;
 };
 
+// Do not use this structure directly
 template<typename T_Ret, typename... T_Args>
 struct FunctionContainer_ : public IFunctionContainer_<T_Ret, T_Args...>
 {
@@ -42,6 +44,7 @@ public:
 	virtual int hash() const override;
 };
 
+// Do not use this structure directly
 template<typename T_Class, typename T_Ret, typename... T_Args>
 struct MethodContainer_ : public IFunctionContainer_<T_Ret, T_Args...>
 {

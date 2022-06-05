@@ -15,11 +15,11 @@
 
 #include <mutex>
 
-#include "Config.h"
-#include "SnowFlake/Lang.h"
-
 namespace snow
 {
+
+class Config;
+class Lang;
 
 /**
  *	\brief The class that contains global game properties
@@ -28,6 +28,8 @@ namespace snow
  */
 class Game
 {
+	friend class Log;
+
 public:
 	Game() = delete;
 
@@ -52,7 +54,6 @@ public:
 private:
 	static void loop_();
 
-	friend class Log;
 	static bool debug_mode_;
 	static std::mutex log_file_mtx_;
 	static std::wofstream log_file_;
