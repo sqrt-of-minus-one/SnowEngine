@@ -1,4 +1,4 @@
-    ////////////////////////////////////////
+﻿    ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
  //  File: Config.h                    //
@@ -50,7 +50,7 @@ public:
 	 *	\brief Get the hash code
 	 *	
 	 *	The hash code of the Config object is the sum of hash codes of its members with different
-	 *	size (`log_path` - `lang_path` + `default_lang` - �).
+	 *	size (`log_path` - `lang_path` + `default_lang` - …).
 	 *	\return The hash code.
 	 */
 	virtual int hash_code() const noexcept override;

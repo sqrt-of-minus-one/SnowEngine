@@ -7,6 +7,7 @@
 #include "Source/Util/Types/String.h"
 
 #include "Source/Util/Container/Array.h"
+#include "Source/Util/Config.h"
 
 int main()
 {
@@ -17,6 +18,7 @@ int main()
 	std::wcout << (snow::Time(2022, snow::EMonth::SEP, 1, 12, 30)).to_string() << std::endl;
 
 	snow::Array<int>(5);
+
 
 	_getch();
 	return 0;

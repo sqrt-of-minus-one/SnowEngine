@@ -6,10 +6,10 @@
 
 #include "Util.h"
 
+#include <string>
+
 #include "Types/String.h"
 #include "../Math/Math.h"
-
-#include <string>
 
 using namespace snow;
 
@@ -127,7 +127,6 @@ String util::to_string(bool var) noexcept
 {
 	return var ? L"true"_s : L"false"_s;
 }
-
 
 int util::hash_code(int var) noexcept
 {
