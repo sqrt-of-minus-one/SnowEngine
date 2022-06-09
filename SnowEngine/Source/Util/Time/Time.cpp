@@ -44,13 +44,13 @@ Time::Time(int year, EMonth month, int day, int hour, int minute, int second,
 	point_ += std::chrono::duration_cast<std::chrono::duration<std::chrono::steady_clock::rep, std::chrono::steady_clock::period>>(
 			system.time_since_epoch() - std::chrono::system_clock::now().time_since_epoch()) +
 		std::chrono::steady_clock::now().time_since_epoch();
-	//point_ += std::chrono::nanoseconds(nanosecond) + std::chrono::microseconds(microsecond) + std::chrono::milliseconds(millisecond);
+	point_ += std::chrono::nanoseconds(nanosecond) + std::chrono::microseconds(microsecond) + std::chrono::milliseconds(millisecond);
 }
 
 String Time::to_string() const noexcept
 {
-	return String::format(L"%02d.%02d.%04d, %02d:%02d:%02d"_s,
-		month_day(), static_cast<int>(month()), year(), hour(), minute(), second());
+	return String::format(L"%04d.%02d.%02d-%02d:%02d:%02d"_s,
+		year(), static_cast<int>(month()), month_day(), hour(), minute(), second());
 }
 
 int Time::hash_code() const noexcept
@@ -222,6 +222,6 @@ void Time::update_cache_() const
 			point_.time_since_epoch() - std::chrono::steady_clock::now().time_since_epoch()) +
 		std::chrono::system_clock::now().time_since_epoch());
 	std::time_t time = std::chrono::system_clock::to_time_t(system);
-	cache_tm_ = *std::gmtime(&time);
+	cache_tm_ = *std::localtime(&time);
 	cache_state_ = true;
 }

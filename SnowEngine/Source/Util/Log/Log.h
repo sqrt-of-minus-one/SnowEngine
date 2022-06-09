@@ -23,6 +23,8 @@
 
 #include "../../Object.h"
 
+#include <mutex>
+
 #include "../Types/String.h"
 
 namespace snow
@@ -126,8 +128,12 @@ public:
 private:
 	const String name_;
 	static int object_counter_;
+	
+	
+	/* lazy */ static bool& debug_mode_();
+	/* lazy */ static std::mutex& log_file_mtx_();
+	/* lazy */ static std::wofstream& log_file_();
 
-	static String get_time_string_() noexcept;
 	void log_(const String& type, const String& message) noexcept;
 };
 

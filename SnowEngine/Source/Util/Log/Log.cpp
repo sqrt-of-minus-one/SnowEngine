@@ -30,6 +30,7 @@
 
 #include "../Game.h"
 #include "../Config.h"
+#include "../Time/Time.h"
 
 using namespace snow;
 
@@ -37,27 +38,27 @@ Log::Log(const String& category_name) noexcept :
 	name_(category_name)
 {
 	object_counter_++;
-	if (!Game::log_file_.is_open())
+	if (!log_file_().is_open())
 	{
-		std::lock_guard<std::mutex> log_grd(Game::log_file_mtx_);
+		std::lock_guard<std::mutex> log_grd(log_file_mtx_());
 		if (!std::filesystem::exists(Game::config.log_path.to_std_string()))
 		{
 			std::filesystem::create_directories(Game::config.log_path.to_std_string());
 		}
 		std::wstring tmp = (Game::config.log_path + L"\\Log.log").to_std_string();
-		Game::log_file_.open(tmp);
-		tmp = String::format(L"[%s][SnowCat] SnowCat log file is opened (meow!)"_s, get_time_string_()).to_std_string();
-		Game::log_file_ << tmp << std::endl;
+		log_file_().open(tmp);
+		tmp = String::format(L"[%s][SnowCat] SnowCat log file is opened (meow!)"_s, Time::now().to_string()).to_std_string();
+		log_file_() << tmp << std::endl;
 	}
 }
 
 Log::~Log() noexcept
 {
-	if (--object_counter_ <= 0 && Game::log_file_.is_open())
+	if (--object_counter_ <= 0 && log_file_().is_open())
 	{
-		std::lock_guard<std::mutex> log_grd(Game::log_file_mtx_);
-		Game::log_file_ << String::format(L"[%s][SnowCat] SnowCat log file is closed"_s, get_time_string_()) << std::endl;
-		Game::log_file_.close();
+		std::lock_guard<std::mutex> log_grd(log_file_mtx_());
+		log_file_() << String::format(L"[%s][SnowCat] SnowCat log file is closed"_s, Time::now().to_string()) << std::endl;
+		log_file_().close();
 	}
 }
 
@@ -73,22 +74,22 @@ int Log::hash_code() const noexcept
 
 void Log::enable_debug_mode() noexcept
 {
-	Game::debug_mode_ = true;
+	debug_mode_() = true;
 }
 
 void Log::disable_debug_mode() noexcept
 {
-	Game::debug_mode_ = false;
+	debug_mode_() = false;
 }
 
 bool Log::is_debug_mode_enabled() noexcept
 {
-	return Game::debug_mode_;
+	return debug_mode_();
 }
 
 void Log::d(const String& message) noexcept
 {
-	if (Game::debug_mode_)
+	if (debug_mode_())
 	{
 		log_(L"[Debug  ] "_s, message);
 	}
@@ -109,22 +110,35 @@ void Log::e(const String& message) noexcept
 	log_(L"[ERROR  ] "_s, message);
 }
 
-String Log::get_time_string_() noexcept
-{
-	std::time_t current_time = std::time(nullptr);
-	std::tm time = *std::localtime(&current_time);
-	return String::format(L"%04d.%02d.%02d-%02d:%02d:%02d"_s,
-		time.tm_year + 1900, time.tm_mon + 1, time.tm_mday,
-		time.tm_hour, time.tm_min, time.tm_sec);
-}
-
 void Log::log_(const String& type, const String& message) noexcept
 {
-	std::lock_guard<std::mutex> log_grd(Game::log_file_mtx_);
-	String time_str = get_time_string_();
+	std::lock_guard<std::mutex> log_grd(log_file_mtx_());
+	String time_str = Time::now().to_string();
 
-	Game::log_file_ << L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
+	log_file_ ()<< L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
 	std::wcout << L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
+}
+
+bool& Log::debug_mode_()
+{
+#ifdef _DEBUG
+	static bool debug_mode = true;
+#else
+	static bool debug_mode = false;
+#endif // _DEBUG
+	return debug_mode;
+}
+
+std::mutex& Log::log_file_mtx_()
+{
+	static std::mutex log_file_mtx;
+	return log_file_mtx;
+}
+
+std::wofstream& Log::log_file_()
+{
+	static std::wofstream log_file;
+	return log_file;
 }
 
 int Log::object_counter_ = 0;
