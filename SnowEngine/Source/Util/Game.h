@@ -13,13 +13,14 @@
  *	This file contains the definition of the Game class.
  */
 
-#include <mutex>
+#include <memory>
 
 namespace snow
 {
 
 class Config;
 class Lang;
+class Log;
 
 /**
  *	\brief The class that contains global game properties
@@ -28,8 +29,6 @@ class Lang;
  */
 class Game
 {
-	friend class Log;
-
 public:
 	Game() = delete;
 
@@ -54,9 +53,6 @@ public:
 private:
 	static void loop_();
 
-	static bool debug_mode_;
-	static std::mutex log_file_mtx_;
-	static std::wofstream log_file_;
 	static std::unique_ptr<Log> main_log_;
 };
 

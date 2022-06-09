@@ -49,15 +49,6 @@ void Game::loop_()
 	main_log_->i(L"The main window has been closed"_s);
 }
 
-std::mutex Game::log_file_mtx_;
-std::wofstream Game::log_file_;
-
-#ifdef _DEBUG
-bool Game::debug_mode_ = true;
-#else
-bool Game::debug_mode_ = false;
-#endif
-
 Config Game::config;
 Lang Game::lang;
 std::unique_ptr<Log> Game::main_log_(new Log(L"Main"_s));
