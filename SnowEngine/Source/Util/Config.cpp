@@ -46,42 +46,6 @@ inline String check_string_(const String& str)
 	}
 }
 
-Config::Config() :
-		// Default
-	log_path(L"Logs"_s),
-	lang_path(L"Localization"_s),
-	default_lang(L"en_UK"_s),
-		// Window
-	resolution(800, 600),
-	fullscreen(false),
-	resize(true),
-	titlebar(true),
-	titlebar_buttons(true),
-	title(L"The Game (powered by SnowEngine)")
-{
-	if (!std::filesystem::exists(L"config.ini"))
-	{
-		save();
-	}
-	else
-	{
-		load();
-	}
-
-	if (!std::filesystem::exists(lang_path.to_std_string()))
-	{
-		std::filesystem::create_directories(lang_path.to_std_string());
-	}
-	if (!std::filesystem::exists((lang_path + L'\\' + default_lang + L".lang").to_std_string()))
-	{
-		std::wofstream file((lang_path + L'\\' + default_lang + L".lang").to_std_string());
-		file << L"lang.name: English (United Kingdom)" << std::endl <<
-			L"lang.code: " << default_lang.to_std_string() << std::endl <<
-			L"lang.test: Hello World!" << std::endl;
-		file.close();
-	}
-}
-
 String Config::to_string() const noexcept
 {
 	return
@@ -268,4 +232,40 @@ end_loop:;
 		}
 	}
 	file.close();
+}
+
+Config::Config() :
+		// Default
+	log_path(L"Logs"_s),
+	lang_path(L"Localization"_s),
+	default_lang(L"en_UK"_s),
+		// Window
+	resolution(800, 600),
+	fullscreen(false),
+	resize(true),
+	titlebar(true),
+	titlebar_buttons(true),
+	title(L"The Game (powered by SnowEngine)")
+{
+	if (!std::filesystem::exists(L"config.ini"))
+	{
+		save();
+	}
+	else
+	{
+		load();
+	}
+
+	if (!std::filesystem::exists(lang_path.to_std_string()))
+	{
+		std::filesystem::create_directories(lang_path.to_std_string());
+	}
+	if (!std::filesystem::exists((lang_path + L'\\' + default_lang + L".lang").to_std_string()))
+	{
+		std::wofstream file((lang_path + L'\\' + default_lang + L".lang").to_std_string());
+		file << L"lang.name: English (United Kingdom)" << std::endl <<
+			L"lang.code: " << default_lang.to_std_string() << std::endl <<
+			L"lang.test: Hello World!" << std::endl;
+		file.close();
+	}
 }

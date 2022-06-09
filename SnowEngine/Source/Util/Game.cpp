@@ -19,9 +19,21 @@ using namespace snow;
 
 void Game::start()
 {
-	std::thread loop_thread(loop_);
-	loop_thread.detach();
-	main_log_->i(L"The game has been started"_s);
+	if (!is_started_)
+	{
+		std::thread loop_thread(loop_);
+		loop_thread.detach();
+		main_log_->i(L"The game has been started"_s);
+		is_started_ = true;
+	}
+}
+
+Config Game::config;
+Lang Game::lang;
+
+bool Game::is_started() noexcept
+{
+	return is_started_;
 }
 
 void Game::loop_()
@@ -49,6 +61,5 @@ void Game::loop_()
 	main_log_->i(L"The main window has been closed"_s);
 }
 
-Config Game::config;
-Lang Game::lang;
+bool Game::is_started_ = false;
 std::unique_ptr<Log> Game::main_log_(new Log(L"Main"_s));
