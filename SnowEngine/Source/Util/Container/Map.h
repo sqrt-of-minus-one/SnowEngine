@@ -1030,6 +1030,8 @@ private:
 	for (auto i : iterators_) arg \
 	for (auto i : const_iterators_) arg
 
+		/* Map: public */
+
 template<typename T_Key, typename T_Value>
 Map<T_Key, T_Value>::Map() noexcept :
 	map_(DEFAULT_SIZE_),
@@ -1639,6 +1641,8 @@ const T_Value& Map<T_Key, T_Value>::operator[](const T_Key& key) const
 	}
 	throw std::invalid_argument("A map doesn't contain the passed key");
 }
+		
+		/* Map: private */
 
 template<typename T_Key, typename T_Value>
 void Map<T_Key, T_Value>::register_iterator_(MapIterator<T_Key, T_Value>* iterator) noexcept

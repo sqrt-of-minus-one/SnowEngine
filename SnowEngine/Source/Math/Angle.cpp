@@ -14,6 +14,8 @@
 
 using namespace snow;
 
+		/* Angle: public */
+
 Angle::Angle() noexcept :
 	value_deg_(0.f)
 {}

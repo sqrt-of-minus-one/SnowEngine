@@ -574,6 +574,8 @@ private:
 
 
 		/* DEFINITIONS */
+		
+		/* SortedArray: public */
 
 template<typename T>
 SortedArray<T>::SortedArray() noexcept :
@@ -793,6 +795,8 @@ SortedArray<T>& SortedArray<T>::operator=(Array<T>&& array)
 	sort_();
 	return *this;
 }
+		
+		/* SortedArray: private */
 
 template<typename T>
 int SortedArray<T>::get_index_to_add_(const T& element) const

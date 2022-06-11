@@ -46,6 +46,8 @@ inline String check_string_(const String& str)
 	}
 }
 
+		/* Config: public */
+
 String Config::to_string() const noexcept
 {
 	return
@@ -233,6 +235,8 @@ end_loop:;
 	}
 	file.close();
 }
+
+		/* Config: private */
 
 Config::Config() :
 		// Default

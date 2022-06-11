@@ -1309,7 +1309,9 @@ private:
 };
 
 
-		/* DEFINITIONS of LinkedListNode_ */
+		/* DEFINITIONS */
+		
+		/* LinkedListNode_ : public */
 
 template<typename T>
 LinkedListNode_<T>::LinkedListNode_(const T& val) noexcept :
@@ -1350,11 +1352,11 @@ LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(std::unique_ptr<T>&& val) n
 	next()
 {}
 
-		/* DEFINITIONS of LinkedList */
-
 #define FOR_ITERATORS_(i, arg) \
 	for (auto i : iterators_) arg \
 	for (auto i : const_iterators_) arg
+
+		/* LinkedList: public */
 
 template<typename T>
 LinkedList<T>::LinkedList() noexcept :
@@ -2212,6 +2214,8 @@ const T& LinkedList<T>::operator[](int index) const
 		throw std::out_of_range("Index is out of linked list bounds");
 	}
 }
+
+		/* LinkedList: private */
 
 template<typename T>
 std::shared_ptr<LinkedListNode_<T>> LinkedList<T>::get_last_node_() const noexcept

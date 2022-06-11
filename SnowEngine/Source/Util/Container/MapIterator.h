@@ -539,6 +539,8 @@ using MapIterator = BaseMapIterator_<Map<T_Key, T_Value>, T_Key, T_Value>;
 
 
 		/* DEFINITIONS */
+		
+		/* BaseMapIterator_: public */
 
 template<typename T_Container, typename T_Key, typename T_Value>
 BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) noexcept :
@@ -797,6 +799,8 @@ T_Value* BaseMapIterator_<T_Container, T_Key, T_Value>::operator->() const
 {
 	return &get();
 }
+		
+		/* BaseMapIterator_: private */
 
 template<typename T_Container, typename T_Key, typename T_Value>
 BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(T_Container& map, const T_Key& key, bool is_end, bool is_valid) noexcept :

@@ -544,6 +544,8 @@ using LinkedListIterator = BaseLinkedListIterator_<LinkedList<T>, T, LinkedListN
 
 		/* DEFINITIONS */
 
+		/* BaseLinkedListIterator_: public */
+
 template<typename T_Container, typename T_Element, typename T_Node>
 BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) noexcept :
 	container_(iterator.container_),
@@ -766,6 +768,8 @@ T_Element* BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator->()
 {
 	return &get();
 }
+
+		/* BaseLinkedListIterator_: private */
 
 template<typename T_Container, typename T_Element, typename T_Node>
 BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node, bool is_valid) noexcept :

@@ -487,6 +487,8 @@ private:
 
 
 		/* DEFINITIONS */
+		
+		/* Deque: public */
 
 template<typename T>
 Deque<T>::Deque() noexcept :

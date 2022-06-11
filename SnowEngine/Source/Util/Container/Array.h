@@ -1054,6 +1054,8 @@ private:
 	for (auto i : iterators_) arg \
 	for (auto i : const_iterators_) arg
 
+		/* Array: public */
+
 template<typename T>
 Array<T>::Array() noexcept :
 	real_size_(DEFAULT_REAL_SIZE_),
@@ -1673,6 +1675,8 @@ const T& Array<T>::operator[](int index) const
 		throw std::out_of_range("Index is out of array bounds");
 	}
 }
+
+		/* Array: private */
 
 template<typename T>
 bool Array<T>::add_to_end_(const T& element)

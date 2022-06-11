@@ -401,6 +401,8 @@ private:
 
 
 		/* DEFINITIONS */
+		
+		/* Queue: public */
 
 template<typename T>
 Queue<T>::Queue() noexcept :

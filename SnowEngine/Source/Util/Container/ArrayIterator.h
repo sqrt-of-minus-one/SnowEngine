@@ -536,6 +536,8 @@ using ArrayIterator = BaseArrayIterator_<Array<T>, T>;
 
 		/* DEFINITIONS */
 
+		/* BaseArrayIterator_: public */
+
 template<typename T_Container, typename T_Element>
 BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(const BaseArrayIterator_<T_Container, T_Element>& iterator) noexcept :
 	container_(iterator.container_),
@@ -751,6 +753,8 @@ T_Element* BaseArrayIterator_<T_Container, T_Element>::operator->() const
 {
 	return &get();
 }
+
+		/* BaseArrayIterator_: private */
 
 template<typename T_Container, typename T_Element>
 BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(T_Container& array, int index, bool is_valid) noexcept :

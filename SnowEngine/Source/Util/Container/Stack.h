@@ -409,6 +409,8 @@ private:
 
 
 		/* DEFINITIONS */
+		
+		/* Stack: public */
 
 template<typename T>
 Stack<T>::Stack() noexcept :

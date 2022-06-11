@@ -469,7 +469,9 @@ private:
 };
 
 
-		/* DEFINITIONS OF Wrap_ */
+		/* DEFINITIONS */
+		
+		/* Wrap_: public */
 
 template<typename T>
 Wrap_<T>::Wrap_(const T& v) noexcept :
@@ -493,7 +495,7 @@ Wrap_<std::unique_ptr<T>>::Wrap_(std::unique_ptr<T>&& v) noexcept :
 	var(std::move(v))
 {}
 
-		/* DEFINITIONS OF Pair */
+		/* Pair: public */
 
 template<typename T_First, typename T_Second>
 Pair<T_First, T_Second>::Pair() noexcept :

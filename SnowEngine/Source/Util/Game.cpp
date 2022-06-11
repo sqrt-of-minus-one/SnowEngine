@@ -17,6 +17,8 @@
 
 using namespace snow;
 
+		/* Game: public */
+
 void Game::start()
 {
 	if (!is_started_)
@@ -28,13 +30,15 @@ void Game::start()
 	}
 }
 
-Config Game::config;
-Lang Game::lang;
-
 bool Game::is_started() noexcept
 {
 	return is_started_;
 }
+
+Config Game::config;
+Lang Game::lang;
+
+		/* Game: private */
 
 void Game::loop_()
 {
