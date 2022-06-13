@@ -12,13 +12,6 @@
 /////  / \  ////     ///  ///   ///    //////   ///   ///    //  ///  //  //// logging system ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- *	\file
- *	\brief The cpp-file of the SnowCat logger
- *
- *	This file contains the definitions of the Log class methods.
- */
-
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Log.h"
@@ -125,7 +118,7 @@ bool& Log::debug_mode_()
 	static bool debug_mode = true;
 #else
 	static bool debug_mode = false;
-#endif // _DEBUG
+#endif
 	return debug_mode;
 }
 
