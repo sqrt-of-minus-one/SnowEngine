@@ -1,4 +1,4 @@
-    ////////////////////////////////////////
+﻿    ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
  //  File: Text.h                      //
@@ -16,163 +16,314 @@
 
 /**
  *	\file
- *	\brief The file of the SnowFlake's Text class
- *	
- *	This file contains the definition of the Text class.
+ *	\~english
+ *	\brief The file with `Text` class
+ *
+ *	This file contains the definition of the `Text` class of the SnowFlake System.
+ *
+ *	\~russian
+ *	\brief Файл с классом `Text`
+ *
+ *	Этот файл содержит определение класса `Text` системы SnowFlake.
  */
 
 #include "../Types/String.h"
+		// + Object
 
 namespace snow
 {
 
 /**
- *	\brief The Text class allows to use localizable text
+ *	\~english
+ *	\brief The localizable text
  *	
- *	This class keeps the code of localizable string. You can use `to_string()` method to get the
+ *	This class keeps the code of a localizable string. You can use `to_string` method to get the
  *	string in the current language.
+ *	
+ *	\~russian
+ *	\brief Локализуемый текст
+ *	
+ *	Этот класс содержит код локализуемой строки. Вы можете использовать метод `to_string`, чтобы
+ *	получить строку на соответствуеющем языке.
  */
 class Text : public Object
 {
 public:
+			/* CONSTRUCTORS */
 
 	/**
+	 *	\~english
 	 *	\brief The default constructor
 	 *	
-	 *	Creates the empty string.
+	 *	Creates an empty text.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор по умолчанию
+	 *	
+	 *	Создаёт пустой текст.
 	 */
 	Text() noexcept;
 
 	/**
+	 *	\~english
 	 *	\brief The copy constructor
-	 *	
-	 *	Creates a new Text object by copying the passed one.
-	 *	\param text The text to copy.
+	 *
+	 *	Copies the text.
+	 *	\param text The text that will be copied.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор копирования
+	 *
+	 *	Копирует текст.
+	 *	\param text Текст, который будет скопирован.
 	 */
 	Text(const Text& text) noexcept;
 
 	/**
+	 *	\~english
 	 *	\brief The move constructor
-	 *	
-	 *	Creates a new Text object by moving the string code value from the passed one.
-	 *	\param text The text whose value will be moved.
+	 *
+	 *	Creates a new text by moving the code from the passed one.
+	 *	\param text The text whose code will be moved.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор перемещения
+	 *
+	 *	Создаёт новый текст путём перемещения кода из переданного.
+	 *	\param text Текст, чей код будет перемещён.
 	 */
 	Text(Text&& text) noexcept;
 
 	/**
-	 *	\brief Create a new Text object using the passed key
-	 *	
-	 *	Creates a new Text object with the passed key.
+	 *	\~russian
+	 *	\brief Creates a new text with the passed key
+	 *
+	 *	Creates a new text with the passed key.
 	 *	\param key The key.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт новый текст с переданным ключом
+	 *	
+	 *	Создаёт новый текст с переданным ключом.
+	 *	\param key Ключ.
 	 */
 	Text(const String& key) noexcept;
 
 	/**
-	 *	\brief Create a new Text object using the passed key
+	 *	\~russian
+	 *	\brief Creates a new text with the passed key
 	 *
-	 *	Creates a new Text object with the passed key.
+	 *	Creates a new text with the passed key.
 	 *	\param key The key.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт новый текст с переданным ключом
+	 *
+	 *	Создаёт новый текст с переданным ключом.
+	 *	\param key Ключ.
 	 */
 	Text(String&& key) noexcept;
 
+			/* METHODS FROM Object */
+
 	/**
-	 *	\brief Get the localized string
+	 *	\~english
+	 *	\brief The localized string
 	 *	
 	 *	Allows to get the localized string in the current language.
 	 *	\return The localized string.
+	 *	
+	 *	\~russian
+	 *	\brief Локализованный текст
+	 *	
+	 *	Позволяет получить локализованный текст на текущем языке.
+	 *	\return Локализованный текст.
 	 */
 	virtual String to_string() const noexcept override;
 
 	/**
-	 *	\brief Get the hash code
+	 *	\~english
+	 *	\brief Hash code of the text
 	 *	
-	 *	The hash code of the Text object is the hash code of its key.
+	 *	The hash code of the text is the hash code of its key.
 	 *	\return The hash code.
+	 *	
+	 *	\~russian
+	 *	\brief Хеш-код текста
+	 *	
+	 *	Хеш-код текста — это хеш-код его ключа.
+	 *	\return Хеш-код.
 	 */
 	virtual int hash_code() const noexcept override;
 
+			/* METHODS */
+
 	/**
-	 *	\brief Get the key
+	 *	~english
+	 *	\brief The key
 	 *	
 	 *	Allows to get the key of the text.
 	 *	\return The key.
+	 *	
+	 *	\~russian
+	 *	\brief Ключ
+	 *	
+	 *	Позволяет получить ключ текста.
+	 *	\return Ключ.
 	 */
 	const String& get_key() const noexcept;
 	
 	/**
-	 *	\brief Whether the Text object is valid
+	 *	\~english
+	 *	\brief Checks whether the text is valid
 	 *	
-	 *	Checks whether the key of the Text object is contained in the table of the string of the
-	 *	current language.
+	 *	Checks whether the key of the text is contained in the table of strings of the current
+	 *	language.
 	 *	\return `true` if the key is valid, `false` otherwise.
+	 *	
+	 *	\~russian
+	 *	\brief Проверяет, действителен ли текст
+	 *	
+	 *	Проверяет, содержится ли ключ текста в таблице строк текущего языка.
+	 *	\return `true`, если ключ действителен, иначе `false`.
 	 */
 	bool is_valid() const noexcept;
 
+			/* OPERATORS */
+
 	/**
+	 *	\~english
 	 *	\brief The copy assignment operator
 	 *	
 	 *	Replaces the current key with the one of the passed text.
 	 *	\param text The text to copy.
+	 *	\return A reference to itself.
+	 *	
+	 *	\~russian
+	 *	\brief Оператор присваивания копированием
+	 *	
+	 *	Заменяет текущий ключ на ключ переданного текста.
+	 *	\param text Текст для копирования.
+	 *	\return Ссылка на себя.
 	 */
 	Text& operator=(const Text& text);
 
 	/**
+	 *	\~english
 	 *	\brief The move assignment operator
 	 *
 	 *	Replaces the current key with the one of the passed text.
-	 *	\param text The text whose key will be moved.
+	 *	\param text The text to move.
+	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Оператор присваивания перемещением
+	 *
+	 *	Заменяет текущий ключ на ключ переданного текста.
+	 *	\param text Текст для перемещения.
+	 *	\return Ссылка на себя.
 	 */
 	Text& operator=(Text&& text);
 
 	/**
-	 *	\brief Set the key
+	 *	\~english
+	 *	\brief Sets the key
 	 *
 	 *	Replaces the current key with the passed one.
 	 *	\param text The new key.
+	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает ключ
+	 *
+	 *	Заменяет текущий ключ на переданный.
+	 *	\param text Новый ключ.
+	 *	\return Ссылка на себя.
 	 */
 	Text& operator=(const String& key);
 
 	/**
-	 *	\brief Set the key
+	 *	\~english
+	 *	\brief Sets the key
 	 *
 	 *	Replaces the current key with the passed one.
 	 *	\param text The new key.
+	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает ключ
+	 *
+	 *	Заменяет текущий ключ на переданный.
+	 *	\param text Новый ключ.
+	 *	\return Ссылка на себя.
 	 */
 	Text& operator=(String&& key);
 
 	/**
-	 *	\brief Whether two Text objects are equal
+	 *	\~english
+	 *	\brief Checks whether two texts are equal
 	 *	
-	 *	Two objects are equal if their keys are equal.
-	 *	\param text The Text object to compare.
-	 *	\return `true` if the objects are equal, `false` otherwise.
+	 *	Two texts are equal if their keys are equal.
+	 *	\param text The text to compare.
+	 *	\return `true` if two texts are equal, `false` otherwise.
+	 *	
+	 *	\~russian
+	 *	\brief Проверяет, равны ли два текста
+	 *	
+	 *	Два текста равны, если равны их ключи.
+	 *	\param text Текст для сравнения.
+	 *	\return `true`, если два текста равны, иначе `false`.
 	 */
 	bool operator==(const Text& text) const;
 
 	/**
-	 *	\brief Whether the Text objects has the passed key
+	 *	\~english
+	 *	\brief Checks whether the text has the passed key
 	 *
-	 *	Checks whether the key of the object is equal to the passed one.
+	 *	Checks whether the key of the text is equal to the passed string.
 	 *	\param key The key to compare.
-	 *	\return `true` if the key is equal to the passed one, `false` otherwise.
+	 *	\return `true` if the key of the text is equal to the passed string, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, имеет ли текст переданный ключ
+	 *
+	 *	Проверяет, равен ли ключ текста переданной строке.
+	 *	\param key Ключ для сравнения.
+	 *	\return `true`, если ключ текста равен переданной строке, иначе `false`.
 	 */
 	bool operator==(const String& key) const;
 
 	/**
-	 *	\brief Whether two Text objects are not equal
+	 *	\~english
+	 *	\brief Checks whether two texts are not equal
 	 *
-	 *	Two objects are equal if their keys are equal.
-	 *	\param text The Text object to compare.
-	 *	\return `true` if the objects are not equal, `false` otherwise.
+	 *	Two texts are equal if their keys are equal.
+	 *	\param text The text to compare.
+	 *	\return `true` if two texts are not equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, различаются ли два текста
+	 *
+	 *	Два текста равны, если равны их ключи.
+	 *	\param text Текст для сравнения.
+	 *	\return `true`, если два текста не равны, иначе `false`.
 	 */
 	bool operator!=(const Text& text) const;
 
 	/**
-	 *	\brief Whether the Text objects has not the passed key
+	 *	\~english
+	 *	\brief Checks whether the text has the key that is not equal to the passed one
 	 *
-	 *	Checks whether the key of the object differs from the passed one.
+	 *	Checks whether the key of the text is not equal to the passed string.
 	 *	\param key The key to compare.
-	 *	\return `true` if the key is not equal to the passed one, `false` otherwise.
+	 *	\return `true` if the key of the text is not equal to the passed string, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, имеет ли текст ключ, отличный от переданного
+	 *
+	 *	Проверяет, отличается ли ключ текста от переданной строки.
+	 *	\param key Ключ для сравнения.
+	 *	\return `true`, если ключ текста не равен переданной строке, иначе `false`.
 	 */
 	bool operator!=(const String& key) const;
 

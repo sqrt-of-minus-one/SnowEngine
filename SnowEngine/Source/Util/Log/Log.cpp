@@ -27,6 +27,8 @@
 
 using namespace snow;
 
+		/* Log: public */
+
 Log::Log(const String& category_name) noexcept :
 	name_(category_name)
 {
@@ -102,6 +104,8 @@ void Log::e(const String& message) noexcept
 {
 	log_(L"[ERROR  ] "_s, message);
 }
+
+		/* Log: private */
 
 void Log::log_(const String& type, const String& message) noexcept
 {

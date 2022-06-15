@@ -19,7 +19,6 @@ int main()
 
 	snow::Array<int>(5);
 
-
 	_getch();
 	return 0;
 }

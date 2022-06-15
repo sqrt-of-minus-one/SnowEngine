@@ -19,12 +19,12 @@
  *	\~english
  *	\brief The file with `Log` class
  *
- *	This file contains the definition of the `Log` class.
+ *	This file contains the definition of the `Log` class of the SnowCat system.
  *
  *	\~russian
  *	\brief Файл с классом `Log`
  *
- *	Этот файл содержит определение класса `Log`.
+ *	Этот файл содержит определение класса `Log` системы SnowCat.
  */
 
 #include "../../Object.h"

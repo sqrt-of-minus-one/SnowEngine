@@ -22,13 +22,7 @@
 
 using namespace snow;
 
-Lang::Lang() :
-	current_lang_(L""_s),
-	strings_(),
-	lang_log_(L"SnowFlake"_s)
-{
-	set_lang(Game::config.default_lang);
-}
+		/* Lang: public */
 
 String Lang::to_string() const noexcept
 {
@@ -97,4 +91,14 @@ String Lang::get_string(const String& key)
 bool Lang::is_valid(const String& key)
 {
 	return strings_.contains(key);
+}
+
+		/* Lang: private */
+
+Lang::Lang() :
+	current_lang_(L""_s),
+	strings_(),
+	lang_log_(L"SnowFlake"_s)
+{
+	set_lang(Game::config.default_lang);
 }

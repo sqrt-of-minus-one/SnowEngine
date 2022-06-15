@@ -19,6 +19,8 @@
 
 using namespace snow;
 
+		/* Text: public */
+
 Text::Text() noexcept :
 	key_()
 {}
