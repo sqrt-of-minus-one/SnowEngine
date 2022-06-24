@@ -69,20 +69,21 @@ public:
 	 *	\return Код текущего языка.
 	 */
 	virtual String to_string() const noexcept override;
-
+	
 	/**
 	 *	\~english
 	 *	\brief Hash code of the language manager
-	 *	
-	 *	The hash code of the language manager is the hash code of the string with current language
-	 *	code.
-	 *	\return The hash code.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код диспетчера языков
-	 *	
-	 *	Хеш-код диспетчера языков — это хеш-код строки с кодом текущего языка.
-	 *	\return Хеш-код.
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 

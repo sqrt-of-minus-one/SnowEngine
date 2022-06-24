@@ -38,7 +38,7 @@ namespace snow
  *	of the `LinkedList` class.
  *	
  *	\~russian
- *	\breif Класс очереди
+ *	\brief Класс очереди
  *	
  *	Эта очередь основана на связном списке (класс `LinkedList`). Она позволяет добавлять элементы
  *	только в её конец, а также удалять элементы только с начала.
@@ -126,14 +126,16 @@ public:
 	 *	\~english
 	 *	\brief Hash code of the queue
 	 *
-	 *	Hash code of the queue is hash code of the internal linked list.
-	 *	\return Hash code of the queue.
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an empty queue is zero.
+	 *	\return Hash code of the object.
 	 *
 	 *	\~russian
 	 *	\brief Хеш-код очереди
 	 *
-	 *	Хеш-код очереди — это хеш-код внутреннего связного списка.
-	 *	\return Хеш-код очереди.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустой очереди — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 

@@ -46,7 +46,7 @@ namespace snow
  *	of the `LinkedList` class.
  *	
  *	\~russian
- *	\breif Класс стека
+ *	\brief Класс стека
  *	
  *	Этот стек основан на связном списке (класс `LinkedList`). Он позволяет добавлять элементы
  *	только в его конец, а также удалять элементы только с конца.
@@ -134,14 +134,16 @@ public:
 	 *	\~english
 	 *	\brief Hash code of the stack
 	 *
-	 *	Hash code of the stack is hash code of the internal linked list.
-	 *	\return Hash code of the stack.
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an stack array is zero.
+	 *	\return Hash code of the object.
 	 *
 	 *	\~russian
 	 *	\brief Хеш-код стека
 	 *
-	 *	Хеш-код стека — это хеш-код внутреннего связного списка.
-	 *	\return Хеш-код стека.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустого стека — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 	

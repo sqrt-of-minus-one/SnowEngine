@@ -203,22 +203,16 @@ public:
 	 *	\~english
 	 *	\brief Hash code of the string
 	 *
-	 *	Calculates a hash code of the string using formula:
-	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot ch[i]) = ch[0] - ch[1] + ch[2] - ...
-	 *	\f]
-	 *	\f$ n \f$ is the string length, \f$ ch[i] \f$ is the code of i-th character of the string.
-	 *	\return Hash code of the string.
-	 *	
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an empty string is zero.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код строки
-	 *	
-	 *	Вычисляет хеш-код строки по формуле:
-	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot ch[i]) = ch[0] - ch[1] + ch[2] - ...
-	 *	\f]
-	 *	\f$ n \f$ — длина строки, \f$ ch[i] \f$ — код i-го символа строки.
-	 *	\return Хеш-код строки.
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустой строки — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
@@ -323,12 +317,13 @@ public:
 	 *	\brief Добавляет символы переданной строки
 	 *
 	 *	Вставляет переданную строку в конец этой.
-	 *	\param ch Строка, которая будет добавлена.
+	 *	\param string Строка, которая будет добавлена.
 	 *	\return Количество символов, которые были успешно добавлены.
 	 */
 	int add(const String& string);
 
 	/**
+	 *	\~english
 	 *	\brief Adds a new character in the specified position
 	 *
 	 *	Inserts the passed character in the specified position of the string.
@@ -347,6 +342,7 @@ public:
 	bool add(wchar_t ch, int pos);
 
 	/**
+	 *	\~english
 	 *	\brief Adds characters of the passed string in the specified position
 	 *
 	 *	Inserts the passed string into the specified position of the string.
@@ -358,7 +354,7 @@ public:
 	 *	\brief Добавляет символы переданной строки в указанное место
 	 *
 	 *	Вставляет переданную строку в указанное место строки.
-	 *	\param ch Строка, которая будет добавлена.
+	 *	\param string Строка, которая будет добавлена.
 	 *	\param pos Индекс, который будет иметь первый символ вставленной строки.
 	 *	\return Количество символов, которые были успешно добавлены.
 	 */
@@ -1106,14 +1102,14 @@ public:
 	 *	\brief The copy assignment operator
 	 *
 	 *	Clears the string and inserts into it copies of characters of the passed string.
-	 *	\param ch The string to assign.
+	 *	\param string The string to assign.
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
 	 *	\brief Оператор присваивания копирования
 	 *
 	 *	Очищает строку и вставляет в неё копии символов переданной строки.
-	 *	\param ch Строка для присваивания.
+	 *	\param string Строка для присваивания.
 	 *	\return Ссылка на себя.
 	 */
 	String& operator=(const String& string) noexcept;
@@ -1425,14 +1421,14 @@ public:
 	 *	\brief Multiplies itself
 	 *
 	 *	Repeats the string. The string will be empty if the passed value is non-positive.
-	 *	\param string Number of repetitions.
+	 *	\param value Number of repetitions.
 	 *	\return The reference to itself.
 	 *
 	 *	\~russian
 	 *	\brief Умножает себя
 	 *
 	 *	Повторяет строку. Строка будет пустой, если переданное значение неположительно.
-	 *	\param string Число повторений.
+	 *	\param value Число повторений.
 	 *	\return Ссылка на себя.
 	 */
 	String& operator*=(int value);

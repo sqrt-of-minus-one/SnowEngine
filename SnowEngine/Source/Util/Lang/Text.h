@@ -95,7 +95,7 @@ public:
 	Text(Text&& text) noexcept;
 
 	/**
-	 *	\~russian
+	 *	\~english
 	 *	\brief Creates a new text with the passed key
 	 *
 	 *	Creates a new text with the passed key.
@@ -110,7 +110,7 @@ public:
 	Text(const String& key) noexcept;
 
 	/**
-	 *	\~russian
+	 *	\~english
 	 *	\brief Creates a new text with the passed key
 	 *
 	 *	Creates a new text with the passed key.
@@ -144,15 +144,17 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the text
-	 *	
-	 *	The hash code of the text is the hash code of its key.
-	 *	\return The hash code.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of a text with empty key is zero.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код текста
-	 *	
-	 *	Хеш-код текста — это хеш-код его ключа.
-	 *	\return Хеш-код.
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код текста с пустым ключом — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
@@ -230,14 +232,14 @@ public:
 	 *	\brief Sets the key
 	 *
 	 *	Replaces the current key with the passed one.
-	 *	\param text The new key.
+	 *	\param key The new key.
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает ключ
 	 *
 	 *	Заменяет текущий ключ на переданный.
-	 *	\param text Новый ключ.
+	 *	\param key Новый ключ.
 	 *	\return Ссылка на себя.
 	 */
 	Text& operator=(const String& key);
@@ -247,14 +249,14 @@ public:
 	 *	\brief Sets the key
 	 *
 	 *	Replaces the current key with the passed one.
-	 *	\param text The new key.
+	 *	\param key The new key.
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает ключ
 	 *
 	 *	Заменяет текущий ключ на переданный.
-	 *	\param text Новый ключ.
+	 *	\param key Новый ключ.
 	 *	\return Ссылка на себя.
 	 */
 	Text& operator=(String&& key);

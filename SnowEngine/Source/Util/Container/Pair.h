@@ -242,17 +242,21 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the pair
-	 *	
-	 *	Hash code of a pair is a difference between hash codes of two variables.
-	 *	\return Hash code of the pair.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код пары
-	 *	
-	 *	Хеш-код пары — это разность между хеш-кодами двух переменных.
-	 *	\return Хеш-код пары
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
+
+			/* METHODS */
 	
 	/**
 	 *	\~english
@@ -397,13 +401,13 @@ public:
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
-	 *	\brief Конструктор присваивания копированием
+	 *	\brief Оператор присваивания копированием
 	 *
 	 *	Заменяет переменные данной пары на копии переменных переданной.
 	 *	\warning Этот оператор не должен быть использован, если одна из переменных пары является
 	 *	`unique_ptr`ом (может быть выброшено исключение `std::logic_error`). Вместо этого
 	 *	используйте семантику перемещения.
-	 *	\param angle Пара, которая будет скопирована.
+	 *	\param pair Пара, которая будет скопирована.
 	 *	\return Ссылка на себя.
 	 */
 	Pair<T_First, T_Second>& operator=(const Pair<T_First, T_Second>& pair);
@@ -417,10 +421,10 @@ public:
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
-	 *	\brief Конструктор присваивания перемещением
+	 *	\brief Оператор присваивания перемещением
 	 *
 	 *	Перемещает переменные переданной пары и устанавливает их вместо переменных данной.
-	 *	\param angle Пара, которая будет перемещена.
+	 *	\param pair Пара, которая будет перемещена.
 	 *	\return Ссылка на себя.
 	 */
 	Pair<T_First, T_Second>& operator=(Pair<T_First, T_Second>&& pair);

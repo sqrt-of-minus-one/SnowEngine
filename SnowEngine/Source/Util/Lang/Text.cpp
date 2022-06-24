@@ -43,14 +43,7 @@ Text::Text(String&& key) noexcept :
 
 String Text::to_string() const noexcept
 {
-	try
-	{
-		return Game::lang.get_string(key_);
-	}
-	catch (...)
-	{
-		return key_;
-	}
+	return Game::lang.get_string(key_);
 }
 
 int Text::hash_code() const noexcept

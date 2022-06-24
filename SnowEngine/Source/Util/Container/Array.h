@@ -177,23 +177,17 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the array
-	 *	
-	 *	Hash code is calculated using `util::hash_code` function and formula:
-	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot a[i]) = a[0] - a[1] + a[2] - ...
-	 *	\f]
-	 *	\f$n\f$ is the array size, \f$a[i]\f$ is the hash code of i-th element of the array.
-	 *	\return Hash code of the array.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an empty array is zero.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код массива
 	 *
-	 *	Хеш-код вычисляется с использованием `util::hash_code` по формуле:
-	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot (a[i]) = a[0] - a[1] + a[2] - ...
-	 *	\f]
-	 *	\f$n\f$ — размер массива, \f$a[i]\f$ — хеш-код i-го элемента массива.
-	 *	\return Хеш-код массива.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустого массива — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
@@ -253,7 +247,7 @@ public:
 	 *	new size is less than the old one, the last elements, that didn't fit in the array, will be
 	 *	removed. Iterators pointing to removed elements become end (`is_end` is true).
 	 *	\param new_size The new array size.
-	 *	\return `true` if the array has been successfully resized, `false` otherwise (i. g. if the
+	 *	\return `true` if the array has been successfully resized, `false` otherwise (e. g. if the
 	 *	new size is negative).
 	 *	
 	 *	\~russian
@@ -325,7 +319,7 @@ public:
 	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
-	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
+	 *	\return `true` if the element has been successfully added, `false` otherwise (e. g. if the
 	 *	index is out of the array bounds).
 	 *	
 	 *	\~russian
@@ -353,7 +347,7 @@ public:
 	 *	continue to point to their elements.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
-	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
+	 *	\return `true` if the element has been successfully added, `false` otherwise (e. g. if the
 	 *	index is out of the array bounds).
 	 *
 	 *	\~russian
@@ -424,7 +418,7 @@ public:
 	 *	a formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed element will point to the next element after executing this method.
 	 *	\param index The index of the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the index is out of the array bounds).
 	 *	
 	 *	\~russian
@@ -449,7 +443,7 @@ public:
 	 *	that pointed to the removed element (including the passed one) will point to the next
 	 *	element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the iterator points to an element of other array).
 	 *	
 	 *	\~russian
@@ -474,7 +468,7 @@ public:
 	 *	that pointed to the removed element (including the passed one) will point to the next
 	 *	element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the iterator points to an element of other array).
 	 *
 	 *	\~russian
@@ -579,7 +573,7 @@ public:
 	 *	iterators will continue to point to their elements. Iterators that pointed to the removed
 	 *	element will point to the next element after executing this method.
 	 *	\param element The object to compare.
-	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (e. g. if the
 	 *	array doesn't contain the passed object).
 	 *	
 	 *	\~russian
@@ -603,7 +597,7 @@ public:
 	 *	that pointed to the removed element will point to the next element after executing this
 	 *	method.
 	 *	\param element The object to compare.
-	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (e. g. if the
 	 *	array doesn't contain the passed object).
 	 *	
 	 *	\~russian
@@ -626,7 +620,7 @@ public:
 	 *	first match. All iterators will continue to point to their elements. Iterators that pointed
 	 *	to the removed element will point to the next element after executing this method.
 	 *	\param element The object to compare.
-	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (e. g. if the
 	 *	array doesn't contain the passed object).
 	 *
 	 *	\~russian

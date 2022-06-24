@@ -120,16 +120,18 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the logger
+	 *	\brief Hash code of the looger
 	 *
-	 *	The hash code of the logger is hash code of its log category name.
-	 *	\return Hash code of the logger.
-	 *	
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код логгера
-	 *	
-	 *	Хеш-код логгера — это хеш-код названия его категории лога.
-	 *	\return Хеш-код логгера.
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 

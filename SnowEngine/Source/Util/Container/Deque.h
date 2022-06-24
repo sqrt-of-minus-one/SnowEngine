@@ -38,7 +38,7 @@ namespace snow
  *	of the `LinkedList` class.
  *	
  *	\~russian
- *	\breif Класс двусторонней очереди
+ *	\brief Класс двусторонней очереди
  *	
  *	Эта двусторонняя очередь основана на связном списке (класс `LinkedList`). Она позволяет
  *	добавлять элементы в начало и конец, а также удалять элементы с начала и конца.
@@ -125,15 +125,17 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the deque
-	 *	
-	 *	Hash code of the deque is hash code of the internal linked list.
-	 *	\return Hash code of the deque.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an empty deque is zero.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код двусторонней очереди
-	 *	
-	 *	Хеш-код двусторонней очереди — это хеш-код внутреннего связного списка.
-	 *	\return Хеш-код двусторонней очереди.
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустой двусторонней очереди — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 

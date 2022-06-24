@@ -109,16 +109,18 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the vector
-	 *	
-	 *	Hash code of the vector is the sum of its coordinates casted to integer.
-	 *	\return Hash code of the vector.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of a zero vector is zero.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код вектора
-	 *	
-	 *	Хеш-код вектора — это целая часть суммы его координат.
-	 *	\return Хеш-код вектора.
-	*/
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого вектора — ноль.
+	 *	\return Хеш-код объекта.
+	 */
 	int hash_code() const noexcept override;
 	
 			/* METHODS */

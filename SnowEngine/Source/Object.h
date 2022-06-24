@@ -91,15 +91,15 @@ public:
 	 *	\~english
 	 *	\brief Hash code of the object
 	 *	
-	 *	Hash code is an integer number. If two objects are equal, their hash codes are equal too,
-	 *	but two different objects can also have the same hash.
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes.
 	 *	\return Hash code of the object.
 	 *	
 	 *	\~russian
 	 *	\brief Хеш-код объекта
 	 *	
-	 *	Хеш-код — это целое число. Если два объекта равны, их хеш-коды тоже равны, но два различных
-	 *	объекта могут также иметь одинаковые хеш-коды.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды.
 	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept = 0;

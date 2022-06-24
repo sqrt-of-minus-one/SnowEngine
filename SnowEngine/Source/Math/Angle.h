@@ -143,17 +143,17 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the angle
-	 *	
-	 *	Hash code of the angle is the product of its value in degrees and 10'000. This number then
-	 *	is converted to integer.
-	 *	\return Hash code of the angle.
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of a zero angle is zero.
+	 *	\return Hash code of the object.
 	 *
 	 *	\~russian
 	 *	\brief Хеш-код угла
 	 *
-	 *	Хеш-код угла вычисляется как произведение его значения в градусах на 10 000. Затем
-	 *	это значение конвертируется в тип `int`.
-	 *	\return Хеш-код угла.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого угла — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
@@ -181,7 +181,7 @@ public:
 	 *	Allows to get the angle value in radians.
 	 *	\return The angle value in radians.
 	 *
-	 *	\~english
+	 *	\~russian
 	 *	\brief Величина угла в радианах
 	 *
 	 *	Позволяет получить значение угла в радианах.
@@ -230,7 +230,7 @@ public:
 	 *	\brief Устанавливает величину угла в радианах
 	 *
 	 *	Позволяет изменить величину угла.
-	 *	\param degrees Новая величина угла в радианах.
+	 *	\param radians Новая величина угла в радианах.
 	 */
 	void set_radians(float radians) noexcept;
 
@@ -239,13 +239,13 @@ public:
 	 *	\brief Sets the angle value in gradians
 	 *
 	 *	Allows to change the angle value.
-	 *	\param radians The new angle value in gradians.
+	 *	\param gradians The new angle value in gradians.
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает величину угла в градах
 	 *
 	 *	Позволяет изменить величину угла.
-	 *	\param degrees Новая величина угла в градах.
+	 *	\param gradians Новая величина угла в градах.
 	 */
 	void set_gradians(float gradians) noexcept;
 
@@ -1118,7 +1118,7 @@ public:
 	 *			// Какой-то код
 	 *		}
 	 *	\endcode
-	 *	\param degrees Значение в радианах.
+	 *	\param radians Значение в радианах.
 	 *	\return Угол с указанным значением.
 	 */
 	friend Angle operator""_rad(long double radians) noexcept;
@@ -1151,7 +1151,7 @@ public:
 	 *			// Какой-то код
 	 *		}
 	 *	\endcode
-	 *	\param degrees Значение в радианах.
+	 *	\param radians Значение в радианах.
 	 *	\return Угол с указанным значением.
 	 */
 	friend Angle operator""_rad(unsigned long long radians) noexcept;
@@ -1184,7 +1184,7 @@ public:
 	 *			// Какой-то код
 	 *		}
 	 *	\endcode
-	 *	\param degrees Значение в градах.
+	 *	\param gradians Значение в градах.
 	 *	\return Угол с указанным значением.
 	 */
 	friend Angle operator""_grad(long double gradians) noexcept;
@@ -1217,7 +1217,7 @@ public:
 	 *			// Какой-то код
 	 *		}
 	 *	\endcode
-	 *	\param degrees Значение в градах.
+	 *	\param gradians Значение в градах.
 	 *	\return Угол с указанным значением.
 	 */
 	friend Angle operator""_grad(unsigned long long gradians) noexcept;

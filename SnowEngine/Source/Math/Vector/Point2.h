@@ -108,16 +108,18 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the point
-	 *	
-	 *	Hash code of the point is the sum of its coordinates.
-	 *	\return Hash code of the point.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of a zero point is zero.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код точки
-	 *	
-	 *	Хеш-код точки — это сумма её координат.
-	 *	\return Хеш-код точки.
-	*/
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код нулевой точки — ноль.
+	 *	\return Хеш-код объекта.
+	 */
 	int hash_code() const noexcept override;
 	
 			/* METHODS */

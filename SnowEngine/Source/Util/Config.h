@@ -63,20 +63,21 @@ public:
 	 *	\return Строка с конфигурациями.
 	 */
 	virtual String to_string() const noexcept override;
-
+	
 	/**
 	 *	\~english
 	 *	\brief Hash code of the configurations
-	 *	
-	 *	The hash code of the `Config` object is the sum of hash codes of its members with different
-	 *	signs (`log_path` - `lang_path` + `default_lang` - …).
-	 *	\return The hash code.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
-	 *	\brief Хеш-код конфигураций
-	 *	
-	 *	Хеш-код объекта `Config` — это сумма хеш-кодов его членов с разными знаками (`log_path` -
-	 *	`lang_path` + `default_lang` - …).
+	 *	\brief Хеш-код конфиураций
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 

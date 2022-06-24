@@ -239,7 +239,7 @@ template<typename T>
 String to_string(const std::weak_ptr<T>& var) noexcept;
 
 /**
- *	\~russian
+ *	\~english
  *	\brief Converts object to string
  *
  *	Converts the passed object to string. The object must have `to_string()` method that is marked
@@ -262,16 +262,16 @@ String to_string(const T& var) noexcept;
  *	\~english
  *	\brief Hash code of `int`
  *
- *	Hash code of an integer is equal to the value of the integer.
- *	\param var The integer whose hash code will be calculated.
- *	\return Hash code of the passed integer.
+ *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+ *	objects can also have the same hash codes. Hash code of zero is zero.
+ *	\return Hash code of the object.
  *
  *	\~russian
  *	\brief Хеш-код `int`
  *
- *	Хеш-код целого числа равен значению этого числа.
- *	\param var Целое число, чей хеш-код будет вычислен.
- *	\return Хеш-код переданного целого числа.
+ *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+ *	также могут иметь одинаковые хеш-коды. Хеш-код нуля — ноль.
+ *	\return Хеш-код объекта.
  */
 int hash_code(int var) noexcept;
 
@@ -279,17 +279,16 @@ int hash_code(int var) noexcept;
  *	\~english
  *	\brief Hash code of `float`
  *
- *	Hash code of a float is calculated by multiplying it by 1000 and casting to integer.
- *	\param var The float whose hash code will be calculated.
- *	\return Hash code of the passed float.
+ *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+ *	objects can also have the same hash codes. Hash code of zero is zero.
+ *	\return Hash code of the object.
  *
  *	\~russian
  *	\brief Хеш-код `float`
  *
- *	Хеш-код числа с плавающей запятой вычисляется путём его умножения на 1000 и приведения к
- *	целому числу.
- *	\param var Число с плавающей запятой, чей хеш-код будет вычислен.
- *	\return Хеш-код переданного числа с плавающей запятой.
+ *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+ *	также могут иметь одинаковые хеш-коды. Хеш-код нуля — ноль.
+ *	\return Хеш-код объекта.
  */
 int hash_code(float var) noexcept;
 
@@ -297,50 +296,50 @@ int hash_code(float var) noexcept;
  *	\~english
  *	\brief Hash code of `wchar_t`
  *
- *	Hash code of a character is equal to the code of the character.
- *	\param var The character whose hash code will be calculated.
- *	\return Hash code of the passed character.
+ *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+ *	objects can also have the same hash codes.
+ *	\return Hash code of the object.
  *
  *	\~russian
  *	\brief Хеш-код `wchar_t`
  *
- *	Хеш-код символа равен коду этого символа.
- *	\param var Символ, чей хеш-код будет вычислен.
- *	\return Хеш-код переданного символа.
+ *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+ *	также могут иметь одинаковые хеш-коды.
+ *	\return Хеш-код объекта.
  */
 int hash_code(wchar_t var) noexcept;
 
- /**
-  *	\~english
-  *	\brief Hash code of `bool`
-  *
- *	Hash code of a boolean value is 1 if the boolean is true, 0 otherwise.
-  *	\param var The boolean whose hash code will be calculated.
-  *	\return Hash code of the passed boolean.
-  *
-  *	\~russian
-  *	\brief Хеш-код `bool`
-  *
-  *	Хеш-код булевого значения равен 1, если оно истинно, и 0, если ложно.
-  *	\param var Булево значение, чей хеш-код будет вычислен.
-  *	\return Хеш-код переданного булевого значения.
-  */
+/**
+ *	\~english
+ *	\brief Hash code of `bool`
+ *
+ *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+ *	objects can also have the same hash codes. Hash code of `false` value is zero.
+ *	\return Hash code of the object.
+ *
+ *	\~russian
+ *	\brief Хеш-код `bool`
+ *
+ *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+ *	также могут иметь одинаковые хеш-коды. Хеш-код значения `false` — ноль.
+ *	\return Хеш-код объекта.
+ */
 int hash_code(bool var) noexcept;
 
 /**
  *	\~english
  *	\brief Hash code of pointer
  *
- *	Hash code of a pointer is equal to the address contained in it.
- *	\param var The pointer whose hash code will be calculated.
- *	\return Hash code of the passed pointer.
+ *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+ *	objects can also have the same hash codes. Hash code of null pointer is zero.
+ *	\return Hash code of the object.
  *
  *	\~russian
  *	\brief Хеш-код указателя
  *
- *	Хеш-код указателя равен адресу, хранящемуся в нём.
- *	\param var Указатель, чей хеш-код будет вычислен.
- *	\return Хеш-код переданного указателя.
+ *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+ *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого указателя — ноль.
+ *	\return Хеш-код объекта.
  */
 template<typename T>
 int hash_code(T* var) noexcept;
@@ -349,16 +348,16 @@ int hash_code(T* var) noexcept;
  *	\~english
  *	\brief Hash code of unique pointer
  *
- *	Hash code of a pointer is equal to the address contained in it.
- *	\param var The pointer whose hash code will be calculated.
- *	\return Hash code of the passed pointer.
+ *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+ *	objects can also have the same hash codes. Hash code of null pointer is zero.
+ *	\return Hash code of the object.
  *
  *	\~russian
- *	\brief Хеш-код `unique_ptr`а
+ *	\brief Хеш-код указателя `unique_ptr`
  *
- *	Хеш-код указателя равен адресу, хранящемуся в нём.
- *	\param var Указатель, чей хеш-код будет вычислен.
- *	\return Хеш-код переданного указателя.
+ *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+ *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого указателя — ноль.
+ *	\return Хеш-код объекта.
  */
 template<typename T>
 int hash_code(const std::unique_ptr<T>& var) noexcept;
@@ -367,16 +366,16 @@ int hash_code(const std::unique_ptr<T>& var) noexcept;
  *	\~english
  *	\brief Hash code of shared pointer
  *
- *	Hash code of a pointer is equal to the address contained in it.
- *	\param var The pointer whose hash code will be calculated.
- *	\return Hash code of the passed pointer.
+ *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+ *	objects can also have the same hash codes. Hash code of null pointer is zero.
+ *	\return Hash code of the object.
  *
  *	\~russian
- *	\brief Хеш-код `shared_ptr`а
+ *	\brief Хеш-код указателя `shared_ptr`
  *
- *	Хеш-код указателя равен адресу, хранящемуся в нём.
- *	\param var Указатель, чей хеш-код будет вычислен.
- *	\return Хеш-код переданного указателя.
+ *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+ *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого указателя — ноль.
+ *	\return Хеш-код объекта.
  */
 template<typename T>
 int hash_code(const std::shared_ptr<T>& var) noexcept;
@@ -385,25 +384,25 @@ int hash_code(const std::shared_ptr<T>& var) noexcept;
  *	\~english
  *	\brief Hash code of weak pointer
  *
- *	Hash code of a pointer is equal to the address contained in it.
- *	\param var The pointer whose hash code will be calculated.
- *	\return Hash code of the passed pointer.
+ *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+ *	objects can also have the same hash codes. Hash code of null pointer is zero.
+ *	\return Hash code of the object.
  *
  *	\~russian
- *	\brief Хеш-код `weak_ptr`а
+ *	\brief Хеш-код указателя `weak_ptr`
  *
- *	Хеш-код указателя равен адресу, хранящемуся в нём.
- *	\param var Указатель, чей хеш-код будет вычислен.
- *	\return Хеш-код переданного указателя.
+ *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+ *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого указателя — ноль.
+ *	\return Хеш-код объекта.
  */
 template<typename T>
 int hash_code(const std::weak_ptr<T>& var) noexcept;
 
 /**
- *	\~russian
+ *	\~english
  *	\brief Hash code of object
  *
- *	Hash code the passed object. The object must have `to_string()` method that is marked as
+ *	Hash code of the passed object. The object must have `hash_code()` method that is marked as
  *	`noexcept` (any `snow::Object` has it).
  *	\param var The object whose hash code will be calculated.
  *	\return Result of `hash_code()` method of the object.
@@ -411,7 +410,7 @@ int hash_code(const std::weak_ptr<T>& var) noexcept;
  *	\~russian
  *	\brief Хеш-код объекта
  *
- *	Хеш-код переданного объекта. Объект должен иметь метод `to_string()`, помеченный как
+ *	Хеш-код переданного объекта. Объект должен иметь метод `hash_code()`, помеченный как
  *	`noexcept` (у любого `snow::Object` он есть).
  *	\param var Объект, чей хеш-код будет вычислен.
  *	\return Результат выполнения метода `hash_code()` объекта.

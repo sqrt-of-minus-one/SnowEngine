@@ -140,28 +140,18 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of an element of the iterator
+	 *	\brief Hash code of the linked list iterator
 	 *
-	 *	Gets the element that the iterator points to and calculates its hash code using
-	 *	`util::hash_code()` function.
-	 *	\code
-	 *		// These two strings do the same:
-	 *		iterator.hash_code();
-	 *		util::hash_code(iterator.get());
-	 *	\endcode
-	 *	\return Hash code of the element.
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an invalid iterator is zero.
+	 *	\return Hash code of the object.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код элемента итератора
+	 *	\brief Хеш-код итератора связного списка
 	 *
-	 *	Получает элемент, на который указыват итератор, и вычисляет его хеш-код, используя
-	 *	функцию `util::hash_code()`.
-	 *	\code
-	 *		// Эти две строки делают одно и то же:
-	 *		iterator.hash_code();
-	 *		util::hash_code(iterator.get());
-	 *	\endcode
-	 *	\return Хеш-код элемента.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код недействительного итератора — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
@@ -592,7 +582,14 @@ String BaseLinkedListIterator_<T_Container, T_Element, T_Node>::to_string() cons
 template<typename T_Container, typename T_Element, typename T_Node>
 int BaseLinkedListIterator_<T_Container, T_Element, T_Node>::hash_code() const noexcept
 {
-	return util::hash_code(get());
+	try
+	{
+		return util::hash_code(get());
+	}
+	catch (std::logic_error e)
+	{
+		return 0;
+	}
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
