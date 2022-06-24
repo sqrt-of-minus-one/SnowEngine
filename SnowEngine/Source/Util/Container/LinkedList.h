@@ -20,6 +20,8 @@
  */
 
 #include "LinkedListIterator.h"
+		// + Object
+		// + IContainer
 
 #include <list>
 
@@ -72,6 +74,9 @@ public:
  *	of any element. Linked lists take up more space than arrays. This class has methods that allow
  *	to work with the list using indexes of elements, but they can be significantly slower than
  *	those that use iterators.
+ *	\warning If the linked list contains `unique_ptr`'s, methods that copy the linked list elements
+ *	(for example, the copy constructor) must not be called (`std::logic_error` exception can be
+ *	thrown).
  *	\tparam T Type of the linked list elements. If you need to store objects of some class in the
  *	linked list, it is highly recommended to store pointers to them. If `T` is not a primitive
  *	type, `to_string` and `hash_code` methods must be defined for it (any `snow::Object` has them).
@@ -85,6 +90,9 @@ public:
  *	обеспечивает быструю вставку и удаление любого элемента. Связный список занимает больше места,
  *	чем массив. У этого класса есть методы, позволяющие работать со списком, используя индексы
  *	элементов, однако они могут быть значительно медленнее тех, что используют итераторы.
+ *	\warning Если связный список содержит `unique_ptr`ы, то методы, копирующие элементы связного,
+ *	списка (например, конструктор копирования) не должны вызываться (может быть выброшено
+ *	исключение `std::logic_error`).
  *	\tparam T Тип элементов связного списка. Если вам нужно хранить в связном списке объекты
  *	некоторого класса, настоятельно рекомендуется хранить указатели на них. Если `T` не
  *	примитивный тип, для него должны быть определены методы `to_string` и `hash_code` (у любого
@@ -188,24 +196,17 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the linked list
-	 *	
-	 *	Hash code is calculated using `util::hash_code` function and formula:
-	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot a[i]) = a[0] - a[1] + a[2] - ...
-	 *	\f]
-	 *	\f$n\f$ is the linked list size, \f$a[i]\f$ is the hash code of i-th element of the linked
-	 *	list.
-	 *	\return Hash code of the linked list.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an empty linked list is zero.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код связного списка
 	 *
-	 *	Хеш-код вычисляется с использованием `util::hash_code` по формуле:
-	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot (a[i]) = a[0] - a[1] + a[2] - ...
-	 *	\f]
-	 *	\f$n\f$ — размер связного списка, \f$a[i]\f$ — хеш-код i-го элемента связного списка.
-	 *	\return Хеш-код связного списка.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустого связного списка — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 	
@@ -377,7 +378,7 @@ public:
 	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
-	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
+	 *	\return `true` if the element has been successfully added, `false` otherwise (e. g. if the
 	 *	index is out of the linked list bounds).
 	 *	
 	 *	\~russian
@@ -405,7 +406,7 @@ public:
 	 *	faster to put the element using an iterator if you have one.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
-	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
+	 *	\return `true` if the element has been successfully added, `false` otherwise (e. g. if the
 	 *	index is out of the linked list bounds).
 	 *	
 	 *	\~russian
@@ -620,7 +621,7 @@ public:
 	 *	removed element will point to the next element after executing this method. This method is
 	 *	pretty slow, it is faster to remove the element using an iterator if you have one.
 	 *	\param index The index of the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the index is out of the linked list bounds).
 	 *	
 	 *	\~russian
@@ -645,7 +646,7 @@ public:
 	 *	to their elements. Iterators that pointed to the removed element (including the passed one)
 	 *	will point to the next element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the iterator points to an element of other linked list).
 	 *	
 	 *	\~russian
@@ -668,7 +669,7 @@ public:
 	 *	to their elements. Iterators that pointed to the removed element (including the passed one)
 	 *	will point to the next element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the iterator points to an element of other linked list).
 	 *	
 	 *	\~russian
@@ -682,19 +683,6 @@ public:
 	 *	указывает на элемент другого связного списка).
 	 */
 	virtual bool remove(const ConstLinkedListIterator<T>& element);
-
-	/**
-	 *	\brief Remove elements in the passed range
-	 *
-	 *	Removes elements that are in the passed range. The subsequent elements are moved and fill a
-	 *	formed space. All iterators will continue to point to their elements. Iterators that
-	 *	pointed to the removed elements will point to the next element after executing this method.
-	 *	It is faster to do this using iterators if you have them.
-	 *	\param from The beginning of range that will be removed.
-	 *	\param to The index of an element after the last element in the range that will be removed.
-	 *	This element won't be removed.
-	 *	\return The number of elements that have been successfully removed.
-	 */
 
 	/**
 	 *	\~english
@@ -783,7 +771,7 @@ public:
 	 *	that pointed to the removed element will point to the next element after executing this
 	 *	method.
 	 *	\param element The object to compare.
-	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (e. g. if the
 	 *	linked list doesn't contain the passed object).
 	 *	
 	 *	\~russian
@@ -806,7 +794,7 @@ public:
 	 *	the first match. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed element will point to the next element after executing this method.
 	 *	\param element The object to compare.
-	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (e. g. if the
 	 *	linked list doesn't contain the passed object).
 	 *
 	 *	\~russian
@@ -962,14 +950,7 @@ public:
 	 *	было.
 	 */
 	virtual ConstLinkedListIterator<T> find_last_by_iterator(const T& element) const;
-
-	/**
-	 *	\brief Whether the linked list contains the passed element
-	 *
-	 *	Checks whether the linked list has an element that is equal to the passed one.
-	 *	\param element The desired element.
-	 *	\return `true` if the linked list contains the passed element, `false` otherwise.
-	 */
+	
 	/**
 	 *	\~english
 	 *	\brief Checks whether the linked list contains the passed element
@@ -1143,6 +1124,25 @@ public:
 	 *	\throw std::out_of_range Индекс выходит за границы связного списка.
 	 */
 	ConstLinkedListIterator<T> create_iterator(int index) const;
+
+	/**
+	 *	\~english
+	 *	\brief Converts `LinkedListIterator` to `ConstLinkedListIterator`
+	 *
+	 *	Converts the passed linked list iterator to constant linked list iterator that points to
+	 *	the same element of the same linked list.
+	 *	\param iterator The linked list iterator that will be converted.
+	 *	\return A result constant linked list iterator.
+	 *
+	 *	\~russian
+	 *	\brief Конвертирует `LinkedListIterator` в `ConstLinkedListIterator`
+	 *
+	 *	Конвертирует переданный итератор связного списка в константный итератор связного списка,
+	 *	указывающий на тот же элемент того же связного списка.
+	 *	\param iterator Итератор, который будет сконвертирован.
+	 *	\return Полученный константный итератор.
+	 */
+	static ConstLinkedListIterator<T> iterator_to_const(const LinkedListIterator<T> iterator) noexcept;
 	
 			/* OPERATORS */
 	
@@ -1265,25 +1265,6 @@ public:
 	 */
 	const T& operator[](int index) const;
 
-	/**
-	 *	\~english
-	 *	\brief Converts `LinkedListIterator` to `ConstLinkedListIterator`
-	 *	
-	 *	Converts the passed linked list iterator to constant linked list iterator that points to
-	 *	the same element of the same linked list.
-	 *	\param iterator The linked list iterator that will be converted.
-	 *	\return A result constant linked list iterator.
-	 *	
-	 *	\~russian
-	 *	\brief Конвертирует `LinkedListIterator` в `ConstLinkedListIterator`
-	 *	
-	 *	Конвертирует переданный итератор связного списка в константный итератор связного списка,
-	 *	указывающий на тот же элемент того же связного списка.
-	 *	\param iterator Итератор, который будет сконвертирован.
-	 *	\return Полученный константный итератор.
-	 */
-	static ConstLinkedListIterator<T> iterator_to_const(const LinkedListIterator<T> iterator) noexcept;
-
 private:
 	std::shared_ptr<LinkedListNode_<T>> begin_;
 	std::shared_ptr<LinkedListNode_<T>> end_;
@@ -1301,7 +1282,9 @@ private:
 };
 
 
-		/* DEFINITIONS of LinkedListNode_ */
+		/* DEFINITIONS */
+		
+		/* LinkedListNode_ : public */
 
 template<typename T>
 LinkedListNode_<T>::LinkedListNode_(const T& val) noexcept :
@@ -1342,11 +1325,11 @@ LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(std::unique_ptr<T>&& val) n
 	next()
 {}
 
-		/* DEFINITIONS of LinkedList */
-
 #define FOR_ITERATORS_(i, arg) \
 	for (auto i : iterators_) arg \
 	for (auto i : const_iterators_) arg
+
+		/* LinkedList: public */
 
 template<typename T>
 LinkedList<T>::LinkedList() noexcept :
@@ -2124,6 +2107,11 @@ ConstLinkedListIterator<T> LinkedList<T>::create_iterator(int index) const
 	}
 }
 
+template<typename T>
+ConstLinkedListIterator<T> LinkedList<T>::iterator_to_const(const LinkedListIterator<T> iterator) noexcept
+{
+	return ConstLinkedListIterator<T>(iterator.container_, iterator.index_, iterator.node_.lock(), iterator.is_valid_);
+}
 
 template<typename T>
 LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& linked_list)
@@ -2200,11 +2188,7 @@ const T& LinkedList<T>::operator[](int index) const
 	}
 }
 
-template<typename T>
-ConstLinkedListIterator<T> LinkedList<T>::iterator_to_const(const LinkedListIterator<T> iterator) noexcept
-{
-	return ConstLinkedListIterator<T>(iterator.container_, iterator.index_, iterator.node_.lock(), iterator.is_valid_);
-}
+		/* LinkedList: private */
 
 template<typename T>
 std::shared_ptr<LinkedListNode_<T>> LinkedList<T>::get_last_node_() const noexcept

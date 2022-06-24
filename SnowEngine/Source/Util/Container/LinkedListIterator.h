@@ -52,7 +52,7 @@ struct LinkedListNode_;
  *	
  *	Этот класс используется как шаблон для классов `LinkedListIterator` и `ConstLinkedListIterator`.
  *	\warning Не используйте этот класс напрямую.
- *	\tparam T_Container Тип контейнера (`LinkedListIterator` или `ConstLinkedListIterator`).
+ *	\tparam T_Container Тип контейнера (`LinkedList` или `const LinkedList`).
  *	\tparam T_Element Тип элемента массива (с учётом модификатора `const`).
  */
 template<typename T_Container, typename T_Element, typename T_Node>
@@ -64,7 +64,6 @@ class BaseLinkedListIterator_ :
 	friend class LinkedList;
 
 public:
-
 			/* CONSTRUCTORS */
 
 	/**
@@ -141,28 +140,18 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of an element of the iterator
+	 *	\brief Hash code of the linked list iterator
 	 *
-	 *	Gets the element that the iterator points to and calculates its hash code using
-	 *	`util::hash_code()` function.
-	 *	\code
-	 *		// These two strings do the same:
-	 *		iterator.hash_code();
-	 *		util::hash_code(iterator.get());
-	 *	\endcode
-	 *	\return Hash code of the element.
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an invalid iterator is zero.
+	 *	\return Hash code of the object.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код элемента итератора
+	 *	\brief Хеш-код итератора связного списка
 	 *
-	 *	Получает элемент, на который указыват итератор, и вычисляет его хеш-код, используя
-	 *	функцию `util::hash_code()`.
-	 *	\code
-	 *		// Эти две строки делают одно и то же:
-	 *		iterator.hash_code();
-	 *		util::hash_code(iterator.get());
-	 *	\endcode
-	 *	\return Хеш-код элемента.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код недействительного итератора — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
@@ -249,7 +238,7 @@ public:
 	 *	\brief Индекс элемента, на который указывает итератор
 	 *	
 	 *	Позволяет получить индекс элемента, на который указывает итератор.
-	 *	\return Индекс элемента, на который указывает итератор.
+	 *	\return Индекс элемента.
 	 *	\throw std::logic_error Итератор недействителен.
 	 */
 	int get_index() const;
@@ -299,7 +288,8 @@ public:
 	 *
 	 *	Итератор указывает в конец, если он указывает на пространство после последнего элемента
 	 *	связного списка. В этом случае метод `is_element_valid` возвращает `false`.
-	 *	\return `true`, если итератор указывает после последнего элемента связного списка, иначе `false`.
+	 *	\return `true`, если итератор указывает после последнего элемента связного списка, иначе
+	 *	`false`.
 	 */
 	virtual bool is_end() const noexcept override;
 
@@ -367,7 +357,7 @@ public:
 	 *	\~english
 	 *	\brief The prefix increment of the iterator
 	 *
-	 *	Changed the iterator so that it points to the next element. The iterator won't be changed
+	 *	Changes the iterator so that it points to the next element. The iterator won't be changed
 	 *	if it is already pointing after the last element.
 	 *	\return The moved iterator.
 	 *	\throw std::logic_error The iterator is not valid.
@@ -508,6 +498,8 @@ private:
  *	
  *	This iterator allows to read elements of a linked list, but doesn't allow to modify them or the
  *	linked list. Can be created by a constant linked list (or using `iterator_to_const` method).
+ *	Information about members is contained in the documentation of the `BaseLinkedListIterator_`
+ *	class.
  *	\tparam T Type of the linked list elements.
  *	
  *	\~russian
@@ -515,6 +507,7 @@ private:
  *	
  *	Этот итератор позволяет читать элементы связного списка, но не позволяет изменять их или
  *	связный список. Может быть создан константным связным списком (или методом `iterator_to_const`).
+ *	Информация о членах содержится в документации класса `BaseLinkedListIterator_`.
  *	\tparam T Тип элементов массива.
  */
 template<typename T>
@@ -524,13 +517,15 @@ using ConstLinkedListIterator = BaseLinkedListIterator_<const LinkedList<T>, con
  *	\~english
  *	\brief The iterator of a linked list
  *	
- *	This iterator allows to access elements of a linked list (read and modify them).
+ *	This iterator allows to access elements of a linked list (read and modify them). Information
+ *	about members is contained in the documentation of the `BaseLinkedListIterator_` class.
  *	\tparam T Type of the linked list elements.
  *	
  *	\~russian
  *	\brief Итератор связного списка
  *	
  *	Этот итератор позволяет получать доступ к элеменам связного списка (читать и изменять их).
+ *	Информация о членах содержится в документации класса `BaseLinkedListIterator_`.
  *	\tparam T Тип элементов связного списка.
  */
 template<typename T>
@@ -538,6 +533,8 @@ using LinkedListIterator = BaseLinkedListIterator_<LinkedList<T>, T, LinkedListN
 
 
 		/* DEFINITIONS */
+
+		/* BaseLinkedListIterator_: public */
 
 template<typename T_Container, typename T_Element, typename T_Node>
 BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) noexcept :
@@ -585,7 +582,14 @@ String BaseLinkedListIterator_<T_Container, T_Element, T_Node>::to_string() cons
 template<typename T_Container, typename T_Element, typename T_Node>
 int BaseLinkedListIterator_<T_Container, T_Element, T_Node>::hash_code() const noexcept
 {
-	return util::hash_code(get());
+	try
+	{
+		return util::hash_code(get());
+	}
+	catch (std::logic_error e)
+	{
+		return 0;
+	}
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
@@ -761,6 +765,8 @@ T_Element* BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator->()
 {
 	return &get();
 }
+
+		/* BaseLinkedListIterator_: private */
 
 template<typename T_Container, typename T_Element, typename T_Node>
 BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node, bool is_valid) noexcept :

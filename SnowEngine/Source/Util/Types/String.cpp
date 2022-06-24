@@ -14,6 +14,8 @@
 
 using namespace snow;
 
+		/* String: public */
+
 String::String() noexcept :
 	string_()
 {}
@@ -544,7 +546,7 @@ bool String::to_bool() const
 {
 	if (is_empty())
 	{
-			return false;
+		return false;
 	}
 	String lower = to_lower();
 	if (lower == L"true" || lower == L"t" || lower == L"1")
@@ -734,6 +736,140 @@ String String::to_upper() const
 	{
 		ret[i] = std::towupper(ret[i]);
 	}
+	return ret;
+}
+
+int String::compare(const String& first, const String& second)
+{
+	return first.to_std_string().compare(second.to_std_string());
+}
+
+String String::format(String string, ...)
+{
+	String ret;
+	va_list list;
+
+	va_start(list, string);
+	for (int i = 0; i < string.size(); i++)
+	{
+		if (string[i] == L'%')
+		{
+			String seq = L'%';
+			bool finish = false;
+			int value = 0;
+			wchar_t char_to_fill = L' ';
+			if (string[i + 1] == L'0')
+			{
+				char_to_fill = L'0';
+				seq += L'0';
+				i++;
+			}
+
+			for (i++; i < string.size() && !finish; i++)
+			{
+				seq += string[i];
+				switch (string[i])
+				{
+				case L'0':
+				case L'1':
+				case L'2':
+				case L'3':
+				case L'4':
+				case L'5':
+				case L'6':
+				case L'7':
+				case L'8':
+				case L'9':
+				{
+					value *= 10;
+					value += static_cast<int>(string[i] - L'0');
+					break;
+				}
+				case L'%':
+				{
+					seq = L'%';
+					finish = true;
+					break;
+				}
+				case L'b':
+				{
+					seq = util::to_string_bin(va_arg(list, int));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
+					break;
+				}
+				case L'c':
+				{
+					seq = va_arg(list, wchar_t);
+					finish = true;
+					break;
+				}
+				case L'd':
+				case L'i':
+				{
+					seq = util::to_string(va_arg(list, int));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
+					break;
+				}
+				case L'f':
+				{
+					seq = util::to_string(va_arg(list, float));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
+					break;
+				}
+				case L'h':
+				{
+					seq = util::to_string_hex(va_arg(list, int));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
+					break;
+				}
+				case L'o':
+				{
+					seq = util::to_string_oct(va_arg(list, int));
+					for (int j = seq.size(); j < value; j++)
+					{
+						seq.add(char_to_fill, 0);
+					}
+					finish = true;
+					break;
+				}
+				case L's':
+				{
+					seq = va_arg(list, String);
+					finish = true;
+					break;
+				}
+				default:
+				{
+					finish = true;
+				}
+				}
+			}
+			ret += seq;
+			i--;
+		}
+		else
+		{
+			ret += string[i];
+		}
+	}
+	va_end(list);
+
 	return ret;
 }
 
@@ -976,140 +1112,6 @@ const wchar_t& String::operator[](int index) const
 std::wostream& snow::operator<<(std::wostream& stream, const String& string)
 {
 	return stream << string.string_;
-}
-
-int String::compare(const String& first, const String& second)
-{
-	return first.to_std_string().compare(second.to_std_string());
-}
-
-String String::format(String string, ...)
-{
-	String ret;
-	va_list list;
-
-	va_start(list, string);
-	for (int i = 0; i < string.size(); i++)
-	{
-		if (string[i] == L'%')
-		{
-			String seq = L'%';
-			bool finish = false;
-			int value = 0;
-			wchar_t char_to_fill = L' ';
-			if (string[i + 1] == L'0')
-			{
-				char_to_fill = L'0';
-				seq += L'0';
-				i++;
-			}
-
-			for (i++; i < string.size() && !finish; i++)
-			{
-				seq += string[i];
-				switch (string[i])
-				{
-				case L'0':
-				case L'1':
-				case L'2':
-				case L'3':
-				case L'4':
-				case L'5':
-				case L'6':
-				case L'7':
-				case L'8':
-				case L'9':
-				{
-					value *= 10;
-					value += static_cast<int>(string[i] - L'0');
-					break;
-				}
-				case L'%':
-				{
-					seq = L'%';
-					finish = true;
-					break;
-				}
-				case L'b':
-				{
-					seq = util::to_string_bin(va_arg(list, int));
-					for (int j = seq.size(); j < value; j++)
-					{
-						seq.add(char_to_fill, 0);
-					}
-					finish = true;
-					break;
-				}
-				case L'c':
-				{
-					seq = va_arg(list, wchar_t);
-					finish = true;
-					break;
-				}
-				case L'd':
-				case L'i':
-				{
-					seq = util::to_string(va_arg(list, int));
-					for (int j = seq.size(); j < value; j++)
-					{
-						seq.add(char_to_fill, 0);
-					}
-					finish = true;
-					break;
-				}
-				case L'f':
-				{
-					seq = util::to_string(va_arg(list, float));
-					for (int j = seq.size(); j < value; j++)
-					{
-						seq.add(char_to_fill, 0);
-					}
-					finish = true;
-					break;
-				}
-				case L'h':
-				{
-					seq = util::to_string_hex(va_arg(list, int));
-					for (int j = seq.size(); j < value; j++)
-					{
-						seq.add(char_to_fill, 0);
-					}
-					finish = true;
-					break;
-				}
-				case L'o':
-				{
-					seq = util::to_string_oct(va_arg(list, int));
-					for (int j = seq.size(); j < value; j++)
-					{
-						seq.add(char_to_fill, 0);
-					}
-					finish = true;
-					break;
-				}
-				case L's':
-				{
-					seq = va_arg(list, String);
-					finish = true;
-					break;
-				}
-				default:
-				{
-					finish = true;
-				}
-				}
-			}
-			ret += seq;
-			i--;
-		}
-		else
-		{
-			ret += string[i];
-		}
-	}
-	va_end(list);
-
-	return ret;
 }
 
 String snow::operator""_s(const wchar_t* string, std::size_t length) noexcept

@@ -20,6 +20,7 @@
  */
 
 #include "../../Object.h"
+
 #include "../Util.h"
 
 namespace snow
@@ -61,6 +62,8 @@ public:
  *	the type is not a pointer, it also must have a default constructor, an assignment operator
  *	(`=`) and an equality operator (`==`). The default and copy constructors are assumed not to
  *	throw any exceptions.
+ *	\warning If one of the pair variables is `unique_ptr`, methods that copy it (for example, the
+ *	copy constructor) must not be called (`std::logic_error` exception can be thrown).
  *	\tparam T_First Type of the first variable in the pair.
  *	\tparam T_Second Type of the second variable in the pair.
  *	
@@ -73,6 +76,9 @@ public:
  *	Если тип не является указателем, у него также должны быть определёны конструктор по умолчанию,
  *	оператор присваивания (`=`) и оператор равенства (`==`). Предполагается, что конструктор по
  *	умолчанию и конструктор копирования не выбрасывают никаких исключений.
+ *	\warning Если одна из переменных пары является `unique_ptr`ом, то методы, копирующие её
+ *	(например, конструктор копирования) не должны вызываться (может быть выброшено исключение
+ *	`std::logic_error`).
  *	\tparam T_First Тип первой переменной пары.
  *	\tparam T_Second Тип второй переменной пары.
  */
@@ -236,17 +242,21 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the pair
-	 *	
-	 *	Hash code of a pair is a difference between hash codes of two variables.
-	 *	\return Hash code of the pair.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код пары
-	 *	
-	 *	Хеш-код пары — это разность между хеш-кодами двух переменных.
-	 *	\return Хеш-код пары
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
+
+			/* METHODS */
 	
 	/**
 	 *	\~english
@@ -391,13 +401,13 @@ public:
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
-	 *	\brief Конструктор присваивания копированием
+	 *	\brief Оператор присваивания копированием
 	 *
 	 *	Заменяет переменные данной пары на копии переменных переданной.
 	 *	\warning Этот оператор не должен быть использован, если одна из переменных пары является
 	 *	`unique_ptr`ом (может быть выброшено исключение `std::logic_error`). Вместо этого
 	 *	используйте семантику перемещения.
-	 *	\param angle Пара, которая будет скопирована.
+	 *	\param pair Пара, которая будет скопирована.
 	 *	\return Ссылка на себя.
 	 */
 	Pair<T_First, T_Second>& operator=(const Pair<T_First, T_Second>& pair);
@@ -411,10 +421,10 @@ public:
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
-	 *	\brief Конструктор присваивания перемещением
+	 *	\brief Оператор присваивания перемещением
 	 *
 	 *	Перемещает переменные переданной пары и устанавливает их вместо переменных данной.
-	 *	\param angle Пара, которая будет перемещена.
+	 *	\param pair Пара, которая будет перемещена.
 	 *	\return Ссылка на себя.
 	 */
 	Pair<T_First, T_Second>& operator=(Pair<T_First, T_Second>&& pair);
@@ -463,7 +473,9 @@ private:
 };
 
 
-		/* DEFINITIONS OF Wrap_ */
+		/* DEFINITIONS */
+		
+		/* Wrap_: public */
 
 template<typename T>
 Wrap_<T>::Wrap_(const T& v) noexcept :
@@ -487,7 +499,7 @@ Wrap_<std::unique_ptr<T>>::Wrap_(std::unique_ptr<T>&& v) noexcept :
 	var(std::move(v))
 {}
 
-		/* DEFINITIONS OF Pair */
+		/* Pair: public */
 
 template<typename T_First, typename T_Second>
 Pair<T_First, T_Second>::Pair() noexcept :

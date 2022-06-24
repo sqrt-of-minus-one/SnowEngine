@@ -12,6 +12,8 @@
 
 using namespace snow;
 
+		/* Point2: public */
+
 Point2::Point2() noexcept :
 	x_(0),
 	y_(0)

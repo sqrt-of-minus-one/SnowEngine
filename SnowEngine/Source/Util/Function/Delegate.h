@@ -1,4 +1,4 @@
-    ////////////////////////////////////////
+﻿    ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
  //  File: Delegate.h                  //
@@ -6,9 +6,21 @@
 
 #pragma once
 
-#include "../../Object.h"
+/**
+ *	\file
+ *	\~english
+ *	\brief The file with `Delegate` class
+ *
+ *	This file contains the definition of the `Delegate` class.
+ *
+ *	\~russian
+ *	\brief Файл с классом `Delegate`
+ *
+ *	Этот файл содержит определение класса `Delegate`.
+ */
 
 #include "../Types/String.h"
+		// + Object
 
 #include <functional>
 
@@ -62,30 +74,292 @@ public:
 
 }
 
+/**
+ *	\~english
+ *	\brief The delegate keeping pointer to function or method
+ *	
+ *	This class can keep pointer to function or method with the specified signature. The delegate
+ *	can only point to methods of classes based on `snow::Object`.
+ *	\code
+ *		String string = L"Hello SnowEngine!";
+ *		Delegate<String, int, int> delegate;
+ *		
+ *		// Binding a method
+ *		delegate.bind<String>(string, &String::substring);
+ *		delegate.execute(6, 17); // == L"SnowEngine!"
+ *		
+ *		// Binding a lambda
+ *		delegate.bind([](int a, int b) -> String
+ *		{
+ *			return L"Sum: "_s + util::to_string(a + b);
+ *		});
+ *		delegate.execute(6, 17); // == L"23"
+ *	\endcode
+ *	\tparam T_Ret Return type of the function.
+ *	\tparam T_Args The list of types of arguments of the function.
+ *	
+ *	\~russian
+ *	\brief Делегат, содержащий указатель на функцию или метод
+ *	
+ *	Этот класс может хранить указатель на функцию или метод с заданной сигнатурой. Делегат может
+ *	указывать на методы только классов, отнаследованных от `snow::Object`.
+ *	\code
+ *		String string = L"Hello SnowEngine!";
+ *		Delegate<String, int, int> delegate;
+ *
+ *		// Привязка метода
+ *		delegate.bind<String>(string, &String::substring);
+ *		delegate.execute(6, 17); // == L"SnowEngine!"
+ *
+ *		// Привязка лямбда-функции
+ *		delegate.bind([](int a, int b) -> String
+ *		{
+ *			return L"Sum: "_s + util::to_string(a + b);
+ *		});
+ *		delegate.execute(6, 17); // == L"23"
+ *	\endcode
+ *	\tparam T_Ret Возвращаемое значение функции.
+ *	\tparam T_Args Список типов аргументов функции.
+ */
 template<typename T_Ret, typename... T_Args>
 class Delegate : public Object
 {
 public:
-	Delegate();
-	Delegate(const Delegate<T_Ret, T_Args...>& delegate);
+			/* CONSTRUCTORS */
 
+	/**
+	 *	\~english
+	 *	\brief The default constructor
+	 *	
+	 *	Creates a null delegate, which doesn't point to any function.
+	 *	
+	 *	\~russian
+	 *	\brief Коструктор по умолчанию
+	 *	
+	 *	Создаёт нулевой делегат, который не указывает ни на какую функцию.
+	 */
+	Delegate();
+
+	/**
+	 *	\~english
+	 *	\brief The copy constructor
+	 *
+	 *	Copies the delegate.
+	 *	\param delegate The delegate that will be copied.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор копирования
+	 *
+	 *	Копирует делегат.
+	 *	\param delegate Делегат, который будет скопирован.
+	 */
+	Delegate(const Delegate<T_Ret, T_Args...>& delegate);
+	
+			/* METHODS FROM Object */
+
+	/**
+	 *	\~english
+	 *	\brief Converts the delegate to string
+	 *	
+	 *	Returns one of three strings:
+	 *	- `"Empty delegate"`;
+	 *	- `"Delegate (method)"`;
+	 *	- `"Delegate (function)"`.
+	 *	\return The resultant string.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует делегат в строку
+	 *	
+	 *	Возвращает одну из трёх строк:
+	 *	- `"Empty delegate"`;
+	 *	- `"Delegate (method)"`;
+	 *	- `"Delegate (function)"`.
+	 *	\return Полученная строка.
+	 */
 	virtual String to_string() const noexcept override;
+
+	/**
+	 *	\~english
+	 *	\brief Hash code of the delegate
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an empty delegate is zero.
+	 *	\return Hash code of the object.
+	 *
+	 *	\~russian
+	 *	\brief Хеш-код делегата
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код путого делегата — ноль.
+	 *	\return Хеш-код объекта.
+	 */
 	virtual int hash_code() const noexcept override;
 
+			/* METHODS */
+
+	/**
+	 *	\~english
+	 *	\brief Checks whether the delegate is valid
+	 *	
+	 *	The delegate is valid if it points to an existing function or to a method of an existing
+	 *	object.
+	 *	\return `true` if the delegate is valid, `false` otherwise.
+	 *	
+	 *	\~russian
+	 *	\brief Проверяет, действителен ли делегат
+	 *	
+	 *	Делегат действителен, если он указывает на существующую функцию или метод существующего
+	 *	объекта.
+	 *	\return `true`, если делегат действителен, иначе `false`.
+	 */
 	bool is_valid() const noexcept;
 
+	/**
+	 *	\~english
+	 *	\brief Binds a function to the delegate
+	 *	
+	 *	Binds the passed function to the delegate. From now on, the `execute` method will call this
+	 *	function.
+	 *	\param func The reference to the function, `std::function` pointing to it or lambda-
+	 *	function.
+	 *	
+	 *	\~russian
+	 *	\brief Привязывает функцию к делегату
+	 *	
+	 *	Привязывает переданную функцию к делегату. Отныне метод `execute` будет вызывать эту
+	 *	функцию.
+	 *	\param func Ссылка на функцию, указывающий на ней `std::function` или лямбда-функция.
+	 */
 	void bind(const std::function<T_Ret(T_Args...)>& func);
+
+	/**
+	 *	\~english
+	 *	\brief Binds a function to the delegate
+	 *
+	 *	Binds the function of the passed delegate to this one. From now on, the `execute` method
+	 *	will call this function.
+	 *	\param func The delegate pointing to the function.
+	 *
+	 *	\~russian
+	 *	\brief Привязывает функцию к делегату
+	 *
+	 *	Привязывает функцию переданного делегата к этому. Отныне метод `execute` будет вызывать эту
+	 *	функцию.
+	 *	\param func Делегат, указывающий на функцию.
+	 */
 	void bind(const Delegate<T_Ret, T_Args...>& func);
 
+	/**
+	 *	\~english
+	 *	\brief Binds a method to the delegate
+	 *
+	 *	Binds the passed method of the passed object to the delegate. From now on, the `execute`
+	 *	method will call this method.
+	 *	\tparam T_Class The class of the passed object. It must be based on `snow::Object`.
+	 *	\param object The object whose method will be bound.
+	 *	\param func The reference to the method of `T_Class`.
+	 *
+	 *	\~russian
+	 *	\brief Привязывает метод к делегату
+	 *
+	 *	Привязывает переданный метод переданного объекта к делегату. Отныне метод `execute` будет
+	 *	вызывать этот метод.
+	 *	\tparam T_Class Класс переданного объекта. Он должен быть наследником `snow::Object`.
+	 *	\param object Объект, чей метод будет привязан.
+	 *	\param func Ссылка на метод класса `T_Class`.
+	 */
 	template<typename T_Class>
 	void bind(T_Class& object, const std::function<T_Ret(T_Class&, T_Args...)>& func);
 
+	/**
+	 *	\~english
+	 *	\brief Clears the delegate
+	 *	
+	 *	If the delegate is pointing to a function, clears it.
+	 *	
+	 *	\~russian
+	 *	\brief Очищает делегат
+	 *	
+	 *	Если делегат указвает на функцию, очищает его.
+	 */
 	void unbind();
 
+	/**
+	 *	\~english
+	 *	\brief Executes the function
+	 *	
+	 *	Calls the function that the delegate is pointing to.
+	 *	\param args Arguments that will be passed to the function.
+	 *	\return The variable returned by the function.
+	 *	\throw std::logic_error The delegate is empty and not pointing to any function (the
+	 *	exception is not thrown if the return type is `void`).
+	 *	
+	 *	\~russian
+	 *	\brief Выполняет функцию
+	 *	
+	 *	Вызывает функцию, на которую указывает делегат.
+	 *	\param args Аргументы, которые будут переданы в функцию.
+	 *	\return Переменная, которую вернула функция.
+	 *	\throw std::logic_error Делегат пуст и не указывает ни на какую фунцию (исключение не
+	 *	выбрасывается, если тип возвращаемого значения — `void`).
+	 */
 	T_Ret execute(T_Args... args) const;
 
+			/* OPERATORS */
+	
+	/**
+	 *	\~english
+	 *	\brief The copy assignment operator
+	 *
+	 *	Binds the function of the passed delegate to this one. From now on, the `execute` method
+	 *	will call this function.
+	 *	\param delegate The delegate pointing to the function.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор копирования присваиванием
+	 *
+	 *	Привязывает функцию переданного делегата к этому. Отныне метод `execute` будет вызывать эту
+	 *	функцию.
+	 *	\param delegate Делегат, указывающий на функцию.
+	 */
 	Delegate<T_Ret, T_Args...>& operator=(const Delegate<T_Ret, T_Args...>& delegate);
+
+	/**
+	 *	\~english
+	 *	\brief Executes the function
+	 *
+	 *	Calls the function that the delegate is pointing to.
+	 *	\param args Arguments that will be passed to the function.
+	 *	\return The variable returned by the function.
+	 *	\throw std::logic_error The delegate is empty and not pointing to any function (the
+	 *	exception is not thrown if the return type is `void`).
+	 *
+	 *	\~russian
+	 *	\brief Выполняет функцию
+	 *
+	 *	Вызывает функцию, на которую указывает делегат.
+	 *	\param args Аргументы, которые будут переданы в функцию.
+	 *	\return Переменная, которую вернула функция.
+	 *	\throw std::logic_error Делегат пуст и не указывает ни на какую фунцию (исключение не
+	 *	выбрасывается, если тип возвращаемого значения — `void`).
+	 */
 	T_Ret operator()(T_Args... args) const;
+
+	/**
+	 *	\~english
+	 *	\brief Checks whether the delegate is valid
+	 *
+	 *	The delegate is valid if it points to an existing function or to a method of an existing
+	 *	object.
+	 *	\return `true` if the delegate is valid, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, действителен ли делегат
+	 *
+	 *	Делегат действителен, если он указывает на существующую функцию или метод существующего
+	 *	объекта.
+	 *	\return `true`, если делегат действителен, иначе `false`.
+	 */
 	operator bool() const noexcept;
 
 private:
@@ -93,6 +367,10 @@ private:
 	bool is_method_;
 };
 
+
+		/* DEFINITIONS */
+
+		/* Delegate: public */
 
 template<typename T_Ret, typename... T_Args>
 FunctionContainer_<T_Ret, T_Args...>::FunctionContainer_(const std::function<T_Ret(T_Args...)> func) :

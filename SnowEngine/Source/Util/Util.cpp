@@ -6,10 +6,10 @@
 
 #include "Util.h"
 
+#include <string>
+
 #include "Types/String.h"
 #include "../Math/Math.h"
-
-#include <string>
 
 using namespace snow;
 
@@ -128,7 +128,6 @@ String util::to_string(bool var) noexcept
 	return var ? L"true"_s : L"false"_s;
 }
 
-
 int util::hash_code(int var) noexcept
 {
 	return var;
@@ -136,7 +135,8 @@ int util::hash_code(int var) noexcept
 
 int util::hash_code(float var) noexcept
 {
-	return static_cast<int>(var);
+	// Often values of float variables are between 0 and 1. Their hash codes would be the same unless we multiplied by 1000
+	return static_cast<int>(var * 1000);
 }
 
 int util::hash_code(wchar_t var) noexcept

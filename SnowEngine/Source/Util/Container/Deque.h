@@ -20,6 +20,8 @@
  */
 
 #include "LinkedList.h"
+		// + Object
+		// + IContainer
 
 namespace snow
 {
@@ -30,14 +32,19 @@ namespace snow
  *	
  *	This deque is based on linked list (the `LinkedList` class). It allows you to push elements into
  *	its beginning and its end, and pop elements from the beginning and the end.
+ *	\warning If the deque contains `unique_ptr`'s, methods that copy the deque elements (for
+ *	example, the copy constructor) must not be called (`std::logic_error` exception can be thrown).
  *	\tparam T Type of the deque elements. This type must meet the same conditions as the template
  *	of the `LinkedList` class.
  *	
  *	\~russian
- *	\breif Класс двусторонней очереди
+ *	\brief Класс двусторонней очереди
  *	
  *	Эта двусторонняя очередь основана на связном списке (класс `LinkedList`). Она позволяет
  *	добавлять элементы в начало и конец, а также удалять элементы с начала и конца.
+ *	\warning Если двустороння очередь содержит `unique_ptr`ы, то методы, копирующие элементы
+ *	двусторонней очереди, (например, конструктор копирования) не должны вызываться (может быть
+ *	выброшено исключение `std::logic_error`).
  *	\tparam T Тип элементов двусторонней очереди. Этот тип должен удовлетворять тем же условиям,
  *	что и шаблон класса `LinkedList`.
  */
@@ -118,15 +125,17 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the deque
-	 *	
-	 *	Hash code of the deque is hash code of the internal linked list.
-	 *	\return Hash code of the deque.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an empty deque is zero.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код двусторонней очереди
-	 *	
-	 *	Хеш-код двусторонней очереди — это хеш-код внутреннего связного списка.
-	 *	\return Хеш-код двусторонней очереди.
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустой двусторонней очереди — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
@@ -156,10 +165,10 @@ public:
 	 *	\return `true` if the deque does not contain any element, `false` otherwise.
 	 *
 	 *	\~russian
-	 *	\brief Проверяет, пуста ли односторонняя очередь
+	 *	\brief Проверяет, пуста ли двусторонняя очередь
 	 *
-	 *	Проверяет, пуста ли односторонняя очередь.
-	 *	\return `true`, если односторонняя очередь не содержит никаких элементов, иначе `false`.
+	 *	Проверяет, пуста ли двусторонняя очередь.
+	 *	\return `true`, если двусторонняя очередь не содержит никаких элементов, иначе `false`.
 	 */
 	virtual bool is_empty() const noexcept override;
 
@@ -259,7 +268,7 @@ public:
 	 *	\return Значение удалённого элемента.
 	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
-	T pop_begin();
+	T&& pop_begin();
 	
 	/**
 	 *	\~english
@@ -276,7 +285,7 @@ public:
 	 *	\return Значение удалённого элемента.
 	 *	\throw std::out_of_range Двусторонняя очередь пуста.
 	 */
-	T pop_last();
+	T&& pop_last();
 
 	/**
 	 *	\~english
@@ -480,6 +489,8 @@ private:
 
 
 		/* DEFINITIONS */
+		
+		/* Deque: public */
 
 template<typename T>
 Deque<T>::Deque() noexcept :
@@ -551,7 +562,7 @@ const T& Deque<T>::get_last() const
 }
 
 template<typename T>
-T Deque<T>::pop_begin()
+T&& Deque<T>::pop_begin()
 {
 	T ret = list.get_begin();
 	list.remove(list.begin());
@@ -559,7 +570,7 @@ T Deque<T>::pop_begin()
 }
 
 template<typename T>
-T Deque<T>::pop_last()
+T&& Deque<T>::pop_last()
 {
 	T ret = list.get_last();
 	list.remove(list.last());

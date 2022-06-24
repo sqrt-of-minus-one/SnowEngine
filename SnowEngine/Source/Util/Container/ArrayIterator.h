@@ -17,7 +17,7 @@
  *	\brief Файл итератора массива
  *	
  *	Этот файл содержит определения классов итераторов массива.
-*/
+ */
 
 #include "../../Object.h"
 #include "Container.h"
@@ -136,28 +136,18 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of an element of the iterator
+	 *	\brief Hash code of the array iterator
 	 *
-	 *	Gets the element that the iterator points to and calculates its hash code using
-	 *	`util::hash_code()` function.
-	 *	\code
-	 *		// These two strings do the same:
-	 *		iterator.hash_code();
-	 *		util::hash_code(iterator.get());
-	 *	\endcode
-	 *	\return Hash code of the element.
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an invalid iterator is zero.
+	 *	\return Hash code of the object.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код элемента итератора
+	 *	\brief Хеш-код итератора массива
 	 *
-	 *	Получает элемент, на который указыват итератор, и вычисляет его хеш-код, используя
-	 *	функцию `util::hash_code()`.
-	 *	\code
-	 *		// Эти две строки делают одно и то же:
-	 *		iterator.hash_code();
-	 *		util::hash_code(iterator.get());
-	 *	\endcode
-	 *	\return Хеш-код элемента.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код недействительного итератора — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
@@ -244,7 +234,7 @@ public:
 	 *	\brief Индекс элемента, на который указывает итератор
 	 *	
 	 *	Позволяет получить индекс элемента, на который указывает итератор.
-	 *	\return Индекс элемента, на который указывает итератор.
+	 *	\return Индекс элемента.
 	 *	\throw std::logic_error Итератор недействителен.
 	 */
 	int get_index() const;
@@ -500,14 +490,16 @@ private:
  *	\brief The iterator of a constant array
  *	
  *	This iterator allows to read elements of an array, but doesn't allow to modify them or the
- *	array. Can be created by a constant array (or using `iterator_to_const` method).
+ *	array. Can be created by a constant array (or using `iterator_to_const` method). Information
+ *	about members is contained in the documentation of the `BaseArrayIterator_` class.
  *	\tparam T Type of the array elements.
  *	
  *	\~russian
  *	\brief Итератор константного массива
  *	
  *	Этот итератор позволяет читать элементы массива, но не позволяет изменять их или массив. Может
- *	быть создан константным массивом (или методом `iterator_to_const`).
+ *	быть создан константным массивом (или методом `iterator_to_const`). Информация о членах
+ *	содержится в документации класса `BaseArrayIterator_`.
  *	\tparam T Тип элементов массива.
  */
 template<typename T>
@@ -517,13 +509,15 @@ using ConstArrayIterator = BaseArrayIterator_<const Array<T>, const T>;
  *	\~english
  *	\brief The iterator of an array
  *	
- *	This iterator allows to access elements of an array (read and modify them).
+ *	This iterator allows to access elements of an array (read and modify them). Information about
+ *	members is contained in the documentation of the `BaseArrayIterator_` class.
  *	\tparam T Type of the array elements.
  *	
  *	\~russian
  *	\brief Итератор массива
  *	
- *	Этот итератор позволяет получать доступ к элеменам массива (читать и изменять их).
+ *	Этот итератор позволяет получать доступ к элеменам массива (читать и изменять их). Информация
+ *	о членах содержится в документации класса `BaseArrayIterator_`.
  *	\tparam T Тип элементов массива.
  */
 template<typename T>
@@ -531,6 +525,8 @@ using ArrayIterator = BaseArrayIterator_<Array<T>, T>;
 
 
 		/* DEFINITIONS */
+
+		/* BaseArrayIterator_: public */
 
 template<typename T_Container, typename T_Element>
 BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(const BaseArrayIterator_<T_Container, T_Element>& iterator) noexcept :
@@ -576,7 +572,14 @@ String BaseArrayIterator_<T_Container, T_Element>::to_string() const noexcept
 template<typename T_Container, typename T_Element>
 int BaseArrayIterator_<T_Container, T_Element>::hash_code() const noexcept
 {
-	return util::hash_code(get());
+	try
+	{
+		return util::hash_code(get());
+	}
+	catch (std::logic_error e)
+	{
+		return 0;
+	}
 }
 
 template<typename T_Container, typename T_Element>
@@ -747,6 +750,8 @@ T_Element* BaseArrayIterator_<T_Container, T_Element>::operator->() const
 {
 	return &get();
 }
+
+		/* BaseArrayIterator_: private */
 
 template<typename T_Container, typename T_Element>
 BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(T_Container& array, int index, bool is_valid) noexcept :

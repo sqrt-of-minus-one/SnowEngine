@@ -12,13 +12,6 @@
 /////  / \  ////     ///  ///   ///    //////   ///   ///    //  ///  //  //// logging system ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- *	\file
- *	\brief The cpp-file of the SnowCat logger
- *
- *	This file contains the definitions of the Log class methods.
- */
-
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Log.h"
@@ -33,6 +26,8 @@
 #include "../Time/Time.h"
 
 using namespace snow;
+
+		/* Log: public */
 
 Log::Log(const String& category_name) noexcept :
 	name_(category_name)
@@ -110,6 +105,8 @@ void Log::e(const String& message) noexcept
 	log_(L"[ERROR  ] "_s, message);
 }
 
+		/* Log: private */
+
 void Log::log_(const String& type, const String& message) noexcept
 {
 	std::lock_guard<std::mutex> log_grd(log_file_mtx_());
@@ -125,7 +122,7 @@ bool& Log::debug_mode_()
 	static bool debug_mode = true;
 #else
 	static bool debug_mode = false;
-#endif // _DEBUG
+#endif
 	return debug_mode;
 }
 

@@ -19,34 +19,72 @@
  *	Этот файл содержит определение класса `Map`.
  */
 
+#include "MapIterator.h"
+		// + Object
+		// + IContainer
+
 #include <list>
 
 #include "Array.h"
-#include "MapIterator.h"
 #include "Pair.h"
+#include "LinkedList.h"
 
 namespace snow
 {
 
 /**
+ *	\~english
  *	\brief The class of map
  *	
  *	This class is used as the map. Each element of the map is associated with a key and each key
- *	corresponds to a single element. Each element can be accessed using its key. A map provides a fast access to an
- *	arbitrary element, fast inserting and removing. When you initialise a map, you can specify its
- *	internal size. Note that the more elements there are, the slower operations with a map are. For
- *	maximum speed, it is recommended that the number of elements doesn't exceed half of the
- *	internal size or two-thirds as a last resort. To organise the elements, the map uses hash codes
- *	of their keys. If the key is not a pointer, it's important that its hash code is calculated
- *	fast.
- *	\tparam T_Key The key type. It must have default and copy constructor, that are assumed not to
- *	throw any exceptions, assignment operator (`=`) and equality operator (`==`). It also must have
- *	`to_string()` and `hash_code()` methods (any `snow::Object` has them) or be a primitive type.
- *	It is strongly recommended that the `hash_code()` be fast.
- *	\tparam T_Value Type of the value. It must have default and copy constructor, that are assumed
- *	not to throw any exceptions, assignment operator (`=`) and equality operator (`==`). It also
- *	must have `to_string()` and `hash_code()` methods (any `snow::Object` has them) or be a
- *	primitive type.
+ *	corresponds to a single element. Any element can be accessed using its key. A map provides a
+ *	fast access to an arbitrary element, fast inserting and removing. When you initialise a map,
+ *	you can specify its internal size. The more elements there are, the slower operations with the
+ *	map works. For maximum speed, it is recommended that the number of elements doesn't exceed
+ *	half of the internal size or two-thirds as a last resort (though theoretically number of
+ *	elements is not limited). To organise the elements, the map uses hash cods of their keys. If
+ *	the key is not a pointer, it's important that its hash code is calculated fast.
+ *	\warning If the map contains `unique_ptr`'s, methods that copy the map elements (for example,
+ *	the copy constructor) must not be called (`std::logic_error` exception can be thrown).
+ *	\tparam T_Key Type of the map keys. If you want the keys to be objects of some class, it is
+ *	highly recommended to use pointers, but you cannot use `unique_ptr`'s as keys. If `T_key` is
+ *	not a primitive type, `to_string` and `hash_code` methods must be defined for it (any
+ *	`snow::Object` has them). If `T_Key` is not a pointer, it also must have a default constructor,
+ *	an assignment operator (`=`) and an equality operator (`==`). The default and copy constructors
+ *	are assumed not to throw any exceptions.
+ *	\tparam T_Value Type of the map elements. If you need to store objects of some class in the
+ *	map, it is highly recommended to store pointers to them. If `T_Value` is not a primitive type,
+ *	`to_string` and `hash_code` methods must be defined for it (any `snow::Object` has them). If
+ *	`T_Value` is not a pointer, it also must have a default constructor, an assignment operator
+ *	(`=`) and an equality operator (`==`). The default and copy constructors are assumed not to
+ *	throw any exceptions.
+ *	
+ *	\~russian
+ *	Этот класс используется в качестве словаря. Каждый элемент словаря ассоциирован с ключом, а
+ *	каждый ключ соответствует единственному элементу. К любому элементу можно получить доступ с
+ *	помощью его ключа. Словарь обеспечивает быстрый доступ к произвольному элементу, быструю
+ *	вставку и удаление. Когда вы инициализируете словарь, вы можете определить его внутренний
+ *	размер. Чем больше элементов, тем медленнее работают операции со словарём. Для максимальной
+ *	скорости рекомендуется, чтобы число элементов не превышало половины или, в крайнем случае,
+ *	двух третей внутреннего размера (хотя теоретически ограничения на число элементов нет). Для
+ *	упорядочивания элементов словарь использует хеш-коды их ключей. Если ключ не является
+ *	указателем, важно, чтобы его хеш-код вычислялся быстро.
+ *	\warning Если связный список содержит `unique_ptr`ы, то методы, копирующие элементы связного,
+ *	списка (например, конструктор копирования) не должны вызываться (может быть выброшено
+ *	исключение `std::logic_error`).
+ *	\tparam T_Key Тип ключей словаря. Если вы хотите, чтобы ключи были объектами некоторого класса,
+ *	настоятельно рекомендуется использовать указатели на них, но вы не можете использовать в
+ *	качестве ключей `unique_ptr`ы. Если `T_Key` не примитивный тип, для него должны быть определены
+ *	методы `to_string` и `hash_code` (у любого `snow::Object` они есть). Если `T_Key` не указатель,
+ *	у него также должны быть определёны конструктор по умолчанию, оператор присваивания (`=`) и
+ *	оператор равенства (`==`). Предполагается, что конструктор по умолчанию и конструктор
+ *	копирования не выбрасывают никаких исключений.
+ *	\tparam T_Value Тип элементов словаря. Если вам нужно хранить в словаре объекты некоторого
+ *	класса, настоятельно рекомендуется хранить указатели на них. Если `T_Value` не примитивный тип,
+ *	для него должны быть определены методы `to_string` и `hash_code` (у любого `snow::Object` они
+ *	есть). Если `T_Value` не указатель, у него также должны быть определёны конструктор по
+ *	умолчанию, оператор присваивания (`=`) и оператор равенства (`==`). Предполагается, что
+ *	конструктор по умолчанию и конструктор копирования не выбрасывают никаких исключений.
  */
 template<typename T_Key, typename T_Value>
 class Map :
@@ -57,449 +95,914 @@ class Map :
 	friend class BaseMapIterator_;
 
 public:
+			/* CONSTRUCTORS */
 
 	/**
-	 *	\brief Create an empty map
+	 *	\~english
+	 *	\brief The default constructor
 	 *
-	 *	The default constructor creates an empty map with default internal size (you can get it
-	 *	using `internal_size()` method.
+	 *	Creates an empty map with default internal size (you can get it using `internal_size`
+	 *	method).
+	 *
+	 *	\~russian
+	 *	\brief Конструктор по умолчанию
+	 *
+	 *	Создаёт пустой словарь с внутренним размером по умолчанию (вы можете получить его,
+	 *	используя метод `internal_size`).
 	 */
 	Map() noexcept;
 
 	/**
-	 *	\brief Copy constructor
+	 *	\~english
+	 *	\brief The copy constructor
 	 *
-	 *	Creates a new map as a copy of the passed one.
-	 *	\param map The map to copy.
+	 *	Copies the map.
+	 *	\warning This constructor must not be used if the map contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param map The map that will be copied.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор копирования
+	 *
+	 *	Копирует массив.
+	 *	\warning Этот конструктор не должен быть использован, если словарь содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param map Словарь, который будет скопирован.
 	 */
 	Map(const Map<T_Key, T_Value>& map) noexcept;
 
 	/**
-	 *	\brief Move constructor
+	 *	\~english
+	 *	\brief The move constructor
 	 *
 	 *	Moves elements to a new map from the passed one.
 	 *	\param map The map whose elements will be moved.
+	 *
+	 *	\~russian
+	 *	\brief Конструктор перемещения
+	 *
+	 *	Перемещает элементы в новый словарь из переданного.
+	 *	\param map Словарь, чьи элементы будут перемещены.
 	 */
 	Map(Map<T_Key, T_Value>&& map) noexcept;
 
 	/**
-	 *	\brief Create a map with the specified internal size
+	 *	\~english
+	 *	\brief Creates a map with the specified internal size
 	 *
 	 *	Creates a map with the specified internal size. It is recommended that the number of
 	 *	elements doesn't exceed half of the internal size or two-thirds as a last resort.
 	 *	\param size The internal size of the map.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт словарь с заданным внутренним размером
+	 *	
+	 *	Создаёт словарь с заданным внутренним размером. Рекомендуется, чтобы число элементов не
+	 *	превышало половины или, в крайнем случае, двух третей внутреннего размера.
+	 *	\param size Размер словаря.
 	 */
 	Map(int size);
 
 	/**
+	 *	\~english
 	 *	\brief The destructor
 	 *
 	 *	The destructor is used to invalidate all iterators.
+	 *
+	 *	\~russian
+	 *	\brief Деструктор
+	 *
+	 *	Деструктор используется для аннулирования всех итераторов.
 	 */
 	virtual ~Map() noexcept;
 
+			/* METHODS FROM Object */
+
 	/**
-	 *	\brief Converts the map content to string
+	 *	\~english
+	 *	\brief Converts the map into a string
 	 *
-	 *	Creates a string representing the list of the container elements. `util::to_string()` is
-	 *	used to convert elements to string.
-	 *	\return A result string in the format `"{ [k: v], [k: v], ..., [k: v] }"` (`k` is key, `v`
-	 *	is value). `"{ }"` if the map is empty.
+	 *	Creates a string representing the list of the map elements. `util::to_string` is used to
+	 *	convert elements to string.
+	 *	\return A result string in the format `{ [k: v], [k: v], ..., [k: v] }` (`k` is key, `v`
+	 *	is value). `{ }` if the map is empty.
+	 *
+	 *	\~russian
+	 *	\brief Конвертирует словарь в строку
+	 *
+	 *	Создаёт строку, представляющую из себя список элементов словаря. Для конвертации элементов
+	 *	в строку используется `util::to_string`.
+	 *	\return Итоговая строка в формате `{ [к: з], [к: з], ..., [к: з] }` (`к` — ключ, `з` —
+	 *	значение). `{ }`, если словарь пуст.
 	 */
 	virtual String to_string() const noexcept override;
 
 	/**
+	 *	\~english
 	 *	\brief Hash code of the map
 	 *
-	 *	Hash code is calculated using `util::hash_code()` function. Hash code of a map is the sum
-	 *	of its keys minus the sum of its values.
-	 *	\return Hash code of the map.
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an empty map is zero.
+	 *	\return Hash code of the object.
+	 *
+	 *	\~russian
+	 *	\brief Хеш-код словаря
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустого словаря — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
+			/* METHODS FROM IContainer &
+				METHODS */
+
 	/**
+	 *	\~english
 	 *	\brief The size of the map
 	 *
-	 *	Allows to get the number of elements in the map.
+	 *	Allows to get the number of elements in the map. Do not confuse this method with
+	 *	`internal_size`.
 	 *	\return The number of elements in the map.
+	 *
+	 *	\~russian
+	 *	\brief Размер словаря
+	 *
+	 *	Позволяет получить количество элеменов в словаре. Не путайте этот метод с `internal_size`.
+	 *	\return Количество элеменов в словаре.
 	 */
 	virtual int size() const noexcept override;
 
 	/**
+	 *	\~english
 	 *	\brief The internal size of the map
-	 *	
+	 *
 	 *	Allows to get the internal size of the map. It is recommended that the number of elements
 	 *	doesn't exceed half of the internal size or two-thirds as a last resort.
 	 *	\return The internal size of the map.
+	 *
+	 *	\~russian
+	 *	\brief Внутренний размер словаря
+	 *
+	 *	Позволяет получить внутренний размер словаря. Рекомендуется, чтобы число элементов не
+	 *	превышало половины или, в крайнем случае, двух третей внутреннего размера.
+	 *	\return Размер словаря.
 	 */
 	int internal_size() const noexcept;
 
 	/**
-	 *	\brief Whether the map is empty
+	 *	\~english
+	 *	\brief Checks whether the map is empty
 	 *
 	 *	Checks whether the map is empty.
-	 *	\return `true` if the container does not contain any element, `false` otherwise.
+	 *	\return `true` if the map does not contain any element, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, пуст ли словарь
+	 *
+	 *	Проверяет, пуст ли словарь.
+	 *	\return `true`, если словарь не содержит никаких элементов, иначе `false`.
 	 */
 	virtual bool is_empty() const noexcept override;
 
 	/**
+	 *	\~english
 	 *	\brief Clears the map
 	 *
-	 *	Removes all of the elements in the container and sets all of its iterators to the end.
+	 *	Removes all of the elements in the map and sets all of its iterators to the end.
+	 *	
+	 *	\~russian
+	 *	\brief Очищает словарь
+	 *
+	 *	Удаляет все элементы словаря и устанавливает его итераторы в конец.
 	 */
 	virtual void clear() noexcept override;
 	
 	/**
-	 *	\brief Change the internal size of the map
-	 *	
-	 *	Changes the internal size without changing number of elements. Might work slowly. After
-	 *	executing this method all iterators will continue to point to their elements but the map
-	 *	traversal order will be changed.
+	 *	\~english
+	 *	\brief Changes the the internal size of the map
+	 *
+	 *	Changes the internal size without changing number of elements. After executing this method
+	 *	all iterators will continue to point to their elements but the map traversal order will be
+	 *	changed. This method completely restructurizes the whole map, that's why it can work very
+	 *	slowly.
 	 *	\param new_size The new internal size.
+	 *	\return `true` if the map has been successfully resized, `false` otherwise (e. g. if the
+	 *	new size is negative).
+	 *	
+	 *	\~russian
+	 *	\brief Изменяет внутренний размер словаря
+	 *	
+	 *	Изменяет внутренний размер без изменения количества элементов. После выполнения этого
+	 *	все итераторы продолжат указывать на свои элементы, но порядок обхода словаря изменится.
+	 *	Этот метод полностью перестраивает весь словарь и поэтому может работать очень медленно.
+	 *	\param new_size Новый внутренний размер.
+	 *	\return `true`, если размер был успешно изменён, иначе `false` (например, если новый размер
+	 *	отрицательный).
 	 */
-	void resize(int new_size);
+	bool resize(int new_size);
 
 	/**
-	 *	\brief Add a new element
-	 *
-	 *	Inserts a new element with the specified key.
+	 *	\~english
+	 *	\brief Adds a new element
+	 *	
+	 *	Inserts a new element with the specified key. The iterators won't be changed, but the new
+	 *	element can be added in the middle of their order.
+	 *	\warning This method must not be used if the map contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param key The key of a new element.
-	 *	\param value The added element.
-	 *	\param allow_override Determines what actions will be performed if the map already contains
-	 *	an element with the passed key. If `true`, the element will be overridden; if `false`, the
+	 *	\param value The element that will be added.
+	 *	\param allow_override Determines what the method should do if the map already contains an
+	 *	element with the passed key. If `true`, the element will be overridden; if `false`, the
 	 *	element won't be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if
 	 *	there is already an element with this key and override is not allowed).
+	 *	
+	 *	\~russian
+	 *	\brief Добавляет новый элемент
+	 *	
+	 *	Вставляет новый элемент c указанным ключом. Итераторы не будут изменены, но новый элемент
+	 *	может быть добавлен в середину их порядка обхода.
+	 *	\warning Этот метод не должен быть использован, если словарь содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param key Ключ нового элемента.
+	 *	\param value Элемент, который будет добавлен.
+	 *	\param allow_override Определяет, что должен сделать метод, если словарь уже содержит
+	 *	элемент с переданным ключом. Если `true`, элемент будет перезаписан; если `false`, элемент
+	 *	не будет добавлен.
+	 *	\return `true`, если элемент был успешно добавлен, иначе `false` (например, если уже есть
+	 *	элемент с таким ключом и перезапись не разрешена).
 	 */
 	bool add(const T_Key& key, const T_Value& value, bool allow_override = false);
 
 	/**
-	 *	\brief Add a new element
+	 *	\~english
+	 *	\brief Adds a new element
 	 *
-	 *	Inserts a new element with the specified key.
+	 *	Inserts a new element with the specified key. The iterators won't be changed, but the new
+	 *	element can be added in the middle of their order.
 	 *	\param key The key of a new element.
-	 *	\param value The added element.
-	 *	\param allow_override Determines what actions will be performed if the map already contains
-	 *	an element with the passed key. If `true`, the element will be overridden; if `false`, the
+	 *	\param value The element that will be added.
+	 *	\param allow_override Determines what the method should do if the map already contains an
+	 *	element with the passed key. If `true`, the element will be overridden; if `false`, the
 	 *	element won't be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if
 	 *	there is already an element with this key and override is not allowed).
+	 *
+	 *	\~russian
+	 *	\brief Добавляет новый элемент
+	 *
+	 *	Вставляет новый элемент c указанным ключом. Итераторы не будут изменены, но новый элемент
+	 *	может быть добавлен в середину их порядка обхода.
+	 *	\param key Ключ нового элемента.
+	 *	\param value Элемент, который будет добавлен.
+	 *	\param allow_override Определяет, что должен сделать метод, если словарь уже содержит
+	 *	элемент с переданным ключом. Если `true`, элемент будет перезаписан; если `false`, элемент
+	 *	не будет добавлен.
+	 *	\return `true`, если элемент был успешно добавлен, иначе `false` (например, если уже есть
+	 *	элемент с таким ключом и перезапись не разрешена).
 	 */
 	bool add(const T_Key& key, T_Value&& value, bool allow_override = false);
 
 	/**
-	 *	\brief Add a new pair
-	 *
-	 *	Inserts a new element with the specified key.
+	 *	\~english
+	 *	\brief Adds a new pair
+	 *	
+	 *	Inserts a new element with the specified key. The iterators won't be changed, but the new
+	 *	element can be added in the middle of their order.
+	 *	\warning This method must not be used if the map contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param pair The pair that contains key and value that will be added.
-	 *	\param allow_override Determines what actions will be performed if the map already contains
-	 *	an element with the passed key. If `true`, the element will be overridden; if `false`, the
+	 *	\param allow_override Determines what the method should do if the map already contains an
+	 *	element with the passed key. If `true`, the element will be overridden; if `false`, the
 	 *	element won't be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if
 	 *	there is already an element with this key and override is not allowed).
+	 *	
+	 *	\~russian
+	 *	\brief Добавляет новую пару
+	 *	
+	 *	Вставляет новый элемент c указанным ключом. Итераторы не будут изменены, но новый элемент
+	 *	может быть добавлен в середину их порядка обхода.
+	 *	\warning Этот метод не должен быть использован, если словарь содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param pair Пара, содержащая ключ и элемент, который будет добавлен.
+	 *	\param allow_override Определяет, что должен сделать метод, если словарь уже содержит
+	 *	элемент с переданным ключом. Если `true`, элемент будет перезаписан; если `false`, элемент
+	 *	не будет добавлен.
+	 *	\return `true`, если элемент был успешно добавлен, иначе `false` (например, если уже есть
+	 *	элемент с таким ключом и перезапись не разрешена).
 	 */
 	bool add(const Pair<T_Key, T_Value>& pair, bool allow_override = false);
 
 	/**
-	 *	\brief Add a new pair
+	 *	\~english
+	 *	\brief Adds a new pair
 	 *
-	 *	Inserts a new element with the specified key.
+	 *	Inserts a new element with the specified key. The iterators won't be changed, but the new
+	 *	element can be added in the middle of their order.
 	 *	\param pair The pair that contains key and value that will be added.
-	 *	\param allow_override Determines what actions will be performed if the map already contains
-	 *	an element with the passed key. If `true`, the element will be overridden; if `false`, the
+	 *	\param allow_override Determines what the method should do if the map already contains an
+	 *	element with the passed key. If `true`, the element will be overridden; if `false`, the
 	 *	element won't be added.
 	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if
 	 *	there is already an element with this key and override is not allowed).
+	 *
+	 *	\~russian
+	 *	\brief Добавляет новую пару
+	 *
+	 *	Вставляет новый элемент c указанным ключом. Итераторы не будут изменены, но новый элемент
+	 *	может быть добавлен в середину их порядка обхода.
+	 *	\param pair Пара, содержащая ключ и элемент, который будет добавлен.
+	 *	\param allow_override Определяет, что должен сделать метод, если словарь уже содержит
+	 *	элемент с переданным ключом. Если `true`, элемент будет перезаписан; если `false`, элемент
+	 *	не будет добавлен.
+	 *	\return `true`, если элемент был успешно добавлен, иначе `false` (например, если уже есть
+	 *	элемент с таким ключом и перезапись не разрешена).
 	 */
 	bool add(Pair<T_Key, T_Value>&& pair, bool allow_override = false);
 
 	/**
-	 *	\brief Add elements from the passed map
+	 *	\~english
+	 *	\brief Adds into the map copies of elements of the passed map
 	 *
-	 *	Tries to insert all elements of the passed map.
-	 *	\param map The map whose elements will be copied.
-	 *	\param allow_override Determines what actions will be performed if both maps contain
-	 *	elements with the same key. If `true`, the element of this map will be overridden; if
-	 *	`false`, the element won't be copied.
+	 *	Inserts into the map copies of elements of the passed map. The iterators won't be changed,
+	 *	but the new elements can be added in the middle of their order.
+	 *	\warning This method must not be used if the map contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param map The map whose elements will be added.
+	 *	\param allow_override Determines what the method should do if in the passed map there is an
+	 *	element with the key that is already contained in the map. If `true`, the element will be
+	 *	overridden; if `false`, the element won't be added.
 	 *	\return The number of elements that have been successfully added.
+	 *
+	 *	\~russian
+	 *	\brief Добавляет в словарь копии элементов переданного словаря
+	 *
+	 *	Вставляет в словарь копии элементов переданного словаря. Итераторы не будут изменены, но
+	 *	новые элементы могут быть добавлен в середину их порядка обхода.
+	 *	\warning Этот метод не должен быть использован, если словарь содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param map Словарь, чьи элементы будут добавлены.
+	 *	\param allow_override Определяет, что должен сделать метод, если в переданном словаре есть
+	 *	элемент с ключом, который уже содержится в данном словаре. Если `true`, элемент будет
+	 *	перезаписан; если `false`, элемент не будет добавлен.
+	 *	\return Количество успешно добавленных элементов.
 	 */
 	int add(const Map<T_Key, T_Value>& map, bool allow_override = false);
 
 	/**
-	 *	\brief Move elements from the passed map
+	 *	\~english
+	 *	\brief Adds into the map copies of elements of the passed map
 	 *
-	 *	Tries to insert all elements of the passed map.
-	 *	\param map The map whose elements will be moved.
-	 *	\param allow_override Determines what actions will be performed if both maps contain
-	 *	elements with the same key. If `true`, the element of this map will be overridden; if
-	 *	`false`, the element won't be moved.
-	 *	\return The number of elements that have been successfully moved.
+	 *	Inserts into the map copies of elements of the passed map. The iterators won't be changed,
+	 *	but the new elements can be added in the middle of their order.
+	 *	\param map The map whose elements will be added.
+	 *	\param allow_override Determines what the method should do if in the passed map there is an
+	 *	element with the key that is already contained in the map. If `true`, the element will be
+	 *	overridden; if `false`, the element won't be added.
+	 *	\return The number of elements that have been successfully added.
+	 *
+	 *	\~russian
+	 *	\brief Добавляет в словарь копии элементов переданного словаря
+	 *
+	 *	Вставляет в словарь копии элементов переданного словаря. Итераторы не будут изменены, но
+	 *	новые элементы могут быть добавлен в середину их порядка обхода.
+	 *	\param map Словарь, чьи элементы будут добавлены.
+	 *	\param allow_override Определяет, что должен сделать метод, если в переданном словаре есть
+	 *	элемент с ключом, который уже содержится в данном словаре. Если `true`, элемент будет
+	 *	перезаписан; если `false`, элемент не будет добавлен.
+	 *	\return Количество успешно добавленных элементов.
 	 */
 	int add(Map<T_Key, T_Value>&& map, bool allow_override = false);
 	
 	/**
-	 *	\brief Remove an element with the specified key
+	 *	\~english
+	 *	\brief Removes an element with the specified key
 	 *	
-	 *	Removes an element with the specified key. Iterators that pointed to the removed element
-	 *	will point to the next element after executing this method.
-	 *	\param key The key of an element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	Removes an element that has the specified key. Iterators that pointed to the removed
+	 *	element (including the passed one) will point to the next element after executing this
+	 *	method.
+	 *	\param key The key of the element that will be removed.
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the map doesn't contain the element with the passed key).
+	 *	
+	 *	\~russian
+	 *	\brief Удаляет элемент с заданным ключом
+	 *	
+	 *	Удаляет элемент, который имеет заданный ключ.
+	 *	\param key Ключ элемента, который будет удалён.
+	 *	\return `true`, если элемент был успешно удалён, иначе `false` (например, если словарь не
+	 *	содержит элемента с переданным ключом).
 	 */
 	bool remove(const T_Key& key);
 
 	/**
-	 *	\brief Remove an element by iterator
-	 *
-	 *	Removes an element that the iterator points to. Iterators that pointed to the removed
-	 *	element will point to the next element after executing this method.
+	 *	\~english
+	 *	\brief Removes an element by iterator
+	 *	
+	 *	Removes an element that the passed iterator points to. Iterators that pointed to the
+	 *	removed element (including the passed one) will point to the next element after executing
+	 *	this method.
 	 *	\param element The iterator pointing to the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
-	 *	the iterator points to the element of other map).
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
+	 *	the iterator points to an element of other map).
+	 *	
+	 *	\~russian
+	 *	\brief Удаляет элемент по итератору
+	 *	
+	 *	Удаляет элемент, на который указывает переданный итератор. Итераторы, указывавшие на
+	 *	удалённый элемент (включая переданный), после выполнения метода будут указывать на
+	 *	следующий.
+	 *	\param element Итератор, указывающий на элемент, который будет удалён.
+	 *	\return `true`, если элемент был успешно удалён, иначе `false` (например, если итератор
+	 *	указывает на элемент другого словаря).
 	 */
 	bool remove(const MapIterator<T_Key, T_Value>& element);
 
 	/**
-	 *	\brief Remove an element by iterator
+	 *	\~english
+	 *	\brief Removes an element by iterator
 	 *
-	 *	Removes an element that the iterator points to. Iterators that pointed to the removed
-	 *	element will point to the next element after executing this method.
+	 *	Removes an element that the passed iterator points to. Iterators that pointed to the
+	 *	removed element (including the passed one) will point to the next element after executing
+	 *	this method.
 	 *	\param element The iterator pointing to the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
-	 *	the iterator points to the element of other map).
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
+	 *	the iterator points to an element of other map).
+	 *
+	 *	\~russian
+	 *	\brief Удаляет элемент по итератору
+	 *
+	 *	Удаляет элемент, на который указывает переданный итератор. Итераторы, указывавшие на
+	 *	удалённый элемент (включая переданный), после выполнения метода будут указывать на
+	 *	следующий.
+	 *	\param element Итератор, указывающий на элемент, который будет удалён.
+	 *	\return `true`, если элемент был успешно удалён, иначе `false` (например, если итератор
+	 *	указывает на элемент другого словаря).
 	 */
 	bool remove(const ConstMapIterator<T_Key, T_Value>& element);
 
 	/**
-	 *	\brief Remove one element that is equal to the passed one
-	 *	
-	 *	Compares elements of the map with the passed one and removes the first match.
+	 *	\~english
+	 *	\brief Removes any element that is equal to the passed one
+	 *
+	 *	Compares elements of the map with the passed one and removes one of matches. Iterators that
+	 *	pointed to the removed element will point to the next element after executing this method.
 	 *	\param element The object to compare.
-	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
-	 *	match hasn't been found).
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (e. g. if the
+	 *	map doesn't contain the passed object).
+	 *	
+	 *	\~russian
+	 *	\brief Удаляет любой элемент, который равен переданному
+	 *	
+	 *	Сравнивает элементы словаря с переданным и удаляет одно из совпадений. Итераторы,
+	 *	указывавшие на удалённый элемент, после выполнения метода будут указывать на следующий.
+	 *	\param element Объект для сравнения.
+	 *	\return `true`, если элемент был успешно удалён, иначе `false` (например, если словарь не
+	 *	содержит переданный объект).
 	 */
-	bool remove_one(const T_Value& element);
+	bool remove_any(const T_Value& element);
 
 	/**
-	 *	\brief Remove all elements that are equal to the passed one
+	 *	\~english
+	 *	\brief Removes all elements that are equal to the passed one
 	 *	
-	 *	Compares elements of the map with the passed one and removes all matches.
+	 *	Compares every element of the map with the passed one and removes all matches. Iterators
+	 *	that pointed to one of the removed elements will point to the next element after executing
+	 *	this method.
 	 *	\param element The object to compare.
-	 *	\return The number of elements that have been successfully removed.
+	 *	\return Number of elements that have been successfully removed.
+	 *
+	 *	\~russian
+	 *	\brief Удаляет все элементы, равные переданному
+	 *
+	 *	Сравнивает каждый элемент словаря с переданным и удаляет все совпадения. Итераторы,
+	 *	указывавшие на один из удалённых элементов, после выполнения метода будут указывать на
+	 *	следующий.
+	 *	\param element Объект для сравнения.
+	 *	\return Количество успешно удалённых элементов.
 	 */
 	virtual int remove_all(const T_Value& element) override;
 
 	/**
-	 *	\brief Find the element that is equal to the passed one
-	 *	
-	 *	Compares elements of the map with the passed one and returns a key of the first match.
-	 *	\param element The object to compare.
-	 *	\return The key of the first match. If no match has been found, creates an object using
-	 *	a default constructor.
+	 *	\~english
+	 *	\brief Finds any element that is equal to the passed one
+	 *
+	 *	Compares elements of the map with the passed one. If a match is found, returns its key.
+	 *	\warning If the match isn't found, this method still returns a default object. This can
+	 *	lead to mistakes, so it's recommended to use another method overload with boolean parameter.
+	 *	\param element The desired element.
+	 *	\return A key of a first match. If no match has been found, creates an object using a
+	 *	default constructor.
+	 *
+	 *	\~russian
+	 *	\brief Находит любой элемент, который равен переданному
+	 *
+	 *	Сравнивает элементы словаря с переданным. Если совпадение найдено, возвращает его ключ.
+	 *	\warning Если совпадение не найдено, этот метод всё равно возвращает объект по умолчанию.
+	 *	Это может привести к ошибкам, поэтому рекомендуется использовать другую перегрузку метода,
+	 *	имеющую булевый параметр.
+	 *	\param element Искомый элемент.
+	 *	\return Ключ совпадения. Если совпадения не было найдено, создаёт объект с использованием
+	 *	конструктора по умолчанию.
 	 */
 	T_Key find(const T_Value& element) const;
 
 	/**
-	 *	\brief Find the element that is equal to the passed one
+	 *	\~english
+	 *	\brief Finds any element that is equal to the passed one
 	 *	
-	 *	Compares elements of the map with the passed one and returns a key of the first match.
-	 *	\param[in] element The object to compare.
+	 *	Compares elements of the map with the passed one. If a match is found, returns its key.
+	 *	\param[in] element The desired element.
 	 *	\param[out] out_success `true` if a match has been found, `false` otherwise.
-	 *	\return The key of the first match. If no match has been found, creates an object using
-	 *	a default constructor.
+	 *	\return A key of a first match. If no match has been found, creates an object using a
+	 *	default constructor.
+	 *	
+	 *	\~russian
+	 *	\brief Находит любой элемент, который равен переданному
+	 *	
+	 *	Сравнивает элементы словаря с переданным. Если совпадение найдено, возвращает его ключ.
+	 *	\param[in] element Искомый элемент.
+	 *	\param[out] out_success `true`, если совпадение найдено, иначе `false`.
+	 *	\return Ключ совпадения. Если совпадения не было найдено, создаёт объект с использованием
+	 *	конструктора по умолчанию.
 	 */
 	T_Key find(const T_Value& element, bool& out_success) const;
-
+	
 	/**
-	 *	\brief Whether the map contains an element with the passed elements
+	 *	\~english
+	 *	\brief Checks whether the map contains an element with the passed key
 	 *
-	 *	Checks whether the map has an element with the passed key.
+	 *	Checks whether the map has an element whose key is equal to the passed one.
 	 *	\param key The desired key.
-	 *	\return `true` if the map contains the passed key, `false` otherwise.
+	 *	\return `true` if the map contains the element with the passed key, `false` otherwise.
+	 *	
+	 *	\~russian
+	 *	\brief Проверяет, содержит ли словарь элемент с переданным ключом
+	 *	
+	 *	Проверяет, содержит ли словарь элемент, чей ключ равен переданному.
+	 *	\param key Искомый ключ.
+	 *	\return `true`, если словарь содержит элемент с переданным ключом, иначе `false`.
 	 */
 	bool contains_key(const T_Key& key) const;
 
 	/**
-	 *	\brief Whether the map contains the passed element
+	 *	\~english
+	 *	\brief Checks whether the map contains the passed element
 	 *
 	 *	Checks whether the map has an element that is equal to the passed one.
 	 *	\param element The desired element.
 	 *	\return `true` if the map contains the passed element, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, содержит ли словарь переданный элемент
+	 *
+	 *	Проверяет, содержит ли словарь элемент, равный переданному.
+	 *	\param element Искомый элемент.
+	 *	\return `true`, если словарь содержит переданный элемент, иначе `false`.
 	 */
 	virtual bool contains(const T_Value& element) const override;
 
 	/**
-	 *	\brief How many elements of the array are equal to the passed one
+	 *	\~english
+	 *	\brief How many elements of the map are equal to the passed one
 	 *
 	 *	Counts elements that are equal to the passed one.
 	 *	\param element The desired element.
 	 *	\return Number of matches.
+	 *
+	 *	\~russian
+	 *	\brief Сколько элементов словаря равны переданному
+	 *
+	 *	Подсчитывает элементы, равные переданному.
+	 *	\param element Требуемый элемент.
+	 *	\return Количество совпадений.
 	 */
 	virtual int count(const T_Value& element) const override;
 	
 	/**
-	 *	\brief Get all keys of the map
+	 *	\~english
+	 *	\brief All keys of the map
 	 *	
 	 *	Allows to get all keys contained in the map.
 	 *	\return An array with all keys of the map.
+	 *	
+	 *	\~russian
+	 *	\brief Все ключи словаря
+	 *	
+	 *	Позволяет получить все ключи, содержащиеся в словаре.
+	 *	\return Массив со всеми ключами словаря.
 	 */
 	Array<T_Key> get_keys() const;
 
 	/**
-	 *	\brief Get all values of the map
-	 *	
-	 *	Allows to get all elements of the map without their keys.
-	 *	\return An array with all values of the map.
+	 *	\~english
+	 *	\brief All values of the map
+	 *
+	 *	Allows to get all elements contained in the map.
+	 *	\return An array with all elements of the map.
+	 *
+	 *	\~russian
+	 *	\brief Все значения словаря
+	 *
+	 *	Позволяет получить все элементы, содержащиеся в словаре.
+	 *	\return Массив со всеми элементами словаря.
 	 */
 	Array<T_Value> get_values() const;
 
 	/**
-	 *	\brief Get all key-value pairs
+	 *	\~english
+	 *	\brief All key-value pairs of the map
 	 *	
-	 *	Allows to get all pairs of the map.
-	 *	\return An array that has all key-value pairs.
+	 *	Allows to get all key-value pairs contained in the map.
+	 *	\return An array with all pairs of the map.
+	 *	
+	 *	\~russian
+	 *	\brief Все пары ключ-значение словаря
+	 *	
+	 *	Позволяет получить все пары ключ-значение, содержащиеся в словаре.
+	 *	\return Массив со всеми парами словаря.
 	 */
 	Array<Pair<T_Key, T_Value>> get_pairs() const;
 
 	/**
-	 *	\brief Create an iterator to the first element
-	 *
-	 *	Creates an iterator that points to the first element of the map. If the map is empty, the
-	 *	created iterator is end (`is_end()` is true).
+	 *	\~english
+	 *	\brief Creates an iterator to the first element
+	 *	
+	 *	Creates an iterator that points to the first element of the mar. If the map is empty, the
+	 *	created iterator is end (`is_end` is true).
 	 *	\return The iterator to the first element of the map.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт итератор на первый элемент
+	 *	
+	 *	Создаёт итератор, который указывает на первый элемент словаря. Если словарь пуст, созданный
+	 *	итератор будет указывать на конец (`is_end` истинно).
+	 *	\return Итератор на первый элемент словаря.
 	 */
 	MapIterator<T_Key, T_Value> begin() noexcept;
 
 	/**
-	 *	\brief Create an iterator to the last element
+	 *	\~english
+	 *	\brief Creates an iterator to the last element
 	 *
 	 *	Creates an iterator that points to the last element of the map. If the map is empty, the
-	 *	created iterator is end (`is_end()` is true).
+	 *	created iterator is end (`is_end` is true).
 	 *	\return The iterator to the last element of the map.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт итератор на последний элемент
+	 *
+	 *	Создаёт итератор, который указывает на последний элемент словаря. Если словарь пуст,
+	 *	созданный итератор будет указывать на конец (`is_end` истинно).
+	 *	\return Итератор на последний элемент словаря.
 	 */
 	MapIterator<T_Key, T_Value> last() noexcept;
 
 	/**
-	 *	\brief Create an iterator pointing after the last element
+	 *	\~english
+	 *	\brief Creates an iterator pointing after the last element
 	 *
 	 *	Creates an iterator that points to a space after the last element of the map (this iterator
-	 *	is end: `is_end()` is true).
-	 *	\return The iterator after the last element of the map.
+	 *	is end: `is_end` is true).
+	 *	\return The end iterator.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт итератор, указывающий после последнего элемента
+	 *
+	 *	Создаёт итератор, который указывает на пространство после последнего элемента словаря (этот
+	 *	итератор указывает в конец: `is_end` истинно).
+	 *	\return Итератор на конец.
 	 */
 	MapIterator<T_Key, T_Value> end() noexcept;
 
 	/**
-	 *	\brief Create an iterator pointing to the specified element
-	 *
+	 *	\~english
+	 *	\brief Creates an iterator pointing to the specified element
+	 *	
 	 *	Creates an iterator that points to an element with the passed key.
 	 *	\param key The key of an element that the iterator will points to.
 	 *	\return The iterator pointing to the specified element.
 	 *	\throw std::invalid_argument The map doesn't contain the passed key.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт итератор, указывающий на заданный элемент
+	 *	
+	 *	Создаёт итератор, который указывает на элемент с переданным ключом.
+	 *	\param key Ключ элемента, на который будет указывать итератор.
+	 *	\return Итератор, указывающий на заданный элемент.
+	 *	\throw std::invalid_argument Словарь не содержит переданного ключа.
 	 */
 	MapIterator<T_Key, T_Value> create_iterator(const T_Key& key);
 
 	/**
-	 *	\brief Create an iterator to the first element
+	 *	\~english
+	 *	\brief Creates a constant iterator to the first element
 	 *
-	 *	Creates an iterator that points to the first element of the map. If the map is empty, the
-	 *	created iterator is end (`is_end()` is true).
-	 *	\return The iterator to the first element of the map.
+	 *	Creates a constant iterator that points to the first element of the mar. If the map is
+	 *	empty, the created iterator is end (`is_end` is true).
+	 *	\return The constant iterator to the first element of the map.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт константный итератор на первый элемент
+	 *
+	 *	Создаёт константный итератор, который указывает на первый элемент словаря. Если словарь
+	 *	пуст, созданный итератор будет указывать на конец (`is_end` истинно).
+	 *	\return Константный итератор на первый элемент словаря.
 	 */
 	ConstMapIterator<T_Key, T_Value> begin() const noexcept;
 
 	/**
-	 *	\brief Create an iterator to the last element
+	 *	\~english
+	 *	\brief Creates a constant iterator to the last element
 	 *
-	 *	Creates an iterator that points to the last element of the map. If the map is empty, the
-	 *	created iterator is end (`is_end()` is true).
-	 *	\return The iterator to the last element of the map.
+	 *	Creates a constant iterator that points to the last element of the map. If the map is
+	 *	empty, the created iterator is end (`is_end` is true).
+	 *	\return The constant iterator to the last element of the map.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт константный итератор на последний элемент
+	 *
+	 *	Создаёт константный итератор, который указывает на последний элемент словаря. Если словарь
+	 *	пуст, созданный итератор будет указывать на конец (`is_end` истинно).
+	 *	\return Константный итератор на последний элемент словаря.
 	 */
 	ConstMapIterator<T_Key, T_Value> last() const noexcept;
 
 	/**
-	 *	\brief Create an iterator pointing after the last element
+	 *	\~english
+	 *	\brief Creates a constant iterator pointing after the last element
 	 *
-	 *	Creates an iterator that points to a space after the last element of the map (this iterator
-	 *	is end: `is_end()` is true).
-	 *	\return The iterator after the last element of the map.
+	 *	Creates a constant iterator that points to a space after the last element of the map (this
+	 *	iterator is end: `is_end` is true).
+	 *	\return The constant end iterator.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт константный итератор, указывающий после последнего элемента
+	 *
+	 *	Создаёт константный итератор, который указывает на пространство после последнего элемента
+	 *	словаря (этот итератор указывает в конец: `is_end` истинно).
+	 *	\return Константный итератор на конец.
 	 */
 	ConstMapIterator<T_Key, T_Value> end() const noexcept;
 
 	/**
-	 *	\brief Create an iterator pointing to the specified element
+	 *	\~english
+	 *	\brief Creates a constant iterator pointing to the specified element
 	 *
-	 *	Creates an iterator that points to an element with the passed key.
+	 *	Creates a constant iterator that points to an element with the passed key.
 	 *	\param key The key of an element that the iterator will points to.
-	 *	\return The iterator pointing to the specified element.
+	 *	\return The constant iterator pointing to the specified element.
 	 *	\throw std::invalid_argument The map doesn't contain the passed key.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт константный итератор, указывающий на заданный элемент
+	 *
+	 *	Создаёт константный итератор, который указывает на элемент с переданным ключом.
+	 *	\param key Ключ элемента, на который будет указывать итератор.
+	 *	\return Константный итератор, указывающий на заданный элемент.
+	 *	\throw std::invalid_argument Словарь не содержит переданного ключа.
 	 */
 	ConstMapIterator<T_Key, T_Value> create_iterator(const T_Key& key) const;
 
 	/**
-	 *	\brief Copy assignment operator
-	 *
-	 *	Clears the map and assigns it the passed one. Invalidates all iterators.
-	 *	\param map The map to assign.
-	 *	\return A reference to itself.
-	 */
-	Map<T_Key, T_Value>& operator=(const Map<T_Key, T_Value>& map);
-
-	/**
-	 *	\brief Move assignment operator
-	 *
-	 *	Clears the map and moves elements of the passed one into it. Invalidates all iterators.
-	 *	\param map The map to move.
-	 *	\return A reference to itself.
-	 */
-	Map<T_Key, T_Value>& operator=(Map<T_Key, T_Value>&& map);
-
-	/**
-	 *	\brief Whether two maps are equal
-	 *
-	 *	Two maps are equal if all of their elements and keys are equal.
-	 *	\param map The map to compare.
-	 *	\return `true` if two maps are equal, `false` otherwise.
-	 */
-	bool operator==(const Map<T_Key, T_Value>& map) const;
-
-	/**
-	 *	\brief Whether two maps are not equal
-	 *
-	 *	Two maps are equal if all of their elements and keys are equal.
-	 *	\param map The map to compare.
-	 *	\return `true` if two maps are not equal, `false` otherwise.
-	 */
-	bool operator!=(const Map<T_Key, T_Value>& map) const;
-
-	/**
-	 *	\brief Get the specifies element.
-	 *
-	 *	Allows to access an element with the specified key.
-	 *	\param key The key of the element.
-	 *	\return A reference to the desired element.
-	 *	\throw std::invalid_argument The map doesn't contain the passed key.
-	 */
-	T_Value& operator[](const T_Key& key);
-
-	/**
-	 *	\brief Get the specifies element.
-	 *
-	 *	Allows to access an element with the specified key.
-	 *	\param key The key of the element.
-	 *	\return A reference to the desired element.
-	 *	\throw std::invalid_argument The map doesn't contain the passed key.
-	 */
-	const T_Value& operator[](const T_Key& key) const;
-
-	/**
-	 *	\brief MapIterator to ConstMapIterator
+	 *	\~english
+	 *	\brief Converts `MapIterator` to `ConstMapIterator`
 	 *
 	 *	Converts the passed map iterator to constant map iterator that points to the same element
 	 *	of the same map.
 	 *	\param iterator The map iterator that will be converted.
 	 *	\return A result constant map iterator.
+	 *
+	 *	\~russian
+	 *	\brief Конвертирует `MapIterator` в `ConstMapIterator`
+	 *
+	 *	Конвертирует переданный итератор словаря в константный итератор словаря, указывающий на тот
+	 *	же элемент того же словаря.
+	 *	\param iterator Итератор, который будет сконвертирован.
+	 *	\return Полученный константный итератор.
 	 */
 	static ConstMapIterator<T_Key, T_Value> iterator_to_const(const MapIterator<T_Key, T_Value>& iterator) noexcept;
+
+			/* OPERATORS */
+
+	/**
+	 *	\~english
+	 *	\brief The copy assignment operator
+	 *	
+	 *	Clears the map and inserts into it copies of elements of the passed map. Invalidates all
+	 *	iterators.
+	 *	\warning This operator must not be used if the map contains `unique_ptr`'s
+	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
+	 *	\param map The map to assign.
+	 *	\return A reference to itself.
+	 *	
+	 *	\~russian
+	 *	\brief Оператор присваивания копированием
+	 *	
+	 *	Очищает словарь и вставляет в него копии элементов переданного словаря. Аннулирует все
+	 *	итераторы.
+	 *	\warning Этот оператор не должен быть использован, если словарь содержит `unique_ptr`ы
+	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	перемещения.
+	 *	\param map Словарь для присваивания.
+	 *	\return Ссылка на себя.
+	 */
+	Map<T_Key, T_Value>& operator=(const Map<T_Key, T_Value>& map);
+
+	/**
+	 *	\~english
+	 *	\brief The move assignment operator
+	 *
+	 *	Clears the map and moves into it elements of the passed map. Invalidates all iterators.
+	 *	\param map The map to move.
+	 *	\return A reference to itself.
+	 *
+	 *	\~russian
+	 *	\brief Оператор присваивания перемещением
+	 *
+	 *	Очищает словарь и перемещает в него элементы переданного словаря. Аннулирует все итераторы.
+	 *	\param map Словарь для перемещения.
+	 *	\return Ссылка на себя.
+	 */
+	Map<T_Key, T_Value>& operator=(Map<T_Key, T_Value>&& map);
+
+	/**
+	 *	\~english
+	 *	\brief Checks whether two maps are equal
+	 *	
+	 *	Two maps are equal if all of their elements and keys are equal.
+	 *	\param map The map to compare.
+	 *	\return `true` if two maps are equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, равны ли два словаря
+	 *
+	 *	Два словаря равны, если равны их элементы и ключи.
+	 *	\param map Словарь для сравнения.
+	 *	\return `true`, если два словаря равны, иначе `false`.
+	 */
+	bool operator==(const Map<T_Key, T_Value>& map) const;
+
+	/**
+	 *	\~english
+	 *	\brief Checks whether two maps are not equal
+	 *
+	 *	Two maps are equal if all of their elements and keys are equal.
+	 *	\param map The map to compare.
+	 *	\return `true` if two maps are not equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Проверяет, различаются ли два словаря
+	 *
+	 *	Два словаря равны, если равны их элементы и ключи.
+	 *	\param map Словарь для сравнения.
+	 *	\return `true`, если два словаря не равны, иначе `false`.
+	 */
+	bool operator!=(const Map<T_Key, T_Value>& map) const;
+
+	/**
+	 *	\~english
+	 *	\brief Returns the specifies element
+	 *	
+	 *	Allows to access an element with the specified key.
+	 *	\param key The key of the element.
+	 *	\return A reference to the desired element.
+	 *	\throw std::invalid_argument The map doesn't contain the passed key.
+	 *
+	 *	\~russian
+	 *	\brief Возвращает заданный элемент
+	 *
+	 *	Позволяет получить доступ к элементу с заданным ключом.
+	 *	\param key Ключ элемента.
+	 *	\return Ссылка на требуемый элемент.
+	 *	\throw std::invalid_argument Словарь не содержит переданного ключа.
+	 */
+	T_Value& operator[](const T_Key& key);
+
+	/**
+	 *	\~english
+	 *	\brief Returns the specifies element
+	 *
+	 *	Allows to read an element with the specified key.
+	 *	\param key The key of the element.
+	 *	\return A constant reference to the desired element.
+	 *	\throw std::invalid_argument The map doesn't contain the passed key.
+	 *
+	 *	\~russian
+	 *	\brief Возвращает заданный элемент
+	 *
+	 *	Позволяет прочитать элемент с заданным ключом.
+	 *	\param key Ключ элемента.
+	 *	\return Константная ссылка на требуемый элемент.
+	 *	\throw std::invalid_argument Словарь не содержит переданного ключа.
+	 */
+	const T_Value& operator[](const T_Key& key) const;
 
 private:
 	Array<LinkedList<Pair<T_Key, T_Value>>> map_;
@@ -520,11 +1023,14 @@ private:
 	static const int DEFAULT_SIZE_;
 };
 
+
 		/* DEFINITIONS */
 
 #define FOR_ITERATORS_(i, arg) \
 	for (auto i : iterators_) arg \
 	for (auto i : const_iterators_) arg
+
+		/* Map: public */
 
 template<typename T_Key, typename T_Value>
 Map<T_Key, T_Value>::Map() noexcept :
@@ -638,24 +1144,32 @@ void Map<T_Key, T_Value>::clear() noexcept
 }
 
 template<typename T_Key, typename T_Value>
-void Map<T_Key, T_Value>::resize(int new_size)
+bool Map<T_Key, T_Value>::resize(int new_size)
 {
 	if (internal_size_ != new_size)
 	{
-		Array<Pair<T_Key, T_Value>> pairs(size_);
-		for (auto& i : map_)
+		if (internal_size > 0)
 		{
-			for (auto& j : i)
+			Array<Pair<T_Key, T_Value>> pairs(size_);
+			for (auto& i : map_)
 			{
-				pairs.add(std::move(j));
+				for (auto& j : i)
+				{
+					pairs.add(std::move(j));
+				}
 			}
+			internal_size_ = new_size;
+			map_.clear();
+			map_.resize(new_size);
+			for (const auto& i : pairs)
+			{
+				add(std::move(i));
+			}
+			return true;
 		}
-		internal_size_ = new_size;
-		map_.clear();
-		map_.resize(new_size);
-		for (const auto& i : pairs)
+		else
 		{
-			add(std::move(i));
+			return false;
 		}
 	}
 }
@@ -826,7 +1340,7 @@ bool Map<T_Key, T_Value>::remove(const ConstMapIterator<T_Key, T_Value>& element
 }
 
 template<typename T_Key, typename T_Value>
-bool Map<T_Key, T_Value>::remove_one(const T_Value& element)
+bool Map<T_Key, T_Value>::remove_any(const T_Value& element)
 {
 	for (auto i = begin(); !i.is_end(); i.next())
 	{
@@ -1050,6 +1564,12 @@ ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::create_iterator(const T_Ke
 }
 
 template<typename T_Key, typename T_Value>
+ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::iterator_to_const(const MapIterator<T_Key, T_Value>& iterator) noexcept
+{
+	return ConstMapIterator<T_Key, T_Value>(iterator.container_, iterator.key_, iterator.is_end_, iterator.is_valid_);
+}
+
+template<typename T_Key, typename T_Value>
 Map<T_Key, T_Value>& Map<T_Key, T_Value>::operator=(const Map<T_Key, T_Value>& map)
 {
 	clear_iterators_();
@@ -1121,12 +1641,8 @@ const T_Value& Map<T_Key, T_Value>::operator[](const T_Key& key) const
 	}
 	throw std::invalid_argument("A map doesn't contain the passed key");
 }
-
-template<typename T_Key, typename T_Value>
-ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::iterator_to_const(const MapIterator<T_Key, T_Value>& iterator) noexcept
-{
-	return ConstMapIterator<T_Key, T_Value>(iterator.container_, iterator.key_, iterator.is_end_, iterator.is_valid_);
-}
+		
+		/* Map: private */
 
 template<typename T_Key, typename T_Value>
 void Map<T_Key, T_Value>::register_iterator_(MapIterator<T_Key, T_Value>* iterator) noexcept

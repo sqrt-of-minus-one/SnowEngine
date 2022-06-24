@@ -19,10 +19,12 @@
  *	Этот файл содержит определение класса `Array`.
  */
 
+#include "ArrayIterator.h"
+		// + Object
+		// + IContainer
+
 #include <list>
 
-#include "ArrayIterator.h"
-#include "LinkedList.h"
 #include "../../Math/Math.h"
 
 namespace snow
@@ -36,6 +38,8 @@ namespace snow
  *	elements. Increasing the size of the array, inserting or removing elements in its middle or
  *	beginning is slow and should be avoided. If you need to insert or remove elements in the middle
  *	or beginning, the `LinkedList` container may be more suitable for you.
+ *	\warning If the array contains `unique_ptr`'s, methods that copy the array elements (for
+ *	example, the copy constructor) must not be called (`std::logic_error` exception can be thrown).
  *	\tparam T Type of the array elements. If you need to store objects of some class in the array,
  *	it is highly recommended to store pointers to them. If `T` is not a primitive type, `to_string`
  *	and `hash_code` methods must be defined for it (any `snow::Object` has them). If `T` is not a
@@ -50,6 +54,9 @@ namespace snow
  *	середины или начала происходят медленно, поэтому их следует избегать. Если вам необходимо
  *	вставлять или удалять элементы в середину или начало, класс `LinkedList` может оказаться более
  *	подходящим.
+ *	\warning Если массив содержит `unique_ptr`ы, то методы, копирующие элементы массива,
+ *	(например, конструктор копирования) не должны вызываться (может быть выброшено исключение
+ *	`std::logic_error`).
  *	\tparam T Тип элементов массива. Если вам нужно хранить в массиве объекты некоторого класса,
  *	настоятельно рекомендуется хранить указатели на них. Если `T` не примитивный тип, для него
  *	должны быть определены методы `to_string` и `hash_code` (у любого `snow::Object` они есть).
@@ -170,23 +177,17 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the array
-	 *	
-	 *	Hash code is calculated using `util::hash_code` function and formula:
-	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot a[i]) = a[0] - a[1] + a[2] - ...
-	 *	\f]
-	 *	\f$n\f$ is the array size, \f$a[i]\f$ is the hash code of i-th element of the array.
-	 *	\return Hash code of the array.
-	 *	
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes. Hash code of an empty array is zero.
+	 *	\return Hash code of the object.
+	 *
 	 *	\~russian
 	 *	\brief Хеш-код массива
 	 *
-	 *	Хеш-код вычисляется с использованием `util::hash_code` по формуле:
-	 *	\f[
-	 *		\sum^{n}_{i = 0} ((-1)^i \cdot (a[i]) = a[0] - a[1] + a[2] - ...
-	 *	\f]
-	 *	\f$n\f$ — размер массива, \f$a[i]\f$ — хеш-код i-го элемента массива.
-	 *	\return Хеш-код массива.
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустого массива — ноль.
+	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
 
@@ -246,7 +247,7 @@ public:
 	 *	new size is less than the old one, the last elements, that didn't fit in the array, will be
 	 *	removed. Iterators pointing to removed elements become end (`is_end` is true).
 	 *	\param new_size The new array size.
-	 *	\return `true` if the array has been successfully resized, `false` otherwise (i. g. if the
+	 *	\return `true` if the array has been successfully resized, `false` otherwise (e. g. if the
 	 *	new size is negative).
 	 *	
 	 *	\~russian
@@ -280,8 +281,8 @@ public:
 	 *	
 	 *	Вставляет новый элемент в конец массива. Если есть итераторы, указывающие на конец 
 	 *	(`is_end` истинно), после выполнения метода они продолжат указывать на конец.
-	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы
-	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
 	 *	перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 *	\return `true`, если элемент был успешно добавлен, иначе `false`.
@@ -318,7 +319,7 @@ public:
 	 *	(`std::logic_error` exception can be thrown). Instead, use move semantics.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
-	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
+	 *	\return `true` if the element has been successfully added, `false` otherwise (e. g. if the
 	 *	index is out of the array bounds).
 	 *	
 	 *	\~russian
@@ -327,8 +328,8 @@ public:
 	 *	Вставляет новый элемент в массив. Новый элемент будет иметь переданный индекс. Передвигает
 	 *	последующие элементы к концу массива. Итераторы также будут передвинуты и продолжат
 	 *	указывать на свои элементы.
-	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы
-	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
 	 *	перемещения.
 	 *	\param element Элемент, который будет добавлен.
 	 *	\param index Индекс, который новый элемент будет иметь.
@@ -346,7 +347,7 @@ public:
 	 *	continue to point to their elements.
 	 *	\param element The element that will be added.
 	 *	\param index The index that the new element will have.
-	 *	\return `true` if the element has been successfully added, `false` otherwise (i. g. if the
+	 *	\return `true` if the element has been successfully added, `false` otherwise (e. g. if the
 	 *	index is out of the array bounds).
 	 *
 	 *	\~russian
@@ -380,8 +381,8 @@ public:
 	 *	Вставляет в конец массива копии элементов переданного массива. Если есть итераторы,
 	 *	указывающие на конец (`is_end` истинно), после выполнения метода они продолжат указывать на
 	 *	конец.
-	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы
-	 *	(может быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
+	 *	\warning Этот метод не должен быть использован, если массив содержит `unique_ptr`ы (может
+	 *	быть выброшено исключение `std::logic_error`). Вместо этого используйте семантику
 	 *	перемещения.
 	 *	\param array Массив, чьи элементы будут добавлены.
 	 *	\return Количество успешно добавленных элементов.
@@ -417,7 +418,7 @@ public:
 	 *	a formed space. All iterators will continue to point to their elements. Iterators that
 	 *	pointed to the removed element will point to the next element after executing this method.
 	 *	\param index The index of the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the index is out of the array bounds).
 	 *	
 	 *	\~russian
@@ -442,7 +443,7 @@ public:
 	 *	that pointed to the removed element (including the passed one) will point to the next
 	 *	element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the iterator points to an element of other array).
 	 *	
 	 *	\~russian
@@ -467,7 +468,7 @@ public:
 	 *	that pointed to the removed element (including the passed one) will point to the next
 	 *	element after executing this method.
 	 *	\param element The iterator pointing to the element that will be removed.
-	 *	\return `true` if the element has been successfully removed, `false` otherwise (i. g. if
+	 *	\return `true` if the element has been successfully removed, `false` otherwise (e. g. if
 	 *	the iterator points to an element of other array).
 	 *
 	 *	\~russian
@@ -566,17 +567,17 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Removes one element that is equal to the passed one
+	 *	\brief Removes any element that is equal to the passed one
 	 *
 	 *	Compares elements of the array with the passed one and removes one of matches. All
 	 *	iterators will continue to point to their elements. Iterators that pointed to the removed
 	 *	element will point to the next element after executing this method.
 	 *	\param element The object to compare.
-	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (e. g. if the
 	 *	array doesn't contain the passed object).
 	 *	
 	 *	\~russian
-	 *	\brief Удаляет один элемент, который равен переданному
+	 *	\brief Удаляет любой элемент, который равен переданному
 	 *	
 	 *	Сравнивает элементы массива с переданным и удаляет одно из совпадений. Все итераторы
 	 *	продолжат указывать на свои элементы. Итераторы, указывавшие на удалённый элемент, после
@@ -596,7 +597,7 @@ public:
 	 *	that pointed to the removed element will point to the next element after executing this
 	 *	method.
 	 *	\param element The object to compare.
-	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (e. g. if the
 	 *	array doesn't contain the passed object).
 	 *	
 	 *	\~russian
@@ -619,7 +620,7 @@ public:
 	 *	first match. All iterators will continue to point to their elements. Iterators that pointed
 	 *	to the removed element will point to the next element after executing this method.
 	 *	\param element The object to compare.
-	 *	\return `true` if an element has been successfully removed, `false` otherwise (i. g. if the
+	 *	\return `true` if an element has been successfully removed, `false` otherwise (e. g. if the
 	 *	array doesn't contain the passed object).
 	 *
 	 *	\~russian
@@ -658,14 +659,14 @@ public:
 	// This method can be useful in the SortedArray class
 	/**
 	 *	\~english
-	 *	\brief Finds one element that is equal to the passed one
+	 *	\brief Finds any element that is equal to the passed one
 	 *	
 	 *	Compares elements of the array with the passed one. If a match is found, returns its index.
 	 *	\param element The desired element.
 	 *	\return An index of a match; a negative value if no match has been found.
 	 *	
 	 *	\~russian
-	 *	\brief Находит один элемент, который равен переданному
+	 *	\brief Находит любой элемент, который равен переданному
 	 *	
 	 *	Сравнивает элементы массива с переданным. Если совпадение найдено, возвращает его индекс.
 	 *	\param element Искомый элемент.
@@ -886,6 +887,25 @@ public:
 	 */
 	ConstArrayIterator<T> create_iterator(int index) const;
 
+	/**
+	 *	\~english
+	 *	\brief Converts `ArrayIterator` to `ConstArrayIterator`
+	 *
+	 *	Converts the passed array iterator to constant array iterator that points to the same
+	 *	element of the same array.
+	 *	\param iterator The array iterator that will be converted.
+	 *	\return A result constant array iterator.
+	 *
+	 *	\~russian
+	 *	\brief Конвертирует `ArrayIterator` в `ConstArrayIterator`
+	 *
+	 *	Конвертирует переданный итератор массива в константный итератор массива, указывающий на тот
+	 *	же элемент того же массива.
+	 *	\param iterator Итератор, который будет сконвертирован.
+	 *	\return Полученный константный итератор.
+	 */
+	static ConstArrayIterator<T> iterator_to_const(const ArrayIterator<T>& iterator) noexcept;
+
 			/* OPERATORS */
 
 	/**
@@ -1001,25 +1021,6 @@ public:
 	 */
 	const T& operator[](int index) const;
 
-	/**
-	 *	\~english
-	 *	\brief Converts `ArrayIterator` to `ConstArrayIterator`
-	 *	
-	 *	Converts the passed array iterator to constant array iterator that points to the same
-	 *	element of the same array.
-	 *	\param iterator The array iterator that will be converted.
-	 *	\return A result constant array iterator.
-	 *	
-	 *	\~russian
-	 *	\brief Конвертирует `ArrayIterator` в `ConstArrayIterator`
-	 *	
-	 *	Конвертирует переданный итератор массива в константный итератор массива, указывающий на тот
-	 *	же элемент того же массива.
-	 *	\param iterator Итератор, который будет сконвертирован.
-	 *	\return Полученный константный итератор.
-	 */
-	static ConstArrayIterator<T> iterator_to_const(const ArrayIterator<T>& iterator) noexcept;
-
 private:
 	int real_size_;
 	int size_;
@@ -1046,6 +1047,8 @@ private:
 #define FOR_ITERATORS_(i, arg) \
 	for (auto i : iterators_) arg \
 	for (auto i : const_iterators_) arg
+
+		/* Array: public */
 
 template<typename T>
 Array<T>::Array() noexcept :
@@ -1586,6 +1589,12 @@ ConstArrayIterator<T> Array<T>::create_iterator(int index) const
 }
 
 template<typename T>
+ConstArrayIterator<T> Array<T>::iterator_to_const(const ArrayIterator<T>& iterator) noexcept
+{
+	return ConstArrayIterator<T>(iterator.container_, iterator.index_, iterator.is_valid_);
+}
+
+template<typename T>
 Array<T>& Array<T>::operator=(const Array<T>& array)
 {
 	clear_iterators_();
@@ -1661,11 +1670,7 @@ const T& Array<T>::operator[](int index) const
 	}
 }
 
-template<typename T>
-ConstArrayIterator<T> Array<T>::iterator_to_const(const ArrayIterator<T>& iterator) noexcept
-{
-	return ConstArrayIterator<T>(iterator.container_, iterator.index_, iterator.is_valid_);
-}
+		/* Array: private */
 
 template<typename T>
 bool Array<T>::add_to_end_(const T& element)

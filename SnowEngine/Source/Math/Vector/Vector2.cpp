@@ -14,6 +14,8 @@
 
 using namespace snow;
 
+		/* Vector2: public */
+
 Vector2::Vector2() noexcept :
 	x_(0.f),
 	y_(0.f)
