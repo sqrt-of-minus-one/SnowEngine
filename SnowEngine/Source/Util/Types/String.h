@@ -26,6 +26,9 @@
 namespace snow
 {
 
+template<typename T>
+class Array;
+
 /**
  *	\~english
  *	\brief The class of string
@@ -740,6 +743,33 @@ public:
 	 *	\throw std::invalid_argument Переданный диапазон неверен (например, `from > to`).
 	 */
 	String substring(int from, int to) const;
+
+	/**
+	 *	\~english
+	 *	\brief Splits the string
+	 *	
+	 *	If the passed separator is contained in the string, this method splits it into the
+	 *	appropriate number of parts. The separator is not included in any of these parts.
+	 *	\param separator The separator.
+	 *	\param parts The maximum number of parts. If it is non-positive, the maximum number is not
+	 *	limited.
+	 *	\param case_sensivity Defines whether the method will be case sensitive while searching the
+	 *	separator.
+	 *	\return The array with parts of the string.
+	 *	
+	 *	\~russian
+	 *	\brief Делит строку
+	 *	
+	 *	Если в строке найдены вхождения переданного разделителя, делит её на соответствующее число
+	 *	частей. Сам разделитель не входит ни в одну из этих частей.
+	 *	\param separator Разделитель.
+	 *	\param parts Максимальное число частей, которое может получиться. Если число
+	 *	неположительное, максимальное число не ограничено.
+	 *	\param case_sensivity Определяет, будет ли учитываться регистр символов при поиске
+	 *	вхождений разделителя.
+	 *	\return Массив, содержащий полученные части.
+	 */
+	Array<String> split(const String& separator, int parts = 0, bool case_sensivity = true) const;
 
 	/**
 	 *	\~english

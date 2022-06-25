@@ -1148,7 +1148,7 @@ bool Map<T_Key, T_Value>::resize(int new_size)
 {
 	if (internal_size_ != new_size)
 	{
-		if (internal_size > 0)
+		if (internal_size_ > 0)
 		{
 			Array<Pair<T_Key, T_Value>> pairs(size_);
 			for (auto& i : map_)
@@ -1578,6 +1578,7 @@ Map<T_Key, T_Value>& Map<T_Key, T_Value>::operator=(const Map<T_Key, T_Value>& m
 	internal_size_ = map.internal_size_;
 	first_filled_ = map.first_filled_;
 	last_filled_ = map.last_filled_;
+	return *this;
 }
 
 template<typename T_Key, typename T_Value>
@@ -1589,6 +1590,7 @@ Map<T_Key, T_Value>& Map<T_Key, T_Value>::operator=(Map<T_Key, T_Value>&& map)
 	internal_size_ = map.internal_size_;
 	first_filled_ = map.first_filled_;
 	last_filled_ = map.last_filled_;
+	return *this;
 }
 
 template<typename T_Key, typename T_Value>

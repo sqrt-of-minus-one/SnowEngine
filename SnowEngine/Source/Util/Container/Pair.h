@@ -34,6 +34,7 @@ template<typename T>
 struct Wrap_
 {
 public:
+	Wrap_() noexcept;
 	Wrap_(const T& v) noexcept;
 	Wrap_(T&& v) noexcept;
 
@@ -44,6 +45,7 @@ template<typename T>
 struct Wrap_<std::unique_ptr<T>>
 {
 public:
+	Wrap_() noexcept;
 	Wrap_(const std::unique_ptr<T>& v) noexcept;
 	Wrap_(std::unique_ptr<T>&& v) noexcept;
 
@@ -478,6 +480,11 @@ private:
 		/* Wrap_: public */
 
 template<typename T>
+Wrap_<T>::Wrap_() noexcept :
+	var()
+{}
+
+template<typename T>
 Wrap_<T>::Wrap_(const T& v) noexcept :
 	var(v)
 {}
@@ -485,6 +492,11 @@ Wrap_<T>::Wrap_(const T& v) noexcept :
 template<typename T>
 Wrap_<T>::Wrap_(T&& v) noexcept :
 	var(std::move(v))
+{}
+
+template<typename T>
+Wrap_<std::unique_ptr<T>>::Wrap_() noexcept :
+	var(nullptr)
 {}
 
 template<typename T>

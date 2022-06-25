@@ -6,11 +6,10 @@
 #include "Source/Util/Time/Time.h"
 #include "Source/Util/Types/String.h"
 #include "Source/Util/Function/Delegate.h"
+#include "Source/Util/Lang/Lang.h"
 
 #include "Source/Util/Container/Array.h"
 #include "Source/Util/Config.h"
-
-using namespace snow;
 
 int main()
 {
@@ -23,17 +22,19 @@ int main()
 	snow::Array<int>(5);
 
 
-	String string = L"Hello SnowEngine";
-	Delegate<String, int, int> delegate;
+	snow::String string = L"Hello SnowEngine, SnowEngine, and SnowEngine again";
+	std::wcout << string.split(L"Now"_s, 0, true).to_string() << std::endl;
 
-	delegate.bind<String>(string, &String::substring);
-	std::wcout << delegate.execute(6, 16) << std::endl;
+
+	std::wcout << snow::Game::lang.get_string(L".lang.test"_s) << std::endl <<
+		snow::Game::lang.get_string(L"test.test.test"_s) << std::endl;
+	snow::Game::lang.load_table(L"test"_s);
+	std::wcout << snow::Game::lang.get_string(L"test.test.test"_s) << std::endl;
+	snow::Game::lang.set_lang(L"ru_RU"_s);
+	std::wcout << snow::Game::lang.get_string(L".lang.test"_s) << std::endl <<
+		snow::Game::lang.get_string(L"test.test.test"_s) << std::endl;
 	
-	delegate.bind([](int a, int b) -> String
-	{
-		return L"Sum: "_s + util::to_string(a + b);
-	});
-	std::wcout << delegate.execute(6, 16) << std::endl;
+
 
 	_getch();
 	return 0;

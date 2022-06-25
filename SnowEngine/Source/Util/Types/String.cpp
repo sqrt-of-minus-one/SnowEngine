@@ -6,7 +6,7 @@
 
 #include "String.h"
 
-#include "../Util.h"
+#include "../Container/Array.h"
 
 #include <iostream>
 #include <cwctype>
@@ -707,6 +707,62 @@ String String::substring(int from, int to) const
 	{
 		throw std::invalid_argument("Couldn't create a substring because of invalid range");
 	}
+}
+
+Array<String> String::split(const String& separator, int parts, bool case_sensivity) const
+{
+	Array<String> ret;
+	if (parts <= 0)
+	{
+		parts = 0;
+		parts = size();
+	}
+	else if (parts == 1)
+	{
+		ret.add(*this);
+		return ret;
+	}
+	String current;
+
+	for (int i = 0; i < size(); i++)
+	{
+		bool is_sep = true;
+		if (size() - i > separator.size())
+		{
+			for (int j = 0; j < separator.size() && i + j < size(); j++)
+			{
+				if (case_sensivity ?
+					(*this)[i + j] != separator[j] :
+					std::towlower((*this)[i + j]) != std::towlower(separator[j]))
+				{
+					is_sep = false;
+					break;
+				}
+			}
+		}
+		else
+		{
+			is_sep = false;
+		}
+
+		if (is_sep)
+		{
+			ret.add(current);
+			current.clear();
+			i += separator.size() - 1;
+			if (ret.size() >= parts - 1 && i < size() - 1)
+			{
+				ret.add(substring(i + 1, size()));
+				return ret;
+			}
+		}
+		else
+		{
+			current.add((*this)[i]);
+		}
+	}
+	ret.add(current);
+	return ret;
 }
 
 String String::reverse() const
