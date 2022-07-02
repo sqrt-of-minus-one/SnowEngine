@@ -54,7 +54,7 @@ public:
 	 *
 	 *	Создаёт нулевую точку \f$\{0; 0; 0\}\f$.
 	*/
-	Point3() noexcept;
+	Point3();
 
 	/**
 	 *	\~english
@@ -69,7 +69,7 @@ public:
 	 *	Создаёт копию точки.
 	 *	\param point Точка, которая будет скопирована.
 	 */
-	Point3(const Point3& point) noexcept;
+	Point3(const Point3& point);
 
 	/**
 	 *	\~english
@@ -86,7 +86,7 @@ public:
 	 *	Z устанавливается равной нулю.
 	 *	\param point 2D-точка, чьё значение будет скопировано.
 	 */
-	Point3(const Point2& point) noexcept;
+	Point3(const Point2& point);
 
 	/**
 	 *	\~english
@@ -105,7 +105,7 @@ public:
 	 *	\param point 2D-точка, чьи X и Y координаты будут скопированы.
 	 *	\param z Координата Z точки.
 	 */
-	Point3(const Point2& point, int z) noexcept;
+	Point3(const Point2& point, int z);
 
 	/**
 	 *	\~english
@@ -124,7 +124,7 @@ public:
 	 *	\param y Координата Y точки.
 	 *	\param z Координата Z точки.
 	 */
-	Point3(int x, int y, int z) noexcept;
+	Point3(int x, int y, int z);
 
 			/* METHODS FROM Object */
 
@@ -142,7 +142,7 @@ public:
 	 *	Создаёт строку в формате `{<x>, <y>, <z>}`, где `<x>`, `<y>` и `<z>` — координаты точки.
 	 *	\return Строка с координатами точки.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -302,7 +302,7 @@ public:
 	 *	это l-value, но `+some_point` — уже r-value.
 	 *	\return Копия самой себя.
 	 */
-	const Point3 operator+() const noexcept;
+	const Point3 operator+() const;
 	
 	/**
 	 *	\~english
@@ -319,7 +319,7 @@ public:
 	 *	результат, что и `point * -1`.
 	 *	\return Точка с противоположными знаками у координат.
 	 */
-	const Point3 operator-() const noexcept;
+	const Point3 operator-() const;
 
 	/**
 	 *	\~english
@@ -338,7 +338,7 @@ public:
 	 *	\param point Второе слагаемое.
 	 *	\return Сумма двух точек.
 	 */
-	const Point3 operator+(const Point3& point) const noexcept;
+	const Point3 operator+(const Point3& point) const;
 
 	/**
 	 *	\~english
@@ -357,7 +357,7 @@ public:
 	 *	\param point Вычитаемое.
 	 *	\return Разность двух точек.
 	 */
-	const Point3 operator-(const Point3& point) const noexcept;
+	const Point3 operator-(const Point3& point) const;
 
 	/**
 	 *	\~english
@@ -376,7 +376,7 @@ public:
 	 *	\param value Множитель.
 	 *	\return Произведение точки и числа.
 	 */
-	const Point3 operator*(int value) const noexcept;
+	const Point3 operator*(int value) const;
 
 	/**
 	 *	\~english
@@ -397,7 +397,7 @@ public:
 	 *	\param point Точка.
 	 *	\return Произведение точки и числа.
 	 */
-	friend const Point3 operator*(int value, const Point3& point) noexcept;
+	friend const Point3 operator*(int value, const Point3& point);
 
 	/**
 	 *	\~english
@@ -422,7 +422,7 @@ public:
 	 *	\param point Множитель.
 	 *	\return Покоординатное произведение двух точек.
 	 */
-	const Point3 operator*(const Point3& point) const noexcept;
+	const Point3 operator*(const Point3& point) const;
 
 	/**
 	 *	\~english
@@ -709,7 +709,7 @@ public:
 	 *	\warning Возможна потеря данных: координата Z игнорируется.
 	 *	\return 2D-точка с X и Y координатами этой 3D-точки.
 	 */
-	operator Point2() const noexcept;
+	operator Point2() const;
 
 	/**
 	 *	\~english
@@ -735,7 +735,7 @@ public:
 	 *	\endcode
 	 *	\return 3D-вектор с вещественными координатами, равными координатам этой точки.
 	 */
-	operator Vector3() const noexcept;
+	operator Vector3() const;
 	
 			/* CONSTANTS */
 

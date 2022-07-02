@@ -65,7 +65,7 @@ public:
 	 *	
 	 *	Создаёт пустой массив со сравнивающей функцией по умолчанию.
 	 */
-	SortedArray() noexcept;
+	SortedArray();
 
 	/**
 	 *	\~english
@@ -85,7 +85,7 @@ public:
 	 *	перемещения.
 	 *	\param array Массив, который будет скопирован.
 	 */
-	SortedArray(const SortedArray<T>& array) noexcept;
+	SortedArray(const SortedArray<T>& array);
 
 	/**
 	 *	\~english
@@ -100,7 +100,7 @@ public:
 	 *	Перемещает элементы в новый массив из переданного, сохраняя его сравнивающую функцию.
 	 *	\param array Массив, чьи элементы будут перемещены.
 	 */
-	SortedArray(SortedArray<T>&& array) noexcept;
+	SortedArray(SortedArray<T>&& array);
 
 	/**
 	 *	\~english
@@ -578,7 +578,7 @@ private:
 		/* SortedArray: public */
 
 template<typename T>
-SortedArray<T>::SortedArray() noexcept :
+SortedArray<T>::SortedArray() :
 	Array<T>(),
 	comparator_()
 {
@@ -586,13 +586,13 @@ SortedArray<T>::SortedArray() noexcept :
 }
 
 template<typename T>
-SortedArray<T>::SortedArray(const SortedArray<T>& array) noexcept :
+SortedArray<T>::SortedArray(const SortedArray<T>& array) :
 	Array<T>(array),
 	comparator_(array.comparator_)
 {}
 
 template<typename T>
-SortedArray<T>::SortedArray(SortedArray<T>&& array) noexcept :
+SortedArray<T>::SortedArray(SortedArray<T>&& array) :
 	Array<T>(std::forward<Array<T>>(array)),
 	comparator_(array.comparator_)
 {}
@@ -915,13 +915,13 @@ void SortedArray<T>::swap_(int index_1, int index_2)
 }
 
 template<typename T>
-int SortedArray<T>::default_comparator_(const T& first, const T& second)
+int SortedArray<T>::default_comparator_(const T& first, const T& second) noexcept
 {
 	return util::hash_code(first) - util::hash_code(second);
 }
 
 template<>
-int SortedArray<float>::default_comparator_(const float& first, const float& second)
+int SortedArray<float>::default_comparator_(const float& first, const float& second) noexcept
 {
 	return math::ceil_abs(first - second);
 }

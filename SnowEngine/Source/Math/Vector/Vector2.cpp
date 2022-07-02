@@ -16,22 +16,22 @@ using namespace snow;
 
 		/* Vector2: public */
 
-Vector2::Vector2() noexcept :
+Vector2::Vector2() :
 	x_(0.f),
 	y_(0.f)
 {}
 
-Vector2::Vector2(const Vector2& vector) noexcept :
+Vector2::Vector2(const Vector2& vector) :
 	x_(vector.x_),
 	y_(vector.y_)
 {}
 
-Vector2::Vector2(float x, float y) noexcept :
+Vector2::Vector2(float x, float y) :
 	x_(x),
 	y_(y)
 {}
 
-String Vector2::to_string() const noexcept
+String Vector2::to_string() const
 {
 	return L"{"_s + util::to_string(x_) + L", "_s + util::to_string(y_) + L"}"_s;
 }
@@ -132,37 +132,37 @@ Vector2& Vector2::operator=(const Vector2& vector) noexcept
 	return *this;
 }
 	
-const Vector2 Vector2::operator+() const noexcept
+const Vector2 Vector2::operator+() const
 {
 	return *this;
 }
 
-const Vector2 Vector2::operator-() const noexcept
+const Vector2 Vector2::operator-() const
 {
 	return Vector2(-x_, -y_);
 }
 	
-const Vector2 Vector2::operator+(const Vector2& vector) const noexcept
+const Vector2 Vector2::operator+(const Vector2& vector) const
 {
 	return Vector2(x_ + vector.x_, y_ + vector.y_);
 }
 
-const Vector2 Vector2::operator-(const Vector2& vector) const noexcept
+const Vector2 Vector2::operator-(const Vector2& vector) const
 {
 	return Vector2(x_ - vector.x_, y_ - vector.y_);
 }
 
-const Vector2 Vector2::operator*(float value) const noexcept
+const Vector2 Vector2::operator*(float value) const
 {
 	return Vector2(x_ * value, y_ * value);
 }
 
-const Vector2 snow::operator*(float value, const Vector2& vector) noexcept
+const Vector2 snow::operator*(float value, const Vector2& vector)
 {
 	return vector * value;
 }
 
-const Vector2 Vector2::operator*(const Vector2& vector) const noexcept
+const Vector2 Vector2::operator*(const Vector2& vector) const
 {
 	return Vector2(x_ * vector.x_, y_ * vector.y_);
 }
@@ -262,7 +262,7 @@ bool Vector2::operator!=(const Vector2& vector) const noexcept
 	return x_ != vector.x_ || y_ != vector.y_;
 }
 
-Vector2::operator Point2() const noexcept
+Vector2::operator Point2() const
 {
 	return Point2(static_cast<int>(x_), static_cast<int>(y_));
 }

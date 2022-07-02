@@ -55,7 +55,7 @@ public:
 	 *
 	 *	Служит для добавления нового объекта в список объектов.
 	 */
-	Object() noexcept;
+	Object();
 
 	/**
 	 *	\~english
@@ -68,7 +68,7 @@ public:
 	 *
 	 *	Служит для удаления объекта из списка объектов.
 	 */
-	virtual ~Object() noexcept;
+	virtual ~Object();
 
 			/* METHODS */
 
@@ -85,7 +85,7 @@ public:
 	 *	Виртуальный метод, который создаёт строку из объекта.
 	 *	\return Строка.
 	 */
-	virtual String to_string() const noexcept = 0;
+	virtual String to_string() const = 0;
 
 	/**
 	 *	\~english
@@ -119,7 +119,7 @@ public:
 	 *	\param object Указатель на объект.
 	 *	\return `true`, если объект существует; `false`, если он был уничтожен.
 	 */
-	static bool is_valid(const Object* object) noexcept;
+	static bool is_valid(const Object* object);
 
 private:
 	/* lazy */ static std::set<const Object*>& existing_objects_();

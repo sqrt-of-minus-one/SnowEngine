@@ -24,7 +24,7 @@ using namespace snow;
 
 		/* Lang: public */
 
-String Lang::to_string() const noexcept
+String Lang::to_string() const
 {
 	return current_lang_;
 }
@@ -34,7 +34,7 @@ int Lang::hash_code() const noexcept
 	return current_lang_.hash_code();
 }
 
-const String& Lang::get_current_lang()
+const String& Lang::get_current_lang() noexcept
 {
 	return current_lang_;
 }
@@ -103,7 +103,7 @@ bool Lang::unload_table(const String& table)
 	return table != Game::config.default_table && strings_.remove(table);
 }
 
-bool Lang::is_table_loaded(const String& table)
+bool Lang::is_table_loaded(const String& table) // Todo: noexcept?
 {
 	return strings_.contains_key(table);
 }
@@ -132,7 +132,7 @@ bool Lang::is_valid(const String& key)
 		/* Lang: private */
 
 Lang::Lang() :
-	current_lang_(L""_s),
+	current_lang_(),
 	strings_(),
 	lang_log_(L"SnowFlake"_s)
 {

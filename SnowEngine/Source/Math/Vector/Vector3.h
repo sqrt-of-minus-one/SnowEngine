@@ -55,7 +55,7 @@ public:
 	 *
 	 *	Создаёт нулевой вектор \f$\{0; 0; 0\}\f$.
 	*/
-	Vector3() noexcept;
+	Vector3();
 
 	/**
 	 *	\~english
@@ -70,7 +70,7 @@ public:
 	 *	Создаёт копию вектора.
 	 *	\param vector Вектор, который будет скопирован.
 	 */
-	Vector3(const Vector3& vector) noexcept;
+	Vector3(const Vector3& vector);
 
 	/**
 	 *	\~english
@@ -87,7 +87,7 @@ public:
 	 *	Z устанавливается равной нулю.
 	 *	\param vector 2D-вектор, чьё значение будет скопировано.
 	 */
-	Vector3(const Vector2& vector) noexcept;
+	Vector3(const Vector2& vector);
 
 	/**
 	 *	\~english
@@ -106,7 +106,7 @@ public:
 	 *	\param vector 2D-вектор, чьи X и Y координаты будут скопированы.
 	 *	\param z Координата Z вектора.
 	 */
-	Vector3(const Vector2& vector, float z) noexcept;
+	Vector3(const Vector2& vector, float z);
 
 	/**
 	 *	\~english
@@ -125,7 +125,7 @@ public:
 	 *	\param y Координата Y вектора.
 	 *	\param z Координата Z вектора.
 	 */
-	Vector3(float x, float y, float z) noexcept;
+	Vector3(float x, float y, float z);
 
 			/* METHODS FROM Object */
 
@@ -143,7 +143,7 @@ public:
 	 *	Создаёт строку в формате `{<x>, <y>, <z>}`, где `<x>`, `<y>` и `<z>` — координаты вектора.
 	 *	\return Строка с координатами вектора.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -435,7 +435,7 @@ public:
 	 *	`some_vector` — это l-value, но `+some_vector` — уже r-value.
 	 *	\return Копия самого себя.
 	 */
-	const Vector3 operator+() const noexcept;
+	const Vector3 operator+() const;
 	
 	/**
 	 *	\~english
@@ -452,7 +452,7 @@ public:
 	 *	результат, что и `vector * -1`.
 	 *	\return Вектор с противоположными знаками у координат.
 	 */
-	const Vector3 operator-() const noexcept;
+	const Vector3 operator-() const;
 
 	/**
 	 *	\~english
@@ -471,7 +471,7 @@ public:
 	 *	\param vector Второе слагаемое.
 	 *	\return Сумма двух векторов.
 	 */
-	const Vector3 operator+(const Vector3& vector) const noexcept;
+	const Vector3 operator+(const Vector3& vector) const;
 
 	/**
 	 *	\~english
@@ -490,7 +490,7 @@ public:
 	 *	\param vector Вычитаемое.
 	 *	\return Разность двух векторов.
 	 */
-	const Vector3 operator-(const Vector3& vector) const noexcept;
+	const Vector3 operator-(const Vector3& vector) const;
 
 	/**
 	 *	\~english
@@ -509,7 +509,7 @@ public:
 	 *	\param value Множитель.
 	 *	\return Произведение вектора и числа.
 	 */
-	const Vector3 operator*(float value) const noexcept;
+	const Vector3 operator*(float value) const;
 
 	/**
 	 *	\~english
@@ -530,7 +530,7 @@ public:
 	 *	\param vector Вектор.
 	 *	\return Произведение вектора и числа.
 	 */
-	friend const Vector3 operator*(float value, const Vector3& vector) noexcept;
+	friend const Vector3 operator*(float value, const Vector3& vector);
 
 	/**
 	 *	\~english
@@ -555,7 +555,7 @@ public:
 	 *	\param vector Множитель.
 	 *	\return Покоординатное произведение двух векторов.
 	 */
-	const Vector3 operator*(const Vector3& vector) const noexcept;
+	const Vector3 operator*(const Vector3& vector) const;
 
 	/**
 	 *	\~english
@@ -645,7 +645,7 @@ public:
 	 *	\param vector Второй множитель.
 	 *	\return Векторное произведение двух векторов.
 	 */
-	const Vector3 operator^(const Vector3& vector) const noexcept;
+	const Vector3 operator^(const Vector3& vector) const;
 
 	/**
 	 *	\~english
@@ -947,7 +947,7 @@ public:
 	 *	\warning Возможна потеря данных: координата Z игнорируется.
 	 *	\return 2D-вектор с X и Y координатами этого 3D-вектора.
 	 */
-	operator Vector2() const noexcept;
+	operator Vector2() const;
 
 	/**
 	 *	\~english
@@ -975,7 +975,7 @@ public:
 	 *	\warning Возможна потеря данных: вещественные числа конвертируются в целые.
 	 *	\return 3D-точка с целочисленными координатами, равными целым частям координат этой точки.
 	 */
-	operator Point3() const noexcept;
+	operator Point3() const;
 	
 			/* CONSTANTS */
 

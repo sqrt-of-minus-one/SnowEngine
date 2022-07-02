@@ -77,7 +77,7 @@ extern const float PI;
  *	\return Наибольшее из двух значений.
  */
 template<typename T>
-const T& max(const T& a, const T& b) noexcept;
+const T& max(const T& a, const T& b) noexcept(noexcept(std::declval<T>() > std::declval<T>()));
 
 /**
  *	\~english
@@ -99,7 +99,7 @@ const T& max(const T& a, const T& b) noexcept;
  *	\return Наименьшее из двух значений.
  */
 template<typename T>
-const T& min(const T& a, const T& b) noexcept;
+const T& min(const T& a, const T& b) noexcept(noexcept(std::declval<T>() > std::declval<T>()));
 
 /**
  *	\~english
@@ -147,7 +147,8 @@ const T& min(const T& a, const T& b) noexcept;
  *	\return Результат.
  */
 template<typename T>
-const T& clamp(const T& value, const T& limit_1, const T& limit_2) noexcept;
+const T& clamp(const T& value, const T& limit_1, const T& limit_2) noexcept(
+	noexcept(std::declval<T>() > std::declval<T>()) && noexcept(std::declval<T>() - std::declval<T>()));
 
 /**
  *	\~english
@@ -816,19 +817,20 @@ extern const std::function<Angle(float)> acot;
 		/* DEFINITIONS */
 
 template<typename T>
-const T& math::max(const T& a, const T& b) noexcept
+const T& math::max(const T& a, const T& b) noexcept(noexcept(std::declval<T>() > std::declval<T>()))
 {
 	return a > b ? a : b;
 }
 
 template<typename T>
-const T& math::min(const T& a, const T& b) noexcept
+const T& math::min(const T& a, const T& b) noexcept(noexcept(std::declval<T>() > std::declval<T>()))
 {
 	return a > b ? b : a;
 }
 
 template<typename T>
-const T& math::clamp(const T& value, const T& limit_1, const T& limit_2) noexcept
+const T& math::clamp(const T& value, const T& limit_1, const T& limit_2) noexcept(
+	noexcept(std::declval<T>() > std::declval<T>()) && noexcept(std::declval<T>() - std::declval<T>()))
 {
 	if (limit_1 > limit_2)
 	{

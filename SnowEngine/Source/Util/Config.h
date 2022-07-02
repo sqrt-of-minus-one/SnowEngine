@@ -62,7 +62,7 @@ public:
 	 *	Итоговая строка содержит все конфигурации в формате файла `config.ini`.
 	 *	\return Строка с конфигурациями.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 	
 	/**
 	 *	\~english

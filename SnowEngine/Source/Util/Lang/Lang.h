@@ -68,7 +68,7 @@ public:
 	 *	Конвертирует диспетчер языков в строку.
 	 *	\return Код текущего языка.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 	
 	/**
 	 *	\~english
@@ -102,7 +102,7 @@ public:
 	 *	Позволяет получить язык, который в данный момент активен.
 	 *	\return Текстовый код текущего языка.
 	 */
-	const String& get_current_lang();
+	const String& get_current_lang() noexcept;
 
 	/**
 	 *	\~english

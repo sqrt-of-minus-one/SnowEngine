@@ -17,37 +17,37 @@ using namespace snow;
 
 		/* Vector3: public */
 
-Vector3::Vector3() noexcept :
+Vector3::Vector3() :
 	x_(0.f),
 	y_(0.f),
 	z_(0.f)
 {}
 
-Vector3::Vector3(const Vector3& vector) noexcept :
+Vector3::Vector3(const Vector3& vector) :
 	x_(vector.x_),
 	y_(vector.y_),
 	z_(vector.z_)
 {}
 
-Vector3::Vector3(const Vector2& vector) noexcept :
+Vector3::Vector3(const Vector2& vector) :
 	x_(vector.get_x()),
 	y_(vector.get_y()),
 	z_(0.f)
 {}
 
-Vector3::Vector3(const Vector2& vector, float z) noexcept :
+Vector3::Vector3(const Vector2& vector, float z) :
 	x_(vector.get_x()),
 	y_(vector.get_y()),
 	z_(z)
 {}
 
-Vector3::Vector3(float x, float y, float z) noexcept :
+Vector3::Vector3(float x, float y, float z) :
 	x_(x),
 	y_(y),
 	z_(z)
 {}
 
-String Vector3::to_string() const noexcept
+String Vector3::to_string() const
 {
 	return L"{"_s + util::to_string(x_) + L", "_s + util::to_string(y_) + L", "_s + util::to_string(z_) + L"}"_s;
 }
@@ -151,42 +151,42 @@ Vector3& Vector3::operator=(const Vector3& vector) noexcept
 	return *this;
 }
 	
-const Vector3 Vector3::operator+() const noexcept
+const Vector3 Vector3::operator+() const
 {
 	return *this;
 }
 
-const Vector3 Vector3::operator-() const noexcept
+const Vector3 Vector3::operator-() const
 {
 	return Vector3(-x_, -y_, -z_);
 }
 	
-const Vector3 Vector3::operator+(const Vector3& vector) const noexcept
+const Vector3 Vector3::operator+(const Vector3& vector) const
 {
 	return Vector3(x_ + vector.x_, y_ + vector.y_, z_ + vector.z_);
 }
 
-const Vector3 Vector3::operator-(const Vector3& vector) const noexcept
+const Vector3 Vector3::operator-(const Vector3& vector) const
 {
 	return Vector3(x_ - vector.x_, y_ - vector.y_, z_ - vector.z_);
 }
 
-const Vector3 Vector3::operator*(float value) const noexcept
+const Vector3 Vector3::operator*(float value) const
 {
 	return Vector3(x_ * value, y_ * value, z_ * value);
 }
 
-const Vector3 snow::operator*(float value, const Vector3& vector) noexcept
+const Vector3 snow::operator*(float value, const Vector3& vector)
 {
 	return vector * value;
 }
 
-const Vector3 Vector3::operator*(const Vector3& vector) const noexcept
+const Vector3 Vector3::operator*(const Vector3& vector) const
 {
 	return Vector3(x_ * vector.x_, y_ * vector.y_, z_ * vector.z_);
 }
 
-const Vector3 Vector3::operator^(const Vector3& vector) const noexcept
+const Vector3 Vector3::operator^(const Vector3& vector) const
 {
 	return Vector3(
 		y_ * vector.z_ - z_ * vector.y_,
@@ -301,12 +301,12 @@ bool Vector3::operator!=(const Vector3& vector) const noexcept
 	return x_ != vector.x_ || y_ != vector.y_ || z_ != vector.z_;
 }
 
-Vector3::operator Vector2() const noexcept
+Vector3::operator Vector2() const
 {
 	return Vector2(x_, y_);
 }
 
-Vector3::operator Point3() const noexcept
+Vector3::operator Point3() const
 {
 	return Point3(static_cast<int>(x_), static_cast<int>(y_), static_cast<int>(z_));
 }

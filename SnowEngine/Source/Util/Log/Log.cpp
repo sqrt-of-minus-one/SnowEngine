@@ -29,7 +29,7 @@ using namespace snow;
 
 		/* Log: public */
 
-Log::Log(const String& category_name) noexcept :
+Log::Log(const String& category_name) :
 	name_(category_name)
 {
 	object_counter_++;
@@ -47,7 +47,7 @@ Log::Log(const String& category_name) noexcept :
 	}
 }
 
-Log::~Log() noexcept
+Log::~Log()
 {
 	if (--object_counter_ <= 0 && log_file_().is_open())
 	{
@@ -57,7 +57,7 @@ Log::~Log() noexcept
 	}
 }
 
-String Log::to_string() const noexcept
+String Log::to_string() const
 {
 	return name_;
 }
@@ -82,7 +82,7 @@ bool Log::is_debug_mode_enabled() noexcept
 	return debug_mode_();
 }
 
-void Log::d(const String& message) noexcept
+void Log::d(const String& message)
 {
 	if (debug_mode_())
 	{
@@ -90,33 +90,24 @@ void Log::d(const String& message) noexcept
 	}
 }
 
-void Log::i(const String& message) noexcept
+void Log::i(const String& message)
 {
 	log_(L"[Info   ] "_s, message);
 }
 
-void Log::w(const String& message) noexcept
+void Log::w(const String& message)
 {
 	log_(L"[Warning] "_s, message);
 }
 
-void Log::e(const String& message) noexcept
+void Log::e(const String& message)
 {
 	log_(L"[ERROR  ] "_s, message);
 }
 
 		/* Log: private */
 
-void Log::log_(const String& type, const String& message) noexcept
-{
-	std::lock_guard<std::mutex> log_grd(log_file_mtx_());
-	String time_str = Time::now().to_string();
-
-	log_file_ ()<< L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
-	std::wcout << L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
-}
-
-bool& Log::debug_mode_()
+bool& Log::debug_mode_() noexcept
 {
 #ifdef _DEBUG
 	static bool debug_mode = true;
@@ -126,7 +117,7 @@ bool& Log::debug_mode_()
 	return debug_mode;
 }
 
-std::mutex& Log::log_file_mtx_()
+std::mutex& Log::log_file_mtx_() noexcept
 {
 	static std::mutex log_file_mtx;
 	return log_file_mtx;
@@ -136,6 +127,15 @@ std::wofstream& Log::log_file_()
 {
 	static std::wofstream log_file;
 	return log_file;
+}
+
+void Log::log_(const String& type, const String& message)
+{
+	std::lock_guard<std::mutex> log_grd(log_file_mtx_());
+	String time_str = Time::now().to_string();
+
+	log_file_() << L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
+	std::wcout << L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
 }
 
 int Log::object_counter_ = 0;

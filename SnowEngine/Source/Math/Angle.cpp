@@ -16,19 +16,19 @@ using namespace snow;
 
 		/* Angle: public */
 
-Angle::Angle() noexcept :
+Angle::Angle() :
 	value_deg_(0.f)
 {}
 
-Angle::Angle(const Angle& angle) noexcept :
+Angle::Angle(const Angle& angle) :
 	value_deg_(angle.value_deg_)
 {}
 
-Angle::Angle(float degrees) noexcept :
+Angle::Angle(float degrees) :
 	value_deg_(degrees)
 {}
 
-String Angle::to_string() const noexcept
+String Angle::to_string() const
 {
 	return util::to_string(value_deg_) + L"_deg";
 }
@@ -68,30 +68,30 @@ void Angle::set_gradians(float gradians) noexcept
 	value_deg_ = gradians * .9f;
 }
 
-Angle& Angle::normalize_360() noexcept
+Angle& Angle::normalize_360()
 {
 	*this = get_normalized_360();
 	return *this;
 }
 
-Angle& Angle::normalize_180() noexcept
+Angle& Angle::normalize_180()
 {
 	*this = get_normalized_180();
 	return *this;
 }
 
-const Angle Angle::get_normalized_360() const noexcept
+const Angle Angle::get_normalized_360() const
 {
 	return Angle(value_deg_ - 360 * floor(value_deg_ / 360.f));
 }
 
-const Angle Angle::get_normalized_180() const noexcept
+const Angle Angle::get_normalized_180() const
 {
 	Angle ret = get_normalized_360();
 	return ret > STRAIGHT ? ret - 360_deg : ret;
 }
 
-const Angle Angle::abs() const noexcept
+const Angle Angle::abs() const
 {
 	return Angle(math::abs(value_deg_));
 }
@@ -102,32 +102,32 @@ Angle& Angle::operator=(const Angle& angle) noexcept
 	return *this;
 }
 
-const Angle Angle::operator+() const noexcept
+const Angle Angle::operator+() const
 {
 	return *this;
 }
 
-const Angle Angle::operator-() const noexcept
+const Angle Angle::operator-() const
 {
 	return Angle(-value_deg_);
 }
 
-const Angle Angle::operator+(const Angle& angle) const noexcept
+const Angle Angle::operator+(const Angle& angle) const
 {
 	return Angle(value_deg_ + angle.value_deg_);
 }
 
-const Angle Angle::operator-(const Angle& angle) const noexcept
+const Angle Angle::operator-(const Angle& angle) const
 {
 	return Angle(value_deg_ - angle.value_deg_);
 }
 
-const Angle Angle::operator*(float value) const noexcept
+const Angle Angle::operator*(float value) const
 {
 	return Angle(value_deg_ * value);
 }
 
-const Angle snow::operator*(float value, const Angle& angle) noexcept
+const Angle snow::operator*(float value, const Angle& angle)
 {
 	return angle * value;
 }
@@ -202,32 +202,32 @@ bool Angle::operator>=(const Angle& angle) const noexcept
 	return value_deg_ >= angle.value_deg_;
 }
 
-Angle snow::operator""_deg(long double degrees) noexcept
+Angle snow::operator""_deg(long double degrees)
 {
 	return Angle(static_cast<float>(degrees));
 }
 
-Angle snow::operator""_deg(unsigned long long degrees) noexcept
+Angle snow::operator""_deg(unsigned long long degrees)
 {
 	return Angle(static_cast<float>(degrees));
 }
 
-Angle snow::operator""_rad(long double radians) noexcept
+Angle snow::operator""_rad(long double radians)
 {
 	return Angle(static_cast<float>(radians) * 180.f / math::PI);
 }
 
-Angle snow::operator""_rad(unsigned long long radians) noexcept
+Angle snow::operator""_rad(unsigned long long radians)
 {
 	return Angle(static_cast<float>(radians) * 180.f / math::PI);
 }
 
-Angle snow::operator""_grad(long double gradians) noexcept
+Angle snow::operator""_grad(long double gradians)
 {
 	return Angle(static_cast<float>(gradians) * .9f);
 }
 
-Angle snow::operator""_grad(unsigned long long gradians) noexcept
+Angle snow::operator""_grad(unsigned long long gradians)
 {
 	return Angle(static_cast<float>(gradians) * .9f);
 }

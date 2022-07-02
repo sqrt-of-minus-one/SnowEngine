@@ -69,7 +69,7 @@ public:
 	 *
 	 *	Создаёт пустую строку.
 	 */
-	String() noexcept;
+	String();
 
 	/**
 	 *	\~english
@@ -84,7 +84,7 @@ public:
 	 *	Копирует строку.
 	 *	\param string Строка, который будет скопирован.
 	 */
-	String(const String& string) noexcept;
+	String(const String& string);
 
 	/**
 	 *	\~english
@@ -99,7 +99,7 @@ public:
 	 *	Перемещает значение переданной строки в новую.
 	 *	\param string Строка, которая будет перемещена.
 	 */
-	String(String&& string) noexcept;
+	String(String&& string);
 
 	/**
 	 *	\~english
@@ -124,7 +124,7 @@ public:
 	 *	\endcode
 	 *	\param ch Символ, который будет добавлен к строке.
 	 */
-	String(wchar_t ch) noexcept;
+	String(wchar_t ch);
 
 	/**
 	 *	\~english
@@ -149,7 +149,7 @@ public:
 	 *	\endcode
 	 *	\param string Строка в стиле C, чьё значение будет присвоено новой строке.
 	 */
-	String(const wchar_t* string) noexcept;
+	String(const wchar_t* string);
 
 	/**
 	 *	\~english
@@ -166,7 +166,7 @@ public:
 	 *	следует использовать `std::wstring` вместо `std::string`.
 	 *	\param string Стандартная строка, чьё значение будет присвоено новой строке.
 	 */
-	String(const std::wstring& string) noexcept;
+	String(const std::wstring& string);
 
 	/**
 	 *	\~english
@@ -183,7 +183,7 @@ public:
 	 *	вам следует использовать `std::wstring` вместо `std::string`.
 	 *	\param string Стандартная строка, чьё значение будет перемещено в новую строку.
 	 */
-	String(std::wstring&& string) noexcept;
+	String(std::wstring&& string);
 
 			/* METHODS FROM Object*/
 
@@ -200,7 +200,7 @@ public:
 	 *	Создаёт копию себя.
 	 *	\return Копия строки.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -234,7 +234,7 @@ public:
 	 *	Конвертирует `snow::String` в `std::wstring`.
 	 *	\return Стандартная строка со значением строки SnowEngine.
 	 */
-	std::wstring to_std_string() const noexcept;
+	const std::wstring& to_std_string() const noexcept;
 
 	/**
 	 *	\~english
@@ -553,7 +553,7 @@ public:
 	 *	\param ch Искомый символ.
 	 *	\return Индекс первого совпадения; отрицательное значение, если совпадения найдено не было.
 	 */
-	int find_first(wchar_t ch) const;
+	int find_first(wchar_t ch) const noexcept;
 
 	/**
 	 *	\~english
@@ -573,7 +573,7 @@ public:
 	 *	\return Индекс последнего совпадения; отрицательное значение, если совпадения найдено не
 	 *	было.
 	 */
-	int find_last(wchar_t ch) const;
+	int find_last(wchar_t ch) const noexcept;
 
 	/**
 	 *	\~english
@@ -594,7 +594,7 @@ public:
 	 *	\return Индекс первого символа первого совпадения; отрицательное значение, если совпадений
 	 *	найдено не было.
 	 */
-	int find_first(const String& string) const;
+	int find_first(const String& string) const noexcept;
 
 	/**
 	 *	\~english
@@ -615,7 +615,7 @@ public:
 	 *	\return Индекс первого символа последнего совпадения; отрицательное значение, если
 	 *	совпадений найдено не было.
 	 */
-	int find_last(const String& string) const;
+	int find_last(const String& string) const noexcept;
 
 	/**
 	 *	\~english
@@ -632,7 +632,7 @@ public:
 	 *	\param ch Искомый символ.
 	 *	\return `true`, если строка содержит переданный символ, иначе `false`.
 	 */
-	bool contains(wchar_t ch) const;
+	bool contains(wchar_t ch) const noexcept;
 
 	/**
 	 *	\~english
@@ -649,7 +649,7 @@ public:
 	 *	\param string Искомая подстрока.
 	 *	\return `true`, если строка содержит переданную подстроку, иначе `false`.
 	 */
-	bool contains(const String& string) const;
+	bool contains(const String& string) const noexcept;
 
 	/**
 	 *	\~english
@@ -666,7 +666,7 @@ public:
 	 *	\param ch Требуемый символ.
 	 *	\return Количество совпадений.
 	 */
-	int count(wchar_t ch) const;
+	int count(wchar_t ch) const noexcept;
 
 	/**
 	 *	\~english
@@ -697,7 +697,7 @@ public:
 	 *	\param string Искомая подстрока.
 	 *	\return Число вхождений.
 	 */
-	int count(const String& string) const;
+	int count(const String& string) const noexcept;
 	
 	/**
 	 *	\~english
@@ -851,7 +851,7 @@ public:
 	 *	лексикографическом порядке; положительное значение, если вторая строка находится перед
 	 *	первой; ноль, если строки равны.
 	 */
-	static int compare(const String& first, const String& second);
+	static int compare(const String& first, const String& second) noexcept;
 
 	/**
 	 *	\~english
@@ -1074,7 +1074,7 @@ public:
 	 *	\param ch Символ для присваивания.
 	 *	\return Ссылка на себя.
 	 */
-	String& operator=(wchar_t ch) noexcept;
+	String& operator=(wchar_t ch);
 
 	/**
 	 *	\~english
@@ -1091,7 +1091,7 @@ public:
 	 *	\param ch Строка для присваивания.
 	 *	\return Ссылка на себя.
 	 */
-	String& operator=(const wchar_t* ch) noexcept;
+	String& operator=(const wchar_t* ch);
 
 	/**
 	 *	\~english
@@ -1108,7 +1108,7 @@ public:
 	 *	\param string Строка для присваивания.
 	 *	\return Ссылка на себя.
 	 */
-	String& operator=(const std::wstring& string) noexcept;
+	String& operator=(const std::wstring& string) ;
 	
 	/**
 	 *	\~english
@@ -1142,7 +1142,7 @@ public:
 	 *	\param string Строка для присваивания.
 	 *	\return Ссылка на себя.
 	 */
-	String& operator=(const String& string) noexcept;
+	String& operator=(const String& string);
 
 	/**
 	 *	\~english
@@ -1687,7 +1687,7 @@ public:
 	 *	\param string Исходная строка.
 	 *	\param length Длина строки.
 	 */
-	friend String operator""_s(const wchar_t* string, std::size_t length) noexcept;
+	friend String operator""_s(const wchar_t* string, std::size_t length);
 
 private:
 	std::wstring string_;
@@ -1699,9 +1699,8 @@ String operator+(const wchar_t* ch, const String& string);
 String operator+(const std::wstring& std_str, const String& string);
 String operator*(int value, const String& string);
 
-String operator""_s(const wchar_t* string, std::size_t length) noexcept;
+String operator""_s(const wchar_t* string, std::size_t length);
 
 }
 
 using snow::operator""_s;
-

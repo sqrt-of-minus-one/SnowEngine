@@ -48,7 +48,7 @@ inline String check_string_(const String& str)
 
 		/* Config: public */
 
-String Config::to_string() const noexcept
+String Config::to_string() const
 {
 	return
 		L"[default]"_s +

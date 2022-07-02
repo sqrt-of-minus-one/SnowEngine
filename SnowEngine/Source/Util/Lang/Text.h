@@ -38,13 +38,15 @@ namespace snow
  *	\brief The localizable text
  *	
  *	This class keeps the code of a localizable string. You can use `to_string` method to get the
- *	string in the current language.
+ *	string in the current language. The text object keeps the key of a string, which consists of
+ *	the name of the localization table and the key of the string in the table: `<table>.<key>`.
  *	
  *	\~russian
  *	\brief Локализуемый текст
  *	
  *	Этот класс содержит код локализуемой строки. Вы можете использовать метод `to_string`, чтобы
- *	получить строку на соответствуеющем языке.
+ *	получить строку на соответствуеющем языке. Объект текста хранит ключ строки, состоящий из
+ *	названия таблицы локализации и ключа строки в таблице: `<table>.<key>`.
  */
 class Text : public Object
 {
@@ -62,7 +64,7 @@ public:
 	 *	
 	 *	Создаёт пустой текст.
 	 */
-	Text() noexcept;
+	Text();
 
 	/**
 	 *	\~english
@@ -77,7 +79,7 @@ public:
 	 *	Копирует текст.
 	 *	\param text Текст, который будет скопирован.
 	 */
-	Text(const Text& text) noexcept;
+	Text(const Text& text);
 
 	/**
 	 *	\~english
@@ -92,7 +94,7 @@ public:
 	 *	Создаёт новый текст путём перемещения кода из переданного.
 	 *	\param text Текст, чей код будет перемещён.
 	 */
-	Text(Text&& text) noexcept;
+	Text(Text&& text);
 
 	/**
 	 *	\~english
@@ -107,7 +109,7 @@ public:
 	 *	Создаёт новый текст с переданным ключом.
 	 *	\param key Ключ.
 	 */
-	Text(const String& key) noexcept;
+	Text(const String& key);
 
 	/**
 	 *	\~english
@@ -122,7 +124,7 @@ public:
 	 *	Создаёт новый текст с переданным ключом.
 	 *	\param key Ключ.
 	 */
-	Text(String&& key) noexcept;
+	Text(String&& key);
 
 			/* METHODS FROM Object */
 
@@ -139,7 +141,7 @@ public:
 	 *	Позволяет получить локализованный текст на текущем языке.
 	 *	\return Локализованный текст.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -173,7 +175,7 @@ public:
 	 *	Позволяет получить ключ текста.
 	 *	\return Ключ.
 	 */
-	const String& get_key() const noexcept;
+	const String& get_key() const;
 	
 	/**
 	 *	\~english
@@ -276,7 +278,7 @@ public:
 	 *	\param text Текст для сравнения.
 	 *	\return `true`, если два текста равны, иначе `false`.
 	 */
-	bool operator==(const Text& text) const;
+	bool operator==(const Text& text) const noexcept;
 
 	/**
 	 *	\~english
@@ -293,7 +295,7 @@ public:
 	 *	\param key Ключ для сравнения.
 	 *	\return `true`, если ключ текста равен переданной строке, иначе `false`.
 	 */
-	bool operator==(const String& key) const;
+	bool operator==(const String& key) const noexcept;
 
 	/**
 	 *	\~english
@@ -310,7 +312,7 @@ public:
 	 *	\param text Текст для сравнения.
 	 *	\return `true`, если два текста не равны, иначе `false`.
 	 */
-	bool operator!=(const Text& text) const;
+	bool operator!=(const Text& text) const noexcept;
 
 	/**
 	 *	\~english
@@ -327,7 +329,7 @@ public:
 	 *	\param key Ключ для сравнения.
 	 *	\return `true`, если ключ текста не равен переданной строке, иначе `false`.
 	 */
-	bool operator!=(const String& key) const;
+	bool operator!=(const String& key) const noexcept;
 
 private:
 	String key_;

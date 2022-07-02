@@ -79,7 +79,7 @@ public:
 	 *	Создаёт копию переданного итератора.
 	 *	\param iterator Итератор, который будет скопирован.
 	 */
-	BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) noexcept;
+	BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator);
 
 	/**
 	 *	\~english
@@ -94,7 +94,7 @@ public:
 	 *	Создаёт новый итератор путём перемещения переданного.
 	 *	\param iterator Итератор, который будет перемещён.
 	 */
-	BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator) noexcept;
+	BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator);
 
 	/**
 	 *	\~english
@@ -136,7 +136,7 @@ public:
 	 *	\endcode
 	 *	\return Полученная строка.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -171,7 +171,7 @@ public:
 	 *	Итератор может быть недействительным, если его контейнер был разрушен.
 	 *	\return `true`, если итератор действителен, иначе `false`.
 	*/
-	virtual bool is_valid() const noexcept override;
+	virtual bool is_valid() const noexcept(noexcept(std::declval<T_Container>().size())) override;
 
 	/**
 	 *	\~english
@@ -188,7 +188,7 @@ public:
 	 *	связного списка (т. е. после последнего элемента связного списка).
 	 *	\return `true`, если итератор указывает на действительный элемент, иначе `false`.
 	 */
-	virtual bool is_element_valid() const noexcept override;
+	virtual bool is_element_valid() const noexcept(noexcept(std::declval<T_Container>().size())) override;
 
 	/**
 	 *	\~english
@@ -272,7 +272,7 @@ public:
 	 *	Проверяет, указывает ли итератор на последний элемент связного списка.
 	 *	\return `true`, если итератор указывает на последний элемент связного списка, иначе `false`.
 	 */
-	virtual bool is_last() const noexcept override;
+	virtual bool is_last() const noexcept(noexcept(std::declval<T_Container>().size())) override;
 
 	/**
 	 *	\~english
@@ -291,7 +291,7 @@ public:
 	 *	\return `true`, если итератор указывает после последнего элемента связного списка, иначе
 	 *	`false`.
 	 */
-	virtual bool is_end() const noexcept override;
+	virtual bool is_end() const noexcept(noexcept(std::declval<T_Container>().size())) override;
 
 	/**
 	 *	\~english
@@ -482,7 +482,7 @@ public:
 
 private:
 	// A new iterator can only be created by the container
-	BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node = nullptr, bool is_valid = true) noexcept;
+	BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node = nullptr, bool is_valid = true);
 
 	T_Container& container_;
 	std::weak_ptr<T_Node> node_;
@@ -537,7 +537,7 @@ using LinkedListIterator = BaseLinkedListIterator_<LinkedList<T>, T, LinkedListN
 		/* BaseLinkedListIterator_: public */
 
 template<typename T_Container, typename T_Element, typename T_Node>
-BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) noexcept :
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(const BaseLinkedListIterator_<T_Container, T_Element, T_Node>& iterator) :
 	container_(iterator.container_),
 	node_(iterator.node_),
 	index_(iterator.index_),
@@ -550,7 +550,7 @@ BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator) noexcept :
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(BaseLinkedListIterator_<T_Container, T_Element, T_Node>&& iterator) :
 	container_(iterator.container_),
 	node_(iterator.node_),
 	index_(iterator.index_),
@@ -565,7 +565,7 @@ BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-BaseLinkedListIterator_<T_Container, T_Element, T_Node>::~BaseLinkedListIterator_() noexcept
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::~BaseLinkedListIterator_()
 {
 	if (is_valid_)
 	{
@@ -574,7 +574,7 @@ BaseLinkedListIterator_<T_Container, T_Element, T_Node>::~BaseLinkedListIterator
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-String BaseLinkedListIterator_<T_Container, T_Element, T_Node>::to_string() const noexcept
+String BaseLinkedListIterator_<T_Container, T_Element, T_Node>::to_string() const
 {
 	return util::to_string(get());
 }
@@ -593,13 +593,13 @@ int BaseLinkedListIterator_<T_Container, T_Element, T_Node>::hash_code() const n
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_valid() const noexcept
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_valid() const noexcept(noexcept(std::declval<T_Container>().size()))
 {
 	return is_valid_ && index_ >= 0 && index_ <= container_.size();
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_element_valid() const noexcept
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_element_valid() const noexcept(noexcept(std::declval<T_Container>().size()))
 {
 	return is_valid_ && node_.lock() && index_ >= 0 && index_ < container_.size();
 }
@@ -650,13 +650,13 @@ bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_begin() const n
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_last() const noexcept
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_last() const noexcept(noexcept(std::declval<T_Container>().size()))
 {
 	return is_valid_ && index_ == container_.size() - 1;
 }
 
 template<typename T_Container, typename T_Element, typename T_Node>
-bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_end() const noexcept
+bool BaseLinkedListIterator_<T_Container, T_Element, T_Node>::is_end() const noexcept(noexcept(std::declval<T_Container>().size()))
 {
 	return is_valid_ && index_ == container_.size();
 }
@@ -769,7 +769,7 @@ T_Element* BaseLinkedListIterator_<T_Container, T_Element, T_Node>::operator->()
 		/* BaseLinkedListIterator_: private */
 
 template<typename T_Container, typename T_Element, typename T_Node>
-BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node, bool is_valid) noexcept :
+BaseLinkedListIterator_<T_Container, T_Element, T_Node>::BaseLinkedListIterator_(T_Container& linked_list, int index, std::shared_ptr<T_Node> node, bool is_valid) :
 	container_(linked_list),
 	node_(node),
 	index_(index),

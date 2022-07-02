@@ -19,7 +19,7 @@ int main()
 
 	std::wcout << (snow::Time(2022, snow::EMonth::SEP, 1, 12, 30)).to_string() << std::endl;
 
-	snow::Array<int>(5);
+
 
 
 	snow::String string = L"Hello SnowEngine, SnowEngine, and SnowEngine again";
@@ -33,8 +33,6 @@ int main()
 	snow::Game::lang.set_lang(L"ru_RU"_s);
 	std::wcout << snow::Game::lang.get_string(L".lang.test"_s) << std::endl <<
 		snow::Game::lang.get_string(L"test.test.test"_s) << std::endl;
-	
-
 
 	_getch();
 	return 0;
