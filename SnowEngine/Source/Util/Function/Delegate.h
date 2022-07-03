@@ -154,6 +154,8 @@ public:
 	 *	\param delegate Делегат, который будет скопирован.
 	 */
 	Delegate(const Delegate<T_Ret, T_Args...>& delegate);
+
+	Delegate(const std::function<T_Ret(T_Args...)>& func);
 	
 			/* METHODS FROM Object */
 
@@ -464,6 +466,14 @@ Delegate<T_Ret, T_Args...>::Delegate(const Delegate<T_Ret, T_Args...>& delegate)
 	{
 		func_ = delegate.func_->copy();
 	}
+}
+
+template<typename T_Ret, typename... T_Args>
+Delegate<T_Ret, T_Args...>::Delegate(const std::function<T_Ret(T_Args...)>& func) :
+	func_(nullptr),
+	is_method_(false)
+{
+	bind(func);
 }
 
 template<typename T_Ret, typename... T_Args>

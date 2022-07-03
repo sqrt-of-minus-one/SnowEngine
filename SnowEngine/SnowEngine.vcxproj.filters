@@ -146,6 +146,9 @@
     <ClInclude Include="Source\Util\Log\Log.h">
       <Filter>Source Files\Util\Log</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\Time\TimerManager.h">
+      <Filter>Source Files\Util\Time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -210,6 +213,9 @@
     </ClCompile>
     <ClCompile Include="Source\Util\Log\Log.cpp">
       <Filter>Source Files\Util\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Time\TimerManager.cpp">
+      <Filter>Source Files\Util\Time</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

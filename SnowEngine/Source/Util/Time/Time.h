@@ -45,12 +45,12 @@ enum class EWeekDay
 class Time : public Object
 {
 public:
-	Time() noexcept;
-	Time(const Time& time) noexcept;
+	Time();
+	Time(const Time& time);
 	Time(int year, EMonth month, int day, int hour = 0, int minute = 0, int second = 0,
 		int millisecond = 0, int microsecond = 0, int nanosecond = 0);
 
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 	virtual int hash_code() const noexcept override;
 
 	int second() const;
@@ -73,17 +73,19 @@ public:
 	Time& operator+=(const TimeInterval& interval);
 	Time& operator-=(const TimeInterval& interval);
 
-	bool operator==(const Time& interval) const;
-	bool operator!=(const Time& interval) const;
-	bool operator<(const Time& interval) const;
-	bool operator>(const Time& interval) const;
-	bool operator<=(const Time& interval) const;
-	bool operator>=(const Time& interval) const;
+	bool operator==(const Time& interval) const noexcept;
+	bool operator!=(const Time& interval) const noexcept;
+	bool operator<(const Time& interval) const noexcept;
+	bool operator>(const Time& interval) const noexcept;
+	bool operator<=(const Time& interval) const noexcept;
+	bool operator>=(const Time& interval) const noexcept;
 
 private:
-	Time(const std::chrono::time_point<std::chrono::steady_clock>& point);
+	using Point_ = std::chrono::time_point<std::chrono::steady_clock>;
 
-	std::chrono::time_point<std::chrono::steady_clock> point_;
+	Time(const Point_& point);
+
+	Point_ point_;
 	mutable std::tm cache_tm_;
 	mutable bool cache_state_;
 
