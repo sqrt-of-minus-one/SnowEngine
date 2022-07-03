@@ -21,27 +21,27 @@ using namespace snow;
 
 		/* Text: public */
 
-Text::Text() noexcept :
+Text::Text() :
 	key_()
 {}
 
-Text::Text(const Text& text) noexcept :
+Text::Text(const Text& text) :
 	key_(text.key_)
 {}
 
-Text::Text(Text&& text) noexcept :
+Text::Text(Text&& text) :
 	key_(std::move(text.key_))
 {}
 
-Text::Text(const String& key) noexcept :
+Text::Text(const String& key) :
 	key_(key)
 {}
 
-Text::Text(String&& key) noexcept :
+Text::Text(String&& key) :
 	key_(std::move(key))
 {}
 
-String Text::to_string() const noexcept
+String Text::to_string() const
 {
 	return Game::lang.get_string(key_);
 }
@@ -51,7 +51,7 @@ int Text::hash_code() const noexcept
 	return key_.hash_code();
 }
 
-const String& Text::get_key() const noexcept
+const String& Text::get_key() const
 {
 	return key_;
 }
@@ -92,22 +92,22 @@ Text& Text::operator=(String&& key)
 	return *this;
 }
 
-bool Text::operator==(const Text& text) const
+bool Text::operator==(const Text& text) const noexcept
 {
 	return key_ == text.key_;
 }
 
-bool Text::operator==(const String& key) const
+bool Text::operator==(const String& key) const noexcept
 {
 	return key_ == key;
 }
 
-bool Text::operator!=(const Text& text) const
+bool Text::operator!=(const Text& text) const noexcept
 {
 	return key_ != text.key_;
 }
 
-bool Text::operator!=(const String& key) const
+bool Text::operator!=(const String& key) const noexcept
 {
 	return key_ != key;
 }

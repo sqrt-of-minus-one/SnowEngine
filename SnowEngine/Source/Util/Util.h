@@ -45,7 +45,7 @@ namespace util
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая десятичную запись переданного целого числа.
  */
-String to_string(int var) noexcept;
+String to_string(int var);
 
 /**
  *	\~english
@@ -62,7 +62,7 @@ String to_string(int var) noexcept;
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая двоичную запись переданного целого числа.
  */
-String to_string_bin(int var) noexcept;
+String to_string_bin(int var);
 
 /**
  *	\~english
@@ -79,7 +79,7 @@ String to_string_bin(int var) noexcept;
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая восьмеричную запись переданного целого числа.
  */
-String to_string_oct(int var) noexcept;
+String to_string_oct(int var);
 
 /**
  *	\~english
@@ -96,7 +96,7 @@ String to_string_oct(int var) noexcept;
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая шестнадцатеричную запись переданного целого числа.
  */
-String to_string_hex(int var) noexcept;
+String to_string_hex(int var);
 
  /**
   *	\~english
@@ -113,7 +113,7 @@ String to_string_hex(int var) noexcept;
   *	\param var Число с плавающей запятой, которое будет сконвертировано в строку.
   *	\return Строка, представляющая переданное число с плавающей запятой.
   */
-String to_string(float var) noexcept;
+String to_string(float var);
 
  /**
   *	\~english
@@ -130,7 +130,7 @@ String to_string(float var) noexcept;
   *	\param var Символ, который будет сконвертирован в строку.
   *	\return Строка, представляющая переданный символ.
   */
-String to_string(wchar_t var) noexcept;
+String to_string(wchar_t var);
 
 /**
  *	\~english
@@ -147,7 +147,7 @@ String to_string(wchar_t var) noexcept;
  *	\param var Булево значение, которое будет сконвертировано в строку.
  *	\return `"true"`, если переданное значение истиннов; иначе `"false"`.
  */
-String to_string(bool var) noexcept;
+String to_string(bool var);
 
 /**
  *	\~english
@@ -167,7 +167,7 @@ String to_string(bool var) noexcept;
  *	шестнадцатеричной записи.
  */
 template<typename T>
-String to_string(T* var) noexcept;
+String to_string(T* var);
 
 /**
  *	\~english
@@ -190,7 +190,7 @@ String to_string(T* var) noexcept;
  *	в указателе.
  */
 template<typename T>
-String to_string(const std::unique_ptr<T>& var) noexcept;
+String to_string(const std::unique_ptr<T>& var);
 
 /**
  *	\~english
@@ -213,7 +213,7 @@ String to_string(const std::unique_ptr<T>& var) noexcept;
  *	в указателе.
  */
 template<typename T>
-String to_string(const std::shared_ptr<T>& var) noexcept;
+String to_string(const std::shared_ptr<T>& var);
 
 /**
  *	\~english
@@ -236,27 +236,27 @@ String to_string(const std::shared_ptr<T>& var) noexcept;
  *	в указателе.
  */
 template<typename T>
-String to_string(const std::weak_ptr<T>& var) noexcept;
+String to_string(const std::weak_ptr<T>& var);
 
 /**
  *	\~english
  *	\brief Converts object to string
  *
- *	Converts the passed object to string. The object must have `to_string()` method that is marked
- *	as `noexcept` (any `snow::Object` has it).
+ *	Converts the passed object to string. The object must have `to_string()` method (any
+ *	`snow::Object` has it).
  *	\param var The object that will be converted to string.
  *	\return Result of `to_string()` method of the object.
  *
  *	\~russian
  *	\brief Конвертирует объект в строку
  *
- *	Конверирует переданный объект в строку. Объект должен иметь метод `to_string()`, помеченный как
- *	`noexcept` (у любого `snow::Object` он есть).
+ *	Конверирует переданный объект в строку. Объект должен иметь метод `to_string()` (у любого
+ *	`snow::Object` он есть).
  *	\param var Объект, который будет сконвертирован в строку.
  *	\return Результат выполнения метода `to_string()` объекта.
  */
 template<typename T>
-String to_string(const T& var) noexcept;
+String to_string(const T& var);
 
 /**
  *	\~english
@@ -424,13 +424,13 @@ int hash_code(const T& var) noexcept;
 		/* DEFINITIONS */
 
 template<typename T>
-String util::to_string(T* var) noexcept
+String util::to_string(T* var)
 {
 	return L"Ptr: 0x"_s + to_string_hex(reinterpret_cast<int>(var));
 }
 
 template<typename T>
-String util::to_string(const std::unique_ptr<T>& var) noexcept
+String util::to_string(const std::unique_ptr<T>& var)
 {
 	if (var)
 	{
@@ -443,7 +443,7 @@ String util::to_string(const std::unique_ptr<T>& var) noexcept
 }
 
 template<typename T>
-String util::to_string(const std::shared_ptr<T>& var) noexcept
+String util::to_string(const std::shared_ptr<T>& var)
 {
 	if (var)
 	{
@@ -456,7 +456,7 @@ String util::to_string(const std::shared_ptr<T>& var) noexcept
 }
 
 template<typename T>
-String util::to_string(const std::weak_ptr<T>& var) noexcept
+String util::to_string(const std::weak_ptr<T>& var)
 {
 	std::shared_ptr<T> sp = var.lock();
 	if (sp)
@@ -470,9 +470,8 @@ String util::to_string(const std::weak_ptr<T>& var) noexcept
 }
 
 template<typename T>
-String util::to_string(const T& var) noexcept
+String util::to_string(const T& var)
 {
-	static_assert(noexcept(var.to_string()), "to_string method must be marked as noexcept");
 	return var.to_string();
 }
 

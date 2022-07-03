@@ -26,6 +26,7 @@ namespace snow
 
 class Config;
 class Lang;
+class TimerManager;
 class Log;
 
 /**
@@ -110,6 +111,8 @@ public:
 	 *	Это поле — главный объект класса `Lang`, использующийся для управления локализацией в игре.
 	 */
 	static Lang lang;
+
+	static TimerManager timer_manager;
 
 private:
 	static void loop_();

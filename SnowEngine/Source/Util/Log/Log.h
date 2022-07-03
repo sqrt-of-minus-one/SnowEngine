@@ -86,7 +86,7 @@ public:
 	 *	Создаёт новый логгер, связанный с переданной категорией лога.
 	 *	\param category_name Название категории лога.
 	 */
-	Log(const String& category_name) noexcept;
+	Log(const String& category_name);
 
 	/**
 	 *	\~english
@@ -99,7 +99,7 @@ public:
 	 *	
 	 *	При необходимости закрывает файл лога.
 	 */
-	virtual ~Log() noexcept;
+	virtual ~Log();
 
 			/* METHODS FROM Object */
 
@@ -116,7 +116,7 @@ public:
 	 *	Возвращает название категории лога.
 	 *	\return Название категории лога.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -193,7 +193,7 @@ public:
 	 *	режим отключен.
 	 *	\param message Сообщение лога.
 	 */
-	void d(const String& message) noexcept;
+	void d(const String& message);
 
 	/**
 	 *	\~english
@@ -208,7 +208,7 @@ public:
 	 *	Создаёт запись лога с информационным сообщением.
 	 *	\param message Сообщение лога.
 	 */
-	void i(const String& message) noexcept;
+	void i(const String& message);
 
 	/**
 	 *	\~english
@@ -223,7 +223,7 @@ public:
 	 *	Создаёт запись лога с предупреждением.
 	 *	\param message Сообщение лога.
 	 */
-	void w(const String& message) noexcept;
+	void w(const String& message);
 
 	/**
 	 *	\~english
@@ -238,17 +238,17 @@ public:
 	 *	Создаёт запись лога об ошибке.
 	 *	\param message Сообщение лога.
 	 */
-	void e(const String& message) noexcept;
+	void e(const String& message);
 private:
 	const String name_;
-	static int object_counter_;
 	
-	
-	/* lazy */ static bool& debug_mode_();
-	/* lazy */ static std::mutex& log_file_mtx_();
+	/* lazy */ static bool& debug_mode_() noexcept;
+	/* lazy */ static std::mutex& log_file_mtx_() noexcept;
 	/* lazy */ static std::wofstream& log_file_();
 
-	void log_(const String& type, const String& message) noexcept;
+	void log_(const String& type, const String& message);
+
+	static int object_counter_;
 };
 
 }

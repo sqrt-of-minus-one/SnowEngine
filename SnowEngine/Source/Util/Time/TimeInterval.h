@@ -18,10 +18,10 @@ class TimeInterval : public Object
 	friend class Time;
 
 public:
-	TimeInterval() noexcept;
-	TimeInterval(const TimeInterval& interval) noexcept;
+	TimeInterval();
+	TimeInterval(const TimeInterval& interval);
 
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 	virtual int hash_code() const noexcept override;
 
 	long long h() const noexcept;
@@ -47,50 +47,50 @@ public:
 	TimeInterval& operator*=(float value);
 	TimeInterval& operator/=(float value);
 
-	bool operator==(const TimeInterval& interval);
-	bool operator!=(const TimeInterval& interval);
-	bool operator<(const TimeInterval& interval);
-	bool operator>(const TimeInterval& interval);
-	bool operator<=(const TimeInterval& interval);
-	bool operator>=(const TimeInterval& interval);
+	bool operator==(const TimeInterval& interval) noexcept;
+	bool operator!=(const TimeInterval& interval) noexcept;
+	bool operator<(const TimeInterval& interval) noexcept;
+	bool operator>(const TimeInterval& interval) noexcept;
+	bool operator<=(const TimeInterval& interval) noexcept;
+	bool operator>=(const TimeInterval& interval) noexcept;
 
-	friend TimeInterval operator""_ns(long double ns) noexcept;
-	friend TimeInterval operator""_ns(unsigned long long ns) noexcept;
-	friend TimeInterval operator""_us(long double us) noexcept;
-	friend TimeInterval operator""_us(unsigned long long us) noexcept;
-	friend TimeInterval operator""_ms(long double ms) noexcept;
-	friend TimeInterval operator""_ms(unsigned long long ms) noexcept;
-	friend TimeInterval operator""_s(long double s) noexcept;
-	friend TimeInterval operator""_s(unsigned long long s) noexcept;
-	friend TimeInterval operator""_min(long double min) noexcept;
-	friend TimeInterval operator""_min(unsigned long long min) noexcept;
-	friend TimeInterval operator""_h(long double h) noexcept;
-	friend TimeInterval operator""_h(unsigned long long h) noexcept;
+	friend TimeInterval operator""_ns(long double ns);
+	friend TimeInterval operator""_ns(unsigned long long ns);
+	friend TimeInterval operator""_us(long double us);
+	friend TimeInterval operator""_us(unsigned long long us);
+	friend TimeInterval operator""_ms(long double ms);
+	friend TimeInterval operator""_ms(unsigned long long ms);
+	friend TimeInterval operator""_s(long double s);
+	friend TimeInterval operator""_s(unsigned long long s);
+	friend TimeInterval operator""_min(long double min);
+	friend TimeInterval operator""_min(unsigned long long min);
+	friend TimeInterval operator""_h(long double h);
+	friend TimeInterval operator""_h(unsigned long long h);
 
 	static const TimeInterval ZERO;
 	
 private:
-	TimeInterval(const std::chrono::duration<
+	using Duration_ = std::chrono::duration<
 		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period>& duration);
+		std::chrono::steady_clock::period>;
 
-	std::chrono::duration<
-		std::chrono::steady_clock::rep,
-		std::chrono::steady_clock::period> duration_;
+	TimeInterval(const Duration_& duration);
+
+	Duration_ duration_;
 };
 
-TimeInterval operator""_ns(long double ns) noexcept;
-TimeInterval operator""_ns(unsigned long long ns) noexcept;
-TimeInterval operator""_us(long double us) noexcept;
-TimeInterval operator""_us(unsigned long long us) noexcept;
-TimeInterval operator""_ms(long double ms) noexcept;
-TimeInterval operator""_ms(unsigned long long ms) noexcept;
-TimeInterval operator""_s(long double s) noexcept;
-TimeInterval operator""_s(unsigned long long s) noexcept;
-TimeInterval operator""_min(long double min) noexcept;
-TimeInterval operator""_min(unsigned long long min) noexcept;
-TimeInterval operator""_h(long double h) noexcept;
-TimeInterval operator""_h(unsigned long long h) noexcept;
+TimeInterval operator""_ns(long double ns);
+TimeInterval operator""_ns(unsigned long long ns);
+TimeInterval operator""_us(long double us);
+TimeInterval operator""_us(unsigned long long us);
+TimeInterval operator""_ms(long double ms);
+TimeInterval operator""_ms(unsigned long long ms);
+TimeInterval operator""_s(long double s);
+TimeInterval operator""_s(unsigned long long s);
+TimeInterval operator""_min(long double min);
+TimeInterval operator""_min(unsigned long long min);
+TimeInterval operator""_h(long double h);
+TimeInterval operator""_h(unsigned long long h);
 
 }
 

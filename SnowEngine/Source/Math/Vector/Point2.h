@@ -53,7 +53,7 @@ public:
 	 *	
 	 *	Создаёт нулевую точка \f$\{0; 0\}\f$.
 	*/
-	Point2() noexcept;
+	Point2();
 
 	/**
 	 *	\~english
@@ -68,7 +68,7 @@ public:
 	 *	Создаёт копию точки.
 	 *	\param point Точка, которая будет скопирован.
 	 */
-	Point2(const Point2& point) noexcept;
+	Point2(const Point2& point);
 
 	/**
 	 *	\~english
@@ -85,7 +85,7 @@ public:
 	 *	\param x Координата X точки.
 	 *	\param y Координата Y точки.
 	 */
-	Point2(int x, int y) noexcept;
+	Point2(int x, int y);
 
 			/* METHODS FROM Object */
 
@@ -103,7 +103,7 @@ public:
 	 *	Создаёт строку в формате `{<x>, <y>}`, где `<x>` и `<y>` — координаты точки.
 	 *	\return Строка с координатами точки.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -233,7 +233,7 @@ public:
 	 *	`some_point` — это l-value, но `+some_point` — уже r-value.
 	 *	\return Копия самой себя.
 	 */
-	const Point2 operator+() const noexcept;
+	const Point2 operator+() const;
 
 	/**
 	 *	\~english
@@ -250,7 +250,7 @@ public:
 	 *	результат, что и `point * -1`.
 	 *	\return Точка с противоположными знаками у координат.
 	 */
-	const Point2 operator-() const noexcept;
+	const Point2 operator-() const;
 	
 	/**
 	 *	\~english
@@ -269,7 +269,7 @@ public:
 	 *	\param point Второе слагаемое.
 	 *	\return Сумма двух точек.
 	 */
-	const Point2 operator+(const Point2& point) const noexcept;
+	const Point2 operator+(const Point2& point) const;
 
 	/**
 	 *	\~english
@@ -288,7 +288,7 @@ public:
 	 *	\param point Вычитаемое.
 	 *	\return Разность двух точек.
 	 */
-	const Point2 operator-(const Point2& point) const noexcept;
+	const Point2 operator-(const Point2& point) const;
 
 	/**
 	 *	\~english
@@ -307,7 +307,7 @@ public:
 	 *	\param value Множитель.
 	 *	\return Произведение точки и числа.
 	 */
-	const Point2 operator*(int value) const noexcept;
+	const Point2 operator*(int value) const;
 	
 	/**
 	 *	\~english
@@ -328,7 +328,7 @@ public:
 	 *	\param point Точка.
 	 *	\return Произведение точки и числа.
 	 */
-	friend const Point2 operator*(int value, const Point2& point) noexcept;
+	friend const Point2 operator*(int value, const Point2& point);
 
 	/**
 	 *	\~english
@@ -351,7 +351,7 @@ public:
 	 *	\param point Множитель.
 	 *	\return Покоординатное произведение двух точек.
 	 */
-	const Point2 operator*(const Point2& point) const noexcept;
+	const Point2 operator*(const Point2& point) const;
 
 	/**
 	 *	\~english
@@ -631,7 +631,7 @@ public:
 	 *	\endcode
 	 *	\return 2D-вектор с вещественными координатами, равными координатам этой точки.
 	 */
-	operator Vector2() const noexcept;
+	operator Vector2() const;
 	
 			/* CONSTANTS */
 	

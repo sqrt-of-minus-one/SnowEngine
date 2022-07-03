@@ -62,7 +62,7 @@ public:
 	 *	Итоговая строка содержит все конфигурации в формате файла `config.ini`.
 	 *	\return Строка с конфигурациями.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 	
 	/**
 	 *	\~english
@@ -126,35 +126,6 @@ public:
 	 *	умолчанию: `Logs`.
 	 */
 	String log_path;
-
-	/**
-	 *	\~english
-	 *	\brief The path to localization files
-	 *
-	 *	The path to the folder with localiztion files. If it doesn't exist, it will be created.
-	 *	Default value: `Localization`.
-	 *
-	 *	\~russian
-	 *	\brief Путь к файлам локализации
-	 *
-	 *	Путь к директории с файлами локализации. Если он не существует, то будет создан. Значение
-	 *	по умолчанию: `Localization`.
-	 */
-	String lang_path;
-
-	/**
-	 *	\~english
-	 *	\brief The code of the default language
-	 *
-	 *	The code of the language that will be used in the game by default. Default value: `en_UK`.
-	 *
-	 *	\~russian
-	 *	\brief Код языка по умолчанию
-	 *
-	 *	Код языка, который будет использоваться в игре по умолчанию. Значение по умолчанию:
-	 *	`en_UK`.
-	 */
-	String default_lang;
 
 			/* FIELDS
 				SECTION: Window */
@@ -246,6 +217,52 @@ public:
 	 *	SnowEngine)`.
 	 */
 	String title;
+
+			/* FIELDS
+				SECTION: localization */
+
+	/**
+	 *	\~english
+	 *	\brief The path to localization files
+	 *
+	 *	The path to the folder with localization files. If it doesn't exist, it will be created.
+	 *	Default value: `Localization`.
+	 *
+	 *	\~russian
+	 *	\brief Путь к файлам локализации
+	 *
+	 *	Путь к директории с файлами локализации. Если он не существует, то будет создан. Значение
+	 *	по умолчанию: `Localization`.
+	 */
+	String lang_path;
+
+	/**
+	 *	\~english
+	 *	\brief The code of the default language
+	 *
+	 *	The code of the language that will be used in the game by default. Default value: `en_UK`.
+	 *
+	 *	\~russian
+	 *	\brief Код языка по умолчанию
+	 *
+	 *	Код языка, который будет использоваться в игре по умолчанию. Значение по умолчанию:
+	 *	`en_UK`.
+	 */
+	String default_lang;
+
+	/**
+	 *	\~english
+	 *	\brief The default localization table
+	 *	
+	 *	The name of the localization table that will be used as default. Default value: `default`.
+	 *	
+	 *	\~russian
+	 *	\brief Таблица локализации по умолчанию
+	 *	
+	 *	Название таблицы локализации, которая будет использоваться по умолчанию. Значение по
+	 *	умолчанию: `default`.
+	 */
+	String default_table;
 
 private:
 	Config();

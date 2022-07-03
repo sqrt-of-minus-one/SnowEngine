@@ -11,15 +11,15 @@
 using namespace snow;
 using namespace std::chrono_literals;
 
-TimeInterval::TimeInterval() noexcept :
+TimeInterval::TimeInterval() :
 	duration_()
 {}
 
-TimeInterval::TimeInterval(const TimeInterval& interval) noexcept :
+TimeInterval::TimeInterval(const TimeInterval& interval) :
 	duration_(interval.duration_)
 {}
 
-String TimeInterval::to_string() const noexcept
+String TimeInterval::to_string() const
 {
 	long long t = ns();
 	bool is_negative = false;
@@ -47,8 +47,9 @@ String TimeInterval::to_string() const noexcept
 }
 
 int TimeInterval::hash_code() const noexcept
+	// count() is not noexcept, but I have no idea how may it throw any exception
 {
-	return static_cast<int>(ns());
+	return static_cast<int>(duration_.count());
 }
 
 long long TimeInterval::h() const noexcept
@@ -154,104 +155,104 @@ TimeInterval& TimeInterval::operator/=(float value)
 	return *this;
 }
 
-bool TimeInterval::operator==(const TimeInterval& interval)
+bool TimeInterval::operator==(const TimeInterval& interval) noexcept
 {
 	return duration_ == interval.duration_;
 }
 
-bool TimeInterval::operator!=(const TimeInterval& interval)
+bool TimeInterval::operator!=(const TimeInterval& interval) noexcept
 {
 	return !operator==(interval);
 }
 
-bool TimeInterval::operator<(const TimeInterval& interval)
+bool TimeInterval::operator<(const TimeInterval& interval) noexcept
 {
 	return duration_ < interval.duration_;
 }
 
-bool TimeInterval::operator>(const TimeInterval& interval)
+bool TimeInterval::operator>(const TimeInterval& interval) noexcept
 {
 	return duration_ > interval.duration_;
 }
 
-bool TimeInterval::operator<=(const TimeInterval& interval)
+bool TimeInterval::operator<=(const TimeInterval& interval) noexcept
 {
 	return duration_ <= interval.duration_;
 }
 
-bool TimeInterval::operator>=(const TimeInterval& interval)
+bool TimeInterval::operator>=(const TimeInterval& interval) noexcept
 {
 	return duration_ >= interval.duration_;
 }
 
-TimeInterval snow::operator""_ns(long double ns) noexcept
+TimeInterval snow::operator""_ns(long double ns)
 {
 	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
 		std::chrono::steady_clock::period>>(std::chrono_literals::operator""ns(ns)));
 }
 
-TimeInterval snow::operator""_ns(unsigned long long ns) noexcept
+TimeInterval snow::operator""_ns(unsigned long long ns)
 {
 	return TimeInterval(std::chrono_literals::operator""ns(ns));
 }
 
-TimeInterval snow::operator""_us(long double us) noexcept
+TimeInterval snow::operator""_us(long double us)
 {
 	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
 		std::chrono::steady_clock::period>>(std::chrono_literals::operator""us(us)));
 }
 
-TimeInterval snow::operator""_us(unsigned long long us) noexcept
+TimeInterval snow::operator""_us(unsigned long long us)
 {
 	return TimeInterval(std::chrono_literals::operator""us(us));
 }
 
-TimeInterval snow::operator""_ms(long double ms) noexcept
+TimeInterval snow::operator""_ms(long double ms)
 {
 	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
 		std::chrono::steady_clock::period>>(std::chrono_literals::operator""ms(ms)));
 }
 
-TimeInterval snow::operator""_ms(unsigned long long ms) noexcept
+TimeInterval snow::operator""_ms(unsigned long long ms)
 {
 	return TimeInterval(std::chrono_literals::operator""ms(ms));
 }
 
-TimeInterval snow::operator""_s(long double s) noexcept
+TimeInterval snow::operator""_s(long double s)
 {
 	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
 		std::chrono::steady_clock::period>>(std::chrono_literals::operator""s(s)));
 }
 
-TimeInterval snow::operator""_s(unsigned long long s) noexcept
+TimeInterval snow::operator""_s(unsigned long long s)
 {
 	return TimeInterval(std::chrono_literals::operator""s(s));
 }
 
-TimeInterval snow::operator""_min(long double min) noexcept
+TimeInterval snow::operator""_min(long double min)
 {
 	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
 		std::chrono::steady_clock::period>>(std::chrono_literals::operator""min(min)));
 }
 
-TimeInterval snow::operator""_min(unsigned long long min) noexcept
+TimeInterval snow::operator""_min(unsigned long long min)
 {
 	return TimeInterval(std::chrono_literals::operator""min(min));
 }
 
-TimeInterval snow::operator""_h(long double h) noexcept
+TimeInterval snow::operator""_h(long double h)
 {
 	return TimeInterval(std::chrono::duration_cast<std::chrono::duration<
 		std::chrono::steady_clock::rep,
 		std::chrono::steady_clock::period>>(std::chrono_literals::operator""h(h)));
 }
 
-TimeInterval snow::operator""_h(unsigned long long h) noexcept
+TimeInterval snow::operator""_h(unsigned long long h)
 {
 	return TimeInterval(std::chrono_literals::operator""h(h));
 }

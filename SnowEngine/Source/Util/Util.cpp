@@ -13,7 +13,7 @@
 
 using namespace snow;
 
-String util::to_string(int var) noexcept
+String util::to_string(int var)
 {
 	if (var == 0)
 	{
@@ -36,7 +36,7 @@ String util::to_string(int var) noexcept
 	}
 }
 
-String util::to_string_bin(int var) noexcept
+String util::to_string_bin(int var)
 {
 	if (var == 0)
 	{
@@ -59,7 +59,7 @@ String util::to_string_bin(int var) noexcept
 	}
 }
 
-String util::to_string_oct(int var) noexcept
+String util::to_string_oct(int var)
 {
 	if (var == 0)
 	{
@@ -82,7 +82,7 @@ String util::to_string_oct(int var) noexcept
 	}
 }
 
-String util::to_string_hex(int var) noexcept
+String util::to_string_hex(int var)
 {
 	if (var == 0)
 	{
@@ -113,17 +113,17 @@ String util::to_string_hex(int var) noexcept
 	}
 }
 
-String util::to_string(float var) noexcept
+String util::to_string(float var)
 {
 	return std::to_wstring(var);
 }
 
-String util::to_string(wchar_t var) noexcept
+String util::to_string(wchar_t var)
 {
 	return String(var);
 }
 
-String util::to_string(bool var) noexcept
+String util::to_string(bool var)
 {
 	return var ? L"true"_s : L"false"_s;
 }

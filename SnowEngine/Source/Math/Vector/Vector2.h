@@ -54,7 +54,7 @@ public:
 	 *	
 	 *	Создаёт нулевой вектор \f$\{0; 0\}\f$.
 	*/
-	Vector2() noexcept;
+	Vector2();
 
 	/**
 	 *	\~english
@@ -69,7 +69,7 @@ public:
 	 *	Создаёт копию вектора.
 	 *	\param vector Вектор, который будет скопирован.
 	 */
-	Vector2(const Vector2& vector) noexcept;
+	Vector2(const Vector2& vector);
 
 	/**
 	 *	\~english
@@ -86,7 +86,7 @@ public:
 	 *	\param x Координата X вектора.
 	 *	\param y Координата Y вектора.
 	 */
-	Vector2(float x, float y) noexcept;
+	Vector2(float x, float y);
 
 			/* METHODS FROM Object */
 
@@ -104,7 +104,7 @@ public:
 	 *	Создаёт строку в формате `{<x>, <y>}`, где `<x>` и `<y>` — координаты вектора.
 	 *	\return Строка с координатами вектора.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -349,7 +349,7 @@ public:
 	 *	`some_vector` — это l-value, но `+some_vector` — уже r-value.
 	 *	\return Копия самого себя.
 	 */
-	const Vector2 operator+() const noexcept;
+	const Vector2 operator+() const;
 
 	/**
 	 *	\~english
@@ -366,7 +366,7 @@ public:
 	 *	результат, что и `vector * -1`.
 	 *	\return Вектор с противоположными знаками у координат.
 	 */
-	const Vector2 operator-() const noexcept;
+	const Vector2 operator-() const;
 	
 	/**
 	 *	\~english
@@ -385,7 +385,7 @@ public:
 	 *	\param vector Второе слагаемое.
 	 *	\return Сумма двух векторов.
 	 */
-	const Vector2 operator+(const Vector2& vector) const noexcept;
+	const Vector2 operator+(const Vector2& vector) const;
 
 	/**
 	 *	\~english
@@ -404,7 +404,7 @@ public:
 	 *	\param vector Вычитаемое.
 	 *	\return Разность двух векторов.
 	 */
-	const Vector2 operator-(const Vector2& vector) const noexcept;
+	const Vector2 operator-(const Vector2& vector) const;
 
 	/**
 	 *	\~english
@@ -423,7 +423,7 @@ public:
 	 *	\param value Множитель.
 	 *	\return Произведение вектора и числа.
 	 */
-	const Vector2 operator*(float value) const noexcept;
+	const Vector2 operator*(float value) const;
 	
 	/**
 	 *	\~english
@@ -444,7 +444,7 @@ public:
 	 *	\param vector Вектор.
 	 *	\return Произведение вектора и числа.
 	 */
-	friend const Vector2 operator*(float value, const Vector2& vector) noexcept;
+	friend const Vector2 operator*(float value, const Vector2& vector);
 
 	/**
 	 *	\~english
@@ -467,7 +467,7 @@ public:
 	 *	\param vector Множитель.
 	 *	\return Покоординатное произведение двух векторов.
 	 */
-	const Vector2 operator*(const Vector2& vector) const noexcept;
+	const Vector2 operator*(const Vector2& vector) const;
 
 	/**
 	 *	\~english
@@ -778,7 +778,7 @@ public:
 	 *	\warning Возможна потеря данных: вещественные числа конвертируются в целые.
 	 *	\return 2D-точка с целочисленными координатами, равными целым частям координат этой точки.
 	 */
-	operator Point2() const noexcept;
+	operator Point2() const;
 	
 			/* CONSTANTS */
 	

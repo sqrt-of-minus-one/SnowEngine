@@ -38,7 +38,7 @@ public:
 	virtual bool is_valid() const = 0;
 	virtual T_Ret execute(T_Args... args) = 0;
 	virtual std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> copy() const = 0;
-	virtual int hash() const = 0;
+	virtual int hash() const noexcept = 0;
 };
 
 // Do not use this structure directly
@@ -50,10 +50,10 @@ public:
 
 	std::function<T_Ret(T_Args...)> function;
 
-	virtual bool is_valid() const override;
+	virtual bool is_valid() const noexcept override;
 	virtual T_Ret execute(T_Args... args) override;
 	virtual std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> copy() const override;
-	virtual int hash() const override;
+	virtual int hash() const noexcept override;
 };
 
 // Do not use this structure directly
@@ -69,7 +69,7 @@ public:
 	virtual bool is_valid() const override;
 	virtual T_Ret execute(T_Args... args) override;
 	virtual std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> copy() const override;
-	virtual int hash() const override;
+	virtual int hash() const noexcept override;
 };
 
 }
@@ -154,6 +154,8 @@ public:
 	 *	\param delegate Делегат, который будет скопирован.
 	 */
 	Delegate(const Delegate<T_Ret, T_Args...>& delegate);
+
+	Delegate(const std::function<T_Ret(T_Args...)>& func);
 	
 			/* METHODS FROM Object */
 
@@ -176,7 +178,7 @@ public:
 	 *	- `"Delegate (function)"`.
 	 *	\return Полученная строка.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -212,7 +214,7 @@ public:
 	 *	объекта.
 	 *	\return `true`, если делегат действителен, иначе `false`.
 	 */
-	bool is_valid() const noexcept;
+	bool is_valid() const;
 
 	/**
 	 *	\~english
@@ -282,7 +284,7 @@ public:
 	 *	
 	 *	Если делегат указвает на функцию, очищает его.
 	 */
-	void unbind();
+	void unbind() noexcept;
 
 	/**
 	 *	\~english
@@ -360,7 +362,7 @@ public:
 	 *	объекта.
 	 *	\return `true`, если делегат действителен, иначе `false`.
 	 */
-	operator bool() const noexcept;
+	operator bool() const;
 
 private:
 	std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> func_;
@@ -370,7 +372,7 @@ private:
 
 		/* DEFINITIONS */
 
-		/* Delegate: public */
+		/* FunctionContainer_: public */
 
 template<typename T_Ret, typename... T_Args>
 FunctionContainer_<T_Ret, T_Args...>::FunctionContainer_(const std::function<T_Ret(T_Args...)> func) :
@@ -378,7 +380,7 @@ FunctionContainer_<T_Ret, T_Args...>::FunctionContainer_(const std::function<T_R
 {}
 
 template<typename T_Ret, typename... T_Args>
-bool FunctionContainer_<T_Ret, T_Args...>::is_valid() const
+bool FunctionContainer_<T_Ret, T_Args...>::is_valid() const noexcept
 {
 	return static_cast<bool>(function);
 }
@@ -403,10 +405,12 @@ std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> FunctionContainer_<T_Ret,
 }
 
 template<typename T_Ret, typename... T_Args>
-int FunctionContainer_<T_Ret, T_Args...>::hash() const
+int FunctionContainer_<T_Ret, T_Args...>::hash() const noexcept
 {
 	return reinterpret_cast<int>(&function);
 }
+
+		/* MethodContainer_: public */
 
 template<typename T_Class, typename T_Ret, typename... T_Args>
 MethodContainer_<T_Class, T_Ret, T_Args...>::MethodContainer_(T_Class* object, const std::function<T_Ret(T_Class&, T_Args...)> func) :
@@ -440,10 +444,12 @@ std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> MethodContainer_<T_Class,
 }
 
 template<typename T_Class, typename T_Ret, typename... T_Args>
-int MethodContainer_<T_Class, T_Ret, T_Args...>::hash() const
+int MethodContainer_<T_Class, T_Ret, T_Args...>::hash() const noexcept
 {
 	return reinterpret_cast<int>(&function) - reinterpret_cast<int>(object);
 }
+
+		/* Delegate: public */
 
 template<typename T_Ret, typename... T_Args>
 Delegate<T_Ret, T_Args...>::Delegate() :
@@ -463,7 +469,15 @@ Delegate<T_Ret, T_Args...>::Delegate(const Delegate<T_Ret, T_Args...>& delegate)
 }
 
 template<typename T_Ret, typename... T_Args>
-String Delegate<T_Ret, T_Args...>::to_string() const noexcept
+Delegate<T_Ret, T_Args...>::Delegate(const std::function<T_Ret(T_Args...)>& func) :
+	func_(nullptr),
+	is_method_(false)
+{
+	bind(func);
+}
+
+template<typename T_Ret, typename... T_Args>
+String Delegate<T_Ret, T_Args...>::to_string() const
 {
 	if (is_valid())
 	{
@@ -496,7 +510,7 @@ int Delegate<T_Ret, T_Args...>::hash_code() const noexcept
 }
 
 template<typename T_Ret, typename... T_Args>
-bool Delegate<T_Ret, T_Args...>::is_valid() const noexcept
+bool Delegate<T_Ret, T_Args...>::is_valid() const
 {
 	return func_ && func_->is_valid();
 }
@@ -532,7 +546,7 @@ void Delegate<T_Ret, T_Args...>::bind(T_Class& object, const std::function<T_Ret
 
 
 template<typename T_Ret, typename... T_Args>
-void Delegate<T_Ret, T_Args...>::unbind()
+void Delegate<T_Ret, T_Args...>::unbind() noexcept
 {
 	func_.reset();
 }
@@ -564,7 +578,7 @@ T_Ret Delegate<T_Ret, T_Args...>::operator()(T_Args ...args) const
 }
 
 template<typename T_Ret, typename... T_Args>
-Delegate<T_Ret, T_Args...>::operator bool() const noexcept
+Delegate<T_Ret, T_Args...>::operator bool() const
 {
 	return is_valid();
 }

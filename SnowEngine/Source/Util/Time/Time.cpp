@@ -15,13 +15,13 @@
 
 using namespace snow;
 
-Time::Time() noexcept :
+Time::Time() :
 	point_(),
 	cache_tm_(),
 	cache_state_(false)
 {}
 
-Time::Time(const Time& time) noexcept :
+Time::Time(const Time& time) :
 	point_(time.point_),
 	cache_tm_(time.cache_tm_),
 	cache_state_(time.cache_state_)
@@ -47,7 +47,7 @@ Time::Time(int year, EMonth month, int day, int hour, int minute, int second,
 	point_ += std::chrono::nanoseconds(nanosecond) + std::chrono::microseconds(microsecond) + std::chrono::milliseconds(millisecond);
 }
 
-String Time::to_string() const noexcept
+String Time::to_string() const
 {
 	return String::format(L"%04d.%02d.%02d-%02d:%02d:%02d"_s,
 		year(), static_cast<int>(month()), month_day(), hour(), minute(), second());
@@ -179,32 +179,32 @@ Time& Time::operator-=(const TimeInterval& interval)
 	return *this;
 }
 
-bool Time::operator==(const Time& interval) const
+bool Time::operator==(const Time& interval) const noexcept
 {
 	return point_ == interval.point_;
 }
 
-bool Time::operator!=(const Time& interval) const
+bool Time::operator!=(const Time& interval) const noexcept
 {
 	return !operator==(interval);
 }
 
-bool Time::operator<(const Time& interval) const
+bool Time::operator<(const Time& interval) const noexcept
 {
 	return point_ < interval.point_;
 }
 
-bool Time::operator>(const Time& interval) const
+bool Time::operator>(const Time& interval) const noexcept
 {
 	return point_ > interval.point_;
 }
 
-bool Time::operator<=(const Time& interval) const
+bool Time::operator<=(const Time& interval) const noexcept
 {
 	return point_ <= interval.point_;
 }
 
-bool Time::operator>=(const Time& interval) const
+bool Time::operator>=(const Time& interval) const noexcept
 {
 	return point_ >= interval.point_;
 }

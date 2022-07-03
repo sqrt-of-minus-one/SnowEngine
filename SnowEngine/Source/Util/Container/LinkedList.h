@@ -39,10 +39,10 @@ template<typename T>
 struct LinkedListNode_
 {
 public:
-	LinkedListNode_(const LinkedListNode_<T>&) noexcept = default;
-	LinkedListNode_(LinkedListNode_<T>&&) noexcept = default;
-	LinkedListNode_(const T& val) noexcept;
-	LinkedListNode_(T&& val) noexcept;
+	LinkedListNode_(const LinkedListNode_<T>&) noexcept(std::is_nothrow_copy_constructible_v<T>) = default;
+	LinkedListNode_(LinkedListNode_<T>&&) noexcept(std::is_nothrow_move_constructible_v<T>) = default;
+	LinkedListNode_(const T& val) noexcept(std::is_nothrow_copy_constructible_v<T>);
+	LinkedListNode_(T&& val) noexcept(std::is_nothrow_move_constructible_v<T>);
 
 	T value;
 	std::weak_ptr<LinkedListNode_<T>> prev;
@@ -53,9 +53,9 @@ template<typename T>
 struct LinkedListNode_<std::unique_ptr<T>>
 {
 public:
-	LinkedListNode_(const LinkedListNode_<std::unique_ptr<T>>&) noexcept;
+	LinkedListNode_(const LinkedListNode_<std::unique_ptr<T>>&);
 	LinkedListNode_(LinkedListNode_<std::unique_ptr<T>>&&) noexcept = default;
-	LinkedListNode_(const std::unique_ptr<T>& val) noexcept;
+	LinkedListNode_(const std::unique_ptr<T>& val);
 	LinkedListNode_(std::unique_ptr<T>&& val) noexcept;
 
 	T value;
@@ -123,7 +123,7 @@ public:
 	 *	
 	 *	Создаёт пустой связный список.
 	 */
-	LinkedList() noexcept;
+	LinkedList();
 
 	/**
 	 *	\~english
@@ -143,7 +143,7 @@ public:
 	 *	используйте семантику перемещения.
 	 *	\param list Связный список, который будет скопирован.
 	 */
-	LinkedList(const LinkedList<T>& list) noexcept;
+	LinkedList(const LinkedList<T>& list);
 
 	/**
 	 *	\~english
@@ -158,7 +158,7 @@ public:
 	 *	Перемещает элементы в новый связный список из переданного.
 	 *	\param list Связный список, чьи элементы будут перемещены.
 	 */
-	LinkedList(LinkedList<T>&& list) noexcept;
+	LinkedList(LinkedList<T>&& list);
 
 	/**
 	 *	\~english
@@ -171,7 +171,7 @@ public:
 	 *	
 	 *	Деструктор используется для аннулирования всех итераторов.
 	 */
-	virtual ~LinkedList() noexcept;
+	virtual ~LinkedList();
 
 			/* METHODS FROM Object */
 
@@ -191,7 +191,7 @@ public:
 	 *	в строку используется `util::to_string`.
 	 *	\return Итоговая строка в формате `{ x, x, ..., x }`. `{ }`, если связный список пуст.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -254,7 +254,7 @@ public:
 	 *
 	 *	Удаляет все элементы связного списка.
 	 */
-	virtual void clear() noexcept override;
+	virtual void clear() override;
 
 	/**
 	 *	\~english
@@ -849,7 +849,7 @@ public:
 	 *	\param element Искомый элемент.
 	 *	\return Индекс первого совпадения; отрицательное значение, если совпадения найдено не было.
 	 */
-	virtual int find_first_by_index(const T& element) const;
+	virtual int find_first_by_index(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()));
 
 	/**
 	 *	\~english
@@ -869,7 +869,7 @@ public:
 	 *	\return Индекс последнего совпадения; отрицательное значение, если совпадения найдено не
 	 *	было.
 	 */
-	virtual int find_last_by_index(const T& element) const;
+	virtual int find_last_by_index(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()));
 
 	/**
 	 *	\~english
@@ -966,7 +966,7 @@ public:
 	 *	\param element Искомый элемент.
 	 *	\return `true`, если связный список содержит переданный элемент, иначе `false`.
 	 */
-	virtual bool contains(const T& element) const override;
+	virtual bool contains(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>())) override;
 
 	/**
 	 *	\~english
@@ -983,7 +983,7 @@ public:
 	 *	\param element Требуемый элемент.
 	 *	\return Количество совпадений.
 	 */
-	virtual int count(const T& element) const override;
+	virtual int count(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>())) override;
 
 	/**
 	 *	\~english
@@ -1000,7 +1000,7 @@ public:
 	 *	пуст, созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Итератор на первый элемент связного списка.
 	 */
-	LinkedListIterator<T> begin() noexcept;
+	LinkedListIterator<T> begin();
 
 	/**
 	 *	\~english
@@ -1017,7 +1017,7 @@ public:
 	 *	список пуст, созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Итератор на последний элемент связного списка.
 	 */
-	LinkedListIterator<T> last() noexcept;
+	LinkedListIterator<T> last();
 
 	/**
 	 *	\~english
@@ -1034,7 +1034,7 @@ public:
 	 *	списка (этот итератор указывает в конец: `is_end` истинно).
 	 *	\return Итератор на конец.
 	 */
-	LinkedListIterator<T> end() noexcept;
+	LinkedListIterator<T> end();
 
 	/**
 	 *	\~english
@@ -1070,7 +1070,7 @@ public:
 	 *	связный список пуст, созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Константный итератор на первый элемент связного списка.
 	 */
-	ConstLinkedListIterator<T> begin() const noexcept;
+	ConstLinkedListIterator<T> begin() const;
 
 	/**
 	 *	\~english
@@ -1087,7 +1087,7 @@ public:
 	 *	связный список пуст, созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Константный итератор на последний элемент связного списка.
 	 */
-	ConstLinkedListIterator<T> last() const noexcept;
+	ConstLinkedListIterator<T> last() const;
 
 	/**
 	 *	\~english
@@ -1104,7 +1104,7 @@ public:
 	 *	связного списка (этот итератор указывает в конец: `is_end` истинно).
 	 *	\return Константный итератор на конец.
 	 */
-	ConstLinkedListIterator<T> end() const noexcept;
+	ConstLinkedListIterator<T> end() const;
 
 	/**
 	 *	\~english
@@ -1142,7 +1142,7 @@ public:
 	 *	\param iterator Итератор, который будет сконвертирован.
 	 *	\return Полученный константный итератор.
 	 */
-	static ConstLinkedListIterator<T> iterator_to_const(const LinkedListIterator<T> iterator) noexcept;
+	static ConstLinkedListIterator<T> iterator_to_const(const LinkedListIterator<T> iterator);
 	
 			/* OPERATORS */
 	
@@ -1274,11 +1274,11 @@ private:
 
 	mutable std::list<LinkedListIterator<T>*> iterators_;
 	mutable std::list<ConstLinkedListIterator<T>*> const_iterators_;
-	void register_iterator_(LinkedListIterator<T>* iterator) noexcept;
-	void unregister_iterator_(LinkedListIterator<T>* iterator) noexcept;
-	void register_iterator_(ConstLinkedListIterator<T>* iterator) const noexcept;
-	void unregister_iterator_(ConstLinkedListIterator<T>* iterator) const noexcept;
-	void clear_iterators_() const noexcept;
+	void register_iterator_(LinkedListIterator<T>* iterator);
+	void unregister_iterator_(LinkedListIterator<T>* iterator);
+	void register_iterator_(ConstLinkedListIterator<T>* iterator) const;
+	void unregister_iterator_(ConstLinkedListIterator<T>* iterator) const;
+	void clear_iterators_() const;
 };
 
 
@@ -1287,21 +1287,21 @@ private:
 		/* LinkedListNode_ : public */
 
 template<typename T>
-LinkedListNode_<T>::LinkedListNode_(const T& val) noexcept :
+LinkedListNode_<T>::LinkedListNode_(const T& val) noexcept(std::is_nothrow_copy_constructible_v<T>) :
 	value(val),
 	prev(),
 	next()
 {}
 
 template<typename T>
-LinkedListNode_<T>::LinkedListNode_(T&& val) noexcept :
+LinkedListNode_<T>::LinkedListNode_(T&& val) noexcept(std::is_nothrow_move_constructible_v<T>) :
 	value(std::move(val)),
 	prev(),
 	next()
 {}
 
 template<typename T>
-LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(const LinkedListNode_<std::unique_ptr<T>>& val) noexcept :
+LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(const LinkedListNode_<std::unique_ptr<T>>& val) :
 	value(),
 	prev(),
 	next()
@@ -1310,7 +1310,7 @@ LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(const LinkedListNode_<std::
 }
 
 template<typename T>
-LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(const std::unique_ptr<T>& val) noexcept :
+LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(const std::unique_ptr<T>& val) :
 	value(),
 	prev(),
 	next()
@@ -1332,14 +1332,14 @@ LinkedListNode_<std::unique_ptr<T>>::LinkedListNode_(std::unique_ptr<T>&& val) n
 		/* LinkedList: public */
 
 template<typename T>
-LinkedList<T>::LinkedList() noexcept :
+LinkedList<T>::LinkedList() :
 	begin_(nullptr),
 	end_(nullptr),
 	size_(0)
 {}
 
 template<typename T>
-LinkedList<T>::LinkedList(const LinkedList<T>& linked_list) noexcept :
+LinkedList<T>::LinkedList(const LinkedList<T>& linked_list) :
 	LinkedList()
 {
 	for (const T& i : linked_list)
@@ -1349,20 +1349,20 @@ LinkedList<T>::LinkedList(const LinkedList<T>& linked_list) noexcept :
 }
 
 template<typename T>
-LinkedList<T>::LinkedList(LinkedList<T>&& linked_list) noexcept :
+LinkedList<T>::LinkedList(LinkedList<T>&& linked_list) :
 	begin_(std::move(linked_list.begin_)),
 	end_(std::move(linked_list.end_)),
 	size_(std::move(linked_list.size_))
 {}
 
 template<typename T>
-LinkedList<T>::~LinkedList() noexcept
+LinkedList<T>::~LinkedList()
 {
 	clear_iterators_();
 }
 
 template<typename T>
-String LinkedList<T>::to_string() const noexcept
+String LinkedList<T>::to_string() const
 {
 	if (is_empty())
 	{
@@ -1411,7 +1411,7 @@ bool LinkedList<T>::is_empty() const noexcept
 }
 
 template<typename T>
-void LinkedList<T>::clear() noexcept
+void LinkedList<T>::clear()
 {
 	begin_.reset();
 	end_.reset();
@@ -1901,7 +1901,7 @@ int LinkedList<T>::remove_all(const T& element)
 }
 
 template<typename T>
-int LinkedList<T>::find_first_by_index(const T& element) const
+int LinkedList<T>::find_first_by_index(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	int index = 0;
 	for (std::shared_ptr<LinkedListNode_<T>> i = begin_; i; i = i->next, index++)
@@ -1915,7 +1915,7 @@ int LinkedList<T>::find_first_by_index(const T& element) const
 }
 
 template<typename T>
-int LinkedList<T>::find_last_by_index(const T& element) const
+int LinkedList<T>::find_last_by_index(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	int index = size_ - 1;
 	for (std::shared_ptr<LinkedListNode_<T>> i = end_; i; i = i->prev.lock(), index--)
@@ -1985,7 +1985,7 @@ ConstLinkedListIterator<T> LinkedList<T>::find_last_by_iterator(const T& element
 }
 
 template<typename T>
-bool LinkedList<T>::contains(const T& element) const
+bool LinkedList<T>::contains(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	for (std::shared_ptr<LinkedListNode_<T>> i = begin_; i; i = i->next)
 	{
@@ -1998,7 +1998,7 @@ bool LinkedList<T>::contains(const T& element) const
 }
 
 template<typename T>
-int LinkedList<T>::count(const T& element) const
+int LinkedList<T>::count(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	int result = 0;
 	for (std::shared_ptr<LinkedListNode_<T>> i = begin_; i; i = i->next)
@@ -2012,19 +2012,19 @@ int LinkedList<T>::count(const T& element) const
 }
 
 template<typename T>
-LinkedListIterator<T> LinkedList<T>::begin() noexcept
+LinkedListIterator<T> LinkedList<T>::begin()
 {
 	return LinkedListIterator<T>(*this, 0, begin_);
 }
 
 template<typename T>
-LinkedListIterator<T> LinkedList<T>::last() noexcept
+LinkedListIterator<T> LinkedList<T>::last()
 {
 	return LinkedListIterator<T>(*this, size_ - 1, end_);
 }
 
 template<typename T>
-LinkedListIterator<T> LinkedList<T>::end() noexcept
+LinkedListIterator<T> LinkedList<T>::end()
 {
 	return LinkedListIterator<T>(*this, size_);
 }
@@ -2060,19 +2060,19 @@ LinkedListIterator<T> LinkedList<T>::create_iterator(int index)
 }
 
 template<typename T>
-ConstLinkedListIterator<T> LinkedList<T>::begin() const noexcept
+ConstLinkedListIterator<T> LinkedList<T>::begin() const
 {
 	return ConstLinkedListIterator<T>(*this, 0, begin_);
 }
 
 template<typename T>
-ConstLinkedListIterator<T> LinkedList<T>::last() const noexcept
+ConstLinkedListIterator<T> LinkedList<T>::last() const
 {
 	return ConstLinkedListIterator<T>(*this, size_ - 1, end_);
 }
 
 template<typename T>
-ConstLinkedListIterator<T> LinkedList<T>::end() const noexcept
+ConstLinkedListIterator<T> LinkedList<T>::end() const
 {
 	return ConstLinkedListIterator<T>(*this, size_);
 }
@@ -2108,7 +2108,7 @@ ConstLinkedListIterator<T> LinkedList<T>::create_iterator(int index) const
 }
 
 template<typename T>
-ConstLinkedListIterator<T> LinkedList<T>::iterator_to_const(const LinkedListIterator<T> iterator) noexcept
+ConstLinkedListIterator<T> LinkedList<T>::iterator_to_const(const LinkedListIterator<T> iterator)
 {
 	return ConstLinkedListIterator<T>(iterator.container_, iterator.index_, iterator.node_.lock(), iterator.is_valid_);
 }
@@ -2197,13 +2197,13 @@ std::shared_ptr<LinkedListNode_<T>> LinkedList<T>::get_last_node_() const noexce
 }
 
 template<typename T>
-void LinkedList<T>::register_iterator_(LinkedListIterator<T>* iterator) noexcept
+void LinkedList<T>::register_iterator_(LinkedListIterator<T>* iterator)
 {
 	iterators_.push_back(iterator);
 }
 
 template<typename T>
-void LinkedList<T>::unregister_iterator_(LinkedListIterator<T>* iterator) noexcept
+void LinkedList<T>::unregister_iterator_(LinkedListIterator<T>* iterator)
 {
 	auto end = iterators_.end();
 	for (auto ptr = iterators_.begin(); ptr != end; ptr++)
@@ -2217,13 +2217,13 @@ void LinkedList<T>::unregister_iterator_(LinkedListIterator<T>* iterator) noexce
 }
 
 template<typename T>
-void LinkedList<T>::register_iterator_(ConstLinkedListIterator<T>* iterator) const noexcept
+void LinkedList<T>::register_iterator_(ConstLinkedListIterator<T>* iterator) const
 {
 	const_iterators_.push_back(iterator);
 }
 
 template<typename T>
-void LinkedList<T>::unregister_iterator_(ConstLinkedListIterator<T>* iterator) const noexcept
+void LinkedList<T>::unregister_iterator_(ConstLinkedListIterator<T>* iterator) const
 {
 	auto end = const_iterators_.end();
 	for (auto ptr = const_iterators_.begin(); ptr != end; ptr++)
@@ -2237,7 +2237,7 @@ void LinkedList<T>::unregister_iterator_(ConstLinkedListIterator<T>* iterator) c
 }
 
 template<typename T>
-void LinkedList<T>::clear_iterators_() const noexcept
+void LinkedList<T>::clear_iterators_() const
 {
 	FOR_ITERATORS_(i,
 	{

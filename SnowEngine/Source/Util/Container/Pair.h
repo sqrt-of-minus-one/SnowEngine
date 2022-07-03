@@ -34,8 +34,9 @@ template<typename T>
 struct Wrap_
 {
 public:
-	Wrap_(const T& v) noexcept;
-	Wrap_(T&& v) noexcept;
+	Wrap_() noexcept(std::is_nothrow_default_constructible_v<T>);
+	Wrap_(const T& v) noexcept(std::is_nothrow_copy_constructible_v<T>);
+	Wrap_(T&& v) noexcept(std::is_nothrow_move_constructible_v<T>);
 
 	T var;
 };
@@ -44,7 +45,8 @@ template<typename T>
 struct Wrap_<std::unique_ptr<T>>
 {
 public:
-	Wrap_(const std::unique_ptr<T>& v) noexcept;
+	Wrap_() noexcept;
+	Wrap_(const std::unique_ptr<T>& v);
 	Wrap_(std::unique_ptr<T>&& v) noexcept;
 
 	std::unique_ptr<T> var;
@@ -100,7 +102,7 @@ public:
 	 *	Создаёт новую пару. Переменные пары инициализируются с использованием конструктора по
 	 *	умолчанию.
 	 */
-	Pair() noexcept;
+	Pair();
 
 	/**
 	 *	\~english
@@ -120,7 +122,7 @@ public:
 	 *	используйте семантику перемещения.
 	 *	\param pair Пара, которая будет скопирована.
 	 */
-	Pair(const Pair<T_First, T_Second>& pair) noexcept;
+	Pair(const Pair<T_First, T_Second>& pair);
 
 	/**
 	 *	\~english
@@ -135,7 +137,7 @@ public:
 	 *	Перемещает переменные в новую пару из переданной.
 	 *	\param pair Пара, чьи переменные будут перемещены.
 	 */
-	Pair(Pair<T_First, T_Second>&& pair) noexcept;
+	Pair(Pair<T_First, T_Second>&& pair);
 
 	/**
 	 *	\~english
@@ -237,7 +239,7 @@ public:
 	 *	вторую. Для конвертации переменных в строку используется `util::to_string`.
 	 *	\return Итоговая строка.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -336,7 +338,7 @@ public:
 	 *	используйте семантику перемещения.
 	 *	\param first Новое значение первой переменной.
 	 */
-	void set_first(const T_First& first);
+	void set_first(const T_First& first) noexcept(std::is_nothrow_copy_assignable_v<T_First>);
 
 	/**
 	 *	\~english
@@ -356,7 +358,7 @@ public:
 	 *	используйте семантику перемещения.
 	 *	\param second Новое значение второй переменной.
 	 */
-	void set_second(const T_Second& second);
+	void set_second(const T_Second& second) noexcept(std::is_nothrow_copy_assignable_v<T_Second>);
 
 	/**
 	 *	\~english
@@ -371,7 +373,7 @@ public:
 	 *	Позволяет установить первую переменную пары.
 	 *	\param first Новое значение первой переменной.
 	 */
-	void set_first(T_First&& first);
+	void set_first(T_First&& first) noexcept(std::is_nothrow_move_assignable_v<T_First>);
 
 	/**
 	 *	\~english
@@ -386,7 +388,7 @@ public:
 	 *	Позволяет установить вторую переменную пары.
 	 *	\param second Новое значение второй переменной.
 	 */
-	void set_second(T_Second&& second);
+	void set_second(T_Second&& second) noexcept(std::is_nothrow_move_assignable_v<T_Second>);
 
 			/* OPERATORS */
 
@@ -410,7 +412,8 @@ public:
 	 *	\param pair Пара, которая будет скопирована.
 	 *	\return Ссылка на себя.
 	 */
-	Pair<T_First, T_Second>& operator=(const Pair<T_First, T_Second>& pair);
+	Pair<T_First, T_Second>& operator=(const Pair<T_First, T_Second>& pair) noexcept(
+		std::is_nothrow_copy_assignable_v<T_First> && std::is_nothrow_copy_assignable_v<T_Second>);
 
 	/**
 	 *	\~english
@@ -427,7 +430,8 @@ public:
 	 *	\param pair Пара, которая будет перемещена.
 	 *	\return Ссылка на себя.
 	 */
-	Pair<T_First, T_Second>& operator=(Pair<T_First, T_Second>&& pair);
+	Pair<T_First, T_Second>& operator=(Pair<T_First, T_Second>&& pair) noexcept(
+		std::is_nothrow_move_assignable_v<T_First> && std::is_nothrow_move_assignable_v<T_Second>);
 
 	/**
 	 *	\~english
@@ -446,7 +450,8 @@ public:
 	 *	\param pair Пара для сравнения.
 	 *	\return `true`, если две пары равны, иначе `false`.
 	 */
-	bool operator==(const Pair<T_First, T_Second>& pair) const;
+	bool operator==(const Pair<T_First, T_Second>& pair) const noexcept(
+		noexcept(std::declval<T_First>() == std::declval<T_First>()) && noexcept(std::declval<T_Second>() == std::declval<T_Second>()));
 
 	/**
 	 *	\~english
@@ -465,7 +470,8 @@ public:
 	 *	\param pair Пара для сравнения.
 	 *	\return `true`, если две пары не равны, иначе `false`.
 	 */
-	bool operator!=(const Pair<T_First, T_Second>& pair) const;
+	bool operator!=(const Pair<T_First, T_Second>& pair) const noexcept(
+		noexcept(std::declval<T_First>() == std::declval<T_First>()) && noexcept(std::declval<T_Second>() == std::declval<T_Second>()));
 
 private:
 	Wrap_<T_First> first_;
@@ -478,17 +484,27 @@ private:
 		/* Wrap_: public */
 
 template<typename T>
-Wrap_<T>::Wrap_(const T& v) noexcept :
+Wrap_<T>::Wrap_() noexcept(std::is_nothrow_default_constructible_v<T>) :
+	var()
+{}
+
+template<typename T>
+Wrap_<T>::Wrap_(const T& v) noexcept(std::is_nothrow_copy_constructible_v<T>) :
 	var(v)
 {}
 
 template<typename T>
-Wrap_<T>::Wrap_(T&& v) noexcept :
+Wrap_<T>::Wrap_(T&& v) noexcept(std::is_nothrow_move_constructible_v<T>) :
 	var(std::move(v))
 {}
 
 template<typename T>
-Wrap_<std::unique_ptr<T>>::Wrap_(const std::unique_ptr<T>& v) noexcept :
+Wrap_<std::unique_ptr<T>>::Wrap_() noexcept :
+	var(nullptr)
+{}
+
+template<typename T>
+Wrap_<std::unique_ptr<T>>::Wrap_(const std::unique_ptr<T>& v) :
 	var()
 {
 	throw std::logic_error("Using of this method is not allowed for containers of unique_ptr's");
@@ -502,19 +518,19 @@ Wrap_<std::unique_ptr<T>>::Wrap_(std::unique_ptr<T>&& v) noexcept :
 		/* Pair: public */
 
 template<typename T_First, typename T_Second>
-Pair<T_First, T_Second>::Pair() noexcept :
+Pair<T_First, T_Second>::Pair() :
 	first_(),
 	second_()
 {}
 
 template<typename T_First, typename T_Second>
-Pair<T_First, T_Second>::Pair(const Pair<T_First, T_Second>& pair) noexcept :
+Pair<T_First, T_Second>::Pair(const Pair<T_First, T_Second>& pair) :
 	first_(pair.first_.var),
 	second_(pair.second_.var)
 {}
 
 template<typename T_First, typename T_Second>
-Pair<T_First, T_Second>::Pair(Pair<T_First, T_Second>&& pair) noexcept :
+Pair<T_First, T_Second>::Pair(Pair<T_First, T_Second>&& pair) :
 	first_(std::move(pair.first_.var)),
 	second_(std::move(pair.second_.var))
 {}
@@ -544,7 +560,7 @@ Pair<T_First, T_Second>::Pair(T_First&& first, const T_Second& second) :
 {}
 
 template<typename T_First, typename T_Second>
-String Pair<T_First, T_Second>::to_string() const noexcept
+String Pair<T_First, T_Second>::to_string() const
 {
 	return L"["_s + util::to_string(first_.var) + L": "_s + util::to_string(second_.var) + L"]"_s;
 }
@@ -580,31 +596,32 @@ const T_Second& Pair<T_First, T_Second>::get_second() const noexcept
 }
 
 template<typename T_First, typename T_Second>
-void Pair<T_First, T_Second>::set_first(const T_First& first)
+void Pair<T_First, T_Second>::set_first(const T_First& first) noexcept(std::is_nothrow_copy_assignable_v<T_First>)
 {
 	assign_(first_.var, first);
 }
 
 template<typename T_First, typename T_Second>
-void Pair<T_First, T_Second>::set_second(const T_Second& second)
+void Pair<T_First, T_Second>::set_second(const T_Second& second) noexcept(std::is_nothrow_copy_assignable_v<T_Second>)
 {
 	assign_(second_.var, second);
 }
 
 template<typename T_First, typename T_Second>
-void Pair<T_First, T_Second>::set_first(T_First&& first)
+void Pair<T_First, T_Second>::set_first(T_First&& first) noexcept(std::is_nothrow_move_assignable_v<T_First>)
 {
 	first_.var = std::move(first);
 }
 
 template<typename T_First, typename T_Second>
-void Pair<T_First, T_Second>::set_second(T_Second&& second)
+void Pair<T_First, T_Second>::set_second(T_Second&& second) noexcept(std::is_nothrow_move_assignable_v<T_Second>)
 {
 	second_.var = std::move(second);
 }
 
 template<typename T_First, typename T_Second>
-Pair<T_First, T_Second>& Pair<T_First, T_Second>::operator=(const Pair<T_First, T_Second>& pair)
+Pair<T_First, T_Second>& Pair<T_First, T_Second>::operator=(const Pair<T_First, T_Second>& pair) noexcept(
+	std::is_nothrow_copy_assignable_v<T_First> && std::is_nothrow_copy_assignable_v<T_Second>)
 {
 	assign_(first_.var, pair.first_.var);
 	assign_(second_.var, pair.second_.var);
@@ -612,7 +629,8 @@ Pair<T_First, T_Second>& Pair<T_First, T_Second>::operator=(const Pair<T_First, 
 }
 
 template<typename T_First, typename T_Second>
-Pair<T_First, T_Second>& Pair<T_First, T_Second>::operator=(Pair<T_First, T_Second>&& pair)
+Pair<T_First, T_Second>& Pair<T_First, T_Second>::operator=(Pair<T_First, T_Second>&& pair) noexcept(
+	std::is_nothrow_move_assignable_v<T_First> && std::is_nothrow_move_assignable_v<T_Second>)
 {
 	first_.var = std::move(pair.first_.var);
 	second_.var = std::move(pair.second_.var);
@@ -620,13 +638,15 @@ Pair<T_First, T_Second>& Pair<T_First, T_Second>::operator=(Pair<T_First, T_Seco
 }
 
 template<typename T_First, typename T_Second>
-bool Pair<T_First, T_Second>::operator==(const Pair<T_First, T_Second>& pair) const
+bool Pair<T_First, T_Second>::operator==(const Pair<T_First, T_Second>& pair) const noexcept(
+	noexcept(std::declval<T_First>() == std::declval<T_First>()) && noexcept(std::declval<T_Second>() == std::declval<T_Second>()))
 {
 	return first_.var == pair.first_.var && second_.var == pair.second_.var;
 }
 
 template<typename T_First, typename T_Second>
-bool Pair<T_First, T_Second>::operator!=(const Pair<T_First, T_Second>& pair) const
+bool Pair<T_First, T_Second>::operator!=(const Pair<T_First, T_Second>& pair) const noexcept(
+	noexcept(std::declval<T_First>() == std::declval<T_First>()) && noexcept(std::declval<T_Second>() == std::declval<T_Second>()))
 {
 	return !(*this == pair);
 }

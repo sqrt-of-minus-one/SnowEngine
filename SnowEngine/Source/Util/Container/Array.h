@@ -86,7 +86,7 @@ public:
 	 *	
 	 *	Создаёт пустой массив.
 	 */
-	Array() noexcept;
+	Array();
 
 	/**
 	 *	\~english
@@ -106,7 +106,7 @@ public:
 	 *	перемещения.
 	 *	\param array Массив, который будет скопирован.
 	 */
-	Array(const Array<T>& array) noexcept;
+	Array(const Array<T>& array);
 
 	/**
 	 *	\~english
@@ -121,7 +121,7 @@ public:
 	 *	Перемещает элементы в новый массив из переданного.
 	 *	\param array Массив, чьи элементы будут перемещены.
 	 */
-	Array(Array<T>&& array) noexcept;
+	Array(Array<T>&& array) ;
 
 	/**
 	 *	\~english
@@ -153,7 +153,7 @@ public:
 	 *	
 	 *	Деструктор используется для аннулирования всех итераторов.
 	 */
-	virtual ~Array() noexcept;
+	virtual ~Array();
 
 			/* METHODS FROM Object */
 
@@ -172,7 +172,7 @@ public:
 	 *	в строку используется `util::to_string`.
 	 *	\return Итоговая строка в формате `{ x, x, ..., x }`. `{ }`, если массив пуст.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -235,7 +235,7 @@ public:
 	 *
 	 *	Удаляет все элементы массива и устанавливает его итераторы в конец.
 	 */
-	virtual void clear() noexcept override;
+	virtual void clear() override;
 	
 	/**
 	 *	\~english
@@ -263,7 +263,7 @@ public:
 	 *	\return `true`, если размер был успешно изменён, иначе `false` (например, если новый размер
 	 *	отрицательный).
 	 */
-	bool resize(int new_size) noexcept;
+	bool resize(int new_size);
 
 	/**
 	 *	\~english
@@ -762,7 +762,7 @@ public:
 	 *	итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Итератор на первый элемент массива.
 	 */
-	ArrayIterator<T> begin() noexcept;
+	ArrayIterator<T> begin();
 
 	/**
 	 *	\~english
@@ -779,7 +779,7 @@ public:
 	 *	созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Итератор на последний элемент массива.
 	 */
-	ArrayIterator<T> last() noexcept;
+	ArrayIterator<T> last();
 
 	/**
 	 *	\~english
@@ -796,7 +796,7 @@ public:
 	 *	итератор указывает в конец: `is_end` истинно).
 	 *	\return Итератор на конец.
 	 */
-	ArrayIterator<T> end() noexcept;
+	ArrayIterator<T> end();
 
 	/**
 	 *	\~english
@@ -832,7 +832,7 @@ public:
 	 *	пуст, созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Итератор на первый элемент массива.
 	 */
-	ConstArrayIterator<T> begin() const noexcept;
+	ConstArrayIterator<T> begin() const;
 
 	/**
 	 *	\~english
@@ -849,7 +849,7 @@ public:
 	 *	пуст, созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Константный итератор на последний элемент массива.
 	 */
-	ConstArrayIterator<T> last() const noexcept;
+	ConstArrayIterator<T> last() const;
 
 	/**
 	 *	\~english
@@ -866,7 +866,7 @@ public:
 	 *	массива (этот итератор указывает в конец: `is_end` истинно).
 	 *	\return Константный итератор на конец.
 	 */
-	ConstArrayIterator<T> end() const noexcept;
+	ConstArrayIterator<T> end() const;
 
 	/**
 	 *	\~english
@@ -904,7 +904,7 @@ public:
 	 *	\param iterator Итератор, который будет сконвертирован.
 	 *	\return Полученный константный итератор.
 	 */
-	static ConstArrayIterator<T> iterator_to_const(const ArrayIterator<T>& iterator) noexcept;
+	static ConstArrayIterator<T> iterator_to_const(const ArrayIterator<T>& iterator);
 
 			/* OPERATORS */
 
@@ -964,7 +964,7 @@ public:
 	 *	\param array Массив для сравнения.
 	 *	\return `true`, если два массива равны, иначе `false`.
 	 */
-	bool operator==(const Array<T>& array) const;
+	bool operator==(const Array<T>& array) const noexcept(noexcept(std::declval<T>() == std::declval<T>()));
 
 	/**
 	 *	\~english
@@ -981,7 +981,7 @@ public:
 	 *	\param array Массив для сравнения.
 	 *	\return `true`, если два массива не равны, иначе `false`.
 	 */
-	bool operator!=(const Array<T>& array) const;
+	bool operator!=(const Array<T>& array) const noexcept(noexcept(std::declval<T>() == std::declval<T>()));
 
 	/**
 	 *	\~english
@@ -1032,11 +1032,11 @@ private:
 
 	mutable std::list<ArrayIterator<T>*> iterators_;
 	mutable std::list<ConstArrayIterator<T>*> const_iterators_;
-	void register_iterator_(ArrayIterator<T>* iterator) noexcept;
-	void unregister_iterator_(ArrayIterator<T>* iterator) noexcept;
-	void register_iterator_(ConstArrayIterator<T>* iterator) const noexcept;
-	void unregister_iterator_(ConstArrayIterator<T>* iterator) const noexcept;
-	void clear_iterators_() const noexcept;
+	void register_iterator_(ArrayIterator<T>* iterator);
+	void unregister_iterator_(ArrayIterator<T>* iterator);
+	void register_iterator_(ConstArrayIterator<T>* iterator) const;
+	void unregister_iterator_(ConstArrayIterator<T>* iterator) const;
+	void clear_iterators_() const;
 
 	static const int DEFAULT_REAL_SIZE_;
 };
@@ -1051,14 +1051,14 @@ private:
 		/* Array: public */
 
 template<typename T>
-Array<T>::Array() noexcept :
+Array<T>::Array() :
 	real_size_(DEFAULT_REAL_SIZE_),
 	size_(0),
 	array_(new T[real_size_])
 {}
 
 template<typename T>
-Array<T>::Array(const Array<T>& array) noexcept :
+Array<T>::Array(const Array<T>& array) :
 	real_size_(array.real_size_),
 	size_(array.size_),
 	array_(new T[real_size_])
@@ -1070,7 +1070,7 @@ Array<T>::Array(const Array<T>& array) noexcept :
 }
 
 template<typename T>
-Array<T>::Array(Array<T>&& array) noexcept :
+Array<T>::Array(Array<T>&& array) :
 	real_size_(array.real_size_),
 	size_(array.size_),
 	array_(std::move(array.array_))
@@ -1086,13 +1086,13 @@ Array<T>::Array(int size) :
 {}
 
 template<typename T>
-Array<T>::~Array() noexcept
+Array<T>::~Array()
 {
 	clear_iterators_();
 }
 
 template<typename T>
-String Array<T>::to_string() const noexcept
+String Array<T>::to_string() const
 {
 	if (is_empty())
 	{
@@ -1137,7 +1137,7 @@ bool Array<T>::is_empty() const noexcept
 }
 
 template<typename T>
-void Array<T>::clear() noexcept
+void Array<T>::clear()
 {
 	real_size_ = DEFAULT_REAL_SIZE_;
 	size_ = 0;
@@ -1150,7 +1150,7 @@ void Array<T>::clear() noexcept
 }
 
 template<typename T>
-bool Array<T>::resize(int new_size) noexcept
+bool Array<T>::resize(int new_size)
 {
 	if (new_size > 0)
 	{
@@ -1527,19 +1527,19 @@ int Array<T>::count(const T& element) const
 }
 
 template<typename T>
-ArrayIterator<T> Array<T>::begin() noexcept
+ArrayIterator<T> Array<T>::begin()
 {
 	return ArrayIterator<T>(*this, 0);
 }
 
 template<typename T>
-ArrayIterator<T> Array<T>::last() noexcept
+ArrayIterator<T> Array<T>::last()
 {
 	return ArrayIterator<T>(*this, size_ - 1);
 }
 
 template<typename T>
-ArrayIterator<T> Array<T>::end() noexcept
+ArrayIterator<T> Array<T>::end()
 {
 	return ArrayIterator<T>(*this, size_);
 }
@@ -1558,19 +1558,19 @@ ArrayIterator<T> Array<T>::create_iterator(int index)
 }
 
 template<typename T>
-ConstArrayIterator<T> Array<T>::begin() const noexcept
+ConstArrayIterator<T> Array<T>::begin() const
 {
 	return ConstArrayIterator<T>(*this, 0);
 }
 
 template<typename T>
-ConstArrayIterator<T> Array<T>::last() const noexcept
+ConstArrayIterator<T> Array<T>::last() const
 {
 	return ConstArrayIterator<T>(*this, size_ - 1);
 }
 
 template<typename T>
-ConstArrayIterator<T> Array<T>::end() const noexcept
+ConstArrayIterator<T> Array<T>::end() const
 {
 	return ConstArrayIterator<T>(*this, size_);
 }
@@ -1589,7 +1589,7 @@ ConstArrayIterator<T> Array<T>::create_iterator(int index) const
 }
 
 template<typename T>
-ConstArrayIterator<T> Array<T>::iterator_to_const(const ArrayIterator<T>& iterator) noexcept
+ConstArrayIterator<T> Array<T>::iterator_to_const(const ArrayIterator<T>& iterator)
 {
 	return ConstArrayIterator<T>(iterator.container_, iterator.index_, iterator.is_valid_);
 }
@@ -1619,7 +1619,7 @@ Array<T>& Array<T>::operator=(Array<T>&& array)
 }
 
 template<typename T>
-bool Array<T>::operator==(const Array<T>& array) const
+bool Array<T>::operator==(const Array<T>& array) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	if (size_ == array.size_)
 	{
@@ -1639,7 +1639,7 @@ bool Array<T>::operator==(const Array<T>& array) const
 }
 
 template<typename T>
-bool Array<T>::operator!=(const Array<T>& array) const
+bool Array<T>::operator!=(const Array<T>& array) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	return !(*this == array);
 }
@@ -1708,13 +1708,13 @@ void Array<T>::check_real_size_to_add_(int required_size)
 }
 
 template<typename T>
-void Array<T>::register_iterator_(ArrayIterator<T>* iterator) noexcept
+void Array<T>::register_iterator_(ArrayIterator<T>* iterator)
 {
 	iterators_.push_back(iterator);
 }
 
 template<typename T>
-void Array<T>::unregister_iterator_(ArrayIterator<T>* iterator) noexcept
+void Array<T>::unregister_iterator_(ArrayIterator<T>* iterator)
 {
 	auto end = iterators_.end();
 	for (auto ptr = iterators_.begin(); ptr != end; ptr++)
@@ -1728,13 +1728,13 @@ void Array<T>::unregister_iterator_(ArrayIterator<T>* iterator) noexcept
 }
 
 template<typename T>
-void Array<T>::register_iterator_(ConstArrayIterator<T>* iterator) const noexcept
+void Array<T>::register_iterator_(ConstArrayIterator<T>* iterator) const
 {
 	const_iterators_.push_back(iterator);
 }
 
 template<typename T>
-void Array<T>::unregister_iterator_(ConstArrayIterator<T>* iterator) const noexcept
+void Array<T>::unregister_iterator_(ConstArrayIterator<T>* iterator) const
 {
 	auto end = const_iterators_.end();
 	for (auto ptr = const_iterators_.begin(); ptr != end; ptr++)
@@ -1748,7 +1748,7 @@ void Array<T>::unregister_iterator_(ConstArrayIterator<T>* iterator) const noexc
 }
 
 template<typename T>
-void Array<T>::clear_iterators_() const noexcept
+void Array<T>::clear_iterators_() const
 {
 	FOR_ITERATORS_(i,
 	{

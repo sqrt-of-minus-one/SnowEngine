@@ -67,7 +67,7 @@ public:
 	 *	
 	 *	Создаёт пустую двустороннюю очередь.
 	 */
-	Deque() noexcept;
+	Deque();
 
 	/**
 	 *	\~english
@@ -87,7 +87,7 @@ public:
 	 *	используйте семантику перемещения.
 	 *	\param deque Двусторонняя очередь, которая будет скопирован.
 	 */
-	Deque(const Deque<T>& deque) noexcept;
+	Deque(const Deque<T>& deque);
 
 	/**
 	 *	\~english
@@ -102,7 +102,7 @@ public:
 	 *	Перемещает элементы в новую двустороннюю очередь из переданной.
 	 *	\param deque Двусторонняя очередь, чьи элементы будут перемещены.
 	 */
-	Deque(Deque<T>&& deque) noexcept;
+	Deque(Deque<T>&& deque);
 	
 			/* METHODS FROM Object */
 
@@ -120,7 +120,7 @@ public:
 	 *	строку.
 	 *	\return Итоговая строка.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -183,7 +183,7 @@ public:
 	 *
 	 *	Удаляет все элементы двусторонней очереди.
 	 */
-	virtual void clear() noexcept override;
+	virtual void clear() override;
 	
 	/**
 	 *	\~english
@@ -389,7 +389,7 @@ public:
 	 *	\param element Искомый элемент.
 	 *	\return `true`, если двусторонняя очередь содержит переданный элемент, иначе `false`.
 	 */
-	virtual bool contains(const T& element) const override;
+	virtual bool contains(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>())) override;
 	
 	/**
 	 *	\~english
@@ -406,7 +406,7 @@ public:
 	 *	\param element Требуемый элемент.
 	 *	\return Количество совпадений.
 	 */
-	virtual int count(const T& element) const override;
+	virtual int count(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>())) override;
 	
 			/* OPERATORS */
 
@@ -493,22 +493,22 @@ private:
 		/* Deque: public */
 
 template<typename T>
-Deque<T>::Deque() noexcept :
+Deque<T>::Deque() :
 	list()
 {}
 
 template<typename T>
-Deque<T>::Deque(const Deque<T>& deque) noexcept :
+Deque<T>::Deque(const Deque<T>& deque) :
 	list(deque.list)
 {}
 
 template<typename T>
-Deque<T>::Deque(Deque<T>&& deque) noexcept :
+Deque<T>::Deque(Deque<T>&& deque) :
 	list(std::move(deque.list))
 {}
 
 template<typename T>
-String Deque<T>::to_string() const noexcept
+String Deque<T>::to_string() const
 {
 	return list.to_string();
 }
@@ -532,7 +532,7 @@ bool Deque<T>::is_empty() const noexcept
 }
 
 template<typename T>
-void Deque<T>::clear() noexcept
+void Deque<T>::clear()
 {
 	return list.clear();
 }
@@ -608,13 +608,13 @@ int Deque<T>::remove_all(const T& element)
 }
 
 template<typename T>
-bool Deque<T>::contains(const T& element) const
+bool Deque<T>::contains(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	return list.contains(element);
 }
 
 template<typename T>
-int Deque<T>::count(const T& element) const
+int Deque<T>::count(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	return list.count(element);
 }

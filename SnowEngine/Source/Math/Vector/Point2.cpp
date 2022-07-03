@@ -14,22 +14,22 @@ using namespace snow;
 
 		/* Point2: public */
 
-Point2::Point2() noexcept :
+Point2::Point2() :
 	x_(0),
 	y_(0)
 {}
 
-Point2::Point2(const Point2& point) noexcept :
+Point2::Point2(const Point2& point) :
 	x_(point.x_),
 	y_(point.y_)
 {}
 
-Point2::Point2(int x, int y) noexcept :
+Point2::Point2(int x, int y)  :
 	x_(x),
 	y_(y)
 {}
 
-String Point2::to_string() const noexcept
+String Point2::to_string() const
 {
 	return L"{"_s + util::to_string(x_) + L", "_s + util::to_string(y_) + L"}"_s;
 }
@@ -71,37 +71,37 @@ Point2& Point2::operator=(const Point2& point) noexcept
 	return *this;
 }
 	
-const Point2 Point2::operator+() const noexcept
+const Point2 Point2::operator+() const
 {
 	return *this;
 }
 
-const Point2 Point2::operator-() const noexcept
+const Point2 Point2::operator-() const
 {
 	return Point2(-x_, -y_);
 }
 	
-const Point2 Point2::operator+(const Point2& point) const noexcept
+const Point2 Point2::operator+(const Point2& point) const
 {
 	return Point2(x_ + point.x_, y_ + point.y_);
 }
 
-const Point2 Point2::operator-(const Point2& point) const noexcept
+const Point2 Point2::operator-(const Point2& point) const
 {
 	return Point2(x_ - point.x_, y_ - point.y_);
 }
 
-const Point2 Point2::operator*(int value) const noexcept
+const Point2 Point2::operator*(int value) const
 {
 	return Point2(x_ * value, y_ * value);
 }
 
-const Point2 snow::operator*(int value, const Point2& point) noexcept
+const Point2 snow::operator*(int value, const Point2& point)
 {
 	return point * value;
 }
 
-const Point2 Point2::operator*(const Point2& point) const noexcept
+const Point2 Point2::operator*(const Point2& point) const
 {
 	return Point2(x_ * point.x_, y_ * point.y_);
 }
@@ -196,7 +196,7 @@ bool Point2::operator!=(const Point2& point) const noexcept
 	return x_ != point.x_ || y_ != point.y_;
 }
 
-Point2::operator Vector2() const noexcept
+Point2::operator Vector2() const
 {
 	return Vector2(static_cast<float>(x_), static_cast<float>(y_));
 }

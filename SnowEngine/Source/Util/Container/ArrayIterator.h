@@ -75,7 +75,7 @@ public:
 	 *	Создаёт копию переданного итератора.
 	 *	\param iterator Итератор, который будет скопирован.
 	 */
-	BaseArrayIterator_(const BaseArrayIterator_<T_Container, T_Element>& iterator) noexcept;
+	BaseArrayIterator_(const BaseArrayIterator_<T_Container, T_Element>& iterator);
 
 	/**
 	 *	\~english
@@ -90,7 +90,7 @@ public:
 	 *	Создаёт новый итератор путём перемещения переданного.
 	 *	\param iterator Итератор, который будет перемещён.
 	 */
-	BaseArrayIterator_(BaseArrayIterator_<T_Container, T_Element>&& iterator) noexcept;
+	BaseArrayIterator_(BaseArrayIterator_<T_Container, T_Element>&& iterator);
 
 	/**
 	 *	\~english
@@ -103,7 +103,7 @@ public:
 	 *	
 	 *	Деструктор итератора массива.
 	 */
-	virtual ~BaseArrayIterator_() noexcept;
+	virtual ~BaseArrayIterator_();
 
 			/* METHODS FROM Object */
 
@@ -132,7 +132,7 @@ public:
 	 *	\endcode
 	 *	\return Полученная строка.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -167,7 +167,7 @@ public:
 	 *	Итератор может быть недействительным, если его контейнер был разрушен.
 	 *	\return `true`, если итератор действителен, иначе `false`.
 	*/
-	virtual bool is_valid() const noexcept override;
+	virtual bool is_valid() const noexcept(noexcept(std::declval<T_Container>().size())) override;
 
 	/**
 	 *	\~english
@@ -184,7 +184,7 @@ public:
 	 *	(т. е. после последнего элемента массива).
 	 *	\return `true`, если итератор указывает на действительный элемент, иначе `false`.
 	 */
-	virtual bool is_element_valid() const noexcept override;
+	virtual bool is_element_valid() const noexcept(noexcept(std::declval<T_Container>().size())) override;
 	
 	/**
 	 *	\~english
@@ -267,7 +267,7 @@ public:
 	 *	Проверяет, указывает ли итератор на последний элемент массива.
 	 *	\return `true`, если итератор указывает на последний элемент массива, иначе `false`.
 	 */
-	virtual bool is_last() const noexcept override;
+	virtual bool is_last() const noexcept(noexcept(std::declval<T_Container>().size())) override;
 
 	/**
 	 *	\~english
@@ -285,7 +285,7 @@ public:
 	 *	массива. В этом случае метод `is_element_valid` возвращает `false`.
 	 *	\return `true`, если итератор указывает после последнего элемента массива, иначе `false`.
 	 */
-	virtual bool is_end() const noexcept override;
+	virtual bool is_end() const noexcept(noexcept(std::declval<T_Container>().size())) override;
 
 	/**
 	 *	\~english
@@ -436,7 +436,7 @@ public:
 	 *	массива. Итераторы также равны, если они оба недействительны.
 	 *	\return `true`, если итераторы равны, иначе `false`.
 	 */
-	bool operator==(const BaseArrayIterator_<T_Container, T_Element>& iterator) const noexcept;
+	bool operator==(const BaseArrayIterator_<T_Container, T_Element>& iterator) const noexcept(noexcept(std::declval<T_Container>().size()));
 
 	/**
 	 *	\~english
@@ -453,7 +453,7 @@ public:
 	 *	массива. Итераторы также равны, если они оба недействительны.
 	 *	\return `true`, если итераторы не равны, иначе `false`.
 	 */
-	bool operator!=(const BaseArrayIterator_<T_Container, T_Element>& iterator) const noexcept;
+	bool operator!=(const BaseArrayIterator_<T_Container, T_Element>& iterator) const noexcept(noexcept(std::declval<T_Container>().size()));
 	
 	/**
 	 *	\~english
@@ -476,7 +476,7 @@ public:
 
 private:
 	// A new iterator can only be created by the container
-	BaseArrayIterator_(T_Container& array, int index, bool is_valid = true) noexcept;
+	BaseArrayIterator_(T_Container& array, int index, bool is_valid = true);
 
 	T_Container& container_;
 	int index_;
@@ -529,7 +529,7 @@ using ArrayIterator = BaseArrayIterator_<Array<T>, T>;
 		/* BaseArrayIterator_: public */
 
 template<typename T_Container, typename T_Element>
-BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(const BaseArrayIterator_<T_Container, T_Element>& iterator) noexcept :
+BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(const BaseArrayIterator_<T_Container, T_Element>& iterator) :
 	container_(iterator.container_),
 	index_(iterator.index_),
 	is_valid_(iterator.is_valid_)
@@ -541,7 +541,7 @@ BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(const BaseArrayIt
 }
 
 template<typename T_Container, typename T_Element>
-BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(BaseArrayIterator_<T_Container, T_Element>&& iterator) noexcept :
+BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(BaseArrayIterator_<T_Container, T_Element>&& iterator) :
 	container_(iterator.container_),
 	index_(iterator.index_),
 	is_valid_(iterator.is_valid_)
@@ -555,7 +555,7 @@ BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(BaseArrayIterator
 }
 
 template<typename T_Container, typename T_Element>
-BaseArrayIterator_<T_Container, T_Element>::~BaseArrayIterator_() noexcept
+BaseArrayIterator_<T_Container, T_Element>::~BaseArrayIterator_()
 {
 	if (is_valid_)
 	{
@@ -564,7 +564,7 @@ BaseArrayIterator_<T_Container, T_Element>::~BaseArrayIterator_() noexcept
 }
 
 template<typename T_Container, typename T_Element>
-String BaseArrayIterator_<T_Container, T_Element>::to_string() const noexcept
+String BaseArrayIterator_<T_Container, T_Element>::to_string() const
 {
 	return util::to_string(get());
 }
@@ -583,13 +583,13 @@ int BaseArrayIterator_<T_Container, T_Element>::hash_code() const noexcept
 }
 
 template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::is_valid() const noexcept
+bool BaseArrayIterator_<T_Container, T_Element>::is_valid() const noexcept(noexcept(std::declval<T_Container>().size()))
 {
 	return is_valid_ && index_ >= 0 && index_ <= container_.size();
 }
 
 template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::is_element_valid() const noexcept
+bool BaseArrayIterator_<T_Container, T_Element>::is_element_valid() const noexcept(noexcept(std::declval<T_Container>().size()))
 {
 	return is_valid_ && index_ >= 0 && index_ < container_.size();
 }
@@ -640,13 +640,13 @@ bool BaseArrayIterator_<T_Container, T_Element>::is_begin() const noexcept
 }
 
 template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::is_last() const noexcept
+bool BaseArrayIterator_<T_Container, T_Element>::is_last() const noexcept(noexcept(std::declval<T_Container>().size()))
 {
 	return is_valid_ && index_ == container_.size() - 1;
 }
 
 template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::is_end() const noexcept
+bool BaseArrayIterator_<T_Container, T_Element>::is_end() const noexcept(noexcept(std::declval<T_Container>().size()))
 {
 	return is_valid_ && index_ == container_.size();
 }
@@ -733,14 +733,16 @@ BaseArrayIterator_<T_Container, T_Element> BaseArrayIterator_<T_Container, T_Ele
 }
 
 template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::operator==(const BaseArrayIterator_<T_Container, T_Element>& iterator) const noexcept
+bool BaseArrayIterator_<T_Container, T_Element>::operator==(const BaseArrayIterator_<T_Container, T_Element>& iterator) const noexcept(
+	noexcept(std::declval<T_Container>().size()))
 {
 	return !is_valid() && !iterator.is_valid() ||
 		&container_ == &iterator.container_ && index_ == iterator.index_;
 }
 
 template<typename T_Container, typename T_Element>
-bool BaseArrayIterator_<T_Container, T_Element>::operator!=(const BaseArrayIterator_<T_Container, T_Element>& iterator) const noexcept
+bool BaseArrayIterator_<T_Container, T_Element>::operator!=(const BaseArrayIterator_<T_Container, T_Element>& iterator) const noexcept(
+	noexcept(std::declval<T_Container>().size()))
 {
 	return !(*this == iterator);
 }
@@ -754,7 +756,7 @@ T_Element* BaseArrayIterator_<T_Container, T_Element>::operator->() const
 		/* BaseArrayIterator_: private */
 
 template<typename T_Container, typename T_Element>
-BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(T_Container& array, int index, bool is_valid) noexcept :
+BaseArrayIterator_<T_Container, T_Element>::BaseArrayIterator_(T_Container& array, int index, bool is_valid) :
 	container_(array),
 	index_(index),
 	is_valid_(is_valid)

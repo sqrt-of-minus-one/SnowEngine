@@ -27,7 +27,7 @@ template<typename T>
 std::unique_ptr<T>& assign_(std::unique_ptr<T>& first, const std::unique_ptr<T>& second);
 
 template<typename T>
-T& assign_(T& first, const T& second);
+T& assign_(T& first, const T& second) noexcept(std::is_nothrow_copy_assignable_v<T>);
 
 /**
  *	\~english
@@ -65,7 +65,7 @@ public:
 	 *	Итератор может быть недействительным, если его контейнер был разрушен.
 	 *	\return `true`, если итератор действителен, иначе `false`.
 	*/
-	virtual bool is_valid() const noexcept = 0;
+	virtual bool is_valid() const = 0;
 
 	/**
 	 *	\~english
@@ -82,7 +82,7 @@ public:
 	 *	контейнера (т. е. после последнего элемента контейнера).
 	 *	\return `true`, если итератор указывает на действительный элемент, иначе `false`.
 	 */
-	virtual bool is_element_valid() const noexcept = 0;
+	virtual bool is_element_valid() const = 0;
 
 	/**
 	 *	\~english
@@ -134,7 +134,7 @@ public:
 	 *	Проверяет, указывает ли итератор на первый элемент контейнера.
 	 *	\return `true`, если итератор указывает на первый элемент контейнера, иначе `false`.
 	 */
-	virtual bool is_begin() const noexcept = 0;
+	virtual bool is_begin() const = 0;
 
 	/**
 	 *	\~english
@@ -150,7 +150,7 @@ public:
 	 *	Проверяет, указывает ли итератор на последний элемент контейнера.
 	 *	\return `true`, если итератор указывает на последний элемент контейнера, иначе `false`.
 	 */
-	virtual bool is_last() const noexcept = 0;
+	virtual bool is_last() const = 0;
 
 	/**
 	 *	\~english
@@ -169,7 +169,7 @@ public:
 	 *	\return `true`, если итератор указывает после последнего элемента контейнера, иначе
 	 *	`false`.
 	 */
-	virtual bool is_end() const noexcept = 0;
+	virtual bool is_end() const = 0;
 
 	/**
 	 *	\~english
@@ -311,7 +311,7 @@ public:
 	 *
 	 *	Удаляет все элементы контейнера.
 	 */
-	virtual void clear() noexcept = 0;
+	virtual void clear() = 0;
 
 	/**
 	 *	\~english
@@ -375,7 +375,7 @@ std::unique_ptr<T>& assign_(std::unique_ptr<T>& first, const std::unique_ptr<T>&
 }
 
 template<typename T>
-T& assign_(T& first, const T& second)
+T& assign_(T& first, const T& second) noexcept(std::is_nothrow_copy_assignable_v<T>)
 {
 	return first = second;
 }

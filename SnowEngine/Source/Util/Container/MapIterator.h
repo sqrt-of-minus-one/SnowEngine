@@ -74,7 +74,7 @@ public:
 	 *	Создаёт копию переданного итератора.
 	 *	\param iterator Итератор, который будет скопирован.
 	 */
-	BaseMapIterator_(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) noexcept;
+	BaseMapIterator_(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator);
 
 	/**
 	 *	\~english
@@ -89,7 +89,7 @@ public:
 	 *	Создаёт новый итератор путём перемещения переданного.
 	 *	\param iterator Итератор, который будет перемещён.
 	 */
-	BaseMapIterator_(BaseMapIterator_<T_Container, T_Key, T_Value>&& iterator) noexcept;
+	BaseMapIterator_(BaseMapIterator_<T_Container, T_Key, T_Value>&& iterator);
 
 	/**
 	 *	\~english
@@ -102,7 +102,7 @@ public:
 	 *
 	 *	Деструктор итератора словаря.
 	 */
-	virtual ~BaseMapIterator_() noexcept;
+	virtual ~BaseMapIterator_();
 
 			/* METHODS FROM Object */
 
@@ -131,7 +131,7 @@ public:
 	 *	\endcode
 	 *	\return Полученная строка.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -251,7 +251,7 @@ public:
 	 *	Проверяет, указывает ли итератор на первый элемент словаря.
 	 *	\return `true`, если итератор указывает на первый элемент словаря, иначе `false`.
 	 */
-	virtual bool is_begin() const noexcept override;
+	virtual bool is_begin() const override;
 
 	/**
 	 *	\~english
@@ -266,7 +266,7 @@ public:
 	 *	Проверяет, указывает ли итератор на последний элемент словаря.
 	 *	\return `true`, если итератор указывает на последний элемент словаря, иначе `false`.
 	 */
-	virtual bool is_last() const noexcept override;
+	virtual bool is_last() const override;
 
 	/**
 	 *	\~english
@@ -435,7 +435,8 @@ public:
 	 *	словаря. Итераторы также равны, если они оба недействительны.
 	 *	\return `true`, если итераторы равны, иначе `false`.
 	 */
-	bool operator==(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept;
+	bool operator==(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept(
+		noexcept(std::declval<T_Key> == std::declval<T_Key>()));
 
 	/**
 	 *	\~english
@@ -452,7 +453,8 @@ public:
 	 *	словаря. Итераторы также равны, если они оба недействительны.
 	 *	\return `true`, если итераторы не равны, иначе `false`.
 	 */
-	bool operator!=(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept;
+	bool operator!=(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept(
+		noexcept(std::declval<T_Key> == std::declval<T_Key>()));
 
 	/**
 	 *	\~english
@@ -475,7 +477,7 @@ public:
 
 protected:
 	// A new iterator can only be created by the container
-	BaseMapIterator_(T_Container& map, const T_Key& key, bool is_end, bool is_valid = true) noexcept;
+	BaseMapIterator_(T_Container& map, const T_Key& key, bool is_end, bool is_valid = true);
 
 	T_Container& container_;
 	T_Key key_;
@@ -533,7 +535,7 @@ using MapIterator = BaseMapIterator_<Map<T_Key, T_Value>, T_Key, T_Value>;
 		/* BaseMapIterator_: public */
 
 template<typename T_Container, typename T_Key, typename T_Value>
-BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) noexcept :
+BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) :
 	container_(iterator.container_),
 	key_(iterator.key_),
 	is_end_(iterator.is_end_),
@@ -546,7 +548,7 @@ BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(const BaseMapIte
 }
 
 template<typename T_Container, typename T_Key, typename T_Value>
-BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(BaseMapIterator_<T_Container, T_Key, T_Value>&& iterator) noexcept :
+BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(BaseMapIterator_<T_Container, T_Key, T_Value>&& iterator) :
 	container_(iterator.container_),
 	key_(iterator.key_),
 	is_end_(iterator.is_end_),
@@ -561,7 +563,7 @@ BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(BaseMapIterator_
 }
 
 template<typename T_Container, typename T_Key, typename T_Value>
-BaseMapIterator_<T_Container, T_Key, T_Value>::~BaseMapIterator_() noexcept
+BaseMapIterator_<T_Container, T_Key, T_Value>::~BaseMapIterator_()
 {
 	if (is_valid_)
 	{
@@ -570,7 +572,7 @@ BaseMapIterator_<T_Container, T_Key, T_Value>::~BaseMapIterator_() noexcept
 }
 
 template<typename T_Container, typename T_Key, typename T_Value>
-String BaseMapIterator_<T_Container, T_Key, T_Value>::to_string() const noexcept
+String BaseMapIterator_<T_Container, T_Key, T_Value>::to_string() const
 {
 	return util::to_string(get());
 }
@@ -640,13 +642,13 @@ const T_Key& BaseMapIterator_<T_Container, T_Key, T_Value>::get_key() const
 }
 
 template<typename T_Container, typename T_Key, typename T_Value>
-bool BaseMapIterator_<T_Container, T_Key, T_Value>::is_begin() const noexcept
+bool BaseMapIterator_<T_Container, T_Key, T_Value>::is_begin() const
 {
 	return is_valid_ && !is_end_ && container_.map_[container_.first_filled_].get_begin().get_first() == key_;
 }
 
 template<typename T_Container, typename T_Key, typename T_Value>
-bool BaseMapIterator_<T_Container, T_Key, T_Value>::is_last() const noexcept
+bool BaseMapIterator_<T_Container, T_Key, T_Value>::is_last() const
 {
 	return is_valid_ && !is_end_ && container_.map_[container_.last_filled_].get_last().get_first() == key_;
 }
@@ -778,7 +780,8 @@ BaseMapIterator_<T_Container, T_Key, T_Value> BaseMapIterator_<T_Container, T_Ke
 }
 
 template<typename T_Container, typename T_Key, typename T_Value>
-bool BaseMapIterator_<T_Container, T_Key, T_Value>::operator==(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept
+bool BaseMapIterator_<T_Container, T_Key, T_Value>::operator==(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept(
+	noexcept(std::declval<T_Key> == std::declval<T_Key>()))
 {
 	return !is_valid() && !iterator.is_valid() ||
 		&container_ == &iterator.container_ &&
@@ -786,7 +789,8 @@ bool BaseMapIterator_<T_Container, T_Key, T_Value>::operator==(const BaseMapIter
 }
 
 template<typename T_Container, typename T_Key, typename T_Value>
-bool BaseMapIterator_<T_Container, T_Key, T_Value>::operator!=(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept
+bool BaseMapIterator_<T_Container, T_Key, T_Value>::operator!=(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept(
+	noexcept(std::declval<T_Key> == std::declval<T_Key>()))
 {
 	return !(*this == iterator);
 }
@@ -800,7 +804,7 @@ T_Value* BaseMapIterator_<T_Container, T_Key, T_Value>::operator->() const
 		/* BaseMapIterator_: private */
 
 template<typename T_Container, typename T_Key, typename T_Value>
-BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(T_Container& map, const T_Key& key, bool is_end, bool is_valid) noexcept :
+BaseMapIterator_<T_Container, T_Key, T_Value>::BaseMapIterator_(T_Container& map, const T_Key& key, bool is_end, bool is_valid) :
 	container_(map),
 	key_(key),
 	is_end_(is_end),

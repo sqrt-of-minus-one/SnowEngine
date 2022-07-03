@@ -67,7 +67,7 @@ public:
 	 *	
 	 *	Создаёт пустую очередь.
 	 */
-	Queue() noexcept;
+	Queue();
 
 	/**
 	 *	\~english
@@ -87,7 +87,7 @@ public:
 	 *	перемещения.
 	 *	\param queue Очередь, которая будет скопирован.
 	 */
-	Queue(const Queue<T>& queue) noexcept;
+	Queue(const Queue<T>& queue);
 
 	/**
 	 *	\~english
@@ -102,7 +102,7 @@ public:
 	 *	Перемещает элементы в новую очередь из переданной.
 	 *	\param queue Очередь, чьи элементы будут перемещены.
 	 */
-	Queue(Queue<T>&& queue) noexcept;
+	Queue(Queue<T>&& queue);
 	
 			/* METHODS FROM Object */
 
@@ -120,7 +120,7 @@ public:
 	 *	строку.
 	 *	\return Итоговая строка.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -183,7 +183,7 @@ public:
 	 *
 	 *	Удаляет все элементы очереди.
 	 */
-	virtual void clear() noexcept override;
+	virtual void clear() override;
 
 	/**
 	 *	\~english
@@ -303,7 +303,7 @@ public:
 	 *	\param element Искомый элемент.
 	 *	\return `true`, если очередь содержит переданный элемент, иначе `false`.
 	 */
-	virtual bool contains(const T& element) const override;
+	virtual bool contains(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>())) override;
 
 	/**
 	 *	\~english
@@ -320,7 +320,7 @@ public:
 	 *	\param element Требуемый элемент.
 	 *	\return Количество совпадений.
 	 */
-	virtual int count(const T& element) const override;
+	virtual int count(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>())) override;
 	
 			/* OPERATORS */
 
@@ -407,22 +407,22 @@ private:
 		/* Queue: public */
 
 template<typename T>
-Queue<T>::Queue() noexcept :
+Queue<T>::Queue() :
 	list()
 {}
 
 template<typename T>
-Queue<T>::Queue(const Queue<T>& queue) noexcept :
+Queue<T>::Queue(const Queue<T>& queue) :
 	list(queue.list)
 {}
 
 template<typename T>
-Queue<T>::Queue(Queue<T>&& queue) noexcept :
+Queue<T>::Queue(Queue<T>&& queue) :
 	list(std::move(queue.list))
 {}
 
 template<typename T>
-String Queue<T>::to_string() const noexcept
+String Queue<T>::to_string() const
 {
 	return list.to_string();
 }
@@ -446,7 +446,7 @@ bool Queue<T>::is_empty() const noexcept
 }
 
 template<typename T>
-void Queue<T>::clear() noexcept
+void Queue<T>::clear()
 {
 	return list.clear();
 }
@@ -490,13 +490,13 @@ int Queue<T>::remove_all(const T& element)
 }
 
 template<typename T>
-bool Queue<T>::contains(const T& element) const
+bool Queue<T>::contains(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	return list.contains(element);
 }
 
 template<typename T>
-int Queue<T>::count(const T& element) const
+int Queue<T>::count(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	return list.count(element);
 }

@@ -110,7 +110,7 @@ public:
 	 *	Создаёт пустой словарь с внутренним размером по умолчанию (вы можете получить его,
 	 *	используя метод `internal_size`).
 	 */
-	Map() noexcept;
+	Map();
 
 	/**
 	 *	\~english
@@ -130,7 +130,7 @@ public:
 	 *	перемещения.
 	 *	\param map Словарь, который будет скопирован.
 	 */
-	Map(const Map<T_Key, T_Value>& map) noexcept;
+	Map(const Map<T_Key, T_Value>& map) ;
 
 	/**
 	 *	\~english
@@ -145,7 +145,7 @@ public:
 	 *	Перемещает элементы в новый словарь из переданного.
 	 *	\param map Словарь, чьи элементы будут перемещены.
 	 */
-	Map(Map<T_Key, T_Value>&& map) noexcept;
+	Map(Map<T_Key, T_Value>&& map);
 
 	/**
 	 *	\~english
@@ -175,7 +175,7 @@ public:
 	 *
 	 *	Деструктор используется для аннулирования всех итераторов.
 	 */
-	virtual ~Map() noexcept;
+	virtual ~Map();
 
 			/* METHODS FROM Object */
 
@@ -196,7 +196,7 @@ public:
 	 *	\return Итоговая строка в формате `{ [к: з], [к: з], ..., [к: з] }` (`к` — ключ, `з` —
 	 *	значение). `{ }`, если словарь пуст.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -277,7 +277,7 @@ public:
 	 *
 	 *	Удаляет все элементы словаря и устанавливает его итераторы в конец.
 	 */
-	virtual void clear() noexcept override;
+	virtual void clear() override;
 	
 	/**
 	 *	\~english
@@ -745,7 +745,7 @@ public:
 	 *	итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Итератор на первый элемент словаря.
 	 */
-	MapIterator<T_Key, T_Value> begin() noexcept;
+	MapIterator<T_Key, T_Value> begin();
 
 	/**
 	 *	\~english
@@ -762,7 +762,7 @@ public:
 	 *	созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Итератор на последний элемент словаря.
 	 */
-	MapIterator<T_Key, T_Value> last() noexcept;
+	MapIterator<T_Key, T_Value> last();
 
 	/**
 	 *	\~english
@@ -779,7 +779,7 @@ public:
 	 *	итератор указывает в конец: `is_end` истинно).
 	 *	\return Итератор на конец.
 	 */
-	MapIterator<T_Key, T_Value> end() noexcept;
+	MapIterator<T_Key, T_Value> end();
 
 	/**
 	 *	\~english
@@ -815,7 +815,7 @@ public:
 	 *	пуст, созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Константный итератор на первый элемент словаря.
 	 */
-	ConstMapIterator<T_Key, T_Value> begin() const noexcept;
+	ConstMapIterator<T_Key, T_Value> begin() const;
 
 	/**
 	 *	\~english
@@ -832,7 +832,7 @@ public:
 	 *	пуст, созданный итератор будет указывать на конец (`is_end` истинно).
 	 *	\return Константный итератор на последний элемент словаря.
 	 */
-	ConstMapIterator<T_Key, T_Value> last() const noexcept;
+	ConstMapIterator<T_Key, T_Value> last() const;
 
 	/**
 	 *	\~english
@@ -849,7 +849,7 @@ public:
 	 *	словаря (этот итератор указывает в конец: `is_end` истинно).
 	 *	\return Константный итератор на конец.
 	 */
-	ConstMapIterator<T_Key, T_Value> end() const noexcept;
+	ConstMapIterator<T_Key, T_Value> end() const;
 
 	/**
 	 *	\~english
@@ -887,7 +887,7 @@ public:
 	 *	\param iterator Итератор, который будет сконвертирован.
 	 *	\return Полученный константный итератор.
 	 */
-	static ConstMapIterator<T_Key, T_Value> iterator_to_const(const MapIterator<T_Key, T_Value>& iterator) noexcept;
+	static ConstMapIterator<T_Key, T_Value> iterator_to_const(const MapIterator<T_Key, T_Value>& iterator);
 
 			/* OPERATORS */
 
@@ -1014,11 +1014,11 @@ private:
 
 	mutable std::list<MapIterator<T_Key, T_Value>*> iterators_;
 	mutable std::list<ConstMapIterator<T_Key, T_Value>*> const_iterators_;
-	void register_iterator_(MapIterator<T_Key, T_Value>* iterator) noexcept;
-	void unregister_iterator_(MapIterator<T_Key, T_Value>* iterator) noexcept;
-	void register_iterator_(ConstMapIterator<T_Key, T_Value>* iterator) const noexcept;
-	void unregister_iterator_(ConstMapIterator<T_Key, T_Value>* iterator) const noexcept;
-	void clear_iterators_() const noexcept;
+	void register_iterator_(MapIterator<T_Key, T_Value>* iterator);
+	void unregister_iterator_(MapIterator<T_Key, T_Value>* iterator);
+	void register_iterator_(ConstMapIterator<T_Key, T_Value>* iterator) const;
+	void unregister_iterator_(ConstMapIterator<T_Key, T_Value>* iterator) const;
+	void clear_iterators_() const;
 
 	static const int DEFAULT_SIZE_;
 };
@@ -1033,7 +1033,7 @@ private:
 		/* Map: public */
 
 template<typename T_Key, typename T_Value>
-Map<T_Key, T_Value>::Map() noexcept :
+Map<T_Key, T_Value>::Map() :
 	map_(DEFAULT_SIZE_),
 	size_(0),
 	internal_size_(DEFAULT_SIZE_),
@@ -1042,7 +1042,7 @@ Map<T_Key, T_Value>::Map() noexcept :
 {}
 
 template<typename T_Key, typename T_Value>
-Map<T_Key, T_Value>::Map(const Map<T_Key, T_Value>& map) noexcept :
+Map<T_Key, T_Value>::Map(const Map<T_Key, T_Value>& map) :
 	map_(map.map_),
 	size_(map.size_),
 	internal_size_(map.internal_size_),
@@ -1051,7 +1051,7 @@ Map<T_Key, T_Value>::Map(const Map<T_Key, T_Value>& map) noexcept :
 {}
 
 template<typename T_Key, typename T_Value>
-Map<T_Key, T_Value>::Map(Map<T_Key, T_Value>&& map) noexcept :
+Map<T_Key, T_Value>::Map(Map<T_Key, T_Value>&& map) :
 	map_(std::move(map.map_)),
 	size_(map.size_),
 	internal_size_(map.internal_size_),
@@ -1069,13 +1069,13 @@ Map<T_Key, T_Value>::Map(int size) :
 {}
 
 template<typename T_Key, typename T_Value>
-Map<T_Key, T_Value>::~Map() noexcept
+Map<T_Key, T_Value>::~Map()
 {
 	clear_iterators_();
 }
 
 template<typename T_Key, typename T_Value>
-String Map<T_Key, T_Value>::to_string() const noexcept
+String Map<T_Key, T_Value>::to_string() const
 {
 	if (size_ <= 0)
 	{
@@ -1131,7 +1131,7 @@ bool Map<T_Key, T_Value>::is_empty() const noexcept
 }
 
 template<typename T_Key, typename T_Value>
-void Map<T_Key, T_Value>::clear() noexcept
+void Map<T_Key, T_Value>::clear()
 {
 	map_.clear();
 	map_.resize(internal_size_);
@@ -1148,7 +1148,7 @@ bool Map<T_Key, T_Value>::resize(int new_size)
 {
 	if (internal_size_ != new_size)
 	{
-		if (internal_size > 0)
+		if (internal_size_ > 0)
 		{
 			Array<Pair<T_Key, T_Value>> pairs(size_);
 			for (auto& i : map_)
@@ -1171,6 +1171,10 @@ bool Map<T_Key, T_Value>::resize(int new_size)
 		{
 			return false;
 		}
+	}
+	else
+	{
+		return true;
 	}
 }
 
@@ -1473,7 +1477,7 @@ Array<Pair<T_Key, T_Value>> Map<T_Key, T_Value>::get_pairs() const
 }
 
 template<typename T_Key, typename T_Value>
-MapIterator<T_Key, T_Value> Map<T_Key, T_Value>::begin() noexcept
+MapIterator<T_Key, T_Value> Map<T_Key, T_Value>::begin()
 {
 	if (size_ > 0)
 	{
@@ -1486,7 +1490,7 @@ MapIterator<T_Key, T_Value> Map<T_Key, T_Value>::begin() noexcept
 }
 
 template<typename T_Key, typename T_Value>
-MapIterator<T_Key, T_Value> Map<T_Key, T_Value>::last() noexcept
+MapIterator<T_Key, T_Value> Map<T_Key, T_Value>::last()
 {
 	if (size_ > 0)
 	{
@@ -1499,7 +1503,7 @@ MapIterator<T_Key, T_Value> Map<T_Key, T_Value>::last() noexcept
 }
 
 template<typename T_Key, typename T_Value>
-MapIterator<T_Key, T_Value> Map<T_Key, T_Value>::end() noexcept
+MapIterator<T_Key, T_Value> Map<T_Key, T_Value>::end()
 {
 	return MapIterator<T_Key, T_Value>(*this, T_Key(), true);
 }
@@ -1518,7 +1522,7 @@ MapIterator<T_Key, T_Value> Map<T_Key, T_Value>::create_iterator(const T_Key& ke
 }
 
 template<typename T_Key, typename T_Value>
-ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::begin() const noexcept
+ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::begin() const
 {
 	if (size_ > 0)
 	{
@@ -1531,7 +1535,7 @@ ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::begin() const noexcept
 }
 
 template<typename T_Key, typename T_Value>
-ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::last() const noexcept
+ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::last() const
 {
 	if (size_ > 0)
 	{
@@ -1544,7 +1548,7 @@ ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::last() const noexcept
 }
 
 template<typename T_Key, typename T_Value>
-ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::end() const noexcept
+ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::end() const
 {
 	return ConstMapIterator<T_Key, T_Value>(*this, T_Key(), true);
 }
@@ -1564,7 +1568,7 @@ ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::create_iterator(const T_Ke
 }
 
 template<typename T_Key, typename T_Value>
-ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::iterator_to_const(const MapIterator<T_Key, T_Value>& iterator) noexcept
+ConstMapIterator<T_Key, T_Value> Map<T_Key, T_Value>::iterator_to_const(const MapIterator<T_Key, T_Value>& iterator)
 {
 	return ConstMapIterator<T_Key, T_Value>(iterator.container_, iterator.key_, iterator.is_end_, iterator.is_valid_);
 }
@@ -1578,6 +1582,7 @@ Map<T_Key, T_Value>& Map<T_Key, T_Value>::operator=(const Map<T_Key, T_Value>& m
 	internal_size_ = map.internal_size_;
 	first_filled_ = map.first_filled_;
 	last_filled_ = map.last_filled_;
+	return *this;
 }
 
 template<typename T_Key, typename T_Value>
@@ -1589,6 +1594,7 @@ Map<T_Key, T_Value>& Map<T_Key, T_Value>::operator=(Map<T_Key, T_Value>&& map)
 	internal_size_ = map.internal_size_;
 	first_filled_ = map.first_filled_;
 	last_filled_ = map.last_filled_;
+	return *this;
 }
 
 template<typename T_Key, typename T_Value>
@@ -1645,13 +1651,13 @@ const T_Value& Map<T_Key, T_Value>::operator[](const T_Key& key) const
 		/* Map: private */
 
 template<typename T_Key, typename T_Value>
-void Map<T_Key, T_Value>::register_iterator_(MapIterator<T_Key, T_Value>* iterator) noexcept
+void Map<T_Key, T_Value>::register_iterator_(MapIterator<T_Key, T_Value>* iterator)
 {
 	iterators_.push_back(iterator);
 }
 
 template<typename T_Key, typename T_Value>
-void Map<T_Key, T_Value>::unregister_iterator_(MapIterator<T_Key, T_Value>* iterator) noexcept
+void Map<T_Key, T_Value>::unregister_iterator_(MapIterator<T_Key, T_Value>* iterator)
 {
 	auto end = iterators_.end();
 	for (auto ptr = iterators_.begin(); ptr != end; ptr++)
@@ -1665,13 +1671,13 @@ void Map<T_Key, T_Value>::unregister_iterator_(MapIterator<T_Key, T_Value>* iter
 }
 
 template<typename T_Key, typename T_Value>
-void Map<T_Key, T_Value>::register_iterator_(ConstMapIterator<T_Key, T_Value>* iterator) const noexcept
+void Map<T_Key, T_Value>::register_iterator_(ConstMapIterator<T_Key, T_Value>* iterator) const
 {
 	const_iterators_.push_back(iterator);
 }
 
 template<typename T_Key, typename T_Value>
-void Map<T_Key, T_Value>::unregister_iterator_(ConstMapIterator<T_Key, T_Value>* iterator) const noexcept
+void Map<T_Key, T_Value>::unregister_iterator_(ConstMapIterator<T_Key, T_Value>* iterator) const
 {
 	auto end = const_iterators_.end();
 	for (auto ptr = const_iterators_.begin(); ptr != end; ptr++)
@@ -1685,7 +1691,7 @@ void Map<T_Key, T_Value>::unregister_iterator_(ConstMapIterator<T_Key, T_Value>*
 }
 
 template<typename T_Key, typename T_Value>
-void Map<T_Key, T_Value>::clear_iterators_() const noexcept
+void Map<T_Key, T_Value>::clear_iterators_() const
 {
 	FOR_ITERATORS_(i,
 	{

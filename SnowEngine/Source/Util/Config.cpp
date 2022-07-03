@@ -48,13 +48,11 @@ inline String check_string_(const String& str)
 
 		/* Config: public */
 
-String Config::to_string() const noexcept
+String Config::to_string() const
 {
 	return
 		L"[default]"_s +
 		L"\nlog_path = " + check_string_(log_path) +
-		L"\nlang_path = " + check_string_(lang_path) +
-		L"\ndefault_lang = " + check_string_(default_lang) +
 		L"\n" +
 		L"\n[window]" +
 		L"\nresolution = " + util::to_string(resolution.get_x()) + L"x" + util::to_string(resolution.get_y()) +
@@ -62,7 +60,12 @@ String Config::to_string() const noexcept
 		L"\nresize = " + (resize ? L"true" : L"false") +
 		L"\ntitlebar = " + (titlebar ? L"true" : L"false") +
 		L"\ntitlebar_buttons = " + (titlebar_buttons ? L"true" : L"false") +
-		L"\ntitle = " + check_string_(title);
+		L"\ntitle = " + check_string_(title) +
+		L"\n" +
+		L"\n[localization]" +
+		L"\nlang_path = " + check_string_(lang_path) +
+		L"\ndefault_lang = " + check_string_(default_lang) +
+		L"\ndefault_table = " + check_string_(default_table);
 }
 
 int Config::hash_code() const noexcept
@@ -174,18 +177,6 @@ end_loop:;
 						}
 						log_path = value;
 					}
-					else if (field == L"lang_path")
-					{
-						while (value.back() == L'\\' || value.back() == L'/')
-						{
-							value.pop_back();
-						}
-						lang_path = value;
-					}
-					else if (field == L"default_lang")
-					{
-						default_lang = value;
-					}
 				}
 				else if (category == L"[window]")
 				{
@@ -230,6 +221,25 @@ end_loop:;
 						title = value;
 					}
 				}
+				else if (category == L"[localization")
+				{
+					if (field == L"lang_path")
+					{
+						while (value.back() == L'\\' || value.back() == L'/')
+						{
+							value.pop_back();
+						}
+						lang_path = value;
+					}
+					else if (field == L"default_lang")
+					{
+						default_lang = value;
+					}
+					else if (field == L"default_table")
+					{
+						default_table = value;
+					}
+				}
 			}
 		}
 	}
@@ -239,17 +249,19 @@ end_loop:;
 		/* Config: private */
 
 Config::Config() :
-		// Default
+		// default
 	log_path(L"Logs"_s),
-	lang_path(L"Localization"_s),
-	default_lang(L"en_UK"_s),
-		// Window
+		// window
 	resolution(800, 600),
 	fullscreen(false),
 	resize(true),
 	titlebar(true),
 	titlebar_buttons(true),
-	title(L"The Game (powered by SnowEngine)")
+	title(L"The Game (powered by SnowEngine)"),
+		// localization
+	lang_path(L"Localization"_s),
+	default_lang(L"en_UK"_s),
+	default_table(L"default"_s)
 {
 	if (!std::filesystem::exists(L"config.ini"))
 	{
@@ -260,14 +272,15 @@ Config::Config() :
 		load();
 	}
 
-	if (!std::filesystem::exists(lang_path.to_std_string()))
+	String default_lang_path = lang_path + L'\\' + default_lang;
+	if (!std::filesystem::exists(default_lang_path.to_std_string()))
 	{
-		std::filesystem::create_directories(lang_path.to_std_string());
+		std::filesystem::create_directories(default_lang_path.to_std_string());
 	}
-	if (!std::filesystem::exists((lang_path + L'\\' + default_lang + L".lang").to_std_string()))
+	if (!std::filesystem::exists((default_lang_path + L'\\' + default_table + L".lang").to_std_string()))
 	{
-		std::wofstream file((lang_path + L'\\' + default_lang + L".lang").to_std_string());
-		file << L"lang.name: English (United Kingdom)" << std::endl <<
+		std::wofstream file((default_lang_path + L'\\' + default_table + L".lang").to_std_string());
+		file << (default_lang == L"en_UK" ? L"lang.name: English (United Kingdom)" : L"lang.name: Unnamed language") << std::endl <<
 			L"lang.code: " << default_lang.to_std_string() << std::endl <<
 			L"lang.test: Hello World!" << std::endl;
 		file.close();

@@ -108,7 +108,7 @@ public:
 	 *	Возвращает строку, содержащую количество привязанных функций.
 	 *	\return `"Event, bound functions: <n>"`, где `<n>` — число привязанных функций.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -142,7 +142,7 @@ public:
 	 *	Позволяет получить количество привязанных функций.
 	 *	\return Количество функций, привязанных к событию.
 	 */
-	int size() const;
+	int size() const noexcept;
 
 	/**
 	 *	\~english
@@ -157,7 +157,7 @@ public:
 	 *	Проверяет, пусто ли событие.
 	 *	\return `true`, если к событию не привязана ни одна функция, иначе `false`.
 	 */
-	bool is_empty() const;
+	bool is_empty() const noexcept;
 
 	/**
 	 *	\~english
@@ -170,7 +170,7 @@ public:
 	 *
 	 *	Отсоединяет все функции, которые были присоединены к событию.
 	 */
-	void clear();
+	void clear() noexcept;
 
 	/**
 	 *	\~english
@@ -301,7 +301,7 @@ Event<T_Args...>::Event(Event<T_Args...>&& event) :
 {}
 
 template<typename... T_Args>
-String Event<T_Args...>::to_string() const noexcept
+String Event<T_Args...>::to_string() const
 {
 	return L"Event, bound functions: "_s + util::to_string(size());
 }
@@ -313,19 +313,19 @@ int Event<T_Args...>::hash_code() const noexcept
 }
 
 template<typename... T_Args>
-int Event<T_Args...>::size() const
+int Event<T_Args...>::size() const noexcept
 {
 	return functions_.size();
 }
 
 template<typename... T_Args>
-bool Event<T_Args...>::is_empty() const
+bool Event<T_Args...>::is_empty() const noexcept
 {
 	return functions_.is_empty();
 }
 
 template<typename... T_Args>
-void Event<T_Args...>::clear()
+void Event<T_Args...>::clear() noexcept
 {
 	functions_.clear();
 }

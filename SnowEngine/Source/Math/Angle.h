@@ -66,7 +66,7 @@ public:
 	 *
 	 *	Создаёт нулевой угол.
 	 */
-	Angle() noexcept;
+	Angle();
 
 	/**
 	 *	\~english
@@ -81,7 +81,7 @@ public:
 	 *	Копирует угол.
 	 *	\param angle Угол, который будет скопирован.
 	 */
-	Angle(const Angle& angle) noexcept;
+	Angle(const Angle& angle);
 
 	/**
 	 *	\~english
@@ -121,7 +121,7 @@ public:
 	 *	\endcode
 	 *	\param degrees Значение нового угла в градусах.
 	 */
-	Angle(float degrees) noexcept;
+	Angle(float degrees);
 
 			/* METHODS FROM Object */
 
@@ -138,7 +138,7 @@ public:
 	 *	Создаёт строку в формате `<x>_deg`, где `<x>` — величина угла в градусах.
 	 *	\return Строка, содержащая величину угла.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -302,7 +302,7 @@ public:
 	 *	\endcode
 	 *	\return Ссылка на себя.
 	 */
-	Angle& normalize_360() noexcept;
+	Angle& normalize_360();
 
 	/**
 	 *	\~english
@@ -358,7 +358,7 @@ public:
 	 *	\endcode
 	 *	\return Ссылка на себя.
 	 */
-	Angle& normalize_180() noexcept;
+	Angle& normalize_180();
 
 	/**
 	 *	\~english
@@ -413,7 +413,7 @@ public:
 	 *	\endcode
 	 *	\return Нормализованный угол.
 	 */
-	const Angle get_normalized_360() const noexcept;
+	const Angle get_normalized_360() const;
 
 	/**
 	 *	\~english
@@ -468,7 +468,7 @@ public:
 	 *	\endcode
 	 *	\return Нормализованный угол.
 	 */
-	const Angle get_normalized_180() const noexcept;
+	const Angle get_normalized_180() const;
 
 	/**
 	 *	\~english
@@ -483,7 +483,7 @@ public:
 	 *	Позволяет получить угол, значение которого равно модулю значения данного угла.
 	 *	\return Модуль угла.
 	 */
-	const Angle abs() const noexcept;
+	const Angle abs() const ;
 
 			/* OPERATORS */
 
@@ -529,7 +529,7 @@ public:
 	 *	информацией.
 	 *	\return Копия себя.
 	 */
-	const Angle operator+() const noexcept;
+	const Angle operator+() const;
 
 	/**
 	 *	\~english
@@ -552,7 +552,7 @@ public:
 	 *	\endcode
 	 *	\return Угол с противоположным знаком.
 	 */
-	const Angle operator-() const noexcept;
+	const Angle operator-() const;
 
 	/**
 	 *	\~english
@@ -569,7 +569,7 @@ public:
 	 *	\param angle Второе слагаемое.
 	 *	\return Сумма двух углов.
 	 */
-	const Angle operator+(const Angle& angle) const noexcept;
+	const Angle operator+(const Angle& angle) const;
 
 	/**
 	 *	\~english
@@ -586,7 +586,7 @@ public:
 	 *	\param angle Вычитаемое.
 	 *	\return Разность двух углов.
 	 */
-	const Angle operator-(const Angle& angle) const noexcept;
+	const Angle operator-(const Angle& angle) const;
 
 	/**
 	 *	\~english
@@ -603,7 +603,7 @@ public:
 	 *	\param value Множитель.
 	 *	\return Произведение угла и числа.
 	 */
-	const Angle operator*(float value) const noexcept;
+	const Angle operator*(float value) const;
 
 	/**
 	 *	\~english
@@ -622,7 +622,7 @@ public:
 	 *	\param angle Угол.
 	 *	\return Произведение числа и угла.
 	 */
-	friend const Angle operator*(float value, const Angle& angle) noexcept;
+	friend const Angle operator*(float value, const Angle& angle);
 
 	/**
 	 *	\~english
@@ -1055,7 +1055,7 @@ public:
 	 *	\param degrees Значение в градусах.
 	 *	\return Угол с указанным значением.
 	 */
-	friend Angle operator""_deg(long double degrees) noexcept;
+	friend Angle operator""_deg(long double degrees);
 
 	/**
 	 *	\~english
@@ -1088,7 +1088,7 @@ public:
 	 *	\param degrees Значение в градусах.
 	 *	\return Угол с указанным значением.
 	 */
-	friend Angle operator""_deg(unsigned long long degrees) noexcept;
+	friend Angle operator""_deg(unsigned long long degrees);
 
 	/**
 	 *	\~english
@@ -1121,7 +1121,7 @@ public:
 	 *	\param radians Значение в радианах.
 	 *	\return Угол с указанным значением.
 	 */
-	friend Angle operator""_rad(long double radians) noexcept;
+	friend Angle operator""_rad(long double radians);
 
 	/**
 	 *	\~english
@@ -1154,7 +1154,7 @@ public:
 	 *	\param radians Значение в радианах.
 	 *	\return Угол с указанным значением.
 	 */
-	friend Angle operator""_rad(unsigned long long radians) noexcept;
+	friend Angle operator""_rad(unsigned long long radians);
 
 	/**
 	 *	\~english
@@ -1187,7 +1187,7 @@ public:
 	 *	\param gradians Значение в градах.
 	 *	\return Угол с указанным значением.
 	 */
-	friend Angle operator""_grad(long double gradians) noexcept;
+	friend Angle operator""_grad(long double gradians);
 
 	/**
 	 *	\~english
@@ -1220,7 +1220,7 @@ public:
 	 *	\param gradians Значение в градах.
 	 *	\return Угол с указанным значением.
 	 */
-	friend Angle operator""_grad(unsigned long long gradians) noexcept;
+	friend Angle operator""_grad(unsigned long long gradians);
 
 			/* CONSTANTS */
 
@@ -1267,12 +1267,12 @@ private:
 	float value_deg_;
 };
 
-Angle operator""_deg(long double degrees) noexcept;
-Angle operator""_deg(unsigned long long degrees) noexcept;
-Angle operator""_rad(long double radians) noexcept;
-Angle operator""_rad(unsigned long long radians) noexcept;
-Angle operator""_grad(long double gradians) noexcept;
-Angle operator""_grad(unsigned long long gradians) noexcept;
+Angle operator""_deg(long double degrees);
+Angle operator""_deg(unsigned long long degrees);
+Angle operator""_rad(long double radians);
+Angle operator""_rad(unsigned long long radians);
+Angle operator""_grad(long double gradians);
+Angle operator""_grad(unsigned long long gradians);
 
 }
 

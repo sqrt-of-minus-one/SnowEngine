@@ -13,7 +13,7 @@
 
 #include "Config.h"
 #include "Lang/Lang.h"
-#include "Time/Time.h"
+#include "Time/TimerManager.h"
 
 using namespace snow;
 
@@ -37,6 +37,7 @@ bool Game::is_started() noexcept
 
 Config Game::config;
 Lang Game::lang;
+TimerManager Game::timer_manager;
 
 		/* Game: private */
 
@@ -45,6 +46,9 @@ void Game::loop_()
 	sf::RenderWindow window(sf::VideoMode(config.resolution.get_x(), config.resolution.get_y()), config.title.to_std_string(),
 		sf::Style::Titlebar * config.titlebar | sf::Style::Resize * config.resize |
 		sf::Style::Close * config.titlebar_buttons | sf::Style::Fullscreen * config.fullscreen);
+
+	auto f_time = std::chrono::steady_clock::now();
+	auto s_time = f_time;
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -55,6 +59,12 @@ void Game::loop_()
 				window.close();
 			}
 		}
+
+		f_time = std::move(s_time);
+		s_time = std::chrono::steady_clock::now();
+		float delta_sec = std::chrono::duration_cast<std::chrono::microseconds>(s_time - f_time).count() / 1'000'000.f;
+
+		timer_manager.tick_(delta_sec);
 
 		window.clear();
 

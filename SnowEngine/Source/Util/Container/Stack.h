@@ -75,7 +75,7 @@ public:
 	 *	
 	 *	Создаёт пустой стек.
 	 */
-	Stack() noexcept;
+	Stack();
 
 	/**
 	 *	\~english
@@ -95,7 +95,7 @@ public:
 	 *	перемещения.
 	 *	\param stack Стек, которая будет скопирован.
 	 */
-	Stack(const Stack<T>& stack) noexcept;
+	Stack(const Stack<T>& stack);
 
 	/**
 	 *	\~english
@@ -110,7 +110,7 @@ public:
 	 *	Перемещает элементы в новый стек из переданного.
 	 *	\param stack Стек, чьи элементы будут перемещены.
 	 */
-	Stack(Stack<T>&& stack) noexcept;
+	Stack(Stack<T>&& stack);
 	
 			/* METHODS FROM Object */
 
@@ -128,7 +128,7 @@ public:
 	 *	строку.
 	 *	\return Итоговая строка.
 	 */
-	virtual String to_string() const noexcept override;
+	virtual String to_string() const override;
 
 	/**
 	 *	\~english
@@ -191,7 +191,7 @@ public:
 	 *
 	 *	Удаляет все элементы стека.
 	 */
-	virtual void clear() noexcept override;
+	virtual void clear() override;
 
 	/**
 	 *	\~english
@@ -311,7 +311,7 @@ public:
 	 *	\param element Искомый элемент.
 	 *	\return `true`, если стек содержит переданный элемент, иначе `false`.
 	 */
-	virtual bool contains(const T& element) const override;
+	virtual bool contains(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>())) override;
 
 	/**
 	 *	\~english
@@ -328,7 +328,7 @@ public:
 	 *	\param element Требуемый элемент.
 	 *	\return Количество совпадений.
 	 */
-	virtual int count(const T& element) const override;
+	virtual int count(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>())) override;
 	
 			/* OPERATORS */
 
@@ -415,22 +415,22 @@ private:
 		/* Stack: public */
 
 template<typename T>
-Stack<T>::Stack() noexcept :
+Stack<T>::Stack() :
 	list()
 {}
 
 template<typename T>
-Stack<T>::Stack(const Stack<T>& stack) noexcept :
+Stack<T>::Stack(const Stack<T>& stack) :
 	list(stack.list)
 {}
 
 template<typename T>
-Stack<T>::Stack(Stack<T>&& stack) noexcept :
+Stack<T>::Stack(Stack<T>&& stack) :
 	list(std::move(stack.list))
 {}
 
 template<typename T>
-String Stack<T>::to_string() const noexcept
+String Stack<T>::to_string() const
 {
 	return list.to_string();
 }
@@ -454,7 +454,7 @@ bool Stack<T>::is_empty() const noexcept
 }
 
 template<typename T>
-void Stack<T>::clear() noexcept
+void Stack<T>::clear()
 {
 	return list.clear();
 }
@@ -498,13 +498,13 @@ int Stack<T>::remove_all(const T& element)
 }
 
 template<typename T>
-bool Stack<T>::contains(const T& element) const
+bool Stack<T>::contains(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	return list.contains(element);
 }
 
 template<typename T>
-int Stack<T>::count(const T& element) const
+int Stack<T>::count(const T& element) const noexcept(noexcept(std::declval<T>() == std::declval<T>()))
 {
 	return list.count(element);
 }
