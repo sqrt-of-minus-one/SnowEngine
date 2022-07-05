@@ -12,7 +12,7 @@ using namespace snow;
 
 String Timer::to_string() const
 {
-	return String::format(L"Timer (period: %fs; %fs left"_s, period_sec_, left_sec_) +
+	return String::format(L"Timer (period %fs; %fs left"_s, period_sec_, left_sec_) +
 		(is_paused_ ? L"; paused)" : L")");
 }
 
