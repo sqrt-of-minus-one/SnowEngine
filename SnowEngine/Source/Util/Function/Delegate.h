@@ -155,6 +155,22 @@ public:
 	 */
 	Delegate(const Delegate<T_Ret, T_Args...>& delegate);
 
+	/**
+	 *	\~english
+	 *	\brief Creates a delegate with the passed function
+	 *
+	 *	Creates a new delegate and binds the passed function to it. From now on, the `execute`
+	 *	method will call this function.
+	 *	\param func The reference to the function, `std::function` pointing to it or lambda-
+	 *	function.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт делегат с переданной функцией
+	 *
+	 *	Создаёт новый делегат и привязывает к нему переданную функцию. Отныне метод `execute` будет
+	 *	вызывать эту функцию.
+	 *	\param func Ссылка на функцию, указывающий на ней `std::function` или лямбда-функция.
+	 */
 	Delegate(const std::function<T_Ret(T_Args...)>& func);
 	
 			/* METHODS FROM Object */

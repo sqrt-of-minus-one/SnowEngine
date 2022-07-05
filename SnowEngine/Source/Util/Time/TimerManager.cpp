@@ -12,7 +12,7 @@ using namespace snow;
 
 String TimerManager::to_string() const
 {
-	return L"There are "_s + util::to_string(timers_.size()) + L" timers";
+	return L"There are "_s + util::to_string(timers_.size()) + L" timer(s)";
 }
 
 int TimerManager::hash_code() const noexcept
