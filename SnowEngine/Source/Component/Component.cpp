@@ -12,7 +12,7 @@
 
 using namespace snow;
 
-Component::Component(Actor& actor, std::weak_ptr<Component> parent, Vector2 position, Angle rotation) noexcept :
+Component::Component(Actor& actor, std::weak_ptr<Component> parent, Vector2 position, Angle rotation) :
 	number_(components_counter_++),
 	position_(position),
 	rotation_(rotation),
@@ -20,7 +20,7 @@ Component::Component(Actor& actor, std::weak_ptr<Component> parent, Vector2 posi
 	parent_(parent)
 {}
 
-String Component::to_string() const noexcept
+String Component::to_string() const
 {
 	return L"Component #"_s + util::to_string(number_);
 }
@@ -33,7 +33,7 @@ int Component::hash_code() const noexcept
 template<typename T_Component>
 std::shared_ptr<T_Component> Component::create_component(Vector2 position, Angle rotation)
 {
-	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_component method template is not Component");
+	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_component method template must be Component");
 
 	std::shared_ptr<T_Component> component = std::make_shared<T_Component>(actor_, this, position, rotation);
 	components_.add(component);

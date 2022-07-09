@@ -149,6 +149,9 @@
     <ClInclude Include="Source\Util\Time\TimerManager.h">
       <Filter>Source Files\Util\Time</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\Function\DelegateBinder.h">
+      <Filter>Source Files\Util\Function</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -216,6 +219,9 @@
     </ClCompile>
     <ClCompile Include="Source\Util\Time\TimerManager.cpp">
       <Filter>Source Files\Util\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Function\EventBinder.cpp">
+      <Filter>Source Files\Util\Function</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

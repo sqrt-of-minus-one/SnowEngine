@@ -43,6 +43,7 @@
     <ClInclude Include="Source\Util\Container\SortedArray.h" />
     <ClInclude Include="Source\Util\Container\Stack.h" />
     <ClInclude Include="Source\Util\Function\Delegate.h" />
+    <ClInclude Include="Source\Util\Function\DelegateBinder.h" />
     <ClInclude Include="Source\Util\Game.h" />
     <ClInclude Include="Source\Util\Lang\Lang.h" />
     <ClInclude Include="Source\Util\Lang\Text.h" />
@@ -67,6 +68,7 @@
     <ClCompile Include="Source\Object.cpp" />
     <ClCompile Include="Source\Util\Config.cpp" />
     <ClCompile Include="Source\Util\Function\Event.h" />
+    <ClCompile Include="Source\Util\Function\EventBinder.cpp" />
     <ClCompile Include="Source\Util\Game.cpp" />
     <ClCompile Include="Source\Util\Lang\Lang.cpp" />
     <ClCompile Include="Source\Util\Lang\Text.cpp" />

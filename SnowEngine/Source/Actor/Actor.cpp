@@ -13,14 +13,14 @@
 
 using namespace snow;
 
-Actor::Actor(Level& level, Vector2 position, Angle rotation) noexcept :
+Actor::Actor(Level& level, Vector2 position, Angle rotation) :
 	number_(actors_counter_++),
 	position_(position),
 	rotation_(rotation),
 	level_(level)
 {}
 
-String Actor::to_string() const noexcept
+String Actor::to_string() const
 {
 	return L"Actor #"_s + util::to_string(number_);
 }
@@ -33,7 +33,7 @@ int Actor::hash_code() const noexcept
 template<typename T_Component>
 std::shared_ptr<T_Component> Actor::create_root_component(Vector2 position, Angle rotation)
 {
-	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_root_component method template is not Component");
+	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_root_component method template must be Component");
 	if (root_component_ != nullptr)
 	{
 		return nullptr;

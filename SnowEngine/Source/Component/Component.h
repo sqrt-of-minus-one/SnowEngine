@@ -15,19 +15,24 @@
 namespace snow
 {
 
-class Actor;
-
 class Component : public Object
 {
-public:
-	Component(Actor& actor, std::weak_ptr<Component> parent, Vector2 position, Angle rotation) noexcept;
+friend class Actor;
 
-	virtual String to_string() const noexcept override;
+public:
+	Component(Actor& actor, std::weak_ptr<Component> parent, Vector2 position, Angle rotation);
+
+	virtual String to_string() const override;
 	virtual int hash_code() const noexcept override;
+
+	void destroy();
+	bool is_destroyed() const;
 
 protected:
 	template<typename T_Component>
 	std::shared_ptr<T_Component> create_component(Vector2 position, Angle rotation);
+
+	void tick(float delta_sec);
 
 private:
 	static int components_counter_;

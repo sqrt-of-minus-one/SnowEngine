@@ -560,7 +560,6 @@ void Delegate<T_Ret, T_Args...>::bind(T_Class& object, const std::function<T_Ret
 	is_method_ = true;
 }
 
-
 template<typename T_Ret, typename... T_Args>
 void Delegate<T_Ret, T_Args...>::unbind() noexcept
 {
