@@ -220,7 +220,7 @@
     <ClCompile Include="Source\Util\Time\TimerManager.cpp">
       <Filter>Source Files\Util\Time</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Util\Function\EventBinder.cpp">
+    <ClCompile Include="Source\Util\Function\EventBinder.h">
       <Filter>Source Files\Util\Function</Filter>
     </ClCompile>
   </ItemGroup>

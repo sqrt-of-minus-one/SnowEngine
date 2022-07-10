@@ -68,7 +68,7 @@
     <ClCompile Include="Source\Object.cpp" />
     <ClCompile Include="Source\Util\Config.cpp" />
     <ClCompile Include="Source\Util\Function\Event.h" />
-    <ClCompile Include="Source\Util\Function\EventBinder.cpp" />
+    <ClCompile Include="Source\Util\Function\EventBinder.h" />
     <ClCompile Include="Source\Util\Game.cpp" />
     <ClCompile Include="Source\Util\Lang\Lang.cpp" />
     <ClCompile Include="Source\Util\Lang\Text.cpp" />

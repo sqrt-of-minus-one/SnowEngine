@@ -307,11 +307,11 @@ int EventBinder<T_Args...>::bind(T_Class& object, const std::function<void(T_Cla
 }
 
 template<typename... T_Args>
-bool EventBinder<T_Args...>::unbind(int key) noexcept
+bool EventBinder<T_Args...>::unbind(int key)
 {
 	if (Object::is_valid(&event_))
 	{
-		return event_.unbind<T_Class>();
+		return event_.unbind(key);
 	}
 	else
 	{

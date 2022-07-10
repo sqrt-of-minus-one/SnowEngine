@@ -39,3 +39,11 @@ std::shared_ptr<T_Component> Component::create_component(Vector2 position, Angle
 	components_.add(component);
 	return component;
 }
+
+void Component::tick(float delta_sec)
+{
+	for (auto i : components_)
+	{
+		i->tick(delta_sec);
+	}
+}

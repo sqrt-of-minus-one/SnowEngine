@@ -10,6 +10,7 @@
 
 #include "../Math/Vector/Vector2.h"
 #include "../Math/Angle.h"
+#include "../Util/Function/EventBinder.h"
 
 namespace snow
 {
@@ -19,7 +20,7 @@ class Level;
 
 class Actor : public Object
 {
-friend class Level;
+	friend class Level;
 
 public:
 	Actor(Level& level, Vector2 position, Angle rotation);
@@ -30,9 +31,14 @@ public:
 	void destroy();
 	bool is_destroyed() const;
 
+	EventBinder<const Actor&> on_destroyed;
+
 protected:
 	template<typename T_Component>
 	std::shared_ptr<T_Component> create_root_component(Vector2 position, Angle rotation);
+
+	std::shared_ptr<Component> get_root_component();
+	std::shared_ptr<const Component> get_root_component() const;
 
 	virtual void tick(float delta_sec);
 
@@ -46,6 +52,8 @@ private:
 
 	std::shared_ptr<Component> root_component_;
 	Level& level_;
+
+	Event<const Actor&> on_destroyed_;
 };
 
 }

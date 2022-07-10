@@ -12,13 +12,16 @@
 #include "../Math/Vector/Vector2.h"
 #include "../Math/Angle.h"
 #include "../Actor/Actor.h"
+#include "../Util/Function/EventBinder.h"
+#include "../Util/Container/Pair.h"
 
 using namespace snow;
 
 		/* Level: public */
 
 Level::Level() :
-	number_(levels_counter_++)
+	number_(levels_counter_++),
+	actors_()
 {}
 
 String Level::to_string() const
@@ -39,29 +42,33 @@ std::shared_ptr<T_Actor> Level::spawn_actor(Vector2 position, Angle rotation)
 	static_assert(std::is_base_of<Actor, T_Actor>::value, L"An argument of spawn_actor method template must Actor");
 
 	std::shared_ptr<T_Actor> actor = std::make_shared<T_Actor>(*this, position, rotation);
-	actors_.add(actor);
+	int on_destroyed_id = actor->on_destroyed.bind<Level>(*this, &Level::remove_actor_);
+
+	actors_.add(Pair(on_destroyed_id, actor));
 	return actor;
 }
 
 void Level::tick(float delta_sec)
 {
-	bool inc_flag = false;
-	for (auto i = actors_.begin(); !i.is_end(); inc_flag || i.next())
-											 // i.next() if inc_flag is false
+	for (auto& i : actors_)
 	{
-		inc_flag = false;
-		if (i.get()->is_destroyed())
-		{
-			actors_.remove(i);
-			inc_flag = true; // The iterator is already pointing to the next element
-		}
-		else
-		{
-			i.get()->tick(delta_sec);
-		}
+		i.get_second()->tick(delta_sec);
 	}
 }
 
 		/* Level: private */
 
 int Level::levels_counter_ = 0;
+
+void Level::remove_actor_(const Actor& actor)
+{
+	for (auto i = actors_.begin(); !i.is_end(); i.next())
+	{
+		if (i->get_second().get() == &actor)
+		{
+			i->get_second()->on_destroyed.unbind(i->get_first());
+			actors_.remove(i);
+			break;
+		}
+	}
+}

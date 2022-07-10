@@ -17,16 +17,13 @@ namespace snow
 
 class Component : public Object
 {
-friend class Actor;
+	friend class Actor;
 
 public:
 	Component(Actor& actor, std::weak_ptr<Component> parent, Vector2 position, Angle rotation);
 
 	virtual String to_string() const override;
 	virtual int hash_code() const noexcept override;
-
-	void destroy();
-	bool is_destroyed() const;
 
 protected:
 	template<typename T_Component>

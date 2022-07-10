@@ -436,7 +436,7 @@ public:
 	 *	\return `true`, если итераторы равны, иначе `false`.
 	 */
 	bool operator==(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept(
-		noexcept(std::declval<T_Key> == std::declval<T_Key>()));
+		noexcept(std::declval<T_Key> == std::declval<T_Key>));
 
 	/**
 	 *	\~english
@@ -454,7 +454,7 @@ public:
 	 *	\return `true`, если итераторы не равны, иначе `false`.
 	 */
 	bool operator!=(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept(
-		noexcept(std::declval<T_Key> == std::declval<T_Key>()));
+		noexcept(std::declval<T_Key> == std::declval<T_Key>));
 
 	/**
 	 *	\~english
@@ -781,7 +781,7 @@ BaseMapIterator_<T_Container, T_Key, T_Value> BaseMapIterator_<T_Container, T_Ke
 
 template<typename T_Container, typename T_Key, typename T_Value>
 bool BaseMapIterator_<T_Container, T_Key, T_Value>::operator==(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept(
-	noexcept(std::declval<T_Key> == std::declval<T_Key>()))
+	noexcept(std::declval<T_Key> == std::declval<T_Key>))
 {
 	return !is_valid() && !iterator.is_valid() ||
 		&container_ == &iterator.container_ &&
@@ -790,7 +790,7 @@ bool BaseMapIterator_<T_Container, T_Key, T_Value>::operator==(const BaseMapIter
 
 template<typename T_Container, typename T_Key, typename T_Value>
 bool BaseMapIterator_<T_Container, T_Key, T_Value>::operator!=(const BaseMapIterator_<T_Container, T_Key, T_Value>& iterator) const noexcept(
-	noexcept(std::declval<T_Key> == std::declval<T_Key>()))
+	noexcept(std::declval<T_Key> == std::declval<T_Key>))
 {
 	return !(*this == iterator);
 }
