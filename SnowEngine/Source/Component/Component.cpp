@@ -36,7 +36,7 @@ std::shared_ptr<T_Component> Component::create_component(Vector2 position, Angle
 	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_component method template must be Component");
 
 	std::shared_ptr<T_Component> component = std::make_shared<T_Component>(actor_, this, position, rotation);
-	components_.add(component);
+	components_.insert(component);
 	return component;
 }
 

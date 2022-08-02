@@ -13,7 +13,8 @@
 #include "../Math/Angle.h"
 #include "../Actor/Actor.h"
 #include "../Util/Function/EventBinder.h"
-#include "../Util/Container/Pair.h"
+
+#include <utility>
 
 using namespace snow;
 
@@ -44,7 +45,7 @@ std::shared_ptr<T_Actor> Level::spawn_actor(Vector2 position, Angle rotation)
 	std::shared_ptr<T_Actor> actor = std::make_shared<T_Actor>(*this, position, rotation);
 	int on_destroyed_id = actor->on_destroyed.bind<Level>(*this, &Level::remove_actor_);
 
-	actors_.add(Pair(on_destroyed_id, actor));
+	actors_.insert(std::make_pair(on_destroyed_id, actor));
 	return actor;
 }
 
@@ -52,7 +53,7 @@ void Level::tick(float delta_sec)
 {
 	for (auto& i : actors_)
 	{
-		i.get_second()->tick(delta_sec);
+		i.second->tick(delta_sec);
 	}
 }
 
@@ -62,12 +63,12 @@ int Level::levels_counter_ = 0;
 
 void Level::remove_actor_(const Actor& actor)
 {
-	for (auto i = actors_.begin(); !i.is_end(); i.next())
+	for (auto i = actors_.begin(); i != actors_.end(); i++)
 	{
-		if (i->get_second().get() == &actor)
+		if (i->second.get() == &actor)
 		{
-			i->get_second()->on_destroyed.unbind(i->get_first());
-			actors_.remove(i);
+			i->second->on_destroyed.unbind(i->first);
+			actors_.erase(i);
 			break;
 		}
 	}

@@ -21,7 +21,7 @@
 
 #include <stdexcept>
 #include <memory>
-#include <set>
+#include <unordered_set>
 
 namespace snow
 {
@@ -122,7 +122,7 @@ public:
 	static bool is_valid(const Object* object);
 
 private:
-	/* lazy */ static std::set<const Object*>& existing_objects_();
+	/* lazy */ static std::unordered_set<const Object*>& existing_objects_();
 };
 
 }

@@ -21,6 +21,7 @@
 
 #include "../../Object.h"
 
+#include <vector>
 #include <string>
 
 namespace snow
@@ -769,7 +770,7 @@ public:
 	 *	вхождений разделителя.
 	 *	\return Массив, содержащий полученные части.
 	 */
-	Array<String> split(const String& separator, int parts = 0, bool case_sensivity = true) const;
+	std::vector<String> split(const String& separator, int parts = 0, bool case_sensivity = true) const;
 
 	/**
 	 *	\~english
@@ -1704,3 +1705,17 @@ String operator""_s(const wchar_t* string, std::size_t length);
 }
 
 using snow::operator""_s;
+
+namespace std
+{
+
+template<>
+struct hash<snow::String>
+{
+	size_t operator()(snow::String str) const noexcept
+	{
+		return static_cast<size_t>(str.hash_code());
+	}
+};
+
+}

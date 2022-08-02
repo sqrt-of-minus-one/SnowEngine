@@ -8,7 +8,7 @@
 
 #include "../Object.h"
 
-#include "../Util/Container/LinkedList.h"
+#include <list>
 
 namespace snow
 {
@@ -40,7 +40,7 @@ private:
 
 	void remove_actor_(const Actor& actor);
 
-	LinkedList<Pair<int, std::shared_ptr<Actor>>> actors_; // The first is ID of on_destroyed event of the actor
+	std::list<std::pair<int, std::shared_ptr<Actor>>> actors_; // The first is ID of on_destroyed event of the actor
 };
 
 }

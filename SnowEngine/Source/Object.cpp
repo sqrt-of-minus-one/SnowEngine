@@ -27,9 +27,8 @@ bool Object::is_valid(const Object* object)
 
 		/* Object: private */
 
-std::set<const Object*>& Object::existing_objects_()
+std::unordered_set<const Object*>& Object::existing_objects_()
 {
-	static std::set<const Object*> existing_objects;
-	int a = sizeof(existing_objects);
+	static std::unordered_set<const Object*> existing_objects;
 	return existing_objects;
 }

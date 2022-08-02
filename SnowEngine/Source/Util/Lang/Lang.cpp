@@ -19,6 +19,8 @@
 
 #include "../Game.h"
 #include "../Config.h"
+#include "../Util.h"
+#include "../../Math/Math.h"
 
 using namespace snow;
 
@@ -47,12 +49,16 @@ bool Lang::set_lang(const String& lang)
 		{
 			current_lang_ = lang;
 			int error_counter = 0;
-			Array<String> tables = strings_.get_keys();
+			std::vector<String> tables;
+			for (const auto& i : strings_)
+			{
+				tables.push_back(i.first);
+			}
 			for (String& i : tables)
 			{
 				if (i != Game::config.default_table)
 				{
-					strings_.remove(i);
+					strings_.erase(i);
 					if (!load_table_(i, current_lang_))
 					{
 						error_counter++;
@@ -78,7 +84,7 @@ bool Lang::set_lang(const String& lang)
 
 bool Lang::load_table(const String& table)
 {
-	if (!strings_.contains_key(table))
+	if (strings_.find(table) == strings_.end())
 	{
 		if (load_table_(table, current_lang_))
 		{
@@ -100,21 +106,21 @@ bool Lang::load_table(const String& table)
 
 bool Lang::unload_table(const String& table)
 {
-	return table != Game::config.default_table && strings_.remove(table);
+	return table != Game::config.default_table && strings_.erase(table);
 }
 
 bool Lang::is_table_loaded(const String& table) // Todo: noexcept?
 {
-	return strings_.contains_key(table);
+	return strings_.find(table) != strings_.end();
 }
 
 String Lang::get_string(const String& key)
 {
 	int sep_pos = key.find_first(L'.');
-	Pair<String, String> pair = split_to_table_key_(key);
+	std::pair<String, String> pair = split_to_table_key_(key);
 	try
 	{
-		std::unique_ptr<String>& string = strings_[pair.get_first()][pair.get_second()];
+		std::unique_ptr<String>& string = strings_[pair.first][pair.second];
 		return Object::is_valid(string.get()) ? *string : key;
 	}
 	catch (std::invalid_argument e)
@@ -125,8 +131,16 @@ String Lang::get_string(const String& key)
 
 bool Lang::is_valid(const String& key)
 {
-	Pair<String, String> pair = split_to_table_key_(key);
-	return strings_.contains_key(pair.get_first()) && strings_[pair.get_first()].contains_key(pair.get_second());
+	std::pair<String, String> pair = split_to_table_key_(key);
+	if (strings_.find(pair.first) != strings_.end())
+	{
+		const auto& table = strings_[pair.first];
+		return table.find(pair.second) != table.end();
+	}
+	else
+	{
+		return false;
+	}
 }
 
 		/* Lang: private */
@@ -153,13 +167,14 @@ bool Lang::load_table_(const String& table, const String& lang)
 			int pos = line_s.find_first(L':');
 			if (pos > 0)
 			{
-				Pair<String, std::unique_ptr<String>> pair(line_s.substring(0, pos), nullptr);
-				pair.set_second(std::make_unique<String>(line_s.substring(pos + 2, line_s.size())));
-				t.add(std::move(pair));
+				std::pair<String, std::unique_ptr<String>> pair(line_s.substring(0, pos), nullptr);
+				pair.second = std::make_unique<String>(line_s.substring(pos + 2, line_s.size()));
+				t.insert(std::move(pair));
 			}
 		}
 
-		strings_.add(table, std::move(t), true);
+		strings_.erase(table);
+		strings_.insert(std::make_pair(table, std::move(t)));
 		return true;
 	}
 	else
@@ -168,10 +183,10 @@ bool Lang::load_table_(const String& table, const String& lang)
 	}
 }
 
-Pair<String, String> Lang::split_to_table_key_(const String& key)
+std::pair<String, String> Lang::split_to_table_key_(const String& key)
 {
 	int sep_pos = key.find_first(L'.');
-	return Pair<String, String>(
+	return std::make_pair(
 		sep_pos <= 0 ? Game::config.default_table : key.substring(0, sep_pos),
 		key.substring(math::max(sep_pos + 1, 0), key.size()));
 }

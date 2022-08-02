@@ -8,9 +8,10 @@
 
 #include "../Object.h"
 
-#include "../Util/Container/LinkedList.h"
 #include "../Math/Vector/Vector2.h"
 #include "../Math/Angle.h"
+
+#include <list>
 
 namespace snow
 {
@@ -38,7 +39,7 @@ private:
 	Vector2 position_;
 	Angle rotation_;
 
-	LinkedList<std::shared_ptr<Component>> components_;
+	std::list<std::shared_ptr<Component>> components_;
 	std::weak_ptr<Component> parent_;
 	Actor& actor_;
 };

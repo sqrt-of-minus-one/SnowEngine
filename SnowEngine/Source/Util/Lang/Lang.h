@@ -28,7 +28,9 @@
  */
 
 #include "../Log/Log.h"
-#include "../Container/Map.h"
+
+#include <unordered_map>
+#include <utility>
 
 namespace snow
 {
@@ -220,15 +222,15 @@ public:
 	bool is_valid(const String& key);
 
 private:
-	using Table_ = Map<String, std::unique_ptr<String>>;
+	using Table_ = std::unordered_map<String, std::unique_ptr<String>>;
 
 	Lang();
 
 	bool load_table_(const String& table, const String& lang);
-	static Pair<String, String> split_to_table_key_(const String& key);
+	static std::pair<String, String> split_to_table_key_(const String& key);
 
 	String current_lang_;
-	Map<String, Table_> strings_;
+	std::unordered_map<String, Table_> strings_;
 	Log lang_log_;
 
 };

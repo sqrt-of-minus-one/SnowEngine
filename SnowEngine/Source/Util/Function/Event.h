@@ -22,7 +22,7 @@
 #include "Delegate.h"
 		// + Object
 
-#include "../Container/Map.h"
+#include <unordered_map>
 
 namespace snow
 {
@@ -273,7 +273,7 @@ public:
 	void operator()(T_Args... args) const;
 
 private:
-	Map<int, std::unique_ptr<Delegate<void, T_Args...>>> functions_;
+	std::unordered_map<int, std::unique_ptr<Delegate<void, T_Args...>>> functions_;
 	int counter_;
 };
 
@@ -309,7 +309,14 @@ String Event<T_Args...>::to_string() const
 template<typename... T_Args>
 int Event<T_Args...>::hash_code() const noexcept
 {
-	return functions_.hash_code();
+	int hash = 0;
+	int sign = 1;
+	for (const auto& i : functions_)
+	{
+		hash += sign * i.second->hash_code();
+		sign = -sign;
+	}
+	return sign;
 }
 
 template<typename... T_Args>
@@ -321,7 +328,7 @@ int Event<T_Args...>::size() const noexcept
 template<typename... T_Args>
 bool Event<T_Args...>::is_empty() const noexcept
 {
-	return functions_.is_empty();
+	return functions_.empty();
 }
 
 template<typename... T_Args>
@@ -335,7 +342,7 @@ int Event<T_Args...>::bind(const std::function<void(T_Args...)>& func)
 {
 	std::unique_ptr<Delegate<void, T_Args...>> delegate = std::make_unique<Delegate<void, T_Args...>>();
 	delegate->bind(func);
-	functions_.add(counter_, std::move(delegate));
+	functions_.insert(std::make_pair(counter_, std::move(delegate)));
 	return counter_++;
 }
 
@@ -345,14 +352,14 @@ int Event<T_Args...>::bind(T_Class& object, const std::function<void(T_Class&, T
 {
 	std::unique_ptr<Delegate<void, T_Args...>> delegate = std::make_unique<Delegate<void, T_Args...>>();
 	delegate->bind<T_Class>(object, func);
-	functions_.add(counter_, std::move(delegate));
+	functions_.insert(std::make_pair(counter_, std::move(delegate)));
 	return counter_++;
 }
 
 template<typename... T_Args>
 bool Event<T_Args...>::unbind(int key)
 {
-	return functions_.remove(key);
+	return static_cast<bool>(functions_.erase(key));
 }
 
 template<typename... T_Args>
@@ -360,7 +367,7 @@ void Event<T_Args...>::execute(T_Args... args) const
 {
 	for (auto& i : functions_)
 	{
-		i->execute(args...);
+		i.second->execute(args...);
 	}
 }
 

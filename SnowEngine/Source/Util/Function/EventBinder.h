@@ -236,7 +236,7 @@ public:
 	bool operator!=(const EventBinder<T_Args...>& binder);
 
 private:
-	Event<T_Args...> event_;
+	Event<T_Args...>& event_;
 };
 
 

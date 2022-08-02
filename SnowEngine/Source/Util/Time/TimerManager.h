@@ -21,8 +21,9 @@
 
 #include "../../Object.h"
 
-#include "../Container/LinkedList.h"
 #include "Timer.h"
+
+#include <list>
 
 namespace snow
 {
@@ -109,7 +110,7 @@ public:
 private:
 	TimerManager();
 
-	LinkedList<std::shared_ptr<Timer>> timers_;
+	std::list<std::shared_ptr<Timer>> timers_;
 
 	void tick_(float delta_sec);
 };

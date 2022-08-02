@@ -29,8 +29,8 @@ String TimeInterval::to_string() const
 		t = -t;
 	}
 
-	int ns = static_cast<int>(t % 1000000);
-	t /= 1000000;
+	int ns = static_cast<int>(t % 1'000'000);
+	t /= 1'000'000;
 
 	int ms = static_cast<int>(t % 1000);
 	t /= 1000;

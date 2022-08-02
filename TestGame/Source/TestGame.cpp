@@ -8,7 +8,6 @@
 #include "Source/Util/Function/Delegate.h"
 #include "Source/Util/Lang/Lang.h"
 
-#include "Source/Util/Container/Array.h"
 #include "Source/Util/Config.h"
 
 int main()
