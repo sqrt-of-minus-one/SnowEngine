@@ -19,10 +19,11 @@
  *	Этот файл содержит определение класса `Event`.
  */
 
-#include "Delegate.h"
-		// + Object
+#include "../../Object.h"
 
 #include <unordered_map>
+
+#include "Delegate.h"
 
 namespace snow
 {
@@ -345,7 +346,7 @@ int Event<T_Args...>::hash_code() const noexcept
 template<typename... T_Args>
 int Event<T_Args...>::size() const noexcept
 {
-	return functions_.size();
+	return static_cast<int>(functions_.size());
 }
 
 template<typename... T_Args>

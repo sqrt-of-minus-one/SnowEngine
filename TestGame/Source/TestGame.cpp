@@ -1,14 +1,12 @@
 #include <iostream>
 #include <conio.h>
 
-#include "Source/Util/Game.h"
-#include "Source/Util/Time/TimeInterval.h"
+#include "Source/Game/Game.h"
 #include "Source/Util/Time/TimerManager.h"
-#include "Source/Util/Types/String.h"
 #include "Source/Util/Function/Delegate.h"
-#include "Source/Util/Lang/Lang.h"
+#include "Source/Util/Types/String.h"
 
-#include "Source/Util/Config.h"
+#include "Source/Game/Config.h"
 
 int main()
 {

@@ -19,10 +19,11 @@
  *	Этот файл содержит определение класса `Delegate`.
  */
 
-#include "../Types/String.h"
-		// + Object
+#include "../../Object.h"
 
 #include <functional>
+
+#include "../Types/String.h"
 
 namespace snow
 {

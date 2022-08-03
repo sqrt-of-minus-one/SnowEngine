@@ -21,12 +21,15 @@
 
 #include "../../Object.h"
 
-#include "Timer.h"
-
 #include <list>
 
 namespace snow
 {
+
+class Timer;
+
+template<typename T_Ret, typename... T_Args>
+class Delegate;
 
 /**
  *	\~english

@@ -26,9 +26,10 @@
  *
  *	Этот файл содержит определение класса `Text` системы SnowFlake.
  */
+ 
+#include "../../Object.h"
 
 #include "../Types/String.h"
-		// + Object
 
 namespace snow
 {

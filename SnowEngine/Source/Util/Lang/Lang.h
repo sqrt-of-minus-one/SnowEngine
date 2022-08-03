@@ -30,7 +30,12 @@
 #include "../Log/Log.h"
 
 #include <unordered_map>
-#include <utility>
+
+namespace std
+{
+template<typename _Ty1, typename _Ty2>
+struct pair;
+}
 
 namespace snow
 {

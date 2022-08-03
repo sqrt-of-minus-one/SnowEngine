@@ -19,9 +19,9 @@
  *	Этот файл содержит определение класса `Config`.
  */
 
-#include "../Math/Vector/Point2.h"
-		// + Object
+#include "../Object.h"
 
+#include "../Math/Vector/Point2.h"
 #include "../Util/Types/String.h"
 
 namespace snow

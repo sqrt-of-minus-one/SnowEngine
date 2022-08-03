@@ -16,9 +16,6 @@ namespace snow
 class Transform;
 class Actor;
 
-template<typename T_First, typename T_Second>
-class Pair;
-
 class Level : public Object
 {
 public:
@@ -37,7 +34,7 @@ private:
 	static int levels_counter_;
 	int number_;
 
-	void remove_actor_(const Actor& actor);
+	void remove_actor_(Actor& actor);
 
 	std::list<std::shared_ptr<Actor>> actors_;
 };

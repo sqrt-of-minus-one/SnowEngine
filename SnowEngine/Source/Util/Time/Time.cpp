@@ -8,10 +8,10 @@
 
 #include "Time.h"
 
+#include <ctime>
+
 #include "TimeInterval.h"
 #include "../Types/String.h"
-
-#include <ctime>
 
 using namespace snow;
 

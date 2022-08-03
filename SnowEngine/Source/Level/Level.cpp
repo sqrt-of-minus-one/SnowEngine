@@ -6,11 +6,11 @@
 
 #include "Level.h"
 
+#include <utility>
+
 #include "../Util/Util.h"
 #include "../Actor/Actor.h"
 #include "../Util/Function/EventBinder.h"
-
-#include <utility>
 
 using namespace snow;
 
@@ -57,7 +57,7 @@ void Level::tick(float delta_sec)
 
 int Level::levels_counter_ = 0;
 
-void Level::remove_actor_(const Actor& actor)
+void Level::remove_actor_(Actor& actor)
 {
 	for (auto i = actors_.begin(); i != actors_.end(); i++)
 	{

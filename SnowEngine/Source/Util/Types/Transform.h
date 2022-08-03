@@ -42,3 +42,5 @@ private:
 	Vector2 scale_;
 
 };
+
+}

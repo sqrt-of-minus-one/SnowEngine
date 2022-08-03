@@ -7,6 +7,7 @@
 #include "TimerManager.h"
 
 #include "../Util.h"
+#include "Timer.h"
 
 using namespace snow;
 

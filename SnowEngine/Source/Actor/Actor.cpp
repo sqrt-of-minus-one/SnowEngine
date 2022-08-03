@@ -6,11 +6,14 @@
 
 #include "Actor.h"
 
+#include "../Level/Level.h"
 #include "../Util/Types/String.h"
 #include "../Util/Util.h"
 #include "../Component/Component.h"
 
 using namespace snow;
+
+		/* Actor: public */
 
 Actor::Actor(Level& level, const Transform& transform) :
 	number_(actors_counter_++),
@@ -18,7 +21,9 @@ Actor::Actor(Level& level, const Transform& transform) :
 	transform_(transform),
 	level_(level),
 	on_destroyed_(),
-	on_destroyed(on_destroyed_)
+	on_destroyed(on_destroyed_),
+	on_transformed_(),
+	on_transformed(on_transformed_)
 {}
 
 String Actor::to_string() const
@@ -29,6 +34,26 @@ String Actor::to_string() const
 int Actor::hash_code() const noexcept
 {
 	return number_;
+}
+
+const Vector2& Actor::get_position() const
+{
+	return transform_.get_position();
+}
+
+const Angle& Actor::get_rotation() const
+{
+	return transform_.get_rotation();
+}
+
+const Vector2& Actor::get_scale() const
+{
+	return transform_.get_scale();
+}
+
+const Transform& Actor::get_transform() const
+{
+	return transform_;
 }
 
 void Actor::destroy()
@@ -42,6 +67,8 @@ bool Actor::is_destroyed() const
 	return is_destroyed_;
 }
 
+		/* Actor: protected */
+
 template<typename T_Component>
 std::shared_ptr<T_Component> Actor::create_root_component(const Transform& transform)
 {
@@ -53,6 +80,55 @@ std::shared_ptr<T_Component> Actor::create_root_component(const Transform& trans
 
 	root_component_ = std::make_shared<T_Component>(*this, nullptr, transform);
 	return root_component_;
+}
+
+void Actor::set_position(const Vector2& position)
+{
+	Transform old = transform_;
+	transform_.set_position(position);
+	on_transformed_.execute(*this, old, transform_);
+}
+
+void Actor::set_rotation(const Angle& rotation)
+{
+	Transform old = transform_;
+	transform_.set_rotation(rotation);
+	on_transformed_.execute(*this, old, transform_);
+}
+
+void Actor::set_scale(const Vector2& scale)
+{
+	Transform old = transform_;
+	transform_.set_scale(scale);
+	on_transformed_.execute(*this, old, transform_);
+}
+
+void Actor::set_transform(const Transform& transform)
+{
+	Transform old = transform_;
+	transform_ = transform;
+	on_transformed_.execute(*this, old, transform_);
+}
+
+void Actor::move(const Vector2& delta)
+{
+	Transform old = transform_;
+	transform_.set_position(transform_.get_position() + delta);
+	on_transformed_.execute(*this, old, transform_);
+}
+
+void Actor::rotate(const Angle& delta)
+{
+	Transform old = transform_;
+	transform_.set_rotation(transform_.get_rotation() + delta);
+	on_transformed_.execute(*this, old, transform_);
+}
+
+void Actor::scale(const Vector2& factor)
+{
+	Transform old = transform_;
+	transform_.set_scale(transform_.get_scale() * factor);
+	on_transformed_.execute(*this, old, transform_);
 }
 
 std::shared_ptr<Component> Actor::get_root_component()

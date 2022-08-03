@@ -6,11 +6,11 @@
 
 #include "String.h"
 
-#include "../Util.h"
-
 #include <iostream>
 #include <cwctype>
 #include <cstdarg>
+
+#include "../Util.h"
 
 using namespace snow;
 
