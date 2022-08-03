@@ -14,7 +14,7 @@
 
 #include "Text.h"
 
-#include "../Game.h"
+#include "../../Game/Game.h"
 #include "../Lang/Lang.h"
 
 using namespace snow;

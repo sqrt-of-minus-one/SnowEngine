@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="Source\Actor\Actor.h" />
     <ClInclude Include="Source\Component\Component.h" />
+    <ClInclude Include="Source\Game\Config.h" />
+    <ClInclude Include="Source\Game\Game.h" />
     <ClInclude Include="Source\Level\Level.h" />
     <ClInclude Include="Source\Math\Angle.h" />
     <ClInclude Include="Source\Math\Math.h" />
@@ -29,22 +31,8 @@
     <ClInclude Include="Source\Math\Vector\Vector2.h" />
     <ClInclude Include="Source\Math\Vector\Vector3.h" />
     <ClInclude Include="Source\Object.h" />
-    <ClInclude Include="Source\Util\Config.h" />
-    <ClInclude Include="Source\Util\Container\Array.h" />
-    <ClInclude Include="Source\Util\Container\ArrayIterator.h" />
-    <ClInclude Include="Source\Util\Container\Container.h" />
-    <ClInclude Include="Source\Util\Container\Deque.h" />
-    <ClInclude Include="Source\Util\Container\LinkedList.h" />
-    <ClInclude Include="Source\Util\Container\LinkedListIterator.h" />
-    <ClInclude Include="Source\Util\Container\Map.h" />
-    <ClInclude Include="Source\Util\Container\MapIterator.h" />
-    <ClInclude Include="Source\Util\Container\Pair.h" />
-    <ClInclude Include="Source\Util\Container\Queue.h" />
-    <ClInclude Include="Source\Util\Container\SortedArray.h" />
-    <ClInclude Include="Source\Util\Container\Stack.h" />
     <ClInclude Include="Source\Util\Function\Delegate.h" />
     <ClInclude Include="Source\Util\Function\DelegateBinder.h" />
-    <ClInclude Include="Source\Util\Game.h" />
     <ClInclude Include="Source\Util\Lang\Lang.h" />
     <ClInclude Include="Source\Util\Lang\Text.h" />
     <ClInclude Include="Source\Util\Log\Log.h" />
@@ -53,11 +41,14 @@
     <ClInclude Include="Source\Util\Time\Timer.h" />
     <ClInclude Include="Source\Util\Time\TimerManager.h" />
     <ClInclude Include="Source\Util\Types\String.h" />
+    <ClInclude Include="Source\Util\Types\Transform.h" />
     <ClInclude Include="Source\Util\Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Actor\Actor.cpp" />
     <ClCompile Include="Source\Component\Component.cpp" />
+    <ClCompile Include="Source\Game\Config.cpp" />
+    <ClCompile Include="Source\Game\Game.cpp" />
     <ClCompile Include="Source\Level\Level.cpp" />
     <ClCompile Include="Source\Math\Angle.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
@@ -66,10 +57,8 @@
     <ClCompile Include="Source\Math\Vector\Vector2.cpp" />
     <ClCompile Include="Source\Math\Vector\Vector3.cpp" />
     <ClCompile Include="Source\Object.cpp" />
-    <ClCompile Include="Source\Util\Config.cpp" />
     <ClCompile Include="Source\Util\Function\Event.h" />
     <ClCompile Include="Source\Util\Function\EventBinder.h" />
-    <ClCompile Include="Source\Util\Game.cpp" />
     <ClCompile Include="Source\Util\Lang\Lang.cpp" />
     <ClCompile Include="Source\Util\Lang\Text.cpp" />
     <ClCompile Include="Source\Util\Log\Log.cpp" />
@@ -78,6 +67,7 @@
     <ClCompile Include="Source\Util\Time\Timer.cpp" />
     <ClCompile Include="Source\Util\Time\TimerManager.cpp" />
     <ClCompile Include="Source\Util\Types\String.cpp" />
+    <ClCompile Include="Source\Util\Types\Transform.cpp" />
     <ClCompile Include="Source\Util\Util.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

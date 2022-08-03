@@ -4,8 +4,6 @@
  //  File: Actor.cpp                   //
 ////////////////////////////////////////
 
-#pragma once
-
 #include "Actor.h"
 
 #include "../Util/Types/String.h"
@@ -14,11 +12,10 @@
 
 using namespace snow;
 
-Actor::Actor(Level& level, Vector2 position, Angle rotation) :
+Actor::Actor(Level& level, const Transform& transform) :
 	number_(actors_counter_++),
 	is_destroyed_(false),
-	position_(position),
-	rotation_(rotation),
+	transform_(transform),
 	level_(level),
 	on_destroyed_(),
 	on_destroyed(on_destroyed_)
@@ -46,7 +43,7 @@ bool Actor::is_destroyed() const
 }
 
 template<typename T_Component>
-std::shared_ptr<T_Component> Actor::create_root_component(Vector2 position, Angle rotation)
+std::shared_ptr<T_Component> Actor::create_root_component(const Transform& transform)
 {
 	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_root_component method template must be Component");
 	if (root_component_ != nullptr)
@@ -54,7 +51,7 @@ std::shared_ptr<T_Component> Actor::create_root_component(Vector2 position, Angl
 		return nullptr;
 	}
 
-	root_component_ = std::make_shared<T_Component>(*this, nullptr, position, rotation);
+	root_component_ = std::make_shared<T_Component>(*this, nullptr, transform);
 	return root_component_;
 }
 

@@ -17,8 +17,8 @@
 #include <filesystem>
 #include <fstream>
 
-#include "../Game.h"
-#include "../Config.h"
+#include "../../Game/Game.h"
+#include "../../Game/Config.h"
 #include "../Util.h"
 #include "../../Math/Math.h"
 

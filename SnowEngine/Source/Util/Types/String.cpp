@@ -53,7 +53,7 @@ String String::to_string() const
 
 int String::hash_code() const noexcept
 {
-	return std::hash<std::wstring>().operator()(string_);
+	return static_cast<int>(std::hash<std::wstring>().operator()(string_));
 }
 
 const std::wstring& String::to_std_string() const noexcept
@@ -1167,3 +1167,11 @@ String snow::operator""_s(const wchar_t* string, std::size_t length)
 {
 	return String(string);
 }
+
+		/* std::hash<String>: public */
+
+std::size_t std::hash<String>::operator()(String str) const noexcept
+{
+	return static_cast<size_t>(str.hash_code());
+}
+

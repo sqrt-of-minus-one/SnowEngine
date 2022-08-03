@@ -27,9 +27,6 @@
 namespace snow
 {
 
-template<typename T>
-class Array;
-
 /**
  *	\~english
  *	\brief The class of string
@@ -756,7 +753,7 @@ public:
 	 *	limited.
 	 *	\param case_sensivity Defines whether the method will be case sensitive while searching the
 	 *	separator.
-	 *	\return The array with parts of the string.
+	 *	\return The vector with parts of the string.
 	 *	
 	 *	\~russian
 	 *	\brief Делит строку
@@ -768,7 +765,7 @@ public:
 	 *	неположительное, максимальное число не ограничено.
 	 *	\param case_sensivity Определяет, будет ли учитываться регистр символов при поиске
 	 *	вхождений разделителя.
-	 *	\return Массив, содержащий полученные части.
+	 *	\return Вектор, содержащий полученные части.
 	 */
 	std::vector<String> split(const String& separator, int parts = 0, bool case_sensivity = true) const;
 
@@ -1712,10 +1709,7 @@ namespace std
 template<>
 struct hash<snow::String>
 {
-	size_t operator()(snow::String str) const noexcept
-	{
-		return static_cast<size_t>(str.hash_code());
-	}
+	size_t operator()(snow::String str) const noexcept;
 };
 
 }

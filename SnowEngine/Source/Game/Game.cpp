@@ -12,8 +12,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "Config.h"
-#include "Lang/Lang.h"
-#include "Time/TimerManager.h"
+#include "../Util/Lang/Lang.h"
+#include "../Util/Time/TimerManager.h"
 
 using namespace snow;
 

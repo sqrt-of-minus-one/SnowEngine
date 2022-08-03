@@ -22,7 +22,7 @@
 #include "../Math/Vector/Point2.h"
 		// + Object
 
-#include "Types/String.h"
+#include "../Util/Types/String.h"
 
 namespace snow
 {

@@ -15,9 +15,6 @@
     <Filter Include="Source Files\Util">
       <UniqueIdentifier>{35821e0d-afca-45c9-b472-36551fce5786}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Util\Container">
-      <UniqueIdentifier>{26f48234-c177-446f-bbb9-1e5e25961017}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Util\Types">
       <UniqueIdentifier>{828309da-bd61-4113-a5a7-2c35579de08a}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,9 @@
     <Filter Include="Source Files\Util\Lang">
       <UniqueIdentifier>{e8be045c-756b-49a0-84a2-90b57dd56fee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{9109d506-8130-43fd-852a-1333c9839eb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -56,53 +56,11 @@
     <ClInclude Include="Source\Object.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Util\Container\Container.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Util\Util.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Util\Container\Array.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\LinkedList.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\ArrayIterator.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\LinkedListIterator.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Map.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\MapIterator.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Pair.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\SortedArray.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Util\Types\String.h">
       <Filter>Source Files\Util\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Config.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Game.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Deque.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Queue.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Stack.h">
-      <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
     <ClInclude Include="Source\Math\Vector\Vector2.h">
       <Filter>Source Files\Math\Vector</Filter>
@@ -152,6 +110,15 @@
     <ClInclude Include="Source\Util\Function\DelegateBinder.h">
       <Filter>Source Files\Util\Function</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Game\Config.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Game.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Types\Transform.h">
+      <Filter>Source Files\Util\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -168,12 +135,6 @@
     </ClCompile>
     <ClCompile Include="Source\Util\Types\String.cpp">
       <Filter>Source Files\Util\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Util\Config.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Util\Game.cpp">
-      <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="Source\Math\Vector\Vector2.cpp">
       <Filter>Source Files\Math\Vector</Filter>
@@ -222,6 +183,15 @@
     </ClCompile>
     <ClCompile Include="Source\Util\Function\EventBinder.h">
       <Filter>Source Files\Util\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Config.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Types\Transform.cpp">
+      <Filter>Source Files\Util\Types</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

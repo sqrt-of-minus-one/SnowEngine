@@ -4,18 +4,16 @@
  //  File: Component.cpp               //
 ////////////////////////////////////////
 
-#pragma once
-
 #include "Component.h"
 
+#include "../Util/Types/String.h"
 #include "../Util/Util.h"
 
 using namespace snow;
 
-Component::Component(Actor& actor, std::weak_ptr<Component> parent, Vector2 position, Angle rotation) :
+Component::Component(Actor& actor, std::weak_ptr<Component> parent, const Transform& transform) :
 	number_(components_counter_++),
-	position_(position),
-	rotation_(rotation),
+	transform_(transform),
 	actor_(actor),
 	parent_(parent)
 {}
@@ -31,18 +29,18 @@ int Component::hash_code() const noexcept
 }
 
 template<typename T_Component>
-std::shared_ptr<T_Component> Component::create_component(Vector2 position, Angle rotation)
+std::shared_ptr<T_Component> Component::create_component(const Transform& transform)
 {
 	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_component method template must be Component");
 
-	std::shared_ptr<T_Component> component = std::make_shared<T_Component>(actor_, this, position, rotation);
+	std::shared_ptr<T_Component> component = std::make_shared<T_Component>(actor_, this, transform);
 	components_.insert(component);
 	return component;
 }
 
 void Component::tick(float delta_sec)
 {
-	for (auto i : components_)
+	for (auto& i : components_)
 	{
 		i->tick(delta_sec);
 	}
