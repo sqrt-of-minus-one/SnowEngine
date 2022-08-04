@@ -7,6 +7,7 @@
 #include "Component.h"
 
 #include "../Actor/Actor.h"
+#include "../Level/Level.h"
 #include "../Util/Types/String.h"
 #include "../Util/Util.h"
 
@@ -57,6 +58,26 @@ const Vector2& Component::get_scale() const
 const Transform& Component::get_transform() const
 {
 	return transform_;
+}
+
+Actor& Component::get_actor()
+{
+	return actor_;
+}
+
+const Actor& Component::get_actor() const
+{
+	return actor_;
+}
+
+Level& Component::get_level()
+{
+	return actor_.get_level();
+}
+
+const Level& Component::get_level() const
+{
+	return actor_.get_level();
 }
 
 		/* Component: protected */

@@ -33,6 +33,9 @@ public:
 	const Vector2& get_scale() const;
 	const Transform& get_transform() const;
 
+	Level& get_level();
+	const Level& get_level() const;
+
 	void destroy();
 	bool is_destroyed() const;
 

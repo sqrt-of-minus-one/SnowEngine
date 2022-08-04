@@ -20,6 +20,12 @@
  */
 
 #include <memory>
+#include <list>
+
+namespace sf
+{
+class RenderWindow;
+}
 
 namespace snow
 {
@@ -28,6 +34,7 @@ class Config;
 class Lang;
 class TimerManager;
 class Log;
+class Level;
 
 /**
  *	\~english
@@ -81,6 +88,11 @@ public:
 	 */
 	static bool is_started() noexcept;
 
+	static std::weak_ptr<sf::RenderWindow> get_window() noexcept;
+
+	template<typename T_Level>
+	static std::shared_ptr<T_Level> create_level();
+
 			/* FIELDS */
 
 	/**
@@ -116,6 +128,11 @@ public:
 
 private:
 	static void loop_();
+
+	static void remove_level_(Level& level);
+
+	static std::shared_ptr<sf::RenderWindow> window_;
+	static std::list<std::shared_ptr<Level>> levels_;
 
 	static bool is_started_;
 	static std::unique_ptr<Log> main_log_;

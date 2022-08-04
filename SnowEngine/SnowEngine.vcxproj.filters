@@ -45,6 +45,12 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{9109d506-8130-43fd-852a-1333c9839eb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Component\Camera">
+      <UniqueIdentifier>{d8bbac79-1b5c-4b9d-a6be-f1b5684409ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Visible">
+      <UniqueIdentifier>{b11beaec-55d1-4f54-aa8b-3087e060db76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -119,6 +125,12 @@
     <ClInclude Include="Source\Util\Types\Transform.h">
       <Filter>Source Files\Util\Types</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Camera\CameraComponent.h">
+      <Filter>Source Files\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Visible\VisibleComponent.h">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -192,6 +204,12 @@
     </ClCompile>
     <ClCompile Include="Source\Util\Types\Transform.cpp">
       <Filter>Source Files\Util\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Camera\CameraComponent.cpp">
+      <Filter>Source Files\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Visible\VisibleComponent.cpp">
+      <Filter>Source Files\Component\Visible</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

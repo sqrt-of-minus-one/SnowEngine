@@ -18,7 +18,10 @@ using namespace snow;
 
 Level::Level() :
 	number_(levels_counter_++),
-	actors_()
+	is_destroyed_(false),
+	actors_(),
+	on_destroyed_(),
+	on_destroyed(on_destroyed_)
 {}
 
 String Level::to_string() const
@@ -31,12 +34,23 @@ int Level::hash_code() const noexcept
 	return number_;
 }
 
+void Level::destroy()
+{
+	is_destroyed_ = true;
+	on_destroyed_.execute(*this);
+}
+
+bool Level::is_destroyed()
+{
+	return is_destroyed_;
+}
+
 		/* Level: protected */
 
 template<typename T_Actor>
 std::shared_ptr<T_Actor> Level::spawn_actor(const Transform& transform)
 {
-	static_assert(std::is_base_of<Actor, T_Actor>::value, L"An argument of spawn_actor method template must Actor");
+	static_assert(std::is_base_of<Actor, T_Actor>::value, L"An argument of spawn_actor method template must be Actor");
 
 	std::shared_ptr<T_Actor> actor = std::make_shared<T_Actor>(*this, transform);
 	actor->on_destroyed.bind<Level>(*this, &Level::remove_actor_, true);

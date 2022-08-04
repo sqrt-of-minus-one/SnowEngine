@@ -56,6 +56,16 @@ const Transform& Actor::get_transform() const
 	return transform_;
 }
 
+Level& Actor::get_level()
+{
+	return level_;
+}
+
+const Level& Actor::get_level() const
+{
+	return level_;
+}
+
 void Actor::destroy()
 {
 	is_destroyed_ = true;

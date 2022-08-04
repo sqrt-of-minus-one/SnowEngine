@@ -16,6 +16,8 @@
 namespace snow
 {
 
+class Level;
+
 class Component : public Object
 {
 	friend class Actor;
@@ -31,6 +33,11 @@ public:
 	const Angle& get_rotation() const;
 	const Vector2& get_scale() const;
 	const Transform& get_transform() const;
+
+	Actor& get_actor();
+	const Actor& get_actor() const;
+	Level& get_level();
+	const Level& get_level() const;
 
 	EventBinder<Component& /*component*/, const Transform& /*old_transform*/, const Transform& /*new_transform*/> on_transformed;
 
@@ -48,7 +55,7 @@ protected:
 	void rotate(const Angle& delta);
 	void scale(const Vector2& factor);
 
-	void tick(float delta_sec);
+	virtual void tick(float delta_sec);
 
 private:
 	static int components_counter_;
