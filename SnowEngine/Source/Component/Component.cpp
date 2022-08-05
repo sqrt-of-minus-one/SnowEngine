@@ -15,7 +15,7 @@ using namespace snow;
 
 		/* Component: public */
 
-Component::Component(Actor& actor, std::weak_ptr<Component> parent, const Transform& transform) :
+Component::Component(Actor& actor, Component* parent, const Transform& transform) :
 	number_(components_counter_++),
 	transform_(transform),
 	actor_(actor),
@@ -39,10 +39,16 @@ const Vector2& Component::get_position() const
 	return transform_.get_position();
 }
 
-const Vector2& Component::get_level_position() const
+Vector2 Component::get_level_position() const
 {
-	std::shared_ptr<Component> parent = parent_.lock();
-	return transform_.get_position() + (parent ? parent->get_level_position() : actor_.get_position());
+	if (parent_)
+	{
+		return transform_.get_position() + parent_->get_level_position();
+	}
+	else
+	{
+		return transform_.get_position() + actor_.get_position();
+	}
 }
 
 const Angle& Component::get_rotation() const
@@ -80,18 +86,6 @@ const Level& Component::get_level() const
 	return actor_.get_level();
 }
 
-		/* Component: protected */
-
-template<typename T_Component>
-std::shared_ptr<T_Component> Component::create_component(const Transform& transform)
-{
-	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_component method template must be Component");
-
-	std::shared_ptr<T_Component> component = std::make_shared<T_Component>(actor_, this, transform);
-	components_.insert(component);
-	return component;
-}
-
 void Component::set_position(const Vector2& position)
 {
 	Transform old = transform_;
@@ -102,8 +96,7 @@ void Component::set_position(const Vector2& position)
 void Component::set_level_position(const Vector2& position)
 {
 	Transform old = transform_;
-	std::shared_ptr<Component> parent = parent_.lock();
-	transform_.set_position(position - (parent ? parent->get_level_position() : actor_.get_position()));
+	transform_.set_position(position - (Object::is_valid(parent_) ? parent_->get_level_position() : actor_.get_position()));
 	on_transformed_.execute(*this, old, transform_);
 }
 
@@ -149,6 +142,8 @@ void Component::scale(const Vector2& factor)
 	on_transformed_.execute(*this, old, transform_);
 }
 
+		/* Component: protected */
+
 void Component::tick(float delta_sec)
 {
 	for (auto& i : components_)
@@ -156,3 +151,7 @@ void Component::tick(float delta_sec)
 		i->tick(delta_sec);
 	}
 }
+
+		/* Component: private */
+
+int Component::components_counter_ = 0;

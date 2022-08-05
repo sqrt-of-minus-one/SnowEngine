@@ -24,7 +24,7 @@ class Actor;
 class VisibleComponent : public Component
 {
 public:
-	VisibleComponent(Actor& actor, std::weak_ptr<Component> parent, const Transform& transform);
+	VisibleComponent(Actor& actor, Component* parent, const Transform& transform);
 	~VisibleComponent();
 
 	virtual void draw(sf::RenderWindow& window) = 0;

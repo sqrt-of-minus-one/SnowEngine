@@ -47,18 +47,6 @@ bool Level::is_destroyed()
 
 		/* Level: protected */
 
-template<typename T_Actor>
-std::shared_ptr<T_Actor> Level::spawn_actor(const Transform& transform)
-{
-	static_assert(std::is_base_of<Actor, T_Actor>::value, L"An argument of spawn_actor method template must be Actor");
-
-	std::shared_ptr<T_Actor> actor = std::make_shared<T_Actor>(*this, transform);
-	actor->on_destroyed.bind<Level>(*this, &Level::remove_actor_, true);
-
-	actors_.insert(actor);
-	return actor;
-}
-
 void Level::tick(float delta_sec)
 {
 	for (auto& i : actors_)

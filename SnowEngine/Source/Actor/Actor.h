@@ -36,13 +36,6 @@ public:
 	Level& get_level();
 	const Level& get_level() const;
 
-	void destroy();
-	bool is_destroyed() const;
-
-	EventBinder<Actor& /*actor*/> on_destroyed;
-	EventBinder<Actor& /*actor*/, const Transform& /*old_transform*/, const Transform& /*new_transform*/> on_transformed;
-
-protected:
 	template<typename T_Component>
 	std::shared_ptr<T_Component> create_root_component(const Transform& transform);
 
@@ -58,6 +51,13 @@ protected:
 	std::shared_ptr<Component> get_root_component();
 	std::shared_ptr<const Component> get_root_component() const;
 
+	void destroy();
+	bool is_destroyed() const;
+
+	EventBinder<Actor& /*actor*/> on_destroyed;
+	EventBinder<Actor& /*actor*/, const Transform& /*old_transform*/, const Transform& /*new_transform*/> on_transformed;
+
+protected:
 	virtual void tick(float delta_sec);
 
 private:
@@ -73,5 +73,23 @@ private:
 	Event<Actor& /*actor*/> on_destroyed_;
 	Event<Actor& /*actor*/, const Transform& /*old_transform*/, const Transform& /*new_transform*/> on_transformed_;
 };
+
+
+		/* DEFINITIONS */
+
+		/* Actor: public */
+
+template<typename T_Component>
+std::shared_ptr<T_Component> Actor::create_root_component(const Transform& transform)
+{
+	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_root_component method template must be Component");
+	if (root_component_ != nullptr)
+	{
+		return nullptr;
+	}
+
+	root_component_ = std::make_shared<T_Component>(*this, nullptr, transform);
+	return root_component_;
+}
 
 }

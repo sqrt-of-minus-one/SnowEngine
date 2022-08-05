@@ -20,6 +20,8 @@ class Actor;
 
 class Level : public Object
 {
+	friend class Game;
+
 public:
 	Level();
 
@@ -49,5 +51,22 @@ private:
 
 	Event<Level& /*level*/> on_destroyed_;
 };
+
+		
+		/* DEFINITIONS */
+
+		/* Level: public */
+
+template<typename T_Actor>
+std::shared_ptr<T_Actor> Level::spawn_actor(const Transform& transform)
+{
+	static_assert(std::is_base_of<Actor, T_Actor>::value, L"An argument of spawn_actor method template must be Actor");
+
+	std::shared_ptr<T_Actor> actor = std::make_shared<T_Actor>(*this, transform);
+	actor->on_destroyed.bind<Level>(*this, &Level::remove_actor_, true);
+
+	actors_.push_back(actor);
+	return actor;
+}
 
 }

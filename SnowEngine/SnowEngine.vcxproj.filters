@@ -51,6 +51,9 @@
     <Filter Include="Source Files\Component\Visible">
       <UniqueIdentifier>{b11beaec-55d1-4f54-aa8b-3087e060db76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Math\Shape">
+      <UniqueIdentifier>{74adebfc-70b0-4a19-8693-ee624d45c274}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -131,6 +134,12 @@
     <ClInclude Include="Source\Component\Visible\VisibleComponent.h">
       <Filter>Source Files\Component\Visible</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Visible\TextureComponent.h">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Shape\Rect.h">
+      <Filter>Source Files\Math\Shape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -210,6 +219,12 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Visible\VisibleComponent.cpp">
       <Filter>Source Files\Component\Visible</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Visible\TextureComponent.cpp">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Shape\Rect.cpp">
+      <Filter>Source Files\Math\Shape</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ using namespace snow;
 
 		/* VisibleComponent: public */
 
-VisibleComponent::VisibleComponent(Actor& actor, std::weak_ptr<Component> parent, const Transform& transform) :
+VisibleComponent::VisibleComponent(Actor& actor, Component* parent, const Transform& transform) :
 	Component(actor, parent, transform)
 {
 	visible_components_[&actor.get_level()].push_back(this);

@@ -42,18 +42,6 @@ std::weak_ptr<sf::RenderWindow> Game::get_window() noexcept
 	return window_;
 }
 
-template<typename T_Level>
-std::shared_ptr<T_Level> Game::create_level()
-{
-	static_assert(std::is_base_of<Level, T_Level>::value, L"An argument of create_level method template must be Level");
-
-	std::shared_ptr<T_Level> level(new T_Level);
-	level->on_destroyed.bind(&Game::remove_level_, true);
-
-	levels_.push_back(level);
-	return level;
-}
-
 Config Game::config;
 Lang Game::lang;
 TimerManager Game::timer_manager;
@@ -83,11 +71,14 @@ void Game::loop_()
 		s_time = std::chrono::steady_clock::now();
 		float delta_sec = std::chrono::duration_cast<std::chrono::microseconds>(s_time - f_time).count() / 1'000'000.f;
 
-		window_->clear();
-
 		timer_manager.tick_(delta_sec);
 
-//		Todo: draw
+		window_->clear();
+
+		for (auto& i : levels_)
+		{
+			i->tick(delta_sec);
+		}
 		
 		window_->display();
 	}

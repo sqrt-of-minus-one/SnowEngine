@@ -66,32 +66,6 @@ const Level& Actor::get_level() const
 	return level_;
 }
 
-void Actor::destroy()
-{
-	is_destroyed_ = true;
-	on_destroyed_.execute(*this);
-}
-
-bool Actor::is_destroyed() const
-{
-	return is_destroyed_;
-}
-
-		/* Actor: protected */
-
-template<typename T_Component>
-std::shared_ptr<T_Component> Actor::create_root_component(const Transform& transform)
-{
-	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_root_component method template must be Component");
-	if (root_component_ != nullptr)
-	{
-		return nullptr;
-	}
-
-	root_component_ = std::make_shared<T_Component>(*this, nullptr, transform);
-	return root_component_;
-}
-
 void Actor::set_position(const Vector2& position)
 {
 	Transform old = transform_;
@@ -151,7 +125,24 @@ std::shared_ptr<const Component> Actor::get_root_component() const
 	return root_component_;
 }
 
+void Actor::destroy()
+{
+	is_destroyed_ = true;
+	on_destroyed_.execute(*this);
+}
+
+bool Actor::is_destroyed() const
+{
+	return is_destroyed_;
+}
+
+		/* Actor: protected */
+
 void Actor::tick(float delta_sec)
 {
 	root_component_->tick(delta_sec);
 }
+
+		/* Actor: private */
+
+int Actor::actors_counter_ = 0;

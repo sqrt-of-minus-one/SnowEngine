@@ -138,4 +138,21 @@ private:
 	static std::unique_ptr<Log> main_log_;
 };
 
+
+		/* DEFINITIONS */
+
+		/* Game: public */
+
+template<typename T_Level>
+std::shared_ptr<T_Level> Game::create_level()
+{
+	static_assert(std::is_base_of<Level, T_Level>::value, L"An argument of create_level method template must be Level");
+
+	std::shared_ptr<T_Level> level(new T_Level);
+	level->on_destroyed.bind(&Game::remove_level_, true);
+
+	levels_.push_back(level);
+	return level;
+}
+
 }
