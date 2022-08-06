@@ -43,7 +43,7 @@ Text::Text(String&& key) :
 
 String Text::to_string() const
 {
-	return Game::lang.get_string(key_);
+	return Lang::get_instance().get_string(key_);
 }
 
 int Text::hash_code() const noexcept
@@ -60,7 +60,7 @@ bool Text::is_valid() const noexcept
 {
 	try
 	{
-		return Game::lang.is_valid(key_);
+		return Lang::get_instance().is_valid(key_);
 	}
 	catch (...)
 	{

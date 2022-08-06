@@ -40,6 +40,7 @@
     <ClInclude Include="Source\Util\Lang\Lang.h" />
     <ClInclude Include="Source\Util\Lang\Text.h" />
     <ClInclude Include="Source\Util\Log\Log.h" />
+    <ClInclude Include="Source\Util\ResourceManager.h" />
     <ClInclude Include="Source\Util\Time\Time.h" />
     <ClInclude Include="Source\Util\Time\TimeInterval.h" />
     <ClInclude Include="Source\Util\Time\Timer.h" />
@@ -70,6 +71,7 @@
     <ClCompile Include="Source\Util\Lang\Lang.cpp" />
     <ClCompile Include="Source\Util\Lang\Text.cpp" />
     <ClCompile Include="Source\Util\Log\Log.cpp" />
+    <ClCompile Include="Source\Util\ResourceManager.cpp" />
     <ClCompile Include="Source\Util\Time\Time.cpp" />
     <ClCompile Include="Source\Util\Time\TimeInterval.cpp" />
     <ClCompile Include="Source\Util\Time\Timer.cpp" />

@@ -31,8 +31,6 @@ namespace snow
 {
 
 class Config;
-class Lang;
-class TimerManager;
 class Log;
 class Level;
 
@@ -109,22 +107,6 @@ public:
 	 *	установить их с помощью файла `config.ini` перед запуском игры.
 	 */
 	static Config config;
-
-	/**
-	 *	\~english
-	 *	\brief The language manager
-	 *	
-	 *	This field is the main instance of the `Lang` class, which is used to manage the game
-	 *	localization.
-	 *	
-	 *	\~russian
-	 *	\brief Диспетчер языков
-	 *	
-	 *	Это поле — главный объект класса `Lang`, использующийся для управления локализацией в игре.
-	 */
-	static Lang lang;
-
-	static TimerManager timer_manager;
 
 private:
 	static void loop_();

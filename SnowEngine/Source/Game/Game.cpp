@@ -43,8 +43,6 @@ std::weak_ptr<sf::RenderWindow> Game::get_window() noexcept
 }
 
 Config Game::config;
-Lang Game::lang;
-TimerManager Game::timer_manager;
 
 		/* Game: private */
 
@@ -71,7 +69,7 @@ void Game::loop_()
 		s_time = std::chrono::steady_clock::now();
 		float delta_sec = std::chrono::duration_cast<std::chrono::microseconds>(s_time - f_time).count() / 1'000'000.f;
 
-		timer_manager.tick_(delta_sec);
+		TimerManager::get_instance().tick_(delta_sec);
 
 		window_->clear();
 

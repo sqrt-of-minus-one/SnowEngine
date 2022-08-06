@@ -29,21 +29,25 @@ public:
 	virtual int hash_code() const noexcept override;
 
 	const Vector2& get_position() const;
-	Vector2 get_level_position() const;
 	const Angle& get_rotation() const;
 	const Vector2& get_scale() const;
 	const Transform& get_transform() const;
+	Vector2 get_level_position() const;
+	Angle get_level_rotation() const;
+	Vector2 get_level_scale() const;
+	Transform get_level_transform() const;
 
 	Actor& get_actor();
 	const Actor& get_actor() const;
 	Level& get_level();
 	const Level& get_level() const;
+	Component* get_parent();
+	const Component* get_parent() const;
 
 	template<typename T_Component>
 	std::shared_ptr<T_Component> create_component(const Transform& transform);
 
 	void set_position(const Vector2& position);
-	void set_level_position(const Vector2& position);
 	void set_rotation(const Angle& rotation);
 	void set_scale(const Vector2& scale);
 	void set_transform(const Transform& transform);

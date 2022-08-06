@@ -13,6 +13,12 @@ using namespace snow;
 
 		/* TimerManager: public */
 
+TimerManager& TimerManager::get_instance()
+{
+	static TimerManager timer_manager;
+	return timer_manager;
+}
+
 String TimerManager::to_string() const
 {
 	return L"There are "_s + util::to_string(static_cast<int>(timers_.size())) + L" timer(s)";

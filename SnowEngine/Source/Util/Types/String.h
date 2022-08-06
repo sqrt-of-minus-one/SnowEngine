@@ -1702,14 +1702,3 @@ String operator""_s(const wchar_t* string, std::size_t length);
 }
 
 using snow::operator""_s;
-
-namespace std
-{
-
-template<>
-struct hash<snow::String>
-{
-	size_t operator()(snow::String str) const noexcept;
-};
-
-}

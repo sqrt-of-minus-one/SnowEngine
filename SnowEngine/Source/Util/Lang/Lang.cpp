@@ -26,6 +26,12 @@ using namespace snow;
 
 		/* Lang: public */
 
+Lang& Lang::get_instance()
+{
+	static Lang lang;
+	return lang;
+}
+
 String Lang::to_string() const
 {
 	return current_lang_;
@@ -58,7 +64,7 @@ bool Lang::set_lang(const String& lang)
 			{
 				if (i != Game::config.default_table)
 				{
-					strings_.erase(i);
+					strings_.erase(i.to_std_string());
 					if (!load_table_(i, current_lang_))
 					{
 						error_counter++;
@@ -84,7 +90,7 @@ bool Lang::set_lang(const String& lang)
 
 bool Lang::load_table(const String& table)
 {
-	if (strings_.find(table) == strings_.end())
+	if (strings_.find(table.to_std_string()) == strings_.end())
 	{
 		if (load_table_(table, current_lang_))
 		{
@@ -106,12 +112,12 @@ bool Lang::load_table(const String& table)
 
 bool Lang::unload_table(const String& table)
 {
-	return table != Game::config.default_table && strings_.erase(table);
+	return table != Game::config.default_table && strings_.erase(table.to_std_string());
 }
 
 bool Lang::is_table_loaded(const String& table) // Todo: noexcept?
 {
-	return strings_.find(table) != strings_.end();
+	return strings_.find(table.to_std_string()) != strings_.end();
 }
 
 String Lang::get_string(const String& key)
@@ -120,10 +126,10 @@ String Lang::get_string(const String& key)
 	std::pair<String, String> pair = split_to_table_key_(key);
 	try
 	{
-		std::unique_ptr<String>& string = strings_[pair.first][pair.second];
+		std::unique_ptr<String>& string = strings_.at(pair.first.to_std_string()).at(pair.second.to_std_string());
 		return Object::is_valid(string.get()) ? *string : key;
 	}
-	catch (std::invalid_argument e)
+	catch (std::out_of_range e)
 	{
 		return key;
 	}
@@ -132,10 +138,11 @@ String Lang::get_string(const String& key)
 bool Lang::is_valid(const String& key)
 {
 	std::pair<String, String> pair = split_to_table_key_(key);
-	if (strings_.find(pair.first) != strings_.end())
+	auto iter = strings_.find(pair.first.to_std_string());
+	if (iter != strings_.end())
 	{
-		const auto& table = strings_[pair.first];
-		return table.find(pair.second) != table.end();
+		const auto& table = iter->second;
+		return table.find(pair.second.to_std_string()) != table.end();
 	}
 	else
 	{
@@ -167,14 +174,14 @@ bool Lang::load_table_(const String& table, const String& lang)
 			int pos = line_s.find_first(L':');
 			if (pos > 0)
 			{
-				std::pair<String, std::unique_ptr<String>> pair(line_s.substring(0, pos), nullptr);
+				std::pair<std::wstring, std::unique_ptr<String>> pair(line_s.substring(0, pos).to_std_string(), nullptr);
 				pair.second = std::make_unique<String>(line_s.substring(pos + 2, line_s.size()));
 				t.insert(std::move(pair));
 			}
 		}
 
-		strings_.erase(table);
-		strings_.insert(std::make_pair(table, std::move(t)));
+		strings_.erase(table.to_std_string());
+		strings_.insert(std::make_pair(table.to_std_string(), std::move(t)));
 		return true;
 	}
 	else

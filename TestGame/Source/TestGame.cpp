@@ -23,11 +23,11 @@ int main()
 	std::shared_ptr<CameraComponent> camera = component->create_component<CameraComponent>(Transform(Vector2::ZERO));
 	std::shared_ptr<TextureComponent> texture = component->create_component<TextureComponent>(Transform(Vector2::ZERO));
 
-	texture->set_texture(L"Hello world!"_s);
+	texture->set_texture(L"selection.png"_s);
 
 	Delegate<void> delegate;
-	delegate.bind([&camera, &texture](){ camera->move(Vector2(1.f, 0.f)); texture->rotate(1_deg); });
-	Game::timer_manager.create_timer(delegate, .05f, .05f);
+	delegate.bind([&camera, &texture, &actor](){ camera->move(Vector2(1.f, 0.f)); texture->rotate(1_deg); actor->scale(Vector2(.99f, .99f)); });
+	TimerManager::get_instance().create_timer(delegate, .05f, .05f);
 
 	_getch();
 	return 0;

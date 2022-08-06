@@ -43,7 +43,7 @@ const Vector2& Rect::get_position() const
 	return position_;
 }
 
-const Vector2& Rect::get_corner_position() const
+Vector2 Rect::get_corner_position() const
 {
 	return position_ + size_;
 }

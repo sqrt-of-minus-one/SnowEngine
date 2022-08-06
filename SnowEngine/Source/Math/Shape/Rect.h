@@ -24,7 +24,7 @@ public:
 	virtual int hash_code() const noexcept override;
 	
 	const Vector2& get_position() const;
-	const Vector2& get_corner_position() const;
+	Vector2 get_corner_position() const;
 	const Vector2& get_size() const;
 	
 	void set_position(const Vector2& position);

@@ -62,6 +62,10 @@ String Config::to_string() const
 		L"\ntitlebar_buttons = " + (titlebar_buttons ? L"true" : L"false") +
 		L"\ntitle = " + check_string_(title) +
 		L"\n" +
+		L"\n[resources]" +
+		L"\nres_textures_path = " + check_string_(res_textures_path) +
+		L"\nres_fonts_path = " + check_string_(res_fonts_path) +
+		L"\n" +
 		L"\n[localization]" +
 		L"\nlang_path = " + check_string_(lang_path) +
 		L"\ndefault_lang = " + check_string_(default_lang) +
@@ -78,7 +82,26 @@ int Config::hash_code() const noexcept
 void Config::save()
 {
 	std::wofstream file(L"config.ini");
-	file << to_string();
+	file << L"[default]"_s <<
+		L"\nlog_path = " << check_string_(log_path) <<
+		L"\n" <<
+		L"\n[window]" <<
+		L"\nresolution = " << util::to_string(resolution.get_x()) << L"x" << util::to_string(resolution.get_y()) <<
+		L"\nfullscreen = " << (fullscreen ? L"true" : L"false") <<
+		L"\nresize = " << (resize ? L"true" : L"false") <<
+		L"\ntitlebar = " << (titlebar ? L"true" : L"false") <<
+		L"\ntitlebar_buttons = " << (titlebar_buttons ? L"true" : L"false") <<
+		L"\ntitle = " << check_string_(title) <<
+		L"\n" <<
+		L"\n[resources]" <<
+		L"\nres_textures_path = " << check_string_(res_textures_path) <<
+		L"\nres_fonts_path = " << check_string_(res_fonts_path) <<
+		L"\n" <<
+		L"\n[localization]" <<
+		L"\nlang_path = " << check_string_(lang_path) <<
+		L"\ndefault_lang = " << check_string_(default_lang) <<
+		L"\ndefault_table = " << check_string_(default_table) <<
+		std::endl;
 	file.close();
 }
 
@@ -221,7 +244,26 @@ end_loop:;
 						title = value;
 					}
 				}
-				else if (category == L"[localization")
+				else if (category == L"[resources]")
+				{
+					if (field == L"res_textures_path")
+					{
+						while (value.back() == L'\\' || value.back() == L'/')
+						{
+							value.pop_back();
+						}
+						res_textures_path = value;
+					}
+					else if (field == L"res_fonts_path")
+					{
+						while (value.back() == L'\\' || value.back() == L'/')
+						{
+							value.pop_back();
+						}
+						res_fonts_path = value;
+					}
+				}
+				else if (category == L"[localization]")
 				{
 					if (field == L"lang_path")
 					{
@@ -258,6 +300,9 @@ Config::Config() :
 	titlebar(true),
 	titlebar_buttons(true),
 	title(L"The Game (powered by SnowEngine)"),
+		// resources
+	res_textures_path(L"Resources\\Textures"),
+	res_fonts_path(L"Resourced\\Fonts"),
 		// localization
 	lang_path(L"Localization"_s),
 	default_lang(L"en_UK"_s),

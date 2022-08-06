@@ -1168,10 +1168,3 @@ String snow::operator""_s(const wchar_t* string, std::size_t length)
 	return String(string);
 }
 
-		/* std::hash<String>: public */
-
-std::size_t std::hash<String>::operator()(String str) const noexcept
-{
-	return static_cast<size_t>(str.hash_code());
-}
-

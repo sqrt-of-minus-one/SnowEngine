@@ -39,18 +39,6 @@ const Vector2& Component::get_position() const
 	return transform_.get_position();
 }
 
-Vector2 Component::get_level_position() const
-{
-	if (parent_)
-	{
-		return transform_.get_position() + parent_->get_level_position();
-	}
-	else
-	{
-		return transform_.get_position() + actor_.get_position();
-	}
-}
-
 const Angle& Component::get_rotation() const
 {
 	return transform_.get_rotation();
@@ -64,6 +52,37 @@ const Vector2& Component::get_scale() const
 const Transform& Component::get_transform() const
 {
 	return transform_;
+}
+
+Vector2 Component::get_level_position() const
+{
+	return transform_.get_position() + (parent_ ? parent_->get_level_position() : actor_.get_position());
+}
+
+Angle Component::get_level_rotation() const
+{
+	return transform_.get_rotation() + (parent_ ? parent_->get_level_rotation() : actor_.get_rotation());
+}
+
+Vector2 Component::get_level_scale() const
+{
+	return transform_.get_scale() * (parent_ ? parent_->get_level_scale() : actor_.get_scale());
+}
+
+Transform Component::get_level_transform() const
+{
+	if (parent_)
+	{
+		return Transform(transform_.get_position() + parent_->get_level_position(),
+						 transform_.get_rotation() + parent_->get_level_rotation(),
+						 transform_.get_scale() * parent_->get_level_scale());
+	}
+	else
+	{
+		return Transform(transform_.get_position() + actor_.get_position(),
+						 transform_.get_rotation() + actor_.get_rotation(),
+						 transform_.get_scale() * actor_.get_scale());
+	}
 }
 
 Actor& Component::get_actor()
@@ -86,17 +105,20 @@ const Level& Component::get_level() const
 	return actor_.get_level();
 }
 
+Component* Component::get_parent()
+{
+	return parent_;
+}
+
+const Component* Component::get_parent() const
+{
+	return parent_;
+}
+
 void Component::set_position(const Vector2& position)
 {
 	Transform old = transform_;
 	transform_.set_position(position);
-	on_transformed_.execute(*this, old, transform_);
-}
-
-void Component::set_level_position(const Vector2& position)
-{
-	Transform old = transform_;
-	transform_.set_position(position - (Object::is_valid(parent_) ? parent_->get_level_position() : actor_.get_position()));
 	on_transformed_.execute(*this, old, transform_);
 }
 

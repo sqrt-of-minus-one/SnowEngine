@@ -44,22 +44,38 @@ namespace snow
  *	\~english
  *	\brief The class of the SnowFlake language manager
  *	
- *	This class is used to manage languages. Its main instance is contained in the `Game` class as a
- *	static member. You shouldn't create other instances. Use `config.ini` file to set default
+ *	This class is used to manage languages. It is singleton, only one language manager may exist.
+ *	You can get it using `get_instance` static method. Use `config.ini` file to set default
  *	language and the directory of localization files.
  *	
  *	\~russian
  *	\brief Класс диспетчера языков SnowFlake
  *	
- *	Этот класс используется для управления языками. Его главный объект хранится в классе `Game` как
- *	статический член. Вы не должны создавать другие объекты. Используйте файл `config.ini`, чтобы
- *	установить язык по умолчанию, а также директорию для файлов локализации.
+ *	Этот класс используется для управления языками. Он является одиночкой: может существовать
+ *	только один диспетчер языков. Вы можете получить его, используя статический метод
+ *	`get_instance`. Используйте файл `config.ini`, чтобы установить язык по умолчанию, а также
+ *	директорию для файлов локализации.
  */
 class Lang : public Object
 {
-	friend class Game;
-
 public:
+			/* SINGLETON */
+
+	/**
+	 *	\~english
+	 *	\brief The only instance of the language manager
+	 *	
+	 *	Allows to get the only instance of the language manager.
+	 *	\return The language manager.
+	 *	
+	 *	\~russian
+	 *	\brief Единственный экземпляр диспетчера языков
+	 *	
+	 *	Позволяет получить единственный экземпляр диспетчера языков.
+	 *	\return Диспетчер языков.
+	 */
+	static Lang& get_instance();
+
 			/* METHODS FROM Object */
 
 	/**
@@ -227,7 +243,7 @@ public:
 	bool is_valid(const String& key);
 
 private:
-	using Table_ = std::unordered_map<String, std::unique_ptr<String>>;
+	using Table_ = std::unordered_map<std::wstring, std::unique_ptr<String>>;
 
 	Lang();
 
@@ -235,7 +251,7 @@ private:
 	static std::pair<String, String> split_to_table_key_(const String& key);
 
 	String current_lang_;
-	std::unordered_map<String, Table_> strings_;
+	std::unordered_map<std::wstring, Table_> strings_;
 	Log lang_log_;
 
 };

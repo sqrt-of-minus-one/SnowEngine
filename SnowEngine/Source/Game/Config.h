@@ -110,7 +110,7 @@ public:
 	void load();
 
 			/* FIELDS
-				SECTION: Default */
+				SECTION: default */
 
 	/**
 	 *	\~english
@@ -122,13 +122,13 @@ public:
 	 *	\~russian
 	 *	\brief Путь к файлам лога
 	 *
-	 *	Путь к директории с файлами лога. Если он не существует, то будет создан. Значение по
+	 *	Путь к директории с файлами лога. Если она не существует, то будет создана. Значение по
 	 *	умолчанию: `Logs`.
 	 */
 	String log_path;
 
 			/* FIELDS
-				SECTION: Window */
+				SECTION: window */
 
 	/**
 	 *	\~english
@@ -217,6 +217,35 @@ public:
 	 *	SnowEngine)`.
 	 */
 	String title;
+
+			/* FIELDS
+				SECTION: resources */
+
+	/**
+	 *	\~english
+	 *	\brief The path to textures
+	 *
+	 *	The path to the folder with texture files. Default value: `Resources\\Textures`.
+	 *
+	 *	\~russian
+	 *	\brief Путь к текстурам
+	 *
+	 *	Путь к директории с файлами текстур. Значение по умолчанию: `Resources\\Textures`.
+	 */
+	 String res_textures_path;
+
+	 /**
+	  *	\~english
+	  *	\brief The path to fonts
+	  *
+	  *	The path to the folder with font files. Default value: `Resources\\Fonts`.
+	  *
+	  *	\~russian
+	  *	\brief Путь к шрифтам
+	  *
+	  *	Путь к директории с файлами шрифтов. Значение по умолчанию: `Resources\\Fonts`.
+	  */
+	 String res_fonts_path;
 
 			/* FIELDS
 				SECTION: localization */
