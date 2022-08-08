@@ -1,7 +1,7 @@
     ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
- //  File: TextureComponent.h          //
+ //  File: SpriteComponent.h           //
 ////////////////////////////////////////
 
 #pragma once
@@ -20,15 +20,15 @@ class Texture;
 namespace snow
 {
 
-class Rect;
+class IntRect;
 
-class TextureComponent : public VisibleComponent
+class SpriteComponent : public VisibleComponent
 {
 public:
-	TextureComponent(Actor& actor, Component* parent, const Transform& transform);
+	SpriteComponent(Actor& actor, Component* parent, const Transform& transform);
 
 	bool set_texture(const String& texture);
-	void set_texture_rect(const Rect& rect);
+	void set_texture_rect(const IntRect& rect);
 
 	virtual void draw(sf::RenderWindow& window) override;
 
@@ -37,9 +37,7 @@ private:
 	sf::Sprite sprite_;
 	String texture_name_;
 
-	void update_sprite_();
-	void update_sprite_comp_(Component& component, const Transform& old_transform, const Transform& new_transform);
-	void update_sprite_act_(Actor& actor, const Transform& old_transform, const Transform& new_transform);
+	void update_sprite_(Component& component, const Transform& new_transform);
 };
 
 }

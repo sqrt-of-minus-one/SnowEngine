@@ -54,6 +54,9 @@
     <Filter Include="Source Files\Math\Shape">
       <UniqueIdentifier>{74adebfc-70b0-4a19-8693-ee624d45c274}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Animation">
+      <UniqueIdentifier>{da030ca4-ed1e-4fa5-ba9a-989d09c38cb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -134,14 +137,29 @@
     <ClInclude Include="Source\Component\Visible\VisibleComponent.h">
       <Filter>Source Files\Component\Visible</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\Visible\TextureComponent.h">
-      <Filter>Source Files\Component\Visible</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Math\Shape\Rect.h">
-      <Filter>Source Files\Math\Shape</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Util\ResourceManager.h">
       <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Visible\SpriteComponent.h">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Animation\SpriteAnimation.h">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Animation\SimpleSpriteAnimation.h">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Shape\FloatRect.h">
+      <Filter>Source Files\Math\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Shape\IntRect.h">
+      <Filter>Source Files\Math\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Animation\AdvancedSpriteAnimation.h">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Visible\AnimationComponent.h">
+      <Filter>Source Files\Component\Visible</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -223,14 +241,29 @@
     <ClCompile Include="Source\Component\Visible\VisibleComponent.cpp">
       <Filter>Source Files\Component\Visible</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\Visible\TextureComponent.cpp">
-      <Filter>Source Files\Component\Visible</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Shape\Rect.cpp">
-      <Filter>Source Files\Math\Shape</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Util\ResourceManager.cpp">
       <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Visible\SpriteComponent.cpp">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Animation\SpriteAnimation.cpp">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Animation\SimpleSpriteAnimation.cpp">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Shape\FloatRect.cpp">
+      <Filter>Source Files\Math\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Shape\IntRect.cpp">
+      <Filter>Source Files\Math\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Animation\AdvancedSpriteAnimation.cpp">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Visible\AnimationComponent.cpp">
+      <Filter>Source Files\Component\Visible</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

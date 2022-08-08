@@ -71,6 +71,10 @@ void Actor::set_position(const Vector2& position)
 	Transform old = transform_;
 	transform_.set_position(position);
 	on_transformed_.execute(*this, old, transform_);
+	if (root_component_)
+	{
+		root_component_->child_level_transformed_();
+	}
 }
 
 void Actor::set_rotation(const Angle& rotation)
@@ -78,6 +82,10 @@ void Actor::set_rotation(const Angle& rotation)
 	Transform old = transform_;
 	transform_.set_rotation(rotation);
 	on_transformed_.execute(*this, old, transform_);
+	if (root_component_)
+	{
+		root_component_->child_level_transformed_();
+	}
 }
 
 void Actor::set_scale(const Vector2& scale)
@@ -85,6 +93,10 @@ void Actor::set_scale(const Vector2& scale)
 	Transform old = transform_;
 	transform_.set_scale(scale);
 	on_transformed_.execute(*this, old, transform_);
+	if (root_component_)
+	{
+		root_component_->child_level_transformed_();
+	}
 }
 
 void Actor::set_transform(const Transform& transform)
@@ -92,6 +104,10 @@ void Actor::set_transform(const Transform& transform)
 	Transform old = transform_;
 	transform_ = transform;
 	on_transformed_.execute(*this, old, transform_);
+	if (root_component_)
+	{
+		root_component_->child_level_transformed_();
+	}
 }
 
 void Actor::move(const Vector2& delta)
@@ -99,6 +115,10 @@ void Actor::move(const Vector2& delta)
 	Transform old = transform_;
 	transform_.set_position(transform_.get_position() + delta);
 	on_transformed_.execute(*this, old, transform_);
+	if (root_component_)
+	{
+		root_component_->child_level_transformed_();
+	}
 }
 
 void Actor::rotate(const Angle& delta)
@@ -106,6 +126,10 @@ void Actor::rotate(const Angle& delta)
 	Transform old = transform_;
 	transform_.set_rotation(transform_.get_rotation() + delta);
 	on_transformed_.execute(*this, old, transform_);
+	if (root_component_)
+	{
+		root_component_->child_level_transformed_();
+	}
 }
 
 void Actor::scale(const Vector2& factor)
@@ -113,6 +137,10 @@ void Actor::scale(const Vector2& factor)
 	Transform old = transform_;
 	transform_.set_scale(transform_.get_scale() * factor);
 	on_transformed_.execute(*this, old, transform_);
+	if (root_component_)
+	{
+		root_component_->child_level_transformed_();
+	}
 }
 
 std::shared_ptr<Component> Actor::get_root_component()

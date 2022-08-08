@@ -57,6 +57,7 @@ public:
 	void scale(const Vector2& factor);
 
 	EventBinder<Component& /*component*/, const Transform& /*old_transform*/, const Transform& /*new_transform*/> on_transformed;
+	EventBinder<Component& /*component*/, const Transform& /*new_transform*/> on_level_transformed;
 
 protected:
 	virtual void tick(float delta_sec);
@@ -71,7 +72,10 @@ private:
 	Component* parent_;
 	Actor& actor_;
 
+	void child_level_transformed_();
+
 	Event<Component& /*component*/, const Transform& /*old_transform*/, const Transform& /*new_transform*/> on_transformed_;
+	Event<Component& /*component*/, const Transform& /*new_transform*/> on_level_transformed_;
 };
 
 

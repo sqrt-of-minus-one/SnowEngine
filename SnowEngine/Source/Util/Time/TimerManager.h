@@ -102,6 +102,8 @@ public:
 	 */
 	virtual int hash_code() const noexcept override;
 
+			/* METHODS */
+
 	/**
 	 *	\~english
 	 *	\brief Creates a new timer

@@ -21,7 +21,9 @@ Component::Component(Actor& actor, Component* parent, const Transform& transform
 	actor_(actor),
 	parent_(parent),
 	on_transformed_(),
-	on_transformed(on_transformed_)
+	on_transformed(on_transformed_),
+	on_level_transformed_(),
+	on_level_transformed(on_level_transformed_)
 {}
 
 String Component::to_string() const
@@ -120,6 +122,7 @@ void Component::set_position(const Vector2& position)
 	Transform old = transform_;
 	transform_.set_position(position);
 	on_transformed_.execute(*this, old, transform_);
+	child_level_transformed_();
 }
 
 void Component::set_rotation(const Angle& rotation)
@@ -127,6 +130,7 @@ void Component::set_rotation(const Angle& rotation)
 	Transform old = transform_;
 	transform_.set_rotation(rotation);
 	on_transformed_.execute(*this, old, transform_);
+	child_level_transformed_();
 }
 
 void Component::set_scale(const Vector2& scale)
@@ -134,6 +138,7 @@ void Component::set_scale(const Vector2& scale)
 	Transform old = transform_;
 	transform_.set_scale(scale);
 	on_transformed_.execute(*this, old, transform_);
+	child_level_transformed_();
 }
 
 void Component::set_transform(const Transform& transform)
@@ -141,6 +146,7 @@ void Component::set_transform(const Transform& transform)
 	Transform old = transform_;
 	transform_ = transform;
 	on_transformed_.execute(*this, old, transform_);
+	child_level_transformed_();
 }
 
 void Component::move(const Vector2& delta)
@@ -148,6 +154,7 @@ void Component::move(const Vector2& delta)
 	Transform old = transform_;
 	transform_.set_position(transform_.get_position() + delta);
 	on_transformed_.execute(*this, old, transform_);
+	child_level_transformed_();
 }
 
 void Component::rotate(const Angle& delta)
@@ -155,6 +162,7 @@ void Component::rotate(const Angle& delta)
 	Transform old = transform_;
 	transform_.set_rotation(transform_.get_rotation() + delta);
 	on_transformed_.execute(*this, old, transform_);
+	child_level_transformed_();
 }
 
 void Component::scale(const Vector2& factor)
@@ -162,6 +170,7 @@ void Component::scale(const Vector2& factor)
 	Transform old = transform_;
 	transform_.set_scale(transform_.get_scale() * factor);
 	on_transformed_.execute(*this, old, transform_);
+	child_level_transformed_();
 }
 
 		/* Component: protected */
@@ -175,5 +184,14 @@ void Component::tick(float delta_sec)
 }
 
 		/* Component: private */
+
+void Component::child_level_transformed_()
+{
+	on_level_transformed_.execute(*this, get_level_transform());
+	for (std::shared_ptr<Component>& i : components_)
+	{
+		i->child_level_transformed_();
+	}
+}
 
 int Component::components_counter_ = 0;

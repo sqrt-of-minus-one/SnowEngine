@@ -1,7 +1,7 @@
     ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
- //  File: Rect.h                      //
+ //  File: FloatRect.h                 //
 ////////////////////////////////////////
 
 #pragma once
@@ -13,12 +13,12 @@
 namespace snow
 {
 
-class Rect : public Object
+class FloatRect : public Object
 {
 public:
-	Rect();
-	Rect(const Rect& rect);
-	Rect(const Vector2& position, const Vector2& size);
+	FloatRect();
+	FloatRect(const FloatRect& rect);
+	FloatRect(const Vector2& position, const Vector2& size);
 	
 	virtual String to_string() const override;
 	virtual int hash_code() const noexcept override;
@@ -31,13 +31,13 @@ public:
 	void set_corner_position(const Vector2& corner_position);
 	void set_size(const Vector2& size);
 	
-	bool overlap(const Rect& rect) const;
+	bool overlap(const FloatRect& rect) const;
 	float perimeter() const;
 	float area() const;
 	
-	Rect& operator=(const Rect& rect);
-	bool operator==(const Rect& rect) const;
-	bool operator!=(const Rect& rect) const;
+	FloatRect& operator=(const FloatRect& rect);
+	bool operator==(const FloatRect& rect) const;
+	bool operator!=(const FloatRect& rect) const;
 
 private:
 	Vector2 position_;
