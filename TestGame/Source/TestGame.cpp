@@ -10,6 +10,7 @@
 #include "Source/Util/Time/Timer.h"
 #include "Source/Component/Visible/AnimationComponent.h"
 #include "Source/Component/Camera/CameraComponent.h"
+#include "Source/Component/Visible/TextComponent.h"
 #include "Source/Util/Animation/AdvancedSpriteAnimation.h"
 
 using namespace snow;
@@ -23,6 +24,7 @@ int main()
 	std::shared_ptr<Component> component = actor->create_root_component<Component>(Transform(Vector2::ZERO));
 	std::shared_ptr<CameraComponent> camera = component->create_component<CameraComponent>(Transform(Vector2::ZERO));
 	std::shared_ptr<AnimationComponent> texture = component->create_component<AnimationComponent>(Transform(Vector2::ZERO));
+	std::shared_ptr<TextComponent> text = component->create_component<TextComponent>(Transform(Vector2::ZERO));
 
 	texture->set_texture(L"selection.png"_s);
 
@@ -32,6 +34,9 @@ int main()
 
 	std::shared_ptr<AdvancedSpriteAnimation> animation = std::make_shared<AdvancedSpriteAnimation>(std::move(frames));
 	texture->set_sprite_animation(animation);
+
+	text->set_font(L"cambriab.ttf"_s);
+	text->set_text(L"Hello world!"_s);
 
 	Delegate<void> delegate;
 	delegate.bind([&camera, &texture, &actor](){ camera->move(Vector2(.1f, 0.f)); texture->rotate(.1_deg); actor->scale(Vector2(.999f, .999f)); });

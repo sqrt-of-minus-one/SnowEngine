@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/System/String.hpp>
 
 #include "Types/String.h"
@@ -16,6 +17,21 @@
 #include "Function/Delegate.h"
 
 using namespace snow;
+
+#define GET_RES(res_map, name)								\
+	auto iter = (res_map).find((name).to_std_string());		\
+	if (iter != (res_map).end())							\
+	{														\
+		auto ret = iter->second.lock();						\
+		if (ret)											\
+		{													\
+			return ret;										\
+		}													\
+		else												\
+		{													\
+			(res_map).erase(iter);							\
+		}													\
+	}
 
 		/* ResourceManager: public */
 
@@ -42,25 +58,28 @@ int ResourceManager::hash_code() const noexcept
 	return ret;
 }
 
-std::shared_ptr<sf::Texture> ResourceManager::get_texture(String name)
+std::shared_ptr<sf::Texture> ResourceManager::get_texture(const String& name)
 {
-	auto iter = textures_.find(name.to_std_string());
-	if (iter != textures_.end())
-	{
-		auto ret = iter->second.lock();
-		if (ret)
-		{
-			return ret;
-		}
-		else
-		{
-			textures_.erase(iter);
-		}
-	}
+	GET_RES(textures_, name);
 	std::shared_ptr<sf::Texture> res = std::make_shared<sf::Texture>();
 	if (res->loadFromFile(sf::String((Game::config.res_textures_path + L'\\' + name).to_std_string()).toAnsiString()))
 	{
 		textures_.insert(std::make_pair(name.to_std_string(), res));
+		return res;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+std::shared_ptr<sf::Font> ResourceManager::get_font(const String& name)
+{
+	GET_RES(fonts_, name);
+	std::shared_ptr<sf::Font> res = std::make_shared<sf::Font>();
+	if (res->loadFromFile(sf::String((Game::config.res_fonts_path + L'\\' + name).to_std_string()).toAnsiString()))
+	{
+		fonts_.insert(std::make_pair(name.to_std_string(), res));
 		return res;
 	}
 	else
@@ -85,6 +104,17 @@ void ResourceManager::check_resources_()
 		if (!i->second.lock())
 		{
 			textures_.erase(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+	for (auto i = fonts_.begin(); i != fonts_.end(); )
+	{
+		if (!i->second.lock())
+		{
+			fonts_.erase(i);
 		}
 		else
 		{

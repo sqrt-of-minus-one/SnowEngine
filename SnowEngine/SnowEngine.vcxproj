@@ -24,6 +24,7 @@
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\Visible\AnimationComponent.h" />
     <ClInclude Include="Source\Component\Visible\SpriteComponent.h" />
+    <ClInclude Include="Source\Component\Visible\TextComponent.h" />
     <ClInclude Include="Source\Component\Visible\VisibleComponent.h" />
     <ClInclude Include="Source\Game\Config.h" />
     <ClInclude Include="Source\Game\Game.h" />
@@ -60,6 +61,7 @@
     <ClCompile Include="Source\Component\Component.cpp" />
     <ClCompile Include="Source\Component\Visible\AnimationComponent.cpp" />
     <ClCompile Include="Source\Component\Visible\SpriteComponent.cpp" />
+    <ClCompile Include="Source\Component\Visible\TextComponent.cpp" />
     <ClCompile Include="Source\Component\Visible\VisibleComponent.cpp" />
     <ClCompile Include="Source\Game\Config.cpp" />
     <ClCompile Include="Source\Game\Game.cpp" />

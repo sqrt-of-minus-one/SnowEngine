@@ -161,6 +161,9 @@
     <ClInclude Include="Source\Component\Visible\AnimationComponent.h">
       <Filter>Source Files\Component\Visible</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Visible\TextComponent.h">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -263,6 +266,9 @@
       <Filter>Source Files\Util\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\Visible\AnimationComponent.cpp">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Visible\TextComponent.cpp">
       <Filter>Source Files\Component\Visible</Filter>
     </ClCompile>
   </ItemGroup>

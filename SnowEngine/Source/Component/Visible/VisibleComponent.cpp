@@ -29,6 +29,10 @@ VisibleComponent::~VisibleComponent()
 			break;
 		}
 	}
+	if (list.empty())
+	{
+		visible_components_.erase(&get_level());
+	}
 }
 
 const std::map<Level*, std::list<VisibleComponent*>>& VisibleComponent::get_visible_components()

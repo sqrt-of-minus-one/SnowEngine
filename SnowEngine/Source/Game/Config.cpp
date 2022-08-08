@@ -302,7 +302,7 @@ Config::Config() :
 	title(L"The Game (powered by SnowEngine)"),
 		// resources
 	res_textures_path(L"Resources\\Textures"),
-	res_fonts_path(L"Resourced\\Fonts"),
+	res_fonts_path(L"Resources\\Fonts"),
 		// localization
 	lang_path(L"Localization"_s),
 	default_lang(L"en_UK"_s),

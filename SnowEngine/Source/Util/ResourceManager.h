@@ -13,6 +13,7 @@
 namespace sf
 {
 class Texture;
+class Font;
 }
 
 namespace snow
@@ -33,7 +34,8 @@ public:
 
 			/* METHODS */
 
-	std::shared_ptr<sf::Texture> get_texture(String name);
+	std::shared_ptr<sf::Texture> get_texture(const String& name);
+	std::shared_ptr<sf::Font> get_font(const String& name);
 
 private:
 	ResourceManager();
@@ -41,6 +43,7 @@ private:
 	void check_resources_();
 
 	std::unordered_map<std::wstring, std::weak_ptr<sf::Texture>> textures_;
+	std::unordered_map<std::wstring, std::weak_ptr<sf::Font>> fonts_;
 };
 
 }
