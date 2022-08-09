@@ -247,6 +247,32 @@ public:
 	  */
 	 String res_fonts_path;
 
+	 /**
+	  *	\~english
+	  *	\brief The path to sounds
+	  *
+	  *	The path to the folder with sound files. Default value: `Resources\\Sounds`.
+	  *
+	  *	\~russian
+	  *	\brief Путь к звукам
+	  *
+	  *	Путь к директории с файлами звуков. Значение по умолчанию: `Resources\\Sounds`.
+	  */
+	 String res_sounds_path;
+
+	 /**
+	  *	\~english
+	  *	\brief The path to music
+	  *
+	  *	The path to the folder with music files. Default value: `Resources\\Music`.
+	  *
+	  *	\~russian
+	  *	\brief Путь к музыке
+	  *
+	  *	Путь к директории с файлами музыки. Значение по умолчанию: `Resources\\Music`.
+	  */
+	 String res_music_path;
+
 			/* FIELDS
 				SECTION: localization */
 

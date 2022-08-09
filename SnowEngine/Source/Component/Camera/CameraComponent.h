@@ -26,7 +26,7 @@ protected:
 private:
 	sf::View view_;
 
-	void update_view_(Component& component, const Transform& old_transform, const Transform& new_transform);
+	void update_view_(Component& component, const Transform& new_transform);
 };
 
 }

@@ -57,6 +57,9 @@
     <Filter Include="Source Files\Util\Animation">
       <UniqueIdentifier>{da030ca4-ed1e-4fa5-ba9a-989d09c38cb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Component\Audio">
+      <UniqueIdentifier>{57c5045f-6540-4f7a-8759-60352697d688}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -164,6 +167,12 @@
     <ClInclude Include="Source\Component\Visible\TextComponent.h">
       <Filter>Source Files\Component\Visible</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Audio\SoundComponent.h">
+      <Filter>Source Files\Component\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Audio\MusicComponent.h">
+      <Filter>Source Files\Component\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -270,6 +279,12 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Visible\TextComponent.cpp">
       <Filter>Source Files\Component\Visible</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Audio\SoundComponent.cpp">
+      <Filter>Source Files\Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Audio\MusicComponent.cpp">
+      <Filter>Source Files\Component\Audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

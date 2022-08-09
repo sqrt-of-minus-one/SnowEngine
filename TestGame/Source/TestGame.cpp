@@ -11,6 +11,7 @@
 #include "Source/Component/Visible/AnimationComponent.h"
 #include "Source/Component/Camera/CameraComponent.h"
 #include "Source/Component/Visible/TextComponent.h"
+#include "Source/Component/Audio/SoundComponent.h"
 #include "Source/Util/Animation/AdvancedSpriteAnimation.h"
 
 using namespace snow;
@@ -25,6 +26,7 @@ int main()
 	std::shared_ptr<CameraComponent> camera = component->create_component<CameraComponent>(Transform(Vector2::ZERO));
 	std::shared_ptr<AnimationComponent> texture = component->create_component<AnimationComponent>(Transform(Vector2::ZERO));
 	std::shared_ptr<TextComponent> text = component->create_component<TextComponent>(Transform(Vector2::ZERO));
+	std::shared_ptr<SoundComponent> sound = component->create_component<SoundComponent>(Transform(Vector2::ZERO));
 
 	texture->set_texture(L"selection.png"_s);
 
@@ -38,9 +40,15 @@ int main()
 	text->set_font(L"cambriab.ttf"_s);
 	text->set_text(L"Hello world!"_s);
 
+	sound->set_sound(L"cow_passive_0.wav");
+
 	Delegate<void> delegate;
-	delegate.bind([&camera, &texture, &actor](){ camera->move(Vector2(.1f, 0.f)); texture->rotate(.1_deg); actor->scale(Vector2(.999f, .999f)); });
+	delegate.bind([&camera, &texture, &actor](){ camera->move(Vector2(.5f, 0.f)); texture->rotate(.1_deg); actor->scale(Vector2(.999f, .999f)); });
 	TimerManager::get_instance().create_timer(delegate, .05f, .05f);
+
+	Delegate<void> sound_delegate;
+	delegate.bind([&sound]() { sound->play(); });
+	TimerManager::get_instance().create_timer(delegate, 0.f, 5.f);
 
 	_getch();
 	return 0;

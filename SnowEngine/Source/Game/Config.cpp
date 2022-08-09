@@ -65,6 +65,8 @@ String Config::to_string() const
 		L"\n[resources]" +
 		L"\nres_textures_path = " + check_string_(res_textures_path) +
 		L"\nres_fonts_path = " + check_string_(res_fonts_path) +
+		L"\nres_sounds_path = " + check_string_(res_sounds_path) +
+		L"\nres_music_path = " + check_string_(res_music_path) +
 		L"\n" +
 		L"\n[localization]" +
 		L"\nlang_path = " + check_string_(lang_path) +
@@ -96,6 +98,8 @@ void Config::save()
 		L"\n[resources]" <<
 		L"\nres_textures_path = " << check_string_(res_textures_path) <<
 		L"\nres_fonts_path = " << check_string_(res_fonts_path) <<
+		L"\nres_sounds_path = " << check_string_(res_sounds_path) <<
+		L"\nres_music_path = " << check_string_(res_music_path) <<
 		L"\n" <<
 		L"\n[localization]" <<
 		L"\nlang_path = " << check_string_(lang_path) <<
@@ -262,6 +266,22 @@ end_loop:;
 						}
 						res_fonts_path = value;
 					}
+					else if (field == L"res_sounds_path")
+					{
+						while (value.back() == L'\\' || value.back() == L'/')
+						{
+							value.pop_back();
+						}
+						res_sounds_path = value;
+					}
+					else if (field == L"res_music_path")
+					{
+						while (value.back() == L'\\' || value.back() == L'/')
+						{
+							value.pop_back();
+						}
+						res_music_path = value;
+					}
 				}
 				else if (category == L"[localization]")
 				{
@@ -303,6 +323,8 @@ Config::Config() :
 		// resources
 	res_textures_path(L"Resources\\Textures"),
 	res_fonts_path(L"Resources\\Fonts"),
+	res_sounds_path(L"Resources\\Sounds"),
+	res_music_path(L"Resources\\Music"),
 		// localization
 	lang_path(L"Localization"_s),
 	default_lang(L"en_UK"_s),

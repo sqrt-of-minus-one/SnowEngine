@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor\Actor.h" />
+    <ClInclude Include="Source\Component\Audio\MusicComponent.h" />
+    <ClInclude Include="Source\Component\Audio\SoundComponent.h" />
     <ClInclude Include="Source\Component\Camera\CameraComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\Visible\AnimationComponent.h" />
@@ -57,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Component\Audio\MusicComponent.cpp" />
+    <ClCompile Include="Source\Component\Audio\SoundComponent.cpp" />
     <ClCompile Include="Source\Component\Camera\CameraComponent.cpp" />
     <ClCompile Include="Source\Component\Component.cpp" />
     <ClCompile Include="Source\Component\Visible\AnimationComponent.cpp" />

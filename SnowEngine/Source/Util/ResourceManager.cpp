@@ -8,6 +8,8 @@
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Music.hpp>
 #include <SFML/System/String.hpp>
 
 #include "Types/String.h"
@@ -88,6 +90,36 @@ std::shared_ptr<sf::Font> ResourceManager::get_font(const String& name)
 	}
 }
 
+std::shared_ptr<sf::SoundBuffer> ResourceManager::get_sound(const String& name)
+{
+	GET_RES(sounds_, name);
+	std::shared_ptr<sf::SoundBuffer> res = std::make_shared<sf::SoundBuffer>();
+	if (res->loadFromFile(sf::String((Game::config.res_sounds_path + L'\\' + name).to_std_string()).toAnsiString()))
+	{
+		sounds_.insert(std::make_pair(name.to_std_string(), res));
+		return res;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+std::shared_ptr<sf::Music> ResourceManager::get_music(const String& name)
+{
+	GET_RES(music_, name);
+	std::shared_ptr<sf::Music> res = std::make_shared<sf::Music>();
+	if (res->openFromFile(sf::String((Game::config.res_music_path + L'\\' + name).to_std_string()).toAnsiString()))
+	{
+		music_.insert(std::make_pair(name.to_std_string(), res));
+		return res;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
 		/* ResourceManager: private */
 
 ResourceManager::ResourceManager()
@@ -115,6 +147,28 @@ void ResourceManager::check_resources_()
 		if (!i->second.lock())
 		{
 			fonts_.erase(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+	for (auto i = sounds_.begin(); i != sounds_.end(); )
+	{
+		if (!i->second.lock())
+		{
+			sounds_.erase(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+	for (auto i = music_.begin(); i != music_.end(); )
+	{
+		if (!i->second.lock())
+		{
+			music_.erase(i);
 		}
 		else
 		{
