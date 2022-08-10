@@ -23,6 +23,7 @@
     <ClInclude Include="Source\Component\Audio\MusicComponent.h" />
     <ClInclude Include="Source\Component\Audio\SoundComponent.h" />
     <ClInclude Include="Source\Component\Camera\CameraComponent.h" />
+    <ClInclude Include="Source\Component\Collision\CollisionComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\Visible\AnimationComponent.h" />
     <ClInclude Include="Source\Component\Visible\SpriteComponent.h" />
@@ -62,6 +63,7 @@
     <ClCompile Include="Source\Component\Audio\MusicComponent.cpp" />
     <ClCompile Include="Source\Component\Audio\SoundComponent.cpp" />
     <ClCompile Include="Source\Component\Camera\CameraComponent.cpp" />
+    <ClCompile Include="Source\Component\Collision\CollisionComponent.cpp" />
     <ClCompile Include="Source\Component\Component.cpp" />
     <ClCompile Include="Source\Component\Visible\AnimationComponent.cpp" />
     <ClCompile Include="Source\Component\Visible\SpriteComponent.cpp" />

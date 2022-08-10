@@ -39,7 +39,6 @@ public:
 	std::shared_ptr<sf::Texture> get_texture(const String& name);
 	std::shared_ptr<sf::Font> get_font(const String& name);
 	std::shared_ptr<sf::SoundBuffer> get_sound(const String& name);
-	std::shared_ptr<sf::Music> get_music(const String& name);
 
 private:
 	ResourceManager();
@@ -49,7 +48,6 @@ private:
 	std::unordered_map<std::wstring, std::weak_ptr<sf::Texture>> textures_;
 	std::unordered_map<std::wstring, std::weak_ptr<sf::Font>> fonts_;
 	std::unordered_map<std::wstring, std::weak_ptr<sf::SoundBuffer>> sounds_;
-	std::unordered_map<std::wstring, std::weak_ptr<sf::Music>> music_;
 };
 
 }

@@ -46,6 +46,33 @@ inline String check_string_(const String& str)
 	}
 }
 
+Point2 string_to_point_(const String& string, const Point2& default_value)
+{
+	Point2 ret;
+	std::vector<String> parts = string.split(L'x', 2, false);
+	try
+	{
+		if (parts.size() < 2)
+		{
+			return default_value;
+		}
+		else
+		{
+			ret.set_x(parts[0].to_int());
+			ret.set_y(parts[1].to_int());
+			if (ret.get_x() <= 0 || ret.get_y() <= 0)
+			{
+				return default_value;
+			}
+			return ret;
+		}
+	}
+	catch (std::invalid_argument e)
+	{
+		return default_value;
+	}
+}
+
 		/* Config: public */
 
 String Config::to_string() const
@@ -67,6 +94,9 @@ String Config::to_string() const
 		L"\nres_fonts_path = " + check_string_(res_fonts_path) +
 		L"\nres_sounds_path = " + check_string_(res_sounds_path) +
 		L"\nres_music_path = " + check_string_(res_music_path) +
+		L"\n" +
+		L"\n[collision]" +
+		L"\ncollision_chunk_size = " + util::to_string(collision_chunk_size.get_x()) + L"x" + util::to_string(collision_chunk_size.get_y()) +
 		L"\n" +
 		L"\n[localization]" +
 		L"\nlang_path = " + check_string_(lang_path) +
@@ -100,6 +130,9 @@ void Config::save()
 		L"\nres_fonts_path = " << check_string_(res_fonts_path) <<
 		L"\nres_sounds_path = " << check_string_(res_sounds_path) <<
 		L"\nres_music_path = " << check_string_(res_music_path) <<
+		L"\n" <<
+		L"\n[collision]" <<
+		L"\ncollision_chunk_size = " << util::to_string(collision_chunk_size.get_x()) << L"x" << util::to_string(collision_chunk_size.get_y()) <<
 		L"\n" <<
 		L"\n[localization]" <<
 		L"\nlang_path = " << check_string_(lang_path) <<
@@ -209,23 +242,7 @@ end_loop:;
 				{
 					if (field == L"resolution")
 					{
-						String val = value;
-						int x_pos = val.find_first(L'x');
-						try
-						{
-							resolution.set_x(val.substring(0, x_pos).to_int());
-							resolution.set_y(val.substring(x_pos + 1, val.size()).to_int());
-							if (resolution.get_x() <= 0 || resolution.get_y() <= 0)
-							{
-								resolution.set_x(800);
-								resolution.set_y(600);
-							}
-						}
-						catch (std::invalid_argument e)
-						{
-							resolution.set_x(800);
-							resolution.set_y(600);
-						}
+						resolution = string_to_point_(value, Point2(800, 600));
 					}
 					else if (field == L"fullscreen")
 					{
@@ -283,6 +300,13 @@ end_loop:;
 						res_music_path = value;
 					}
 				}
+				else if (category == L"[collision]")
+				{
+					if (field == L"collision_chunk_size")
+					{
+						collision_chunk_size = string_to_point_(value, Point2(1500, 1500));
+					}
+				}
 				else if (category == L"[localization]")
 				{
 					if (field == L"lang_path")
@@ -325,6 +349,8 @@ Config::Config() :
 	res_fonts_path(L"Resources\\Fonts"),
 	res_sounds_path(L"Resources\\Sounds"),
 	res_music_path(L"Resources\\Music"),
+		// collision
+	collision_chunk_size(1500, 1500),
 		// localization
 	lang_path(L"Localization"_s),
 	default_lang(L"en_UK"_s),

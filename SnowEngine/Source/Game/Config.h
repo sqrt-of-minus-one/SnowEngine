@@ -274,6 +274,26 @@ public:
 	 String res_music_path;
 
 			/* FIELDS
+				SECTION: collision */
+
+	/**
+	 *	\~english
+	 *	\brief Size of a collision chunk
+	 *	
+	 *	Size of any collision chunk. It is used to handle collisions in the `CollisionComponent`.
+	 *	It's recommend that the size of a chunk be bigger than the size of the largest collision.
+	 *	Default value: `1500x1500`.
+	 *	
+	 *	\~russian
+	 *	\brief Размер чанка коллизии
+	 *	
+	 *	Размер одного чанка коллизии. Используется при обработке коллизий в классе
+	 *	`CollisionComponent`. Рекомендуется, чтобы размер чанка был больше, чем размер наибольшей
+	 *	коллизии. Значение по умолчанию: `1500x1500`
+	 */
+	Point2 collision_chunk_size;
+
+			/* FIELDS
 				SECTION: localization */
 
 	/**

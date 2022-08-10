@@ -60,6 +60,9 @@
     <Filter Include="Source Files\Component\Audio">
       <UniqueIdentifier>{57c5045f-6540-4f7a-8759-60352697d688}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Component\Collision">
+      <UniqueIdentifier>{52c9e025-822d-49c9-8090-8f3d21a0e4e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -173,6 +176,9 @@
     <ClInclude Include="Source\Component\Audio\MusicComponent.h">
       <Filter>Source Files\Component\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Collision\CollisionComponent.h">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -285,6 +291,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Audio\MusicComponent.cpp">
       <Filter>Source Files\Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\CollisionComponent.cpp">
+      <Filter>Source Files\Component\Collision</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

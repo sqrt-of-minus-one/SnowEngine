@@ -105,21 +105,6 @@ std::shared_ptr<sf::SoundBuffer> ResourceManager::get_sound(const String& name)
 	}
 }
 
-std::shared_ptr<sf::Music> ResourceManager::get_music(const String& name)
-{
-	GET_RES(music_, name);
-	std::shared_ptr<sf::Music> res = std::make_shared<sf::Music>();
-	if (res->openFromFile(sf::String((Game::config.res_music_path + L'\\' + name).to_std_string()).toAnsiString()))
-	{
-		music_.insert(std::make_pair(name.to_std_string(), res));
-		return res;
-	}
-	else
-	{
-		return nullptr;
-	}
-}
-
 		/* ResourceManager: private */
 
 ResourceManager::ResourceManager()
@@ -158,17 +143,6 @@ void ResourceManager::check_resources_()
 		if (!i->second.lock())
 		{
 			sounds_.erase(i);
-		}
-		else
-		{
-			i++;
-		}
-	}
-	for (auto i = music_.begin(); i != music_.end(); )
-	{
-		if (!i->second.lock())
-		{
-			music_.erase(i);
 		}
 		else
 		{
