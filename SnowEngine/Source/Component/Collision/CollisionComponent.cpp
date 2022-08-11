@@ -17,20 +17,11 @@ using namespace snow;
 
 CollisionComponent::CollisionComponent(Actor& actor, Component* parent, const Transform& transform) :
 	Component(actor, parent, transform),
-	boundary_rect_(get_boundary_rect()),
-	min_chunk_(boundary_rect_.get_position() / Game::config.collision_chunk_size),
-	max_chunk_((boundary_rect_.get_position() + boundary_rect_.get_size()) / Game::config.collision_chunk_size)
+	boundary_rect_(),
+	min_chunk_(static_cast<Point2>(boundary_rect_.get_position()) / Game::config.collision_chunk_size),
+	max_chunk_(static_cast<Point2>(boundary_rect_.get_position() + boundary_rect_.get_size()) / Game::config.collision_chunk_size)
 {
 	on_level_transformed.bind<CollisionComponent>(*this, &CollisionComponent::update_chunks_);
-	auto& map = collision_chunks_[&get_level()];
-	for (int i = min_chunk_.get_x(); i < max_chunk_.get_x(); i++)
-	{
-		auto& map_map = map[i];
-		for (int j = min_chunk_.get_y(); j < max_chunk_.get_y(); j++)
-		{
-			map_map[j].insert(this);
-		}
-	}
 }
 
 CollisionComponent::~CollisionComponent()
@@ -77,9 +68,9 @@ std::vector<CollisionComponent*> CollisionComponent::get_overlap() const
 
 void CollisionComponent::update_chunks_(Component& component, const Transform& new_transform)
 {
-	IntRect new_boundary_rect = get_boundary_rect();
-	Point2 new_min_chunk = new_boundary_rect.get_position() / Game::config.collision_chunk_size;
-	Point2 new_max_chunk = (new_boundary_rect.get_position() + new_boundary_rect.get_size()) / Game::config.collision_chunk_size;
+	FloatRect new_boundary_rect = get_boundary_rect();
+	Point2 new_min_chunk = static_cast<Point2>(new_boundary_rect.get_position()) / Game::config.collision_chunk_size;
+	Point2 new_max_chunk = static_cast<Point2>(new_boundary_rect.get_position() + new_boundary_rect.get_size()) / Game::config.collision_chunk_size;
 	auto& map = collision_chunks_[&get_level()];
 	for (int i = min_chunk_.get_x(); i < max_chunk_.get_x(); i++)
 	{

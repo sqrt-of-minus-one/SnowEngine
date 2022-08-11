@@ -179,6 +179,12 @@
     <ClInclude Include="Source\Component\Collision\CollisionComponent.h">
       <Filter>Source Files\Component\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Collision\RectCollisionComponent.h">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\CircleCollisionComponent.h">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -293,6 +299,12 @@
       <Filter>Source Files\Component\Audio</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\Collision\CollisionComponent.cpp">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\CircleCollisionComponent.cpp">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\RectCollisionComponent.cpp">
       <Filter>Source Files\Component\Collision</Filter>
     </ClCompile>
   </ItemGroup>

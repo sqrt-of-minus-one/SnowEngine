@@ -13,7 +13,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "../../Math/Shape/IntRect.h"
+#include "../../Math/Shape/FloatRect.h"
+#include "../../Math/Vector/Point2.h"
 
 namespace snow
 {
@@ -26,15 +27,13 @@ public:
 	CollisionComponent(Actor& actor, Component* parent, const Transform& transform);
 	~CollisionComponent();
 
-	virtual bool overlap(const CollisionComponent& collision_component_) const = 0;
+	virtual bool overlap(const CollisionComponent& collision_component) const = 0;
 	std::vector<CollisionComponent*> get_overlap() const;
 
-protected:
-
-	virtual IntRect get_boundary_rect() = 0;
+	virtual FloatRect get_boundary_rect() const = 0;
 
 private:
-	IntRect boundary_rect_;
+	FloatRect boundary_rect_;
 	Point2 min_chunk_;
 	Point2 max_chunk_;
 
