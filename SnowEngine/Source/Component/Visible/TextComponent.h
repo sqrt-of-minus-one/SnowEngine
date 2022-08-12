@@ -32,12 +32,13 @@ public:
 
 	virtual void draw(sf::RenderWindow& window) override;
 
+protected:
+	virtual void when_transformed(const Transform& new_level_transform) override;
+
 private:
 	std::shared_ptr<sf::Font> font_;
 	sf::Text text_;
 	String font_name_;
-
-	void update_text_(Component& component, const Transform& new_transform);
 };
 
 }

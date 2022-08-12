@@ -11,12 +11,12 @@
 #include <list>
 
 #include "../Util/Function/EventBinder.h"
+#include "../Actor/Actor.h"
 
 namespace snow
 {
 
 class Transform;
-class Actor;
 
 class Level : public Object
 {
@@ -66,6 +66,7 @@ std::shared_ptr<T_Actor> Level::spawn_actor(const Transform& transform)
 	actor->on_destroyed.bind<Level>(*this, &Level::remove_actor_, true);
 
 	actors_.push_back(actor);
+	dynamic_cast<Actor*>(actor.get())->when_begin_play();
 	return actor;
 }
 

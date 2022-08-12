@@ -31,9 +31,6 @@ public:
 
 	static const std::map<Level*, std::list<VisibleComponent*>>& get_visible_components();
 
-protected:
-	virtual void tick(float delta_sec) override;
-
 private:
 	static std::map<Level*, std::list<VisibleComponent*>> visible_components_;
 };

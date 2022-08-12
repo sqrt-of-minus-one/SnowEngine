@@ -40,13 +40,6 @@ const std::map<Level*, std::list<VisibleComponent*>>& VisibleComponent::get_visi
 	return visible_components_;
 }
 
-		/* VisibleComponent: protected */
-
-void VisibleComponent::tick(float delta_sec)
-{
-	Component::tick(delta_sec);
-}
-
 		/* VisibleComponent: private */
 
 std::map<Level*, std::list<VisibleComponent*>> VisibleComponent::visible_components_;

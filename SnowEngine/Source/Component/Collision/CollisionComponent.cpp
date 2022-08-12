@@ -20,9 +20,7 @@ CollisionComponent::CollisionComponent(Actor& actor, Component* parent, const Tr
 	boundary_rect_(),
 	min_chunk_(static_cast<Point2>(boundary_rect_.get_position()) / Game::config.collision_chunk_size),
 	max_chunk_(static_cast<Point2>(boundary_rect_.get_position() + boundary_rect_.get_size()) / Game::config.collision_chunk_size)
-{
-	on_level_transformed.bind<CollisionComponent>(*this, &CollisionComponent::update_chunks_);
-}
+{}
 
 CollisionComponent::~CollisionComponent()
 {
@@ -64,9 +62,16 @@ std::vector<CollisionComponent*> CollisionComponent::get_overlap() const
 	return ret;
 }
 
-		/* CollisionComponent: private */
+		/* CollisionComponent: protected */
 
-void CollisionComponent::update_chunks_(Component& component, const Transform& new_transform)
+void CollisionComponent::when_begin_play()
+{
+	Component::when_begin_play();
+
+	when_transformed(get_level_transform());
+}
+
+void CollisionComponent::when_transformed(const Transform& new_level_transform)
 {
 	FloatRect new_boundary_rect = get_boundary_rect();
 	Point2 new_min_chunk = static_cast<Point2>(new_boundary_rect.get_position()) / Game::config.collision_chunk_size;
@@ -98,5 +103,7 @@ void CollisionComponent::update_chunks_(Component& component, const Transform& n
 	min_chunk_ = new_min_chunk;
 	max_chunk_ = new_max_chunk;
 }
+
+		/* CollisionComponent: private */
 
 std::map<const Level*, std::unordered_map<int /*x*/, std::unordered_map<int /*y*/, std::unordered_set<CollisionComponent*>>>> CollisionComponent::collision_chunks_;

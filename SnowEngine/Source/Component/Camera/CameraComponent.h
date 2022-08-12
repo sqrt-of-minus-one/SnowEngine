@@ -22,11 +22,10 @@ public:
 
 protected:
 	virtual void tick(float delta_sec) override;
+	virtual void when_transformed(const Transform& new_level_transform) override;
 
 private:
 	sf::View view_;
-
-	void update_view_(Component& component, const Transform& new_transform);
 };
 
 }

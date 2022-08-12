@@ -28,11 +28,12 @@ public:
 	void pause();
 	void stop();
 
+protected:
+	virtual void when_transformed(const Transform& new_level_transform) override;
+
 private:
 	sf::Music music_;
 	String music_name_;
-
-	void update_music_(Component& component, const Transform& new_transform);
 };
 
 }

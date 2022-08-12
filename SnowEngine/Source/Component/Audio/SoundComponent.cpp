@@ -23,8 +23,6 @@ SoundComponent::SoundComponent(Actor& actor, Component* parent, const Transform&
 	sound_name_()
 {
 	sound_.setPosition(transform.get_position().get_x(), transform.get_position().get_y(), 0.f);
-
-	on_level_transformed.bind<SoundComponent>(*this, &SoundComponent::update_sound_);
 }
 
 bool SoundComponent::set_sound(const String& sound)
@@ -57,9 +55,11 @@ void SoundComponent::stop()
 	sound_.stop();
 }
 
-		/* SoundComponent: private */
+		/* SoundComponent: protected */
 
-void SoundComponent::update_sound_(Component& component, const Transform& new_transform)
+void SoundComponent::when_transformed(const Transform& new_level_transform)
 {
-	sound_.setPosition(new_transform.get_position().get_x(), new_transform.get_position().get_y(), 0.f);
+	Component::when_transformed(new_level_transform);
+	
+	sound_.setPosition(new_level_transform.get_position().get_x(), new_level_transform.get_position().get_y(), 0.f);
 }

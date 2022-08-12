@@ -171,6 +171,9 @@ void Actor::tick(float delta_sec)
 	root_component_->tick(delta_sec);
 }
 
+void Actor::when_begin_play()
+{}
+
 		/* Actor: private */
 
 int Actor::actors_counter_ = 0;

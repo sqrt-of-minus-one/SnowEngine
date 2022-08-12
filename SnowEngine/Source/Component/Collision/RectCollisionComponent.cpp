@@ -12,9 +12,7 @@ using namespace snow;
 
 RectCollisionComponent::RectCollisionComponent(Actor& actor, Component* parent, const Transform& transform) :
 	CollisionComponent(actor, parent, transform)
-{
-	move(Vector2::ZERO); // We need to call on_level_transformed
-}
+{}
 
 bool RectCollisionComponent::overlap(const CollisionComponent& collision_component) const
 {

@@ -183,11 +183,19 @@ void Component::tick(float delta_sec)
 	}
 }
 
+void Component::when_begin_play()
+{}
+
+void Component::when_transformed(const Transform& new_level_transform)
+{}
+
 		/* Component: private */
 
 void Component::child_level_transformed_()
 {
-	on_level_transformed_.execute(*this, get_level_transform());
+	Transform transform = get_level_transform();
+	on_level_transformed_.execute(*this, transform);
+	when_transformed(transform);
 	for (std::shared_ptr<Component>& i : components_)
 	{
 		i->child_level_transformed_();

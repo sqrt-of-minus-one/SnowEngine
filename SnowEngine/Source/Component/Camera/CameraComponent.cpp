@@ -26,8 +26,6 @@ CameraComponent::CameraComponent(Actor& actor, Component* parent, const Transfor
 	view_.setRotation(transform.get_rotation().get_degrees());
 	view_.setSize(Game::config.resolution.get_x(), Game::config.resolution.get_y());
 	// Todo: scale
-
-	on_level_transformed.bind<CameraComponent>(*this, &CameraComponent::update_view_);
 }
 
 		/* CameraComponent: protected */
@@ -52,11 +50,11 @@ void CameraComponent::tick(float delta_sec)
 	}
 }
 
-		/* CameraComponent: private */
-
-void CameraComponent::update_view_(Component& component, const Transform& new_transform)
+void CameraComponent::when_transformed(const Transform& new_level_transform)
 {
-	view_.setCenter(new_transform.get_position().get_x(), new_transform.get_position().get_y());
-	view_.setRotation(new_transform.get_rotation().get_degrees());
+	Component::when_transformed(new_level_transform);
+
+	view_.setCenter(new_level_transform.get_position().get_x(), new_level_transform.get_position().get_y());
+	view_.setRotation(new_level_transform.get_rotation().get_degrees());
 	// Todo: scale
 }

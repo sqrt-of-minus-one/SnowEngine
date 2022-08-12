@@ -10,11 +10,11 @@
 
 #include "../Util/Types/Transform.h"
 #include "../Util/Function/EventBinder.h"
+#include "../Component/Component.h"
 
 namespace snow
 {
 
-class Component;
 class Vector2;
 class Angle;
 
@@ -59,6 +59,7 @@ public:
 
 protected:
 	virtual void tick(float delta_sec);
+	virtual void when_begin_play();
 
 private:
 	static int actors_counter_;
@@ -89,6 +90,7 @@ std::shared_ptr<T_Component> Actor::create_root_component(const Transform& trans
 	}
 
 	root_component_ = std::make_shared<T_Component>(*this, nullptr, transform);
+	dynamic_cast<Component*>(root_component_.get())->when_begin_play();
 	return root_component_;
 }
 

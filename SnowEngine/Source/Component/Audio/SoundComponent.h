@@ -33,12 +33,13 @@ public:
 	void pause();
 	void stop();
 
+protected:
+	virtual void when_transformed(const Transform& new_level_transform) override;
+
 private:
 	sf::Sound sound_;
 	std::shared_ptr<sf::SoundBuffer> buffer_;
 	String sound_name_;
-
-	void update_sound_(Component& component, const Transform& new_transform);
 };
 
 }

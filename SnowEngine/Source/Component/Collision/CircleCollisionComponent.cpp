@@ -14,9 +14,7 @@ using namespace snow;
 
 CircleCollisionComponent::CircleCollisionComponent(Actor& actor, Component* parent, const Transform& transform) :
 	CollisionComponent(actor, parent, transform)
-{
-	move(Vector2::ZERO); // We need to call on_level_transformed
-}
+{}
 
 bool CircleCollisionComponent::overlap(const CollisionComponent& collision_component) const
 {

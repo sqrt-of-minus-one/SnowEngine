@@ -33,6 +33,9 @@ public:
 
 	virtual void draw(sf::RenderWindow& window) override;
 
+protected:
+	virtual void when_transformed(const Transform& new_level_transform) override;
+
 private:
 	std::shared_ptr<sf::Texture> texture_;
 	sf::Sprite sprite_;
@@ -41,7 +44,6 @@ private:
 
 	int sprite_anim_event_id_;
 
-	void update_sprite_(Component& component, const Transform& new_transform);
 	void update_sprite_rect_(const IntRect& sprite_rect);
 };
 

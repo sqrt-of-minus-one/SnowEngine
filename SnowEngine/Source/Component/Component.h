@@ -61,6 +61,8 @@ public:
 
 protected:
 	virtual void tick(float delta_sec);
+	virtual void when_begin_play();
+	virtual void when_transformed(const Transform& new_level_transform);
 
 private:
 	static int components_counter_;
@@ -90,6 +92,7 @@ std::shared_ptr<T_Component> Component::create_component(const Transform& transf
 
 	std::shared_ptr<T_Component> component = std::make_shared<T_Component>(actor_, this, transform);
 	components_.push_back(component);
+	dynamic_cast<Component*>(component.get())->when_begin_play();
 	return component;
 }
 

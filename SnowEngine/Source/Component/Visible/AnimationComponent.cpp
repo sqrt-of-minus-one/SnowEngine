@@ -24,9 +24,7 @@ AnimationComponent::AnimationComponent(Actor& actor, Component* parent, const Tr
 	texture_name_(),
 	sprite_animation_(),
 	sprite_anim_event_id_(0)
-{
-	on_level_transformed.bind<AnimationComponent>(*this, &AnimationComponent::update_sprite_);
-}
+{}
 
 bool AnimationComponent::set_texture(const String& texture)
 {
@@ -62,14 +60,18 @@ void AnimationComponent::draw(sf::RenderWindow& window)
 	window.draw(sprite_);
 }
 
-		/* AnimationComponent: private */
+		/* AnimationComponent: protected */
 
-void AnimationComponent::update_sprite_(Component& component, const Transform& new_transform)
+void AnimationComponent::when_transformed(const Transform& new_level_transform)
 {
-	sprite_.setPosition(new_transform.get_position().get_x(), new_transform.get_position().get_y());
-	sprite_.setRotation(new_transform.get_rotation().get_degrees());
-	sprite_.setScale(new_transform.get_scale().get_x(), new_transform.get_scale().get_y());
+	VisibleComponent::when_transformed(new_level_transform);
+
+	sprite_.setPosition(new_level_transform.get_position().get_x(), new_level_transform.get_position().get_y());
+	sprite_.setRotation(new_level_transform.get_rotation().get_degrees());
+	sprite_.setScale(new_level_transform.get_scale().get_x(), new_level_transform.get_scale().get_y());
 }
+
+		/* AnimationComponent: private */
 
 void AnimationComponent::update_sprite_rect_(const IntRect& sprite_rect)
 {

@@ -32,14 +32,16 @@ public:
 
 	virtual FloatRect get_boundary_rect() const = 0;
 
+protected:
+	virtual void when_begin_play() override;
+	virtual void when_transformed(const Transform& new_level_transform) override;
+
 private:
 	FloatRect boundary_rect_;
 	Point2 min_chunk_;
 	Point2 max_chunk_;
 
 	static std::map<const Level*, std::unordered_map<int /*x*/, std::unordered_map<int /*y*/, std::unordered_set<CollisionComponent*>>>> collision_chunks_;
-
-	void update_chunks_(Component& component, const Transform& new_transform);
 };
 
 }
