@@ -15,6 +15,7 @@
 #include "../Util/Lang/Lang.h"
 #include "../Util/Time/TimerManager.h"
 #include "../Level/Level.h"
+#include "../Util/Input/Input.h"
 #include "../Util/Function/EventBinder.h"
 
 using namespace snow;
@@ -59,9 +60,33 @@ void Game::loop_()
 		sf::Event event;
 		while (window_->pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			switch (event.type)
+			{
+			case sf::Event::EventType::Closed:
 			{
 				window_->close();
+				break;
+			}
+			case sf::Event::EventType::KeyPressed:
+			{
+				auto& input = Input::get_instance();
+				auto iter = input.on_pressed_.find(key_sfml_to_snow(event.key.code));
+				if (iter != input.on_pressed_.end())
+				{
+					iter->second.execute(input.get_system_keys());
+				}
+				break;
+			}
+			case sf::Event::EventType::KeyReleased:
+			{
+				auto& input = Input::get_instance();
+				auto iter = input.on_released_.find(key_sfml_to_snow(event.key.code));
+				if (iter != input.on_released_.end())
+				{
+					iter->second.execute(input.get_system_keys());
+				}
+				break;
+			}
 			}
 		}
 

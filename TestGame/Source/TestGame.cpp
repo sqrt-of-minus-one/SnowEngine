@@ -13,8 +13,7 @@
 #include "Source/Component/Visible/TextComponent.h"
 #include "Source/Component/Audio/SoundComponent.h"
 #include "Source/Util/Animation/AdvancedSpriteAnimation.h"
-#include "Source/Component/Collision/RectCollisionComponent.h"
-#include "Source/Component/Collision/CircleCollisionComponent.h"
+#include "Source/Util/Input/Input.h"
 
 using namespace snow;
 
@@ -26,11 +25,7 @@ int main()
 	std::shared_ptr<Actor> actor = level->spawn_actor<Actor>(Transform(Vector2::ZERO));
 	std::shared_ptr<Component> component = actor->create_root_component<Component>(Transform(Vector2::ZERO));
 
-	std::shared_ptr<RectCollisionComponent> rect = component->create_component<RectCollisionComponent>(Transform(Vector2::ZERO));
-	std::shared_ptr<CircleCollisionComponent> circle = component->create_component<CircleCollisionComponent>(Transform(Vector2(110.f, 0.f)));
-	std::wcout << rect->overlap(*circle) << std::endl;
-
-	/*std::shared_ptr<CameraComponent> camera = component->create_component<CameraComponent>(Transform(Vector2::ZERO));
+	std::shared_ptr<CameraComponent> camera = component->create_component<CameraComponent>(Transform(Vector2::ZERO));
 	std::shared_ptr<AnimationComponent> texture = component->create_component<AnimationComponent>(Transform(Vector2::ZERO));
 	std::shared_ptr<TextComponent> text = component->create_component<TextComponent>(Transform(Vector2::ZERO));
 	std::shared_ptr<SoundComponent> sound = component->create_component<SoundComponent>(Transform(Vector2::ZERO));
@@ -55,7 +50,9 @@ int main()
 
 	Delegate<void> sound_delegate;
 	delegate.bind([&sound]() { sound->play(); });
-	TimerManager::get_instance().create_timer(delegate, 0.f, 5.f);*/
+	TimerManager::get_instance().create_timer(delegate, 0.f, 5.f);
+
+	Input::get_instance().on_released(EKey::I).bind([](SystemKeys system_keys) { std::wcout << "I pressed!" << std::endl; });
 
 	_getch();
 	return 0;

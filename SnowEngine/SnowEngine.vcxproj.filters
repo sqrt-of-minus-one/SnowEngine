@@ -63,6 +63,9 @@
     <Filter Include="Source Files\Component\Collision">
       <UniqueIdentifier>{52c9e025-822d-49c9-8090-8f3d21a0e4e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Input">
+      <UniqueIdentifier>{f18e12eb-18f2-4ae0-9cc8-4537c337f503}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -185,6 +188,9 @@
     <ClInclude Include="Source\Component\Collision\CircleCollisionComponent.h">
       <Filter>Source Files\Component\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\Input\Input.h">
+      <Filter>Source Files\Util\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -306,6 +312,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Collision\RectCollisionComponent.cpp">
       <Filter>Source Files\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Input\Input.cpp">
+      <Filter>Source Files\Util\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

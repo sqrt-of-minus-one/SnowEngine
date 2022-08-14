@@ -27,9 +27,11 @@
  *	Этот файл содержит определение класса `Lang` системы SnowFlake.
  */
 
-#include "../Log/Log.h"
+#include "../../Object.h"
 
 #include <unordered_map>
+
+#include "../Log/Log.h"
 
 namespace std
 {
