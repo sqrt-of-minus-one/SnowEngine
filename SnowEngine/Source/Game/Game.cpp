@@ -87,6 +87,26 @@ void Game::loop_()
 				}
 				break;
 			}
+			case sf::Event::EventType::MouseButtonPressed:
+			{
+				auto& input = Input::get_instance();
+				auto iter = input.on_mouse_pressed_.find(button_sfml_to_snow(event.mouseButton.button));
+				if (iter != input.on_mouse_pressed_.end())
+				{
+					iter->second.execute();
+				}
+				break;
+			}
+			case sf::Event::EventType::MouseButtonReleased:
+			{
+				auto& input = Input::get_instance();
+				auto iter = input.on_mouse_released_.find(button_sfml_to_snow(event.mouseButton.button));
+				if (iter != input.on_mouse_released_.end())
+				{
+					iter->second.execute();
+				}
+				break;
+			}
 			}
 		}
 

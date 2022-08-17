@@ -19,6 +19,7 @@
 #include <map>
 
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 namespace snow
 {
@@ -28,6 +29,8 @@ class Event;
 
 template<typename... T_Args>
 class EventBinder;
+
+class Point2;
 
 enum class EKey
 {
@@ -142,8 +145,19 @@ struct SystemKeys
 	bool Win : 1;
 };
 
+enum class EButton
+{
+	LEFT = 0,
+	RIGHT,
+	MIDDLE,
+	EXTRA_1,
+	EXTRA_2
+};
+
 sf::Keyboard::Key key_snow_to_sfml(EKey key);
 EKey key_sfml_to_snow(sf::Keyboard::Key key);
+sf::Mouse::Button button_snow_to_sfml(EButton button);
+EButton button_sfml_to_snow(sf::Mouse::Button button);
 
 class Input : public Object
 {
@@ -151,6 +165,7 @@ class Input : public Object
 
 public:
 			/* SINGLETON */
+
 	static Input& get_instance();
 
 			/* METHODS FROM Object */
@@ -165,17 +180,28 @@ public:
 
 	SystemKeys get_system_keys();
 
+	Point2 get_screen_mouse_position();
+	Point2 get_window_mouse_position();
+	void set_screen_mouse_position(const Point2& position);
+	void set_window_mouse_position(const Point2& position);
+
 	EventBinder<SystemKeys>& on_pressed(EKey key);
 	EventBinder<SystemKeys>& on_released(EKey key);
+	EventBinder<>& on_mouse_pressed(EButton button);
+	EventBinder<>& on_mouse_released(EButton button);
 
 private:
 	Input();
 
 	std::map<EKey, Event<SystemKeys>> on_pressed_;
 	std::map<EKey, Event<SystemKeys>> on_released_;
+	std::map<EButton, Event<>> on_mouse_pressed_;
+	std::map<EButton, Event<>> on_mouse_released_;
 
 	std::map<EKey, EventBinder<SystemKeys>> on_pressed_binder_;
 	std::map<EKey, EventBinder<SystemKeys>> on_released_binder_;
+	std::map<EButton, EventBinder<>> on_mouse_pressed_binder_;
+	std::map<EButton, EventBinder<>> on_mouse_released_binder_;
 
 };
 
