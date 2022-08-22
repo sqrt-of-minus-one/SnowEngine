@@ -14,6 +14,7 @@
 #include "Source/Component/Audio/SoundComponent.h"
 #include "Source/Util/Animation/AdvancedSpriteAnimation.h"
 #include "Source/Util/Input/Input.h"
+#include "Source/Component/Clickable/RectClickableComponent.h"
 
 using namespace snow;
 
@@ -29,6 +30,9 @@ int main()
 	std::shared_ptr<AnimationComponent> texture = component->create_component<AnimationComponent>(Transform(Vector2::ZERO));
 	std::shared_ptr<TextComponent> text = component->create_component<TextComponent>(Transform(Vector2::ZERO));
 	std::shared_ptr<SoundComponent> sound = component->create_component<SoundComponent>(Transform(Vector2::ZERO));
+	std::shared_ptr<RectClickableComponent> clickable = component->create_component<RectClickableComponent>(Transform(Vector2::ZERO));
+
+	clickable->on_pressed.bind([](EButton button) { std::wcout << "Hello!\n"; });
 
 	texture->set_texture(L"selection.png"_s);
 
@@ -44,13 +48,13 @@ int main()
 
 	sound->set_sound(L"cow_passive_0.wav");
 
-	Delegate<void> delegate;
-	delegate.bind([&camera, &texture, &actor](){ camera->move(Vector2(.5f, 0.f)); texture->rotate(.1_deg); actor->scale(Vector2(.999f, .999f)); });
-	TimerManager::get_instance().create_timer(delegate, .05f, .05f);
+	//Delegate<void> delegate;
+	//delegate.bind([&camera, &texture, &actor](){ camera->move(Vector2(.5f, 0.f)); texture->rotate(.1_deg); actor->scale(Vector2(.999f, .999f)); });
+	//TimerManager::get_instance().create_timer(delegate, .05f, .05f);
 
 	Delegate<void> sound_delegate;
-	delegate.bind([&sound]() { sound->play(); });
-	TimerManager::get_instance().create_timer(delegate, 0.f, 5.f);
+	sound_delegate.bind([&sound]() { sound->play(); });
+	TimerManager::get_instance().create_timer(sound_delegate, 0.f, 5.f);
 
 	Input::get_instance().on_mouse_released(EButton::RIGHT).bind([]() { std::wcout << L"Pressed! (" << Input::get_instance().get_window_mouse_position().to_string() << L")" << std::endl; Input::get_instance().set_screen_mouse_position(Point2(100, 100)); });
 

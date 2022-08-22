@@ -77,10 +77,10 @@ void CollisionComponent::when_transformed(const Transform& new_level_transform)
 	Point2 new_min_chunk = static_cast<Point2>(new_boundary_rect.get_position()) / Game::config.collision_chunk_size;
 	Point2 new_max_chunk = static_cast<Point2>(new_boundary_rect.get_position() + new_boundary_rect.get_size()) / Game::config.collision_chunk_size;
 	auto& map = collision_chunks_[&get_level()];
-	for (int i = min_chunk_.get_x(); i < max_chunk_.get_x(); i++)
+	for (int i = min_chunk_.get_x(); i <= max_chunk_.get_x(); i++)
 	{
 		auto& map_map = map[i];
-		for (int j = min_chunk_.get_y(); j < max_chunk_.get_y(); j++)
+		for (int j = min_chunk_.get_y(); j <= max_chunk_.get_y(); j++)
 		{
 			if (i < new_min_chunk.get_x() || i > new_max_chunk.get_x() || j < new_min_chunk.get_y() || j > new_max_chunk.get_y())
 			{
@@ -88,12 +88,12 @@ void CollisionComponent::when_transformed(const Transform& new_level_transform)
 			}
 		}
 	}
-	for (int i = new_min_chunk.get_x(); i < new_max_chunk.get_x(); i++)
+	for (int i = new_min_chunk.get_x(); i <= new_max_chunk.get_x(); i++)
 	{
 		auto& map_map = map[i];
-		for (int j = new_min_chunk.get_y(); j < new_max_chunk.get_y(); j++)
+		for (int j = new_min_chunk.get_y(); j <= new_max_chunk.get_y(); j++)
 		{
-			if (i < min_chunk_.get_x() || i > max_chunk_.get_x() || j < min_chunk_.get_y() || j > max_chunk_.get_y())
+			if (i >= min_chunk_.get_x() && i <= max_chunk_.get_x() && j >= min_chunk_.get_y() && j <= max_chunk_.get_y())
 			{
 				map_map[j].insert(this);
 			}

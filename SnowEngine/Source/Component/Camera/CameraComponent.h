@@ -21,6 +21,8 @@ class Actor;
 
 class CameraComponent : public Component
 {
+	friend class Input;
+
 public:
 	CameraComponent(Actor& actor, Component* parent, const Transform& transform);
 	~CameraComponent();
@@ -28,7 +30,7 @@ public:
 	FloatRect get_viewport() const;
 	void set_viewport(const FloatRect& rect);
 
-	static const std::map<Level*, std::list<CameraComponent*>> get_camera_components();
+	static const std::map<const Level*, std::list<CameraComponent*>>& get_camera_components();
 
 protected:
 	virtual void tick(float delta_sec) override;
@@ -37,7 +39,7 @@ protected:
 private:
 	sf::View view_;
 
-	static std::map<Level*, std::list<CameraComponent*>> camera_components_;
+	static std::map<const Level*, std::list<CameraComponent*>> camera_components_;
 };
 
 }

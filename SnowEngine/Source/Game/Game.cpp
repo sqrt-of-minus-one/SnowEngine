@@ -12,6 +12,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "Config.h"
+#include "../Component/Camera/CameraComponent.h"
+#include "../Component/Clickable/ClickableComponent.h"
 #include "../Util/Lang/Lang.h"
 #include "../Util/Time/TimerManager.h"
 #include "../Level/Level.h"
@@ -89,21 +91,63 @@ void Game::loop_()
 			}
 			case sf::Event::EventType::MouseButtonPressed:
 			{
+				EButton button = button_sfml_to_snow(event.mouseButton.button);
 				auto& input = Input::get_instance();
-				auto iter = input.on_mouse_pressed_.find(button_sfml_to_snow(event.mouseButton.button));
+				auto iter = input.on_mouse_pressed_.find(button);
 				if (iter != input.on_mouse_pressed_.end())
 				{
 					iter->second.execute();
+				}
+
+				for (std::shared_ptr<Level> i : levels_)
+				{
+					auto iter = CameraComponent::get_camera_components().find(i.get());
+					if (iter != CameraComponent::get_camera_components().end())
+					{
+						auto& cameras = iter->second;
+						for (CameraComponent* j : cameras)
+						{
+							// Todo: check if the mouse is over the camera view
+							Vector2 position = Input::get_instance().get_level_mouse_position(*j);
+							std::vector<ClickableComponent*> clicked = ClickableComponent::get_clicked(*i, position);
+							for (ClickableComponent* k : clicked)
+							{
+								k->when_pressed(button);
+								k->on_pressed_.execute(button);
+							}
+						}
+					}
 				}
 				break;
 			}
 			case sf::Event::EventType::MouseButtonReleased:
 			{
+				EButton button = button_sfml_to_snow(event.mouseButton.button);
 				auto& input = Input::get_instance();
-				auto iter = input.on_mouse_released_.find(button_sfml_to_snow(event.mouseButton.button));
+				auto iter = input.on_mouse_released_.find(button);
 				if (iter != input.on_mouse_released_.end())
 				{
 					iter->second.execute();
+				}
+
+				for (std::shared_ptr<Level> i : levels_)
+				{
+					auto iter = CameraComponent::get_camera_components().find(i.get());
+					if (iter != CameraComponent::get_camera_components().end())
+					{
+						auto& cameras = iter->second;
+						for (CameraComponent* j : cameras)
+						{
+							// Todo: check if the mouse is over the camera view
+							Vector2 position = Input::get_instance().get_level_mouse_position(*j);
+							std::vector<ClickableComponent*> clicked = ClickableComponent::get_clicked(*i, position);
+							for (ClickableComponent* k : clicked)
+							{
+								k->when_released(button);
+								k->on_released_.execute(button);
+							}
+						}
+					}
 				}
 				break;
 			}

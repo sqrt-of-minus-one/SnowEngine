@@ -203,6 +203,9 @@
     <ClInclude Include="Source\Component\Clickable\RectClickableComponent.h">
       <Filter>Source Files\Component\Clickable</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\Input\Keys.h">
+      <Filter>Source Files\Util\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -336,6 +339,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Clickable\CircleClickableComponent.cpp">
       <Filter>Source Files\Component\Clickable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Input\Keys.cpp">
+      <Filter>Source Files\Util\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

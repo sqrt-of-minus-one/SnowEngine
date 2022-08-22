@@ -59,7 +59,7 @@ void CameraComponent::set_viewport(const FloatRect& rect)
 									rect.get_size().get_x(), rect.get_size().get_y()));
 }
 
-const std::map<Level*, std::list<CameraComponent*>> CameraComponent::get_camera_components()
+const std::map<const Level*, std::list<CameraComponent*>>& CameraComponent::get_camera_components()
 {
 	return camera_components_;
 }
@@ -95,4 +95,4 @@ void CameraComponent::when_transformed(const Transform& new_level_transform)
 	// Todo: scale
 }
 
-std::map<Level*, std::list<CameraComponent*>> CameraComponent::camera_components_;
+std::map<const Level*, std::list<CameraComponent*>> CameraComponent::camera_components_;
