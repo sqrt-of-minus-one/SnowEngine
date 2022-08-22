@@ -274,7 +274,7 @@ public:
 	 String res_music_path;
 
 			/* FIELDS
-				SECTION: collision */
+				SECTION: chunks */
 
 	/**
 	 *	\~english
@@ -292,6 +292,23 @@ public:
 	 *	коллизии. Значение по умолчанию: `1500x1500`
 	 */
 	Point2 collision_chunk_size;
+
+	/**
+	 *	\~english
+	 *	\brief Size of a clickable chunk
+	 *	
+	 *	Size of any clickable chunk. It is used to handle clicks in the `ClickableComponent`. It's
+	 *	recommend that the size of a chunk be bigger than the size of the largest clickable
+	 *	component. Default value: `500x500`.
+	 *	
+	 *	\~russian
+	 *	\brief Размер чанка кликабельных компонентов
+	 *	
+	 *	Размер одного чанка кликабельных компонентов. Используется при обработке нажатий в классе
+	 *	`CkickableComponent`. Рекомендуется, чтобы размер чанка был больше, чем размер наибольшего
+	 *	кликабельного компонента. Значение по умолчанию: `500x500`
+	 */
+	Point2 clickable_chunk_size;
 
 			/* FIELDS
 				SECTION: localization */

@@ -22,10 +22,46 @@ CameraComponent::CameraComponent(Actor& actor, Component* parent, const Transfor
 	Component(actor, parent, transform),
 	view_()
 {
+	camera_components_[&get_level()].push_back(this);
+
 	view_.setCenter(transform.get_position().get_x(), transform.get_position().get_y());
 	view_.setRotation(transform.get_rotation().get_degrees());
 	view_.setSize(Game::config.resolution.get_x(), Game::config.resolution.get_y());
 	// Todo: scale
+}
+
+CameraComponent::~CameraComponent()
+{
+	auto& list = camera_components_[&get_level()];
+	for (auto i = list.begin(); i != list.end(); i++)
+	{
+		if (*i == this)
+		{
+			list.erase(i);
+			break;
+		}
+	}
+	if (list.empty())
+	{
+		camera_components_.erase(&get_level());
+	}
+}
+
+FloatRect CameraComponent::get_viewport() const
+{
+	sf::FloatRect viewport = view_.getViewport();
+	return FloatRect(Vector2(viewport.left, viewport.top), Vector2(viewport.width, viewport.height));
+}
+
+void CameraComponent::set_viewport(const FloatRect& rect)
+{
+	view_.setViewport(sf::FloatRect(rect.get_position().get_x(), rect.get_position().get_y(),
+									rect.get_size().get_x(), rect.get_size().get_y()));
+}
+
+const std::map<Level*, std::list<CameraComponent*>> CameraComponent::get_camera_components()
+{
+	return camera_components_;
 }
 
 		/* CameraComponent: protected */
@@ -58,3 +94,5 @@ void CameraComponent::when_transformed(const Transform& new_level_transform)
 	view_.setRotation(new_level_transform.get_rotation().get_degrees());
 	// Todo: scale
 }
+
+std::map<Level*, std::list<CameraComponent*>> CameraComponent::camera_components_;

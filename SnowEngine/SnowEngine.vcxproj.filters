@@ -66,6 +66,9 @@
     <Filter Include="Source Files\Util\Input">
       <UniqueIdentifier>{f18e12eb-18f2-4ae0-9cc8-4537c337f503}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Component\Clickable">
+      <UniqueIdentifier>{ee803cb1-98ec-4686-ae42-e18ed69c43ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -191,6 +194,15 @@
     <ClInclude Include="Source\Util\Input\Input.h">
       <Filter>Source Files\Util\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Clickable\CircleClickableComponent.h">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Clickable\ClickableComponent.h">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Clickable\RectClickableComponent.h">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -315,6 +327,15 @@
     </ClCompile>
     <ClCompile Include="Source\Util\Input\Input.cpp">
       <Filter>Source Files\Util\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Clickable\ClickableComponent.cpp">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Clickable\RectClickableComponent.cpp">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Clickable\CircleClickableComponent.cpp">
+      <Filter>Source Files\Component\Clickable</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -95,8 +95,9 @@ String Config::to_string() const
 		L"\nres_sounds_path = " + check_string_(res_sounds_path) +
 		L"\nres_music_path = " + check_string_(res_music_path) +
 		L"\n" +
-		L"\n[collision]" +
+		L"\n[chunks]" +
 		L"\ncollision_chunk_size = " + util::to_string(collision_chunk_size.get_x()) + L"x" + util::to_string(collision_chunk_size.get_y()) +
+		L"\nclickable_chunk_size = " + util::to_string(clickable_chunk_size.get_x()) + L"x" + util::to_string(clickable_chunk_size.get_y()) +
 		L"\n" +
 		L"\n[localization]" +
 		L"\nlang_path = " + check_string_(lang_path) +
@@ -131,8 +132,9 @@ void Config::save()
 		L"\nres_sounds_path = " << check_string_(res_sounds_path) <<
 		L"\nres_music_path = " << check_string_(res_music_path) <<
 		L"\n" <<
-		L"\n[collision]" <<
+		L"\n[chunks]" <<
 		L"\ncollision_chunk_size = " << util::to_string(collision_chunk_size.get_x()) << L"x" << util::to_string(collision_chunk_size.get_y()) <<
+		L"\nclickable_chunk_size = " << util::to_string(clickable_chunk_size.get_x()) << L"x" << util::to_string(clickable_chunk_size.get_y()) <<
 		L"\n" <<
 		L"\n[localization]" <<
 		L"\nlang_path = " << check_string_(lang_path) <<
@@ -300,11 +302,15 @@ end_loop:;
 						res_music_path = value;
 					}
 				}
-				else if (category == L"[collision]")
+				else if (category == L"[chunks]")
 				{
 					if (field == L"collision_chunk_size")
 					{
 						collision_chunk_size = string_to_point_(value, Point2(1500, 1500));
+					}
+					if (field == L"clickable_chunk_size")
+					{
+						clickable_chunk_size = string_to_point_(value, Point2(1500, 1500));
 					}
 				}
 				else if (category == L"[localization]")
@@ -349,8 +355,9 @@ Config::Config() :
 	res_fonts_path(L"Resources\\Fonts"),
 	res_sounds_path(L"Resources\\Sounds"),
 	res_music_path(L"Resources\\Music"),
-		// collision
+		// chunks
 	collision_chunk_size(1500, 1500),
+	clickable_chunk_size(500, 500),
 		// localization
 	lang_path(L"Localization"_s),
 	default_lang(L"en_UK"_s),

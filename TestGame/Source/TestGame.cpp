@@ -52,7 +52,7 @@ int main()
 	delegate.bind([&sound]() { sound->play(); });
 	TimerManager::get_instance().create_timer(delegate, 0.f, 5.f);
 
-	Input::get_instance().on_mouse_released(EButton::RIGHT).bind([]() { std::wcout << L"Pressed! (" << Input::get_instance().get_window_mouse_position().to_string() << L")" << std::endl; });
+	Input::get_instance().on_mouse_released(EButton::RIGHT).bind([]() { std::wcout << L"Pressed! (" << Input::get_instance().get_window_mouse_position().to_string() << L")" << std::endl; Input::get_instance().set_screen_mouse_position(Point2(100, 100)); });
 
 	_getch();
 	return 0;

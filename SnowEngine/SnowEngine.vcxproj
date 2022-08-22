@@ -23,6 +23,9 @@
     <ClInclude Include="Source\Component\Audio\MusicComponent.h" />
     <ClInclude Include="Source\Component\Audio\SoundComponent.h" />
     <ClInclude Include="Source\Component\Camera\CameraComponent.h" />
+    <ClInclude Include="Source\Component\Clickable\CircleClickableComponent.h" />
+    <ClInclude Include="Source\Component\Clickable\ClickableComponent.h" />
+    <ClInclude Include="Source\Component\Clickable\RectClickableComponent.h" />
     <ClInclude Include="Source\Component\Collision\CircleCollisionComponent.h" />
     <ClInclude Include="Source\Component\Collision\CollisionComponent.h" />
     <ClInclude Include="Source\Component\Collision\RectCollisionComponent.h" />
@@ -66,6 +69,9 @@
     <ClCompile Include="Source\Component\Audio\MusicComponent.cpp" />
     <ClCompile Include="Source\Component\Audio\SoundComponent.cpp" />
     <ClCompile Include="Source\Component\Camera\CameraComponent.cpp" />
+    <ClCompile Include="Source\Component\Clickable\CircleClickableComponent.cpp" />
+    <ClCompile Include="Source\Component\Clickable\ClickableComponent.cpp" />
+    <ClCompile Include="Source\Component\Clickable\RectClickableComponent.cpp" />
     <ClCompile Include="Source\Component\Collision\CircleCollisionComponent.cpp" />
     <ClCompile Include="Source\Component\Collision\CollisionComponent.cpp" />
     <ClCompile Include="Source\Component\Collision\RectCollisionComponent.cpp" />
