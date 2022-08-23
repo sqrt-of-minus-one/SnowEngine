@@ -86,8 +86,34 @@ public:
 	 */
 	static bool is_started() noexcept;
 
+	/**
+	 *	\~english
+	 *	\brief The SFML window
+	 *	
+	 *	Allows to get the SFML window where the game is running.
+	 *	\warning This method is designed for internal use. You shouldn't use it directly.
+	 *	\return The pointer to the current game window. Null pointer if the game hasn't been
+	 *	started.
+	 *	
+	 *	\~russian
+	 *	\brief Окно SFML
+	 *	
+	 *	Позволяет получить окно SFML, где запущена игра.
+	 *	\warning Этот метод предназначен для внутреннего использования. Вы не должны вызывать его
+	 *	напрямую.
+	 *	\return Указатель на текущее игровое окно. Нулевой указатель, если игра не была начата.
+	 */
 	static std::weak_ptr<sf::RenderWindow> get_window() noexcept;
 
+	/**
+	 *	\~english
+	 *	\brief Creates a new level
+	 *	
+	 *	Allows to create a new level. You should use this method instead of the constructor of the
+	 *	level.
+	 *	\tparam T_Level The class of the level that will be created.
+	 *	\return The pointer to the created level.
+	 */
 	template<typename T_Level>
 	static std::shared_ptr<T_Level> create_level();
 
