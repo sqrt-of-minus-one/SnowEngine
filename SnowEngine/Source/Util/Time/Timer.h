@@ -19,8 +19,9 @@
  *	Этот файл содержит определение класса `Timer`.
  */
 
+#include "../../Object.h"
+
 #include "../Function/Delegate.h"
-		// + Object
 
 namespace snow
 {

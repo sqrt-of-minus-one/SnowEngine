@@ -6,24 +6,40 @@
 
 #include "TimerManager.h"
 
+#include "../Util.h"
+#include "Timer.h"
+
 using namespace snow;
 
 		/* TimerManager: public */
 
+TimerManager& TimerManager::get_instance()
+{
+	static TimerManager timer_manager;
+	return timer_manager;
+}
+
 String TimerManager::to_string() const
 {
-	return L"There are "_s + util::to_string(timers_.size()) + L" timer(s)";
+	return L"There are "_s + util::to_string(static_cast<int>(timers_.size())) + L" timer(s)";
 }
 
 int TimerManager::hash_code() const noexcept
 {
-	return timers_.hash_code();
+	int hash = 0;
+	int sign = 1;
+	for (const auto& i : timers_)
+	{
+		hash += sign * i->hash_code();
+		sign = -sign;
+	}
+	return sign;
 }
 
 std::shared_ptr<Timer> TimerManager::create_timer(const Delegate<void>& function, float delay_sec, float period_sec)
 {
 	std::shared_ptr<Timer> p(new Timer(function, delay_sec, period_sec));
-	timers_.add(p);
+	timers_.push_back(p);
 	return p;
 }
 
@@ -35,18 +51,17 @@ TimerManager::TimerManager() :
 
 void TimerManager::tick_(float delta_sec)
 {
-	bool remove_flag = false;
-	for (auto i = timers_.begin(); !i.is_end(); !remove_flag && i.next())
-											 // if (!remove_flag) i.next();
+	for (auto i = timers_.begin(); i != timers_.end(); )
 	{
-		remove_flag = false;
-		Timer& timer = *(i.get());
+		Timer& timer = **i;
 		timer.tick_(delta_sec);
 		if (!timer.is_active_)
 		{
-			timers_.remove(i);
-			remove_flag = true; // The iterator is already pointing to the next element,
-								// we don't need to move it again
+			i = timers_.erase(i);
+		}
+		else
+		{
+			i++;
 		}
 	}
 }

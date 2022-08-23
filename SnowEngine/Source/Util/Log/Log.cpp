@@ -21,8 +21,8 @@
 #include <ctime>
 #include <filesystem>
 
-#include "../Game.h"
-#include "../Config.h"
+#include "../../Game/Game.h"
+#include "../../Game/Config.h"
 #include "../Time/Time.h"
 
 using namespace snow;

@@ -19,10 +19,11 @@
  *	Этот файл содержит определение класса `Delegate`.
  */
 
-#include "../Types/String.h"
-		// + Object
+#include "../../Object.h"
 
 #include <functional>
+
+#include "../Types/String.h"
 
 namespace snow
 {
@@ -559,7 +560,6 @@ void Delegate<T_Ret, T_Args...>::bind(T_Class& object, const std::function<T_Ret
 	func_.reset(new MethodContainer_<T_Class, T_Ret, T_Args...>(&object, func));
 	is_method_ = true;
 }
-
 
 template<typename T_Ret, typename... T_Args>
 void Delegate<T_Ret, T_Args...>::unbind() noexcept

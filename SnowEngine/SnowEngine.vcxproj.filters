@@ -15,9 +15,6 @@
     <Filter Include="Source Files\Util">
       <UniqueIdentifier>{35821e0d-afca-45c9-b472-36551fce5786}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Util\Container">
-      <UniqueIdentifier>{26f48234-c177-446f-bbb9-1e5e25961017}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Util\Types">
       <UniqueIdentifier>{828309da-bd61-4113-a5a7-2c35579de08a}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,33 @@
     <Filter Include="Source Files\Util\Lang">
       <UniqueIdentifier>{e8be045c-756b-49a0-84a2-90b57dd56fee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{9109d506-8130-43fd-852a-1333c9839eb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Camera">
+      <UniqueIdentifier>{d8bbac79-1b5c-4b9d-a6be-f1b5684409ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Visible">
+      <UniqueIdentifier>{b11beaec-55d1-4f54-aa8b-3087e060db76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math\Shape">
+      <UniqueIdentifier>{74adebfc-70b0-4a19-8693-ee624d45c274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Util\Animation">
+      <UniqueIdentifier>{da030ca4-ed1e-4fa5-ba9a-989d09c38cb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Audio">
+      <UniqueIdentifier>{57c5045f-6540-4f7a-8759-60352697d688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Collision">
+      <UniqueIdentifier>{52c9e025-822d-49c9-8090-8f3d21a0e4e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Util\Input">
+      <UniqueIdentifier>{f18e12eb-18f2-4ae0-9cc8-4537c337f503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Clickable">
+      <UniqueIdentifier>{ee803cb1-98ec-4686-ae42-e18ed69c43ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -56,53 +80,11 @@
     <ClInclude Include="Source\Object.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Util\Container\Container.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Util\Util.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Util\Container\Array.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\LinkedList.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\ArrayIterator.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\LinkedListIterator.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Map.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\MapIterator.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Pair.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\SortedArray.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Util\Types\String.h">
       <Filter>Source Files\Util\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Config.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Game.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Deque.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Queue.h">
-      <Filter>Source Files\Util\Container</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\Container\Stack.h">
-      <Filter>Source Files\Util\Container</Filter>
     </ClInclude>
     <ClInclude Include="Source\Math\Vector\Vector2.h">
       <Filter>Source Files\Math\Vector</Filter>
@@ -149,6 +131,81 @@
     <ClInclude Include="Source\Util\Time\TimerManager.h">
       <Filter>Source Files\Util\Time</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\Function\DelegateBinder.h">
+      <Filter>Source Files\Util\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Config.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Game.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Types\Transform.h">
+      <Filter>Source Files\Util\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Camera\CameraComponent.h">
+      <Filter>Source Files\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Visible\VisibleComponent.h">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\ResourceManager.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Visible\SpriteComponent.h">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Animation\SpriteAnimation.h">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Animation\SimpleSpriteAnimation.h">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Shape\FloatRect.h">
+      <Filter>Source Files\Math\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Shape\IntRect.h">
+      <Filter>Source Files\Math\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Animation\AdvancedSpriteAnimation.h">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Visible\AnimationComponent.h">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Visible\TextComponent.h">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Audio\SoundComponent.h">
+      <Filter>Source Files\Component\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Audio\MusicComponent.h">
+      <Filter>Source Files\Component\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\CollisionComponent.h">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\RectCollisionComponent.h">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\CircleCollisionComponent.h">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Input\Input.h">
+      <Filter>Source Files\Util\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Clickable\CircleClickableComponent.h">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Clickable\ClickableComponent.h">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Clickable\RectClickableComponent.h">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Input\Keys.h">
+      <Filter>Source Files\Util\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -165,12 +222,6 @@
     </ClCompile>
     <ClCompile Include="Source\Util\Types\String.cpp">
       <Filter>Source Files\Util\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Util\Config.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Util\Game.cpp">
-      <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="Source\Math\Vector\Vector2.cpp">
       <Filter>Source Files\Math\Vector</Filter>
@@ -216,6 +267,81 @@
     </ClCompile>
     <ClCompile Include="Source\Util\Time\TimerManager.cpp">
       <Filter>Source Files\Util\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Function\EventBinder.h">
+      <Filter>Source Files\Util\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Config.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Types\Transform.cpp">
+      <Filter>Source Files\Util\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Camera\CameraComponent.cpp">
+      <Filter>Source Files\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Visible\VisibleComponent.cpp">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\ResourceManager.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Visible\SpriteComponent.cpp">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Animation\SpriteAnimation.cpp">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Animation\SimpleSpriteAnimation.cpp">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Shape\FloatRect.cpp">
+      <Filter>Source Files\Math\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Shape\IntRect.cpp">
+      <Filter>Source Files\Math\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Animation\AdvancedSpriteAnimation.cpp">
+      <Filter>Source Files\Util\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Visible\AnimationComponent.cpp">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Visible\TextComponent.cpp">
+      <Filter>Source Files\Component\Visible</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Audio\SoundComponent.cpp">
+      <Filter>Source Files\Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Audio\MusicComponent.cpp">
+      <Filter>Source Files\Component\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\CollisionComponent.cpp">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\CircleCollisionComponent.cpp">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\RectCollisionComponent.cpp">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Input\Input.cpp">
+      <Filter>Source Files\Util\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Clickable\ClickableComponent.cpp">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Clickable\RectClickableComponent.cpp">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Clickable\CircleClickableComponent.cpp">
+      <Filter>Source Files\Component\Clickable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Input\Keys.cpp">
+      <Filter>Source Files\Util\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

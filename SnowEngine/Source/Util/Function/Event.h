@@ -19,10 +19,12 @@
  *	Этот файл содержит определение класса `Event`.
  */
 
-#include "Delegate.h"
-		// + Object
+#include "../../Object.h"
 
-#include "../Container/Map.h"
+#include <unordered_map>
+
+#include "Delegate.h"
+#include "../Util.h"
 
 namespace snow
 {
@@ -180,6 +182,7 @@ public:
 	 *	are called by `execute` method.
 	 *	\param func The reference to the function, `std::function` pointing to it or lambda-
 	 *	function.
+	 *	\param one_shot If true, the function will only called once and then automatically unbound.
 	 *	\return ID of the member of the event. It can be used to unbind the function.
 	 *
 	 *	\~russian
@@ -188,9 +191,11 @@ public:
 	 *	Привязывает переданную функцию к событию. Функция добавляется в список функций, вызываемых
 	 *	методом `execute`.
 	 *	\param func Ссылка на функцию, указывающий на ней `std::function` или лямбда-функция.
+	 *	\param one_shot Если истинно, функция будет вызвана только один раз, после чего
+	 *	автоматически отсоединена.
 	 *	\return ID члена события. Он может быть использован для отсоединения функции.
 	 */
-	int bind(const std::function<void(T_Args...)>& func);
+	int bind(const std::function<void(T_Args...)>& func, bool one_shot = false);
 
 	/**
 	 *	\~english
@@ -201,6 +206,7 @@ public:
 	 *	\tparam T_Class The class of the passed object. It must be based on `snow::Object`.
 	 *	\param object The object whose method will be bound.
 	 *	\param func The reference to the method of `T_Class`.
+	 *	\param one_shot If true, the function will only called once and then automatically unbound.
 	 *	\return ID of the member of the event. It can be used to unbind the function.
 	 *
 	 *	\~russian
@@ -211,10 +217,12 @@ public:
 	 *	\tparam T_Class Класс переданного объекта. Он должен быть наследником `snow::Object`.
 	 *	\param object Объект, чей метод будет привязан.
 	 *	\param func Ссылка на метод класса `T_Class`.
+	 *	\param one_shot Если истинно, функция будет вызвана только один раз, после чего
+	 *	автоматически отсоединена.
 	 *	\return ID члена события. Он может быть использован для отсоединения функции.
 	 */
 	template<typename T_Class>
-	int bind(T_Class& object, const std::function<void(T_Class&, T_Args...)>& func);
+	int bind(T_Class& object, const std::function<void(T_Class&, T_Args...)>& func, bool one_shot = false);
 
 	/**
 	 *	\~english
@@ -241,17 +249,34 @@ public:
 	 *	\brief Executes all bound functions
 	 *
 	 *	Calls all the function that were bound to the event. The order of function calls is not
-	 *	defined.
+	 *	defined. One-shot functions will be automatically unbound.
 	 *	\param args Arguments that will be passed to the functions.
 	 *
 	 *	\~russian
 	 *	\brief Выполняет все привязанные функции
 	 *
 	 *	Вызывает все функции, которые были привязаны к событию. Порядок вызова функций не
-	 *	определён.
+	 *	определён. Одноразовые функции будут автоматически отсоединены.
 	 *	\param args Аргументы, которые будут переданы в функции.
 	 */
-	void execute(T_Args... args) const;
+	void execute(T_Args... args);
+
+	/**
+	 *	\~english
+	 *	\brief Executes all bound functions but doesn't unbinds one-shots
+	 *
+	 *	Calls all the function that were bound to the event. The order of function calls is not
+	 *	defined. One-shot functions won't be unbound.
+	 *	\param args Arguments that will be passed to the functions.
+	 *
+	 *	\~russian
+	 *	\brief Выполняет все привязанные функции, но не отсоединяет одноразовые
+	 *
+	 *	Вызывает все функции, которые были привязаны к событию. Порядок вызова функций не
+	 *	определён. Одноразовые функции не будут отсоединены.
+	 *	\param args Аргументы, которые будут переданы в функции.
+	 */
+	void execute_carefully(T_Args... args) const;
 
 			/* OPERATORS */
 
@@ -260,20 +285,20 @@ public:
 	 *	\brief Executes all bound functions
 	 *
 	 *	Calls all the function that were bound to the event. The order of function calls is not
-	 *	defined.
+	 *	defined. One-shot functions will be automatically unbound.
 	 *	\param args Arguments that will be passed to the functions.
 	 *
 	 *	\~russian
 	 *	\brief Выполняет все привязанные функции
 	 *
 	 *	Вызывает все функции, которые были привязаны к событию. Порядок вызова функций не
-	 *	определён.
+	 *	определён. Одноразовые функции будут автоматически отсоединены.
 	 *	\param args Аргументы, которые будут переданы в функции.
 	 */
 	void operator()(T_Args... args) const;
 
 private:
-	Map<int, std::unique_ptr<Delegate<void, T_Args...>>> functions_;
+	std::unordered_map<int, std::pair<std::unique_ptr<Delegate<void, T_Args...>>, bool /*one_shot*/>> functions_;
 	int counter_;
 };
 
@@ -309,19 +334,26 @@ String Event<T_Args...>::to_string() const
 template<typename... T_Args>
 int Event<T_Args...>::hash_code() const noexcept
 {
-	return functions_.hash_code();
+	int hash = 0;
+	int sign = 1;
+	for (const auto& i : functions_)
+	{
+		hash += sign * i.second.first->hash_code();
+		sign = -sign;
+	}
+	return sign;
 }
 
 template<typename... T_Args>
 int Event<T_Args...>::size() const noexcept
 {
-	return functions_.size();
+	return static_cast<int>(functions_.size());
 }
 
 template<typename... T_Args>
 bool Event<T_Args...>::is_empty() const noexcept
 {
-	return functions_.is_empty();
+	return functions_.empty();
 }
 
 template<typename... T_Args>
@@ -331,36 +363,53 @@ void Event<T_Args...>::clear() noexcept
 }
 
 template<typename... T_Args>
-int Event<T_Args...>::bind(const std::function<void(T_Args...)>& func)
+int Event<T_Args...>::bind(const std::function<void(T_Args...)>& func, bool one_shot)
 {
 	std::unique_ptr<Delegate<void, T_Args...>> delegate = std::make_unique<Delegate<void, T_Args...>>();
 	delegate->bind(func);
-	functions_.add(counter_, std::move(delegate));
+	functions_.insert(std::make_pair(counter_, std::make_pair(std::move(delegate), one_shot)));
 	return counter_++;
 }
 
 template<typename... T_Args>
 template<typename T_Class>
-int Event<T_Args...>::bind(T_Class& object, const std::function<void(T_Class&, T_Args...)>& func)
+int Event<T_Args...>::bind(T_Class& object, const std::function<void(T_Class&, T_Args...)>& func, bool one_shot)
 {
 	std::unique_ptr<Delegate<void, T_Args...>> delegate = std::make_unique<Delegate<void, T_Args...>>();
 	delegate->bind<T_Class>(object, func);
-	functions_.add(counter_, std::move(delegate));
+	functions_.insert(std::make_pair(counter_, std::make_pair(std::move(delegate), one_shot)));
 	return counter_++;
 }
 
 template<typename... T_Args>
 bool Event<T_Args...>::unbind(int key)
 {
-	return functions_.remove(key);
+	return static_cast<bool>(functions_.erase(key));
 }
 
 template<typename... T_Args>
-void Event<T_Args...>::execute(T_Args... args) const
+void Event<T_Args...>::execute(T_Args... args)
+{
+	for (auto i = functions_.begin(); i != functions_.end(); )
+	{
+		i->second.first->execute(args...);
+		if (i->second.second)
+		{
+			i = functions_.erase(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+}
+
+template<typename... T_Args>
+void Event<T_Args...>::execute_carefully(T_Args... args) const
 {
 	for (auto& i : functions_)
 	{
-		i->execute(args...);
+		i.second->execute(args...);
 	}
 }
 

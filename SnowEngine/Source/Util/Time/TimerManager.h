@@ -21,32 +21,52 @@
 
 #include "../../Object.h"
 
-#include "../Container/LinkedList.h"
-#include "Timer.h"
+#include <list>
 
 namespace snow
 {
+
+class Timer;
+
+template<typename T_Ret, typename... T_Args>
+class Delegate;
 
 /**
  *	\~english
  *	\brief The timer manager controls all of the timers
  *	
- *	Contains the list of all created timers and manages them. Allows to create new timers. The main
- *	instance of this class is contained in the `Game` class as a static member. You shouldn't
- *	create other instances.
+ *	Contains the list of all created timers and manages them. Allows to create new timers. It is
+ *	singleton, only one timer manager may exist. You can get it using `get_instance` static method.
  *	
  *	\~russian
  *	\brief Диспетчер таймеров контролирует все таймеры
  *	
  *	Содержит список всех созданных таймеров и управляет ими. Позволяет создавать новые таймеры.
- *	Главный объект этого класса хранится в классе `Game` как статический член. Вы не должны
- *	создавать других объектов.
+ *	Он является одиночкой: может существовать только один диспетчер таймеров. Вы можете получить
+ *	его, используя статический метод `get_instance`.
  */
 class TimerManager : public Object
 {
 	friend class Game;
 
 public:
+			/* SINGLETON */
+
+	/**
+	 *	\~english
+	 *	\brief The only instance of the timer manager
+	 *	
+	 *	Allows to get the only instance of the timer manager.
+	 *	\return The timer manager.
+	 *	
+	 *	\~russian
+	 *	\brief Единственный экземпляр диспетчера таймеров
+	 *	
+	 *	Позволяет получить единственный экземпляр диспетчера таймеров.
+	 *	\return Диспетчер таймеров.
+	 */
+	static TimerManager& get_instance();
+
 			/* METHODS FROM Object */
 
 	/**
@@ -82,6 +102,8 @@ public:
 	 */
 	virtual int hash_code() const noexcept override;
 
+			/* METHODS */
+
 	/**
 	 *	\~english
 	 *	\brief Creates a new timer
@@ -109,7 +131,7 @@ public:
 private:
 	TimerManager();
 
-	LinkedList<std::shared_ptr<Timer>> timers_;
+	std::list<std::shared_ptr<Timer>> timers_;
 
 	void tick_(float delta_sec);
 };

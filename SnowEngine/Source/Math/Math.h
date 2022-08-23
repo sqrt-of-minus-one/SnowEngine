@@ -26,12 +26,6 @@
 #include <cmath>
 #include <functional>
 
-namespace std
-{
-template<typename T>
-class function;
-}
-
 namespace snow
 {
 

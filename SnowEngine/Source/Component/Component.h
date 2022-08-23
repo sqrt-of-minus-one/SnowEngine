@@ -8,37 +8,92 @@
 
 #include "../Object.h"
 
-#include "../Util/Container/LinkedList.h"
-#include "../Math/Vector/Vector2.h"
-#include "../Math/Angle.h"
+#include <list>
+
+#include "../Util/Types/Transform.h"
+#include "../Util/Function/EventBinder.h"
 
 namespace snow
 {
 
-class Actor;
+class Level;
 
 class Component : public Object
 {
-public:
-	Component(Actor& actor, std::weak_ptr<Component> parent, Vector2 position, Angle rotation) noexcept;
+	friend class Actor;
 
-	virtual String to_string() const noexcept override;
+public:
+	Component(Actor& actor, Component* parent, const Transform& transform);
+
+	virtual String to_string() const override;
 	virtual int hash_code() const noexcept override;
 
-protected:
+	const Vector2& get_position() const;
+	const Angle& get_rotation() const;
+	const Vector2& get_scale() const;
+	const Transform& get_transform() const;
+	Vector2 get_level_position() const;
+	Angle get_level_rotation() const;
+	Vector2 get_level_scale() const;
+	Transform get_level_transform() const;
+
+	Actor& get_actor();
+	const Actor& get_actor() const;
+	Level& get_level();
+	const Level& get_level() const;
+	Component* get_parent();
+	const Component* get_parent() const;
+
 	template<typename T_Component>
-	std::shared_ptr<T_Component> create_component(Vector2 position, Angle rotation);
+	std::shared_ptr<T_Component> create_component(const Transform& transform);
+
+	void set_position(const Vector2& position);
+	void set_rotation(const Angle& rotation);
+	void set_scale(const Vector2& scale);
+	void set_transform(const Transform& transform);
+
+	void move(const Vector2& delta);
+	void rotate(const Angle& delta);
+	void scale(const Vector2& factor);
+
+	EventBinder<Component& /*component*/, const Transform& /*old_transform*/, const Transform& /*new_transform*/> on_transformed;
+	EventBinder<Component& /*component*/, const Transform& /*new_transform*/> on_level_transformed;
+
+protected:
+	virtual void tick(float delta_sec);
+	virtual void when_begin_play();
+	virtual void when_transformed(const Transform& new_level_transform);
 
 private:
 	static int components_counter_;
 	int number_;
 
-	Vector2 position_;
-	Angle rotation_;
+	Transform transform_;
 
-	LinkedList<std::shared_ptr<Component>> components_;
-	std::weak_ptr<Component> parent_;
+	std::list<std::shared_ptr<Component>> components_;
+	Component* parent_;
 	Actor& actor_;
+
+	void child_level_transformed_();
+
+	Event<Component& /*component*/, const Transform& /*old_transform*/, const Transform& /*new_transform*/> on_transformed_;
+	Event<Component& /*component*/, const Transform& /*new_transform*/> on_level_transformed_;
 };
+
+
+		/* DEFINITIONS */
+		
+		/* Component: public */
+
+template<typename T_Component>
+std::shared_ptr<T_Component> Component::create_component(const Transform& transform)
+{
+	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_component method template must be Component");
+
+	std::shared_ptr<T_Component> component = std::make_shared<T_Component>(actor_, this, transform);
+	components_.push_back(component);
+	dynamic_cast<Component*>(component.get())->when_begin_play();
+	return component;
+}
 
 }

@@ -4,6 +4,8 @@
  //  File: Angle.h                     //
 ////////////////////////////////////////
 
+#pragma once
+
 /**
  *	\file
  *	\~english
@@ -16,8 +18,6 @@
  *	
  *	Этот файл содержит определение класса `Angle`.
  */
-
-#pragma once
 
 #include "../Object.h"
 

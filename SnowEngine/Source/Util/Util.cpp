@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "Types/String.h"
 #include "../Math/Math.h"
 
 using namespace snow;

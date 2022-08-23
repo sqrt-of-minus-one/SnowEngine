@@ -6,11 +6,11 @@
 
 #include "String.h"
 
-#include "../Container/Array.h"
-
 #include <iostream>
 #include <cwctype>
 #include <cstdarg>
+
+#include "../Util.h"
 
 using namespace snow;
 
@@ -53,14 +53,7 @@ String String::to_string() const
 
 int String::hash_code() const noexcept
 {
-	int code = 0;
-	int one = 1;
-	for (wchar_t i : string_)
-	{
-		code += one * static_cast<int>(i);
-		one = -one;
-	}
-	return code;
+	return static_cast<int>(std::hash<std::wstring>().operator()(string_));
 }
 
 const std::wstring& String::to_std_string() const noexcept
@@ -709,9 +702,9 @@ String String::substring(int from, int to) const
 	}
 }
 
-Array<String> String::split(const String& separator, int parts, bool case_sensivity) const
+std::vector<String> String::split(const String& separator, int parts, bool case_sensivity) const
 {
-	Array<String> ret;
+	std::vector<String> ret;
 	if (parts <= 0)
 	{
 		parts = 0;
@@ -719,7 +712,7 @@ Array<String> String::split(const String& separator, int parts, bool case_sensiv
 	}
 	else if (parts == 1)
 	{
-		ret.add(*this);
+		ret.push_back(*this);
 		return ret;
 	}
 	String current;
@@ -747,12 +740,12 @@ Array<String> String::split(const String& separator, int parts, bool case_sensiv
 
 		if (is_sep)
 		{
-			ret.add(current);
+			ret.push_back(current);
 			current.clear();
 			i += separator.size() - 1;
 			if (ret.size() >= parts - 1 && i < size() - 1)
 			{
-				ret.add(substring(i + 1, size()));
+				ret.push_back(substring(i + 1, size()));
 				return ret;
 			}
 		}
@@ -761,7 +754,7 @@ Array<String> String::split(const String& separator, int parts, bool case_sensiv
 			current.add((*this)[i]);
 		}
 	}
-	ret.add(current);
+	ret.push_back(current);
 	return ret;
 }
 
@@ -1174,3 +1167,4 @@ String snow::operator""_s(const wchar_t* string, std::size_t length)
 {
 	return String(string);
 }
+
