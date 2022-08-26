@@ -116,7 +116,10 @@ std::shared_ptr<sf::SoundBuffer> ResourceManager::get_sound(const String& name)
 
 		/* ResourceManager: private */
 
-ResourceManager::ResourceManager()
+ResourceManager::ResourceManager() :
+	textures_(),
+	fonts_(),
+	sounds_()
 {
 	Delegate<void> check_delegate;
 	check_delegate.bind<ResourceManager>(*this, &ResourceManager::check_resources_);
