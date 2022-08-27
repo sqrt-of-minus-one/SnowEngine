@@ -36,32 +36,32 @@ int Actor::hash_code() const noexcept
 	return number_;
 }
 
-const Vector2& Actor::get_position() const
+const Vector2& Actor::get_position() const noexcept
 {
 	return transform_.get_position();
 }
 
-const Angle& Actor::get_rotation() const
+const Angle& Actor::get_rotation() const noexcept
 {
 	return transform_.get_rotation();
 }
 
-const Vector2& Actor::get_scale() const
+const Vector2& Actor::get_scale() const noexcept
 {
 	return transform_.get_scale();
 }
 
-const Transform& Actor::get_transform() const
+const Transform& Actor::get_transform() const noexcept
 {
 	return transform_;
 }
 
-Level& Actor::get_level()
+Level& Actor::get_level() noexcept
 {
 	return level_;
 }
 
-const Level& Actor::get_level() const
+const Level& Actor::get_level() const noexcept
 {
 	return level_;
 }
@@ -143,12 +143,12 @@ void Actor::scale(const Vector2& factor)
 	}
 }
 
-std::shared_ptr<Component> Actor::get_root_component()
+std::shared_ptr<Component> Actor::get_root_component() noexcept
 {
 	return root_component_;
 }
 
-std::shared_ptr<const Component> Actor::get_root_component() const
+std::shared_ptr<const Component> Actor::get_root_component() const noexcept
 {
 	return root_component_;
 }
@@ -159,7 +159,7 @@ void Actor::destroy()
 	on_destroyed_.execute(*this);
 }
 
-bool Actor::is_destroyed() const
+bool Actor::is_destroyed() const noexcept
 {
 	return is_destroyed_;
 }

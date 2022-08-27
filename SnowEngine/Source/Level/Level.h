@@ -42,7 +42,7 @@ class Transform;
  *	\brief Класс уровня SnowEngine
  *	
  *	Уровень — это пространство, где существуют актёры и где происходит игра. Вы можете создавать
- *	свои уровни как классы, наследованные от этого.
+ *	свои собственные уровни как классы, наследованные от этого.
  */
 class Level : public Object
 {
@@ -145,7 +145,7 @@ public:
 	 *	\~english
 	 *	\brief Checks whether the level is destroyed
 	 *	
-	 *	Cheks whether the level has been destoyed by the `destroy` method.
+	 *	Checks whether the level has been destroyed by the `destroy` method.
 	 *	\return `true` if the level is destroyed, `false` otherwise.
 	 *	
 	 *	\~russian
@@ -184,13 +184,15 @@ protected:
 	 *	\~english
 	 *	\brief Tick
 	 *	
-	 *	This method is called every tick.
+	 *	This method is called every tick. If you override this method, don't forget to call
+	 *	parent's `tick`.
 	 *	\param delta_sec The length of the tick in seconds.
 	 *	
 	 *	\~russian
 	 *	\brief Тик
 	 *	
-	 *	Этот метод вызывается каждый тик.
+	 *	Этот метод вызывается каждый тик. Если вы переопределяете этот метод, не забудьте вызвать
+	 *	родительский `tick`.
 	 *	\param delta_sec Длительность тика в секундах.
 	 */
 	virtual void tick(float delta_sec);
