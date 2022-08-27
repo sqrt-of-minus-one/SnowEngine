@@ -6,6 +6,19 @@
 
 #pragma once
 
+/**
+ *	\file
+ *	\~english
+ *	\brief The file with `Component` class
+ *
+ *	This file contains the definition of the `Component` class.
+ *
+ *	\~russian
+ *	\brief Файл с классом `Component`
+ *
+ *	Этот файл содержит определение класса `Component`.
+ */
+
 #include "../Object.h"
 
 #include <list>
@@ -18,50 +31,531 @@ namespace snow
 
 class Level;
 
+/**
+ *	\~english
+ *	\brief The class of SnowEngine component
+ *	
+ *	Component is an entity that can be attached to an actor. You may create your own components as
+ *	classes inherited from this one.
+ *	
+ *	\~russian
+ *	\brief Класс компонента SnowEngine
+ *	
+ *	Компонент — это сущность, которая может быть прикреплена к актёру. Вы можете создавать свои
+ *	собственные компоненты как классы, наследованные от этого.
+ */
 class Component : public Object
 {
 	friend class Actor;
 
 public:
+			/* CONSTRUCTORS */
+
+	/**
+	 *	\~english
+	 *	\brief The constructor
+	 *	
+	 *	Creates a new component.
+	 *	\warning The constructor is designed for internal use only, don't use it directly. To
+	 *	create a component use the `create_component` method or the `create_root_component` method
+	 *	of the `Actor` class.
+	 *	\param actor The actor that the component will be attached to.
+	 *	\param parent The parent component or the null pointer if the component will be root.
+	 *	\param transform The transform of the component relative to the actor.
+	 *	
+	 *	\~russian
+	 *	\brief Констуктор
+	 *	
+	 *	Создаёт новый компонент.
+	 *	\warning Конструктор предназначен только для внутреннего использования, не используйте его
+	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component` или методом
+	 *	`create_root_component` класса `Actor`.
+	 *	\param actor Актёр, к которому будет прикреплён компонент.
+	 *	\param parent Родительский компонент  или нулевой указатель, если компонент будет корневым.
+	 *	\param transform Преобразование компонента относительно актёра.
+	 */
 	Component(Actor& actor, Component* parent, const Transform& transform);
 
+			/* METHODS FROM Object */
+
+	/**
+	 *	\~english
+	 *	\brief Converts the component to string
+	 *	
+	 *	Creates a string `Component #<n>`, where `<n>` is a unique number of the component.
+	 *	\return Created string.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует конвертирует в строку
+	 *	
+	 *	Создаёт строку `Component #<n>`, где `<n>` — уникальный номер компонента.
+	 *	\return Созданная строка.
+	 */
 	virtual String to_string() const override;
+
+	/**
+	 *	\~english
+	 *	\brief Hash code of the component
+	 *
+	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
+	 *	objects can also have the same hash codes.
+	 *	\return Hash code of the object.
+	 *
+	 *	\~russian
+	 *	\brief Хеш-код компонента
+	 *
+	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
+	 *	также могут иметь одинаковые хеш-коды.
+	 *	\return Хеш-код объекта.
+	 */
 	virtual int hash_code() const noexcept override;
 
-	const Vector2& get_position() const;
-	const Angle& get_rotation() const;
-	const Vector2& get_scale() const;
-	const Transform& get_transform() const;
+			/* METHODS */
+
+	/**
+	 *	\~english
+	 *	\brief The position of the component relative to the parent
+	 *	
+	 *	Allows to get the position of the component relative to the parent.
+	 *	\return The position of the component.
+	 *	
+	 *	\~russian
+	 *	\brief Положение компонента относительно родителя
+	 *	
+	 *	Позволяет получить положение компонента относительно родителя.
+	 *	\return Положение компонента.
+	 */
+	const Vector2& get_position() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The rotation of the component relative to the parent
+	 *
+	 *	Allows to get the angle of rotation of the component relative to the parent.
+	 *	\return The angle of rotation of the component.
+	 *
+	 *	\~russian
+	 *	\brief Поворот компонента относительно родителя
+	 *
+	 *	Позволяет получить угол поворота компонента относительно родителя.
+	 *	\return Угол поворота компонента.
+	 */
+	const Angle& get_rotation() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The scale of the component relative to the parent
+	 *
+	 *	Allows to get the scale of the component relative to the parent.
+	 *	\return The scale of the component.
+	 *
+	 *	\~russian
+	 *	\brief Масштаб компонента относительно родителя
+	 *
+	 *	Позволяет получить масштаб компонента относительно родителя.
+	 *	\return Масштаб компонента.
+	 */
+	const Vector2& get_scale() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The transform of the component relative to the parent
+	 *
+	 *	Allows to get the transform (position, rotation and scale) of the component relative to the
+	 *	parent.
+	 *	\return The transform of the component.
+	 *
+	 *	\~russian
+	 *	\brief Преобразование компонента относительно родителя
+	 *
+	 *	Позволяет получить преобразование (положение, поворот и масштаб) компонента относительно
+	 *	родителя.
+	 *	\return Преобразование компонента.
+	 */
+	const Transform& get_transform() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The position of the component on the level
+	 *
+	 *	Allows to get the position of the component on the level.
+	 *	\return The position of the component.
+	 *
+	 *	\~russian
+	 *	\brief Положение компонента на уровне
+	 *
+	 *	Позволяет получить положение компонента на уровне.
+	 *	\return Положение компонента.
+	 */
 	Vector2 get_level_position() const;
+
+	/**
+	 *	\~english
+	 *	\brief The rotation of the component on the level
+	 *
+	 *	Allows to get the angle of rotation of the component on the level.
+	 *	\return The angle of rotation of the component.
+	 *
+	 *	\~russian
+	 *	\brief Поворот компонента на уровне
+	 *
+	 *	Позволяет получить угол поворота компонента на уровне.
+	 *	\return Угол поворота компонента.
+	 */
 	Angle get_level_rotation() const;
+
+	/**
+	 *	\~english
+	 *	\brief The scale of the component on the level
+	 *
+	 *	Allows to get the scale of the component on the level.
+	 *	\return The scale of the component.
+	 *
+	 *	\~russian
+	 *	\brief Масштаб компонента на уровне
+	 *
+	 *	Позволяет получить масштаб компонента на уровне.
+	 *	\return Масштаб компонента.
+	 */
 	Vector2 get_level_scale() const;
+
+	/**
+	 *	\~english
+	 *	\brief The transform of the component on the level
+	 *
+	 *	Allows to get the transform (position, rotation and scale) of the component on the level.
+	 *	\return The transform of the component.
+	 *
+	 *	\~russian
+	 *	\brief Преобразование компонента на уровне
+	 *
+	 *	Позволяет получить преобразование (положение, поворот и масштаб) компонента на уровне.
+	 *	\return Преобразование компонента.
+	 */
 	Transform get_level_transform() const;
 
-	Actor& get_actor();
-	const Actor& get_actor() const;
-	Level& get_level();
-	const Level& get_level() const;
-	Component* get_parent();
-	const Component* get_parent() const;
+	/**
+	 *	\~english
+	 *	\brief The actor of the component
+	 *
+	 *	Allows to get the actor that contains the component.
+	 *	\return The reference to the actor of the component.
+	 *
+	 *	\~russian
+	 *	\brief Актёр компонента
+	 *
+	 *	Позволяет получить актёр, который содержит компонент.
+	 *	\return Ссылка на актёра компонента.
+	 */
+	Actor& get_actor() noexcept;
 
+	/**
+	 *	\~english
+	 *	\brief The actor of the component
+	 *
+	 *	Allows to get the actor that contains the component.
+	 *	\return The constant reference to the actor of the component.
+	 *
+	 *	\~russian
+	 *	\brief Актёр компонента
+	 *
+	 *	Позволяет получить актёр, который содержит компонент.
+	 *	\return Константная ссылка на актёра компонента.
+	 */
+	const Actor& get_actor() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The level of the component
+	 *
+	 *	Allows to get the level where the component is placed.
+	 *	\return The reference to the level of the component.
+	 *
+	 *	\~russian
+	 *	\brief Уровень компонента
+	 *
+	 *	Позволяет получить уровень, где размещён компонент.
+	 *	\return Ссылка на уровень компонента.
+	 */
+	Level& get_level() noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The level of the component
+	 *
+	 *	Allows to get the level where the component is placed.
+	 *	\return The constant reference to the level of the component.
+	 *
+	 *	\~russian
+	 *	\brief Уровень компонента
+	 *
+	 *	Позволяет получить уровень, где размещён компонент.
+	 *	\return Константная сылка на уровень компонента.
+	 */
+	const Level& get_level() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The parent component
+	 *
+	 *	Allows to get the parent component.
+	 *	\return The pointer to the parent component; the null pointer if the component is root.
+	 *
+	 *	\~russian
+	 *	\brief Родительский компонент
+	 *
+	 *	Позволяет получить родительский компонент.
+	 *	\return Указатель на родительский компонент; нулевой указатель, если компонент корневой.
+	 */
+	Component* get_parent() noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The parent component
+	 *
+	 *	Allows to get the parent component.
+	 *	\return The constant pointer to the parent component; the null pointer if the component is
+	 *	root.
+	 *
+	 *	\~russian
+	 *	\brief Родительский компонент
+	 *
+	 *	Позволяет получить родительский компонент.
+	 *	\return Константный указатель на родительский компонент; нулевой указатель, если компонент
+	 *	корневой.
+	 */
+	const Component* get_parent() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Creates a child component for this one
+	 *
+	 *	A component can have child components. This method allows to create them.
+	 *	\tparam T_Component The class of a new component. It must be inherited from the `Component`
+	 *	class.
+	 *	\param transform The transform of the new component relative to this one.
+	 *	\return The pointer to the new component.
+	 *
+	 *	\~russian
+	 *	\brief Создаёт дочерний компонент для данного
+	 *
+	 *	Компонент может иметь дочерние компоненты. Этот метод позволяет создать их.
+	 *	\tparam T_Component Класс нового компонента. Он должен быть наследником класса `Component`.
+	 *	\param transform Преобразование нового компонента относительно данного.
+	 *	\return Указатель на новый компонент.
+	 */
 	template<typename T_Component>
 	std::shared_ptr<T_Component> create_component(const Transform& transform);
 
+	/**
+	 *	\~english
+	 *	\brief Sets the position of the component relative to the parent
+	 *
+	 *	Allows to change the position of the component relative to the parent.
+	 *	\param position The new position.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает положение актёра
+	 *
+	 *	Позволяет изменить положение актёра на уровне.
+	 *	\param position Новое положение.
+	 */
 	void set_position(const Vector2& position);
+
+	/**
+	 *	\~english
+	 *	\brief Sets the rotation of the component relative to the parent
+	 *
+	 *	Allows to change the angle of rotation of the component relative to the parent.
+	 *	\param rotation The new angle of rotation.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает поворот компонента относительно родителя
+	 *
+	 *	Позволяет изменить угол поворота компонента относительно родителя.
+	 *	\param rotation Новый угол поворота.
+	 */
 	void set_rotation(const Angle& rotation);
+
+	/**
+	 *	\~english
+	 *	\brief Sets the scale of the component relative to the parent
+	 *
+	 *	Allows to change the scale of the actor component relative to the parent.
+	 *	\param scale The new scale.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает масштаб компонента относительно родителя
+	 *
+	 *	Позволяет изменить масштаб компонента относительно родителя.
+	 *	\param scale Новый масштаб.
+	 */
 	void set_scale(const Vector2& scale);
+
+	/**
+	 *	\~english
+	 *	\brief Sets the transform of the component relative to the parent
+	 *
+	 *	Allows to change the transform of the actor component relative to the parent.
+	 *	\param transform The new transform.
+	 *
+	 *	\~russian
+	 *	\brief Устанавливает преобразование компонента относительно родителя
+	 *
+	 *	Позволяет изменить преобразование компонента относительно родителя.
+	 *	\param transform Новое преобразование.
+	 */
 	void set_transform(const Transform& transform);
 
+	/**
+	 *	\~english
+	 *	\brief Moves the component
+	 *
+	 *	Adds the passed value to the position of the component.
+	 *	\param delta The offset to the actor.
+	 *
+	 *	\~russian
+	 *	\brief Двигает компонент
+	 *
+	 *	Прибавляет переданное значение к положению компонента.
+	 *	\param delta Смещение актёра.
+	 */
 	void move(const Vector2& delta);
+
+	/**
+	 *	\~english
+	 *	\brief Rotates the component
+	 *
+	 *	Adds the passed value to the angle of rotation of the component.
+	 *	\param delta The angle of rotation.
+	 *
+	 *	\~russian
+	 *	\brief Поворачивает компонент
+	 *
+	 *	Прибавляет переданное значение к углу поворота компонента.
+	 *	\param delta Угол поворота.
+	 */
 	void rotate(const Angle& delta);
+
+	/**
+	 *	\~english
+	 *	\brief Scales the component
+	 *
+	 *	Multiplies the scale of the component by the passed value.
+	 *	\param factor The scale factor.
+	 *
+	 *	\~russian
+	 *	\brief Масштабирует компонент
+	 *
+	 *	Умножает масштаб компонента на переданное значение.
+	 *	\param factor Коэффициент масштабирования.
+	 */
 	void scale(const Vector2& factor);
 
+			/* EVENTS */
+
+	/**
+	 *	\~english
+	 *	\brief The component is transformed relative to the parent
+	 *
+	 *	This event is called when the component is transformed relative to the parent, i. e. when
+	 *	its relative position, angle of rotation or scale is changed.
+	 *
+	 *	Event parameters:
+	 *	- `Component& component`: the component which was transformed.
+	 *	- `const Transform& old_transform`: the old transform of the component.
+	 *	- `const Transform& new_transform`: the new transform of the component.
+	 *
+	 *	\~russian
+	 *	\brief Компонент преобразован относительно родителя
+	 *
+	 *	Это событие вызывается, когда компонент преобразовывается относительно родителя, то есть
+	 *	изменяется его относительное положение, угол поворота или масштаб.
+	 *
+	 *	Параметры события:
+	 *	- `Component& component`: компонент, который был преобразован.
+	 *	- `const Transform& old_transform`: старое преобразование компонента.
+	 *	- `const Transform& new_transform`: новое преобразование компонента.
+	 */
 	EventBinder<Component& /*component*/, const Transform& /*old_transform*/, const Transform& /*new_transform*/> on_transformed;
+
+	/**
+	 *	\~english
+	 *	\brief The component is transformed relative to the level
+	 *
+	 *	This event is called when the component is transformed relative to the level, i. e. when
+	 *	its level position, angle of rotation or scale is changed.
+	 *
+	 *	Event parameters:
+	 *	- `Component& component`: the component which was transformed.
+	 *	- `const Transform& new_transform`: the new level transform of the component.
+	 *
+	 *	\~russian
+	 *	\brief Компонент преобразован относительно уровня
+	 *
+	 *	Это событие вызывается, когда компонент преобразовывается относительно уровня, то есть
+	 *	изменяется его положение, угол поворота или масштаб на уровне.
+	 *
+	 *	Параметры события:
+	 *	- `Component& component`: компонент, который был преобразован.
+	 *	- `const Transform& new_transform`: новое преобразование компонента на уровне.
+	 */
 	EventBinder<Component& /*component*/, const Transform& /*new_transform*/> on_level_transformed;
 
 protected:
+			/* METHODS */
+
+	/**
+	 *	\~english
+	 *	\brief Tick
+	 *
+	 *	This method is called every tick. If you override this method, don't forget to call
+	 *	parent's `tick`.
+	 *	\param delta_sec The length of the tick in seconds.
+	 *
+	 *	\~russian
+	 *	\brief Тик
+	 *
+	 *	Этот метод вызывается каждый тик. Если вы переопределяете этот метод, не забудьте вызвать
+	 *	родительский `tick`.
+	 *	\param delta_sec Длительность тика в секундах.
+	 */
 	virtual void tick(float delta_sec);
+
+			/* EVENT METHODS */
+
+	/**
+	 *	\~english
+	 *	\brief The game is started
+	 *	
+	 *	This event is called when the component is placed on the level and is ready. If you
+	 *	override this method, don't forget to call parent's `when_begin_play`.
+	 *	
+	 *	\~russian
+	 *	\brief Игра началась
+	 *	
+	 *	Это событие вызывается, когда компонент размещён на уровне и готов. Если вы переопределяете
+	 *	этот метод, не забудьте вызвать родительский `when_begin_play`.
+	 */
 	virtual void when_begin_play();
+
+	/**
+	 *	\~english
+	 *	\brief The component is transformed relative to the level
+	 *	
+	 *	This event is called when the component is transformed relative to the level, i. e. when
+	 *	its level position, angle of rotation or scale is changed. If you override this method,
+	 *	don't forget to call parent's `when_transformed`.
+	 *	\param new_level_transform The new level transform of the component.
+	 *	
+	 *	\~russian
+	 *	\brief Компонент преобразован относительно уровня
+	 *	
+	 *	Это событие вызывается, когда компонент преобразовывается относительно уровня, то есть
+	 *	изменяется его положение, угол поворота или масштаб на уровне. Если вы переопределяете
+	 *	этот метод, не забудьте вызвать родительский `when_transformed`.
+	 *	\param new_level_transform Новое преобразование компонента на уровне.
+	 */
 	virtual void when_transformed(const Transform& new_level_transform);
 
 private:

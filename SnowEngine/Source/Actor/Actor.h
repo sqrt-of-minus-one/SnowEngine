@@ -207,8 +207,8 @@ public:
 	 *	\tparam T_Component The class of a new component. It must be inherited from the `Component`
 	 *	class.
 	 *	\param transform The transform of the component relative to the actor.
-	 *	\return The pointer to the new component, a null pointer if the root component has already
-	 *	been created.
+	 *	\return The pointer to the new component, the null pointer if the root component has
+	 *	already been created.
 	 *	
 	 *	\~russian
 	 *	\brief Создаёт корневой компонент актёра
@@ -291,7 +291,7 @@ public:
 	 *	\param delta The offset to the actor.
 	 *	
 	 *	\~russian
-	 *	\brief Двигает актёра
+	 *	\brief Двигает актёр
 	 *	
 	 *	Прибавляет переданное значение к положению актёра на уровне.
 	 *	\param delta Смещение актёра.
@@ -306,7 +306,7 @@ public:
 	 *	\param delta The angle of rotation.
 	 *
 	 *	\~russian
-	 *	\brief Поворачивает актёра
+	 *	\brief Поворачивает актёр
 	 *
 	 *	Прибавляет переданное значение к углу поворота актёра на уровне.
 	 *	\param delta Угол поворота.
@@ -321,7 +321,7 @@ public:
 	 *	\param factor The scale factor.
 	 *
 	 *	\~russian
-	 *	\brief Масштабирует актёра
+	 *	\brief Масштабирует актёр
 	 *
 	 *	Умножает масштаб актёра на уровне на переданное значение.
 	 *	\param factor Коэффициент масштабирования.
@@ -413,7 +413,7 @@ public:
 	 *	\brief The actor is transformed
 	 *
 	 *	This event is called when the actor is transformed, i. e. when its position, angle of
-	 *	rotation or scale are changed.
+	 *	rotation or scale is changed.
 	 *
 	 *	Event parameters:
 	 *	- `Actor& actor`: the actor which was transformed.
