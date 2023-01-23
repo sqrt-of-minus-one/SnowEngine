@@ -49,7 +49,7 @@ int IntRect::hash_code() const noexcept
 	return position_.hash_code() - size_.hash_code();
 }
 
-const Point2& IntRect::get_position() const
+const Point2& IntRect::get_position() const noexcept
 {
 	return position_;
 }
@@ -59,7 +59,7 @@ Point2 IntRect::get_corner_position() const
 	return position_ + size_;
 }
 
-const Point2& IntRect::get_size() const
+const Point2& IntRect::get_size() const noexcept
 {
 	return size_;
 }

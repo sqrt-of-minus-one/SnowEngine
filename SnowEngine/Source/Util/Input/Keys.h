@@ -118,7 +118,7 @@ enum class EKey
 	R_BRACKET,		/// \~english ] key \~russian Клавиша ] (Ъ на русской раскладке)
 	SEMICOLON,		/// \~english ; key \~russian Клавиша ; (Ж на русской раскладке)
 	QUOTE,			/// \~english ' key \~russian Клавиша ' (Э на русской раскладке)
-	BACKSLASH,		/// \~english \ key \~russian Клавиша \
+	BACKSLASH,		/// \~english \\ key (backslash) \~russian Клавиша \\ (обратный слеш)
 	COMMA,			/// \~english , key \~russian Клавиша , (Б на русской раскладке)
 	PERIOD,			/// \~english . key \~russian Клавиша . (Ю на русской раскладке)
 	SLASH,			/// \~english / key \~russian Клавиша / (. на русской раскладке)
