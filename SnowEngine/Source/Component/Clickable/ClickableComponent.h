@@ -206,7 +206,7 @@ public:
 	static std::vector<ClickableComponent*> get_clicked(const Level& level, const Vector2& position);
 
 protected:
-			/* EVENT METHODS */
+			/* EVENT METHODS FROM Component */
 
 	/**
 	 *	\~english

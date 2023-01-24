@@ -65,7 +65,7 @@ public:
 	 */
 	RectClickableComponent(Actor& actor, Component* parent, const Transform& transform);
 
-			/* METHODS */
+			/* METHODS FROM ClickableComponent */
 
 	/**
 	 *	\~english

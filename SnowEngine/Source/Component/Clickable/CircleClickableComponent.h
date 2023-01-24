@@ -65,7 +65,7 @@ public:
 	 */
 	CircleClickableComponent(Actor& actor, Component* parent, const Transform& transform);
 
-			/* METHODS */
+			/* METHODS FROM ClickableComponent */
 
 	/**
 	 *	\~english
