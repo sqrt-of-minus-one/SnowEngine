@@ -126,15 +126,15 @@ public:
 	 *	\~english
 	 *	\brief Get all camera components
 	 *	
-	 *	Allows to get the map with all camera components. A key of a component is the level where
-	 *	it is.
+	 *	Allows to get the map with all camera components. Keys of the map are the levels where
+	 *	components are.
 	 *	\return The map with all camera components.
 	 *	
 	 *	\~russian
 	 *	\brief Получить все компоненты-камеры
 	 *	
-	 *	Позволяет получить словарь со всеми компонентами-камерами. Ключом компонента является
-	 *	уровень, на котором он находится.
+	 *	Позволяет получить словарь со всеми компонентами-камерами. Ключами словаря являются
+	 *	уровни, на котором находятся компоненты.
 	 *	\return Словарь со всеми компонентами-камерами.
 	 */
 	static const std::map<const Level*, std::list<CameraComponent*>>& get_camera_components();
