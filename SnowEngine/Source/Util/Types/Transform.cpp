@@ -10,6 +10,8 @@
 
 using namespace snow;
 
+		/* Transform: public */
+
 Transform::Transform() :
 	position_(Vector2::ZERO),
 	rotation_(Angle::ZERO),

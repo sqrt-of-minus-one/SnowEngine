@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor\Actor.h" />
+    <ClInclude Include="Source\Actor\SimpleActor.h" />
     <ClInclude Include="Source\Component\Audio\MusicComponent.h" />
     <ClInclude Include="Source\Component\Audio\SoundComponent.h" />
     <ClInclude Include="Source\Component\Camera\CameraComponent.h" />

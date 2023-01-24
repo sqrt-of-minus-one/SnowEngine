@@ -206,6 +206,9 @@
     <ClInclude Include="Source\Util\Input\Keys.h">
       <Filter>Source Files\Util\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Actor\SimpleActor.h">
+      <Filter>Source Files\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
