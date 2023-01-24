@@ -26,11 +26,22 @@ FloatRect::FloatRect(const FloatRect& rect) :
 FloatRect::FloatRect(const Vector2& position, const Vector2& size) :
 	position_(position),
 	size_(size)
-{}
+{
+	if (size_.get_x() < 0.f)
+	{
+		position_.set_x(position_.get_x() + size_.get_x());
+		size_.set_x(-size_.get_x());
+	}
+	if (size_.get_y() < 0.f)
+	{
+		position_.set_y(position_.get_y() + size_.get_y());
+		size_.set_y(-size_.get_y());
+	}
+}
 	
 String FloatRect::to_string() const
 {
-	return L"Rectangle: position="_s + position_.to_string() + L", size=" + size_.to_string();
+	return L"{"_s + position_.to_string() + L", " + size_.to_string() + L"}";
 }
 
 int FloatRect::hash_code() const noexcept
@@ -69,6 +80,16 @@ void FloatRect::set_corner_position(const Vector2& corner_position)
 void FloatRect::set_size(const Vector2& size)
 {
 	size_ = size;
+	if (size_.get_x() < 0.f)
+	{
+		position_.set_x(position_.get_x() + size_.get_x());
+		size_.set_x(-size_.get_x());
+	}
+	if (size_.get_y() < 0.f)
+	{
+		position_.set_y(position_.get_y() + size_.get_y());
+		size_.set_y(-size_.get_y());
+	}
 }
 	
 bool FloatRect::overlap(const FloatRect& rect) const

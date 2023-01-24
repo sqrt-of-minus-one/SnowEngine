@@ -26,11 +26,22 @@ IntRect::IntRect(const IntRect& rect) :
 IntRect::IntRect(const Point2& position, const Point2& size) :
 	position_(position),
 	size_(size)
-{}
+{
+	if (size_.get_x() < 0)
+	{
+		position_.set_x(position_.get_x() + size_.get_x());
+		size_.set_x(-size_.get_x());
+	}
+	if (size_.get_y() < 0)
+	{
+		position_.set_y(position_.get_y() + size_.get_y());
+		size_.set_y(-size_.get_y());
+	}
+}
 	
 String IntRect::to_string() const
 {
-	return L"Rectangle: position="_s + position_.to_string() + L", size=" + size_.to_string();
+	return L"{"_s + position_.to_string() + L", " + size_.to_string() + L"}";
 }
 
 int IntRect::hash_code() const noexcept
@@ -38,7 +49,7 @@ int IntRect::hash_code() const noexcept
 	return position_.hash_code() - size_.hash_code();
 }
 
-const Point2& IntRect::get_position() const
+const Point2& IntRect::get_position() const noexcept
 {
 	return position_;
 }
@@ -48,7 +59,7 @@ Point2 IntRect::get_corner_position() const
 	return position_ + size_;
 }
 
-const Point2& IntRect::get_size() const
+const Point2& IntRect::get_size() const noexcept
 {
 	return size_;
 }
@@ -69,6 +80,16 @@ void IntRect::set_corner_position(const Point2& corner_position)
 void IntRect::set_size(const Point2& size)
 {
 	size_ = size;
+	if (size_.get_x() < 0)
+	{
+		position_.set_x(position_.get_x() + size_.get_x());
+		size_.set_x(-size_.get_x());
+	}
+	if (size_.get_y() < 0)
+	{
+		position_.set_y(position_.get_y() + size_.get_y());
+		size_.set_y(-size_.get_y());
+	}
 }
 	
 bool IntRect::overlap(const IntRect& rect) const

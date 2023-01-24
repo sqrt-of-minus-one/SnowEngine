@@ -36,22 +36,22 @@ int Component::hash_code() const noexcept
 	return number_;
 }
 
-const Vector2& Component::get_position() const
+const Vector2& Component::get_position() const noexcept
 {
 	return transform_.get_position();
 }
 
-const Angle& Component::get_rotation() const
+const Angle& Component::get_rotation() const noexcept
 {
 	return transform_.get_rotation();
 }
 
-const Vector2& Component::get_scale() const
+const Vector2& Component::get_scale() const noexcept
 {
 	return transform_.get_scale();
 }
 
-const Transform& Component::get_transform() const
+const Transform& Component::get_transform() const noexcept
 {
 	return transform_;
 }
@@ -87,32 +87,32 @@ Transform Component::get_level_transform() const
 	}
 }
 
-Actor& Component::get_actor()
+Actor& Component::get_actor() noexcept
 {
 	return actor_;
 }
 
-const Actor& Component::get_actor() const
+const Actor& Component::get_actor() const noexcept
 {
 	return actor_;
 }
 
-Level& Component::get_level()
+Level& Component::get_level() noexcept
 {
 	return actor_.get_level();
 }
 
-const Level& Component::get_level() const
+const Level& Component::get_level() const noexcept
 {
 	return actor_.get_level();
 }
 
-Component* Component::get_parent()
+Component* Component::get_parent() noexcept
 {
 	return parent_;
 }
 
-const Component* Component::get_parent() const
+const Component* Component::get_parent() const noexcept
 {
 	return parent_;
 }

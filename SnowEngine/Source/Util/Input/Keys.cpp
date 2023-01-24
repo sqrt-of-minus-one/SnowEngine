@@ -9,14 +9,14 @@
 //\\         /\\_ \\//\  ___ /\\/ __ /\\  \\/  \//  //  // _//\ __ \//\\  \\  \\//\\//\\//\\//\\//\
 //\_         _\\/__ //\  /\\  \\  \\  \\  \\/  \//  //  __ \//  //  //\\  \\  \\/| SnowEngine |\//\
 //\\__     __/\\//\  /\  /\\  \\_ \\ _\\_ \\ __ // _//  // _//_ //  //\\  \\  \\//| input      |//\
-//\\//_____\//\\____//\__/\\__\\/____/\\/____/\____\//_____\//\_______\\__\\__\\//\| system     |/\
+//\\//_____\//\\____//\__/\\__\\/____/\\/____/\____\//_____\//\____,__\\__\\__\\//\| system     |/\
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\
 
 #include "Keys.h"
 
 using namespace snow;
 
-sf::Keyboard::Key snow::key_snow_to_sfml(EKey key)
+sf::Keyboard::Key snow::key_snow_to_sfml(EKey key) noexcept
 {
 	switch (key)
 	{
@@ -219,7 +219,7 @@ sf::Keyboard::Key snow::key_snow_to_sfml(EKey key)
 	}
 }
 
-EKey snow::key_sfml_to_snow(sf::Keyboard::Key key)
+EKey snow::key_sfml_to_snow(sf::Keyboard::Key key) noexcept
 {
 	switch (key)
 	{
@@ -422,7 +422,7 @@ EKey snow::key_sfml_to_snow(sf::Keyboard::Key key)
 	}
 }
 
-sf::Mouse::Button snow::button_snow_to_sfml(EButton button)
+sf::Mouse::Button snow::button_snow_to_sfml(EButton button) noexcept
 {
 	switch (button)
 	{
@@ -439,7 +439,7 @@ sf::Mouse::Button snow::button_snow_to_sfml(EButton button)
 	}
 }
 
-EButton snow::button_sfml_to_snow(sf::Mouse::Button button)
+EButton snow::button_sfml_to_snow(sf::Mouse::Button button) noexcept
 {
 	switch (button)
 	{

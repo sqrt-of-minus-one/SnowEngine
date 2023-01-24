@@ -40,7 +40,7 @@ void Level::destroy()
 	on_destroyed_.execute(*this);
 }
 
-bool Level::is_destroyed()
+bool Level::is_destroyed() const noexcept
 {
 	return is_destroyed_;
 }

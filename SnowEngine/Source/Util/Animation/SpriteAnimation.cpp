@@ -8,6 +8,8 @@
 
 using namespace snow;
 
+		/* ISpriteAnimation: public */
+
 ISpriteAnimation::ISpriteAnimation() :
 	on_next_frame_(),
 	on_next_frame(on_next_frame_)

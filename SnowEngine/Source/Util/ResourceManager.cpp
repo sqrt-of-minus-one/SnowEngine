@@ -4,6 +4,14 @@
  //  File: ResourceManager.cpp         //
 ////////////////////////////////////////
 
+//      _         /====  -  -  -  -  -  -  -  - ==     ==  -  -  -  -  -  -  -  -  -  -  -  -    //
+//     /_\        |                             | \   / |                   /=/==============\   //
+//    (`v`)  W    |      \===    ===   |     |  |  \ /  |   ===/   \===    | |=  SnowEngine  =|  //
+//     >-<   |    \===\  |   |  |   |  |     |  |   V   |  |   |   |   |   | |=   resource   =|  //
+// ---/ * \--|        |  |   |  |   |  |  ^  |  |SnowMan|  |   |   |   |   | |=  management  =|  //
+//   |  *  | |        |  |   |  |   |  | / \ |  |       |  |   |   |   |   | |=    system    =|  //
+//    \___/  |    ====/  |   |   ===   ==   ==  |       |   ===\=  |   |    \=\==============/   //
+
 #include "ResourceManager.h"
 
 #include <SFML/Graphics/Texture.hpp>
@@ -45,7 +53,8 @@ ResourceManager& ResourceManager::get_instance()
 
 String ResourceManager::to_string() const
 {
-	return String::format(L"{ textures: %d }"_s, textures_.size());
+	return String::format(L"{ textures: %d, fonts: %d, sounds: %d }"_s,
+			textures_.size(), fonts_.size(), sounds_.size());
 }
 
 int ResourceManager::hash_code() const noexcept
@@ -107,7 +116,10 @@ std::shared_ptr<sf::SoundBuffer> ResourceManager::get_sound(const String& name)
 
 		/* ResourceManager: private */
 
-ResourceManager::ResourceManager()
+ResourceManager::ResourceManager() :
+	textures_(),
+	fonts_(),
+	sounds_()
 {
 	Delegate<void> check_delegate;
 	check_delegate.bind<ResourceManager>(*this, &ResourceManager::check_resources_);
