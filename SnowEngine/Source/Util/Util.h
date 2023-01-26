@@ -32,15 +32,83 @@ namespace util
 
 /**
  *	\~english
- *	\brief Converts `int` to string
+ *	\brief Converts `long long` to string
  *	
  *	Converts the passed integer to string.
  *	\param var The integer that will be converted to string.
  *	\return A string that represents the passed integer in decimal notation.
  *	
  *	\~russian
- *	\brief Конвертирует `int` в строку
+ *	\brief Конвертирует `long long` в строку
  *	
+ *	Конвертирует переданное целое число в строку.
+ *	\param var Целое число, которое будет сконвертировано в строку.
+ *	\return Строка, представляющая десятичную запись переданного целого числа.
+ */
+String to_string(long long var);
+
+/**
+ *	\~english
+ *	\brief Converts `long long` to string in binary notation
+ *	
+ *	Converts the passed integer to string as binary number.
+ *	\param var The integer that will be converted to string.
+ *	\return A string that represents the passed integer in binary notation.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `long long` в строку в двоичной записи
+ *	
+ *	Конвертирует переданное целое число в строку как двоичное число.
+ *	\param var Целое число, которое будет сконвертировано в строку.
+ *	\return Строка, представляющая двоичную запись переданного целого числа.
+ */
+String to_string_bin(long long var);
+
+/**
+ *	\~english
+ *	\brief Converts `long long` to string in octal notation
+ *	
+ *	Converts the passed integer to string as octal number.
+ *	\param var The integer that will be converted to string.
+ *	\return A string that represents the passed integer in octal notation.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `long long` в строку в восьмеричной записи
+ *	
+ *	Конвертирует переданное целое число в строку как восьмеричное число.
+ *	\param var Целое число, которое будет сконвертировано в строку.
+ *	\return Строка, представляющая восьмеричную запись переданного целого числа.
+ */
+String to_string_oct(long long var);
+
+/**
+ *	\~english
+ *	\brief Converts `long long` to string in hexadecimal notation
+ *	
+ *	Converts the passed integer to string as hexadecimal number.
+ *	\param var The integer that will be converted to string.
+ *	\return A string that represents the passed integer in hexadecimal notation.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `long long` в строку в шестнадцатеричной записи
+ *	
+ *	Конвертирует переданное целое число в строку как шестнадцатеричное число.
+ *	\param var Целое число, которое будет сконвертировано в строку.
+ *	\return Строка, представляющая шестнадцатеричную запись переданного целого числа.
+ */
+String to_string_hex(long long var);
+
+/**
+ *	\~english
+ *	\brief Converts `int` to string
+ *
+ *	Converts the passed integer to string.
+ *	\param var The integer that will be converted to string.
+ *	\return A string that represents the passed integer in decimal notation.
+ *
+ *	\~russian
+ *	\brief Конвертирует `int` в строку
+ *
  *	Конвертирует переданное целое число в строку.
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая десятичную запись переданного целого числа.
@@ -50,14 +118,14 @@ String to_string(int var);
 /**
  *	\~english
  *	\brief Converts `int` to string in binary notation
- *	
+ *
  *	Converts the passed integer to string as binary number.
  *	\param var The integer that will be converted to string.
  *	\return A string that represents the passed integer in binary notation.
- *	
+ *
  *	\~russian
  *	\brief Конвертирует `int` в строку в двоичной записи
- *	
+ *
  *	Конвертирует переданное целое число в строку как двоичное число.
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая двоичную запись переданного целого числа.
@@ -67,14 +135,14 @@ String to_string_bin(int var);
 /**
  *	\~english
  *	\brief Converts `int` to string in octal notation
- *	
+ *
  *	Converts the passed integer to string as octal number.
  *	\param var The integer that will be converted to string.
  *	\return A string that represents the passed integer in octal notation.
- *	
+ *
  *	\~russian
  *	\brief Конвертирует `int` в строку в восьмеричной записи
- *	
+ *
  *	Конвертирует переданное целое число в строку как восьмеричное число.
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая восьмеричную запись переданного целого числа.
@@ -84,14 +152,14 @@ String to_string_oct(int var);
 /**
  *	\~english
  *	\brief Converts `int` to string in hexadecimal notation
- *	
+ *
  *	Converts the passed integer to string as hexadecimal number.
  *	\param var The integer that will be converted to string.
  *	\return A string that represents the passed integer in hexadecimal notation.
- *	
+ *
  *	\~russian
  *	\brief Конвертирует `int` в строку в шестнадцатеричной записи
- *	
+ *
  *	Конвертирует переданное целое число в строку как шестнадцатеричное число.
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая шестнадцатеричную запись переданного целого числа.

@@ -12,7 +12,7 @@
 
 using namespace snow;
 
-String util::to_string(int var)
+String util::to_string(long long var)
 {
 	if (var == 0)
 	{
@@ -21,7 +21,7 @@ String util::to_string(int var)
 	else
 	{
 		String res;
-		int a = math::abs(var);
+		long long a = math::abs(var);
 		while (a > 0)
 		{
 			res += static_cast<wchar_t>(static_cast<int>(L'0') + a % 10);
@@ -35,7 +35,7 @@ String util::to_string(int var)
 	}
 }
 
-String util::to_string_bin(int var)
+String util::to_string_bin(long long var)
 {
 	if (var == 0)
 	{
@@ -44,7 +44,7 @@ String util::to_string_bin(int var)
 	else
 	{
 		String res;
-		int a = math::abs(var);
+		long long a = math::abs(var);
 		while (a > 0)
 		{
 			res += static_cast<wchar_t>(static_cast<int>(L'0') + a % 2);
@@ -58,7 +58,7 @@ String util::to_string_bin(int var)
 	}
 }
 
-String util::to_string_oct(int var)
+String util::to_string_oct(long long var)
 {
 	if (var == 0)
 	{
@@ -67,7 +67,7 @@ String util::to_string_oct(int var)
 	else
 	{
 		String res;
-		int a = math::abs(var);
+		long long a = math::abs(var);
 		while (a > 0)
 		{
 			res += static_cast<wchar_t>(static_cast<int>(L'0') + a % 8);
@@ -81,7 +81,7 @@ String util::to_string_oct(int var)
 	}
 }
 
-String util::to_string_hex(int var)
+String util::to_string_hex(long long var)
 {
 	if (var == 0)
 	{
@@ -90,7 +90,7 @@ String util::to_string_hex(int var)
 	else
 	{
 		String res;
-		int a = math::abs(var);
+		long long a = math::abs(var);
 		while (a > 0)
 		{
 			int t = a % 16;
@@ -110,6 +110,26 @@ String util::to_string_hex(int var)
 		}
 		return res.reverse();
 	}
+}
+
+String util::to_string(int var)
+{
+	return to_string(static_cast<long long>(var));
+}
+
+String util::to_string_bin(int var)
+{
+	return to_string_bin(static_cast<long long>(var));
+}
+
+String util::to_string_oct(int var)
+{
+	return to_string_oct(static_cast<long long>(var));
+}
+
+String util::to_string_hex(int var)
+{
+	return to_string_hex(static_cast<long long>(var));
 }
 
 String util::to_string(float var)

@@ -356,6 +356,22 @@ int ceil_abs(float value) noexcept;
  *	\param value Число.
  *	\return Модуль числа.
  */
+long long abs(long long value) noexcept;
+
+/**
+ *	\~english
+ *	\brief An absolute value
+ *
+ *	Return a positive number that is equal to the passed one up to a sign.
+ *	\param value A number.
+ *	\return An absolute value.
+ *	
+ *	\~russian
+ *	\brief Модуль числа
+ *	Возвращает положительное число, с точностью до знака равное переданному.
+ *	\param value Число.
+ *	\return Модуль числа.
+ */
 int abs(int value) noexcept;
 
 /**

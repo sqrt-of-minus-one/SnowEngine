@@ -10,87 +10,62 @@
 
 #include <chrono>
 
+#include "../Types/String.h"
+
 namespace snow
 {
 
-class TimeInterval;
-
 enum class EMonth
 {
-	JAN = 1,
-	FEB,
-	MAR,
-	APR,
-	MAY,
-	JUN,
-	JUL,
-	AUG,
-	SEP,
-	OCT,
-	NOV,
-	DEC
+	JAN = 1,	/// \~english January \~russian Январь
+	FEB,		/// \~english February \~russian Февраль
+	MAR,		/// \~english March \~russian Март
+	APR,		/// \~english April \~russian Апрель
+	MAY,		/// \~english May \~russian Май
+	JUN,		/// \~english June \~russian Июнь
+	JUL,		/// \~english July \~russian Июль
+	AUG,		/// \~english August \~russian Август
+	SEP,		/// \~english September \~russian Сентябрь
+	OCT,		/// \~english October \~russian Октябрь
+	NOV,		/// \~english November \~russian Ноябрь
+	DEC			/// \~english December \~russian Декабрь
 };
 
 enum class EWeekDay
 {
-	MON = 0,
-	TUE,
-	WED,
-	THU,
-	FRI,
-	SAT,
-	SUN
+	MON = 0,	/// \~english Monday \~russian Понедельник
+	TUE,		/// \~english Tuesday \~russian Вторник
+	WED,		/// \~english Wednesday \~russian Среда
+	THU,		/// \~english Thursday \~russian Четверг
+	FRI,		/// \~english Friday \~russian Пятница
+	SAT,		/// \~english Saturday \~russian Суббота
+	SUN			/// \~english Sunday \~russian Воскресенье
+};
+
+struct STime
+{
+	int year;			/// \~english The year, e. g. 2024 \~russian Год, например, 2024
+	EMonth month;		/// \~english The month \~russian Месяц
+	int day;			/// \~english The day of month, [1, 31] \~russian День месяца, [1, 31]
+	EWeekDay week_day;	/// \~english The day of week \~russian День недели
+	int year_day;		/// \~english Days since 1st of January, [0, 365] \~russian Дней с 1 января, [0, 365]
+	int hour;			/// \~english Hours, [0, 23] \~russian Часы, [0, 23]
+	int minute;			/// \~english Minutes, [0, 59] \~russian Минуты, [0, 59]
+	int second;			/// \~english Seconds, [0, 60] (including leap second) \~russian Секунды, [0, 60] (включая секунду координации)
 };
 
 class Time : public Object
 {
 public:
-	Time();
-	Time(const Time& time);
-	Time(int year, EMonth month, int day, int hour = 0, int minute = 0, int second = 0,
-		int millisecond = 0, int microsecond = 0, int nanosecond = 0);
-
-	virtual String to_string() const override;
-	virtual int hash_code() const noexcept override;
-
-	int second() const;
-	int minute() const;
-	int hour() const;
-	int month_day() const;
-	EMonth month() const;
-	int year() const;
-	EWeekDay week_day() const;
-	int year_day() const;
-
-	static Time now();
-
-	Time& operator=(const Time& time);
-
-	Time operator+(const TimeInterval& interval) const;
-	TimeInterval operator-(const Time& time) const;
-	Time operator-(const TimeInterval& interval) const;
-
-	Time& operator+=(const TimeInterval& interval);
-	Time& operator-=(const TimeInterval& interval);
-
-	bool operator==(const Time& interval) const noexcept;
-	bool operator!=(const Time& interval) const noexcept;
-	bool operator<(const Time& interval) const noexcept;
-	bool operator>(const Time& interval) const noexcept;
-	bool operator<=(const Time& interval) const noexcept;
-	bool operator>=(const Time& interval) const noexcept;
-
-private:
-	using Point_ = std::chrono::time_point<std::chrono::steady_clock>;
-
-	Time(const Point_& point);
-
-	Point_ point_;
-	mutable std::tm cache_tm_;
-	mutable bool cache_state_;
-
-	void update_cache_() const;
-
+	static STime to_stime(std::chrono::time_point<std::chrono::steady_clock> point);
+	static STime to_stime(std::tm point);
+	static String to_string(STime point, const String& format = L"yyyy.MM.dd-HH:mm:ss"_s);
+	static String to_string(std::chrono::time_point<std::chrono::steady_clock> point,
+							const String& format = L"yyyy.MM.dd-HH:mm:ss"_s);
+	static String to_string(std::tm point, const String& format = L"yyyy.MM.dd-HH:mm:ss"_s);
+	static String to_string(std::chrono::duration<std::chrono::steady_clock::rep, std::chrono::steady_clock::period> duration,
+							const String& format = L"hh:mm:ss.iii.uuu.nnn"_s);
+	static std::chrono::time_point<std::chrono::steady_clock> to_std_point(STime point);
 };
 
 }

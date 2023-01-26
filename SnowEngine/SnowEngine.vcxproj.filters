@@ -113,9 +113,6 @@
     <ClInclude Include="Source\Util\Time\Timer.h">
       <Filter>Source Files\Util\Time</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Util\Time\TimeInterval.h">
-      <Filter>Source Files\Util\Time</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Util\Time\Time.h">
       <Filter>Source Files\Util\Time</Filter>
     </ClInclude>
@@ -251,9 +248,6 @@
       <Filter>Source Files\Util\Function</Filter>
     </ClCompile>
     <ClCompile Include="Source\Util\Time\Timer.cpp">
-      <Filter>Source Files\Util\Time</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Util\Time\TimeInterval.cpp">
       <Filter>Source Files\Util\Time</Filter>
     </ClCompile>
     <ClCompile Include="Source\Util\Time\Time.cpp">

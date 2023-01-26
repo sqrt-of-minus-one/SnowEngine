@@ -52,6 +52,15 @@ int math::ceil_abs(float value) noexcept
 	return value < 0 ? -result : result;
 }
 
+long long math::abs(long long value) noexcept
+{
+#ifndef SNOW_USE_STD_MATH
+	return value >= 0 ? value : -value;
+#else
+	return std::abs(value);
+#endif
+}
+
 int math::abs(int value) noexcept
 {
 #ifndef SNOW_USE_STD_MATH
