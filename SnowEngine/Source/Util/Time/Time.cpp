@@ -15,75 +15,73 @@
 
 using namespace snow;
 
-String month_to_string_(EMonth month)
+String month_to_string_(time::EMonth month)
 {
 	switch (month)
 	{
-	case EMonth::JAN: return L"January"_s;
-	case EMonth::FEB: return L"February"_s;
-	case EMonth::MAR: return L"March"_s;
-	case EMonth::APR: return L"April"_s;
-	case EMonth::MAY: return L"May"_s;
-	case EMonth::JUN: return L"June"_s;
-	case EMonth::JUL: return L"July"_s;
-	case EMonth::AUG: return L"August"_s;
-	case EMonth::SEP: return L"September"_s;
-	case EMonth::OCT: return L"October"_s;
-	case EMonth::NOV: return L"November"_s;
+	case time::EMonth::JAN: return L"January"_s;
+	case time::EMonth::FEB: return L"February"_s;
+	case time::EMonth::MAR: return L"March"_s;
+	case time::EMonth::APR: return L"April"_s;
+	case time::EMonth::MAY: return L"May"_s;
+	case time::EMonth::JUN: return L"June"_s;
+	case time::EMonth::JUL: return L"July"_s;
+	case time::EMonth::AUG: return L"August"_s;
+	case time::EMonth::SEP: return L"September"_s;
+	case time::EMonth::OCT: return L"October"_s;
+	case time::EMonth::NOV: return L"November"_s;
 	default: return L"December"_s;
 	}
 }
 
-String month_to_str_(EMonth month)
+String month_to_str_(time::EMonth month)
 {
 	switch (month)
 	{
-	case EMonth::JAN: return L"Jan"_s;
-	case EMonth::FEB: return L"Feb"_s;
-	case EMonth::MAR: return L"Mar"_s;
-	case EMonth::APR: return L"Apr"_s;
-	case EMonth::MAY: return L"May"_s;
-	case EMonth::JUN: return L"Jun"_s;
-	case EMonth::JUL: return L"Jul"_s;
-	case EMonth::AUG: return L"Aug"_s;
-	case EMonth::SEP: return L"Sep"_s;
-	case EMonth::OCT: return L"Oct"_s;
-	case EMonth::NOV: return L"Nov"_s;
+	case time::EMonth::JAN: return L"Jan"_s;
+	case time::EMonth::FEB: return L"Feb"_s;
+	case time::EMonth::MAR: return L"Mar"_s;
+	case time::EMonth::APR: return L"Apr"_s;
+	case time::EMonth::MAY: return L"May"_s;
+	case time::EMonth::JUN: return L"Jun"_s;
+	case time::EMonth::JUL: return L"Jul"_s;
+	case time::EMonth::AUG: return L"Aug"_s;
+	case time::EMonth::SEP: return L"Sep"_s;
+	case time::EMonth::OCT: return L"Oct"_s;
+	case time::EMonth::NOV: return L"Nov"_s;
 	default: return L"Dec"_s;
 	}
 }
 
-String weekday_to_string_(EWeekDay week_day)
+String weekday_to_string_(time::EWeekDay week_day)
 {
 	switch (week_day)
 	{
-	case EWeekDay::MON: return L"Monday"_s;
-	case EWeekDay::TUE: return L"Tuesday"_s;
-	case EWeekDay::WED: return L"Wednesday"_s;
-	case EWeekDay::THU: return L"Thursday"_s;
-	case EWeekDay::FRI: return L"Friday"_s;
-	case EWeekDay::SAT: return L"Saturday"_s;
+	case time::EWeekDay::MON: return L"Monday"_s;
+	case time::EWeekDay::TUE: return L"Tuesday"_s;
+	case time::EWeekDay::WED: return L"Wednesday"_s;
+	case time::EWeekDay::THU: return L"Thursday"_s;
+	case time::EWeekDay::FRI: return L"Friday"_s;
+	case time::EWeekDay::SAT: return L"Saturday"_s;
 	default: return L"Sunday"_s;
 	}
 }
 
-String weekday_to_str_(EWeekDay week_day)
+String weekday_to_str_(time::EWeekDay week_day)
 {
 	switch (week_day)
 	{
-	case EWeekDay::MON: return L"Mon"_s;
-	case EWeekDay::TUE: return L"Tue"_s;
-	case EWeekDay::WED: return L"Wed"_s;
-	case EWeekDay::THU: return L"Thu"_s;
-	case EWeekDay::FRI: return L"Fri"_s;
-	case EWeekDay::SAT: return L"Sat"_s;
+	case time::EWeekDay::MON: return L"Mon"_s;
+	case time::EWeekDay::TUE: return L"Tue"_s;
+	case time::EWeekDay::WED: return L"Wed"_s;
+	case time::EWeekDay::THU: return L"Thu"_s;
+	case time::EWeekDay::FRI: return L"Fri"_s;
+	case time::EWeekDay::SAT: return L"Sat"_s;
 	default: return L"Sun"_s;
 	}
 }
 
-		/* Time: public */
-
-STime Time::to_stime(std::chrono::time_point<std::chrono::steady_clock> point)
+time::STime time::to_stime(std::chrono::time_point<std::chrono::steady_clock> point)
 {
 	std::chrono::time_point<std::chrono::system_clock> system(
 		std::chrono::duration_cast<std::chrono::duration<std::chrono::system_clock::rep, std::chrono::system_clock::period>>(
@@ -93,13 +91,13 @@ STime Time::to_stime(std::chrono::time_point<std::chrono::steady_clock> point)
 	return to_stime(*std::localtime(&time));
 }
 
-STime Time::to_stime(std::tm point)
+time::STime time::to_stime(std::tm point)
 {
-	STime ret;
+	time::STime ret;
 	ret.year = point.tm_year + 1900;
-	ret.month = static_cast<EMonth>(point.tm_mon + 1);
+	ret.month = static_cast<time::EMonth>(point.tm_mon + 1);
 	ret.day = point.tm_mday;
-	ret.week_day = (point.tm_wday == 0 ? EWeekDay::SUN : static_cast<EWeekDay>(point.tm_wday - 1));
+	ret.week_day = (point.tm_wday == 0 ? time::EWeekDay::SUN : static_cast<time::EWeekDay>(point.tm_wday - 1));
 	ret.year_day = point.tm_yday;
 	ret.hour = point.tm_hour;
 	ret.minute = point.tm_min;
@@ -107,7 +105,7 @@ STime Time::to_stime(std::tm point)
 	return ret;
 }
 
-String Time::to_string(STime point, const String& format)
+String time::to_string(time::STime point, const String& format)
 {
 	String result;
 	for (int i = 0; i < format.size(); i++)
@@ -141,7 +139,8 @@ String Time::to_string(STime point, const String& format)
 			else if (i < format.size() - 1 &&
 				(format[i + 1] == L'y' || format[i + 1] == L'Y'))
 			{
-				result += util::to_string(point.year % 100);
+				int year = point.year % 100;
+				result += year >= 10 ? util::to_string(point.year % 100) : L"0"_s + util::to_string(point.year % 100);
 				i++;
 				continue;
 			}
@@ -316,7 +315,7 @@ String Time::to_string(STime point, const String& format)
 		}
 		case L'A': // AM / PM
 		{
-			if (point.hour < 12)
+			if (point.hour <= 12 && point.hour > 0)
 			{
 				result += L"AM";
 			}
@@ -380,17 +379,17 @@ String Time::to_string(STime point, const String& format)
 	return result;
 }
 
-String Time::to_string(std::chrono::time_point<std::chrono::steady_clock> point, const String& format)
+String time::to_string(std::chrono::time_point<std::chrono::steady_clock> point, const String& format)
 {
 	return to_string(to_stime(point), format);
 }
 
-String Time::to_string(std::tm point, const String& format)
+String time::to_string(std::tm point, const String& format)
 {
 	return to_string(to_stime(point), format);
 }
 
-String Time::to_string(std::chrono::duration<std::chrono::steady_clock::rep, std::chrono::steady_clock::period> duration,
+String time::to_string(std::chrono::duration<std::chrono::steady_clock::rep, std::chrono::steady_clock::period> duration,
 	const String& format)
 {
 	String result;
@@ -559,7 +558,7 @@ String Time::to_string(std::chrono::duration<std::chrono::steady_clock::rep, std
 	return result;
 }
 
-std::chrono::time_point<std::chrono::steady_clock> Time::to_std_point(STime point)
+std::chrono::time_point<std::chrono::steady_clock> time::to_std_point(time::STime point)
 {
 	std::tm tm;
 	tm.tm_year = point.year - 1900;
