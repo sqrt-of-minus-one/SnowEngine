@@ -41,6 +41,23 @@ ClickableComponent::~ClickableComponent()
 	}
 }
 
+bool ClickableComponent::is_mouse_over() const
+{
+	auto iter = CameraComponent::get_camera_components().find(&get_level());
+	if (iter != CameraComponent::get_camera_components().end())
+	{
+		const auto& cameras = iter->second;
+		for (const CameraComponent* i : cameras)
+		{
+			if (is_inside(Input::get_instance().get_level_mouse_position(*i)))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 std::vector<ClickableComponent*> ClickableComponent::get_clicked(const Level& level, const Vector2& position)
 {
 	std::vector<ClickableComponent*> ret;
@@ -64,33 +81,9 @@ std::vector<ClickableComponent*> ClickableComponent::get_clicked(const Level& le
 	}
 }
 
-bool ClickableComponent::is_mouse_over() const
-{
-	auto iter = CameraComponent::get_camera_components().find(&get_level());
-	if (iter != CameraComponent::get_camera_components().end())
-	{
-		const auto& cameras = iter->second;
-		for (const CameraComponent* i : cameras)
-		{
-			if (is_inside(Input::get_instance().get_level_mouse_position(*i)))
-			{
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 		/* ClickableComponent: protected */
 
-void ClickableComponent::when_begin_play()
-{
-	Component::when_begin_play();
-
-	when_transformed(get_level_transform());
-}
-
-void ClickableComponent::when_transformed(const Transform& new_level_transform)
+void ClickableComponent::setup_chunks()
 {
 	FloatRect new_boundary_rect = get_boundary_rect();
 	Point2 new_min_chunk = static_cast<Point2>(new_boundary_rect.get_position()) / Game::config.clickable_chunk_size;
@@ -121,6 +114,20 @@ void ClickableComponent::when_transformed(const Transform& new_level_transform)
 	boundary_rect_ = new_boundary_rect;
 	min_chunk_ = new_min_chunk;
 	max_chunk_ = new_max_chunk;
+}
+
+void ClickableComponent::when_begin_play()
+{
+	Component::when_begin_play();
+
+	setup_chunks();
+}
+
+void ClickableComponent::when_transformed(const Transform& new_level_transform)
+{
+	Component::when_transformed(new_level_transform);
+
+	setup_chunks();
 }
 
 void ClickableComponent::when_pressed(EButton button)

@@ -143,6 +143,25 @@ public:
 	 */
 	bool is_mouse_over() const;
 
+	/**
+	 *	\~english
+	 *	\brief The components which contain the specified point
+	 *
+	 *	Forms the vector of components which would be triggered if the mouse had clicked in the
+	 *	specified point.
+	 *	\param level The level.
+	 *	\param position The point to check.
+	 *
+	 *	\~russian
+	 *	\brief Компоненты, которые содержат заданную точку
+	 *
+	 *	Формирует вектор компонентов, которые были бы активированы, если бы мышь кликнула в
+	 *	заданной точке.
+	 *	\param level Уровень.
+	 *	\param position Точка для проверки.
+	 */
+	static std::vector<ClickableComponent*> get_clicked(const Level& level, const Vector2& position);
+
 			/* EVENTS */
 
 	/**
@@ -186,26 +205,26 @@ public:
 	 */
 	EventBinder<EButton /*button*/> on_released;
 
+protected:
+			/* METHODS */
+
 	/**
 	 *	\~english
-	 *	\brief The components which contain the specified point
+	 *	\brief Determines in which chunks the component is
 	 *	
-	 *	Forms the vector of components which would be triggered if the mouse had clicked in the
-	 *	specified point.
-	 *	\param level The level.
-	 *	\param position The point to check.
+	 *	Determines chunks where the component is. This method is automatically called when the
+	 *	component is transformed and should be called when the shape or the size of clickable area
+	 *	is changed.
 	 *	
 	 *	\~russian
-	 *	\brief Компоненты, которые содержат заданную точку
+	 *	\brief Определяет, в каких чанках находится компонент
 	 *	
-	 *	Формирует вектор компонентов, которые были бы активированы, если бы мышь кликнула в
-	 *	заданной точке.
-	 *	\param level Уровень.
-	 *	\param position Точка для проверки.
+	 *	Определяет чанки, где находится компонент. Этот метод автоматически вызывается, когда
+	 *	компонент преобразуется и должен также вызываться, когда форма или размер кликабельной
+	 *	области изменяется.
 	 */
-	static std::vector<ClickableComponent*> get_clicked(const Level& level, const Vector2& position);
+	void setup_chunks();
 
-protected:
 			/* EVENT METHODS FROM Component */
 
 	/**
@@ -241,6 +260,8 @@ protected:
 	 *	\param new_level_transform Новое преобразование компонента на уровне.
 	 */
 	virtual void when_transformed(const Transform& new_level_transform) override;
+
+			/* EVENT METHODS */
 
 	/**
 	 *	\~english

@@ -103,6 +103,65 @@ public:
 	 */
 	virtual FloatRect get_boundary_rect() const override;
 
+			/* METHODS */
+
+	/**
+	 *	\~english
+	 *	\brief Set the radius of the clickable area
+	 *	
+	 *	Allows to set the radius of the clickable circle. The actual size is the radius of the
+	 *	circle multiplied by the scale factor of the component transform.
+	 *	\param radius The radius of the circle.
+	 *	
+	 *	\~russian
+	 *	\brief Устанавливает радиус кликабельной области
+	 *	
+	 *	Позволяет установить радиус кликабельного круга. Настоящий размер — это радиус круга,
+	 *	умноженный на коэффициет масштаба из преобразования компонента.
+	 *	\param radius Радиус круга.
+	 */
+	void set_radius(float radius);
+	
+	/**
+	 *	\~english
+	 *	\brief The radius of the clickable area
+	 *	
+	 *	Allows to get the radius of the clickable circle. The actual size is the radius of the
+	 *	circle multiplied by the scale factor of the component transform.
+	 *	\return The radius of the circle.
+	 *
+	 *	\~russian
+	 *	\brief Радиус кликабельной области
+	 *
+	 *	Позволяет получить радиус кликабельного круга. Настоящий размер — это радиус круга,
+	 *	умноженный на коэффициет масштаба из преобразования компонента.
+	 *	\return Радиус круга.
+	 */
+	float get_radius() const;
+
+			/* EVENTS */
+
+	/**
+	 *	\~english
+	 *	\brief The circle is resized
+	 *	
+	 *	This event is called when the clickable circle is resized. It isn't called when the scale
+	 *	of the component is changed (in its transform).
+	 *	
+	 *	Event parameters:
+	 *	- `float new_radius`: The new radius of the circle.
+	 *	
+	 *	\~russian
+	 *	\brief Размер круга изменён
+	 *	
+	 *	Это событие вызывается, когда размер кликабельного круга изменён. Оно не вызывается, когда
+	 *	изменяется масштаб компонента (в его преобразовании).
+	 *	
+	 *	Параметры события:
+	 *	- `float new_radius`: Новый радиус круга.
+	 */
+	EventBinder<float /*new_radius*/> on_resized;
+
 			/* CONSTANTS */
 
 	/**
@@ -117,6 +176,11 @@ public:
 	 *	Радиус круглого кликабельного компонента по умолчанию.
 	 */
 	static const float DEFAULT_RADIUS;
+
+private:
+	float radius_;
+
+	Event<float /*new_radius*/> on_resized_;
 };
 
 }

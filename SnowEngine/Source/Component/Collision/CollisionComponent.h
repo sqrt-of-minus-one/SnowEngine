@@ -140,6 +140,25 @@ public:
 	virtual FloatRect get_boundary_rect() const = 0;
 
 protected:
+			/* METHODS */
+
+	/**
+	 *	\~english
+	 *	\brief Determines in which chunks the component is
+	 *	
+	 *	Determines chunks where the component is. This method is automatically called when the
+	 *	component is transformed and should be called when the shape or the size of collision area
+	 *	is changed.
+	 *	
+	 *	\~russian
+	 *	\brief Определяет, в каких чанках находится компонент
+	 *	
+	 *	Определяет чанки, где находится компонент. Этот метод автоматически вызывается, когда
+	 *	компонент преобразуется и должен также вызываться, когда форма или размер области коллизии
+	 *	изменяется.
+	 */
+	void setup_chunks_();
+
 			/* EVENT METHODS FROM Component */
 
 	/**
