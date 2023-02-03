@@ -80,6 +80,7 @@ String Config::to_string() const
 	return
 		L"[default]"_s +
 		L"\nlog_path = " + check_string_(log_path) +
+		L"\nsaves_path = " + check_string_(saves_path) +
 		L"\n" +
 		L"\n[window]" +
 		L"\nresolution = " + util::to_string(resolution.get_x()) + L"x" + util::to_string(resolution.get_y()) +
@@ -107,8 +108,8 @@ String Config::to_string() const
 
 int Config::hash_code() const noexcept
 {
-	return log_path.hash_code() - lang_path.hash_code() + default_lang.hash_code() - resolution.hash_code() +
-		static_cast<int>(fullscreen) - static_cast<int>(resize) + static_cast<int>(titlebar) - static_cast<int>(titlebar_buttons) +
+	return log_path.hash_code() - saves_path.hash_code() + lang_path.hash_code() - default_lang.hash_code() + resolution.hash_code() -
+		static_cast<int>(fullscreen) + static_cast<int>(resize) - static_cast<int>(titlebar) + static_cast<int>(titlebar_buttons) -
 		title.hash_code();
 }
 
@@ -117,6 +118,7 @@ void Config::save()
 	std::wofstream file(L"config.ini");
 	file << L"[default]"_s <<
 		L"\nlog_path = " << check_string_(log_path) <<
+		L"\nsaves_path = " << check_string_(saves_path) <<
 		L"\n" <<
 		L"\n[window]" <<
 		L"\nresolution = " << util::to_string(resolution.get_x()) << L"x" << util::to_string(resolution.get_y()) <<
@@ -239,6 +241,14 @@ end_loop:;
 						}
 						log_path = value;
 					}
+					else if (field == L"saves_path")
+					{
+						while (value.back() == L'\\' || value.back() == L'/')
+						{
+							value.pop_back();
+						}
+						log_path = value;
+					}
 				}
 				else if (category == L"[window]")
 				{
@@ -343,6 +353,7 @@ end_loop:;
 Config::Config() :
 		// default
 	log_path(L"Logs"_s),
+	saves_path(L"Saves"_s),
 		// window
 	resolution(800, 600),
 	fullscreen(false),
@@ -370,6 +381,11 @@ Config::Config() :
 	else
 	{
 		load();
+	}
+
+	if (!std::filesystem::exists(saves_path.to_std_string()))
+	{
+		std::filesystem::create_directories(saves_path.to_std_string());
 	}
 
 	String default_lang_path = lang_path + L'\\' + default_lang;

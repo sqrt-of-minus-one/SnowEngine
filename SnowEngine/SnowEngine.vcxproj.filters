@@ -69,6 +69,9 @@
     <Filter Include="Source Files\Component\Clickable">
       <UniqueIdentifier>{ee803cb1-98ec-4686-ae42-e18ed69c43ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\SaveLoad">
+      <UniqueIdentifier>{50c2068a-2a11-4eaa-a494-61e207d217f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -206,6 +209,9 @@
     <ClInclude Include="Source\Actor\SimpleActor.h">
       <Filter>Source Files\Actor</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\SaveLoad\SaveLoad.h">
+      <Filter>Source Files\Util\SaveLoad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -340,5 +346,13 @@
     <ClCompile Include="Source\Util\Input\Keys.cpp">
       <Filter>Source Files\Util\Input</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Util\SaveLoad\SaveLoad.cpp">
+      <Filter>Source Files\Util\SaveLoad</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\Systems.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

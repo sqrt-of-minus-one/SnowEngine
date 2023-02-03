@@ -1599,6 +1599,83 @@ public:
 
 	/**
 	 *	\~english
+	 *	\brief Lexicographical comparison of two strings
+	 *
+	 *	This method uses `compare` to compare two strings.
+	 *	\param String The string to compare.
+	 *	\return `true` if the passed string appears after this one in lexicographical order,
+	 *	`false` otherwise or if the strings are equal.
+	 *
+	 *	\~russian
+	 *	\brief Лексикографическое сравнение строк
+	 *
+	 *	Этот метод использует `compare` для сравнения двух строк.
+	 *	\param string Строка для сравнения.
+	 *	\return `true`, если переданная строка находится после данной в лексикографическом порядке,
+	 *	иначе (или если строки равны) `false`.
+	 */
+	bool operator<(const String& string) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Lexicographical comparison of two strings
+	 *
+	 *	This method uses `compare` to compare two strings.
+	 *	\param String The string to compare.
+	 *	\return `true` if the passed string appears before this one in lexicographical order,
+	 *	`false` otherwise or if the strings are equal.
+	 *
+	 *	\~russian
+	 *	\brief Лексикографическое сравнение строк
+	 *
+	 *	Этот метод использует `compare` для сравнения двух строк.
+	 *	\param string Строка для сравнения.
+	 *	\return `true`, если переданная строка находится перед данной в лексикографическом порядке,
+	 *	иначе (или если строки равны) `false`.
+	 */
+	bool operator>(const String& string) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Lexicographical comparison of two strings
+	 *
+	 *	This method uses `compare` to compare two strings.
+	 *	\param String The string to compare.
+	 *	\return `true` if the passed string appears after this one in lexicographical order or if
+	 *	the strings are equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Лексикографическое сравнение строк
+	 *
+	 *	Этот метод использует `compare` для сравнения двух строк.
+	 *	\param string Строка для сравнения.
+	 *	\return `true`, если переданная строка находится после данной в лексикографическом порядке
+	 *	или если строки равны, иначе `false`.
+	 */
+	bool operator<=(const String& string) const noexcept;
+
+
+	/**
+	 *	\~english
+	 *	\brief Lexicographical comparison of two strings
+	 *
+	 *	This method uses `compare` to compare two strings.
+	 *	\param String The string to compare.
+	 *	\return `true` if the passed string appears before this one in lexicographical order or if
+	 *	the strings are equal, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Лексикографическое сравнение строк
+	 *
+	 *	Этот метод использует `compare` для сравнения двух строк.
+	 *	\param string Строка для сравнения.
+	 *	\return `true`, если переданная строка находится перед данной в лексикографическом порядке
+	 *	или если строки равны, иначе `false`.
+	 */
+	bool operator>=(const String& string) const noexcept;
+
+	/**
+	 *	\~english
 	 *	\brief Returns the specifies character
 	 *	
 	 *	Allows to access a character with the specified index.

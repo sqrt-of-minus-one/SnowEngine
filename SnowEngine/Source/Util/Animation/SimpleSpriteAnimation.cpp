@@ -28,6 +28,7 @@ SimpleSpriteAnimation::SimpleSpriteAnimation(const Point2& sprite_size, const Po
 {
 	Delegate<void> delegate;
 	delegate.bind<SimpleSpriteAnimation>(*this, &SimpleSpriteAnimation::next_frame_);
+	// The Timer copies the delegate so it will exist after exit from this method
 	timer_ = TimerManager::get_instance().create_timer(delegate, frequency_sec, frequency_sec);
 }
 

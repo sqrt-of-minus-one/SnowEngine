@@ -127,6 +127,21 @@ public:
 	 */
 	String log_path;
 
+	/**
+	 *	\~english
+	 *	\brief The path to save files
+	 *	
+	 *	The path to the folder with saves. If it doesn't exist, it will be created. Default value:
+	 *	`Saves`.
+	 *	
+	 *	\~russian
+	 *	\brief Путь к файлам сохранений
+	 *	
+	 *	Путь к директории с файлами сохранений. Если она не существует, то будет создана. Значение
+	 *	по умолчанию: `Saves`.
+	 */
+	String saves_path;
+
 			/* FIELDS
 				SECTION: window */
 

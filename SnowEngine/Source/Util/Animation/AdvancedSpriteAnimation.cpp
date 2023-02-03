@@ -34,6 +34,7 @@ AdvancedSpriteAnimation::AdvancedSpriteAnimation(const std::list<Frame>& frames)
 
 	Delegate<void> delegate;
 	delegate.bind<AdvancedSpriteAnimation>(*this, &AdvancedSpriteAnimation::next_frame_);
+	// The Timer copies the delegate so it will exist after exit from this method
 	timer_ = TimerManager::get_instance().create_timer(delegate, current_frame_->time_sec);
 }
 
@@ -91,6 +92,7 @@ void AdvancedSpriteAnimation::next_frame_()
 	}
 	Delegate<void> delegate;
 	delegate.bind<AdvancedSpriteAnimation>(*this, &AdvancedSpriteAnimation::next_frame_);
+	// The Timer copies the delegate so it will exist after exit from this method
 	timer_ = TimerManager::get_instance().create_timer(delegate, current_frame_->time_sec);
 	on_next_frame_.execute(get_sprite_rect());
 }

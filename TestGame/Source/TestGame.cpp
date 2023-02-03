@@ -15,6 +15,7 @@
 #include "Source/Util/Animation/AdvancedSpriteAnimation.h"
 #include "Source/Util/Input/Input.h"
 #include "Source/Component/Clickable/RectClickableComponent.h"
+#include "Source/Util/SaveLoad/SaveLoad.h"
 
 using namespace snow;
 
@@ -57,6 +58,23 @@ int main()
 	TimerManager::get_instance().create_timer(sound_delegate, 0.f, 5.f);
 
 	Input::get_instance().on_mouse_released(EButton::RIGHT).bind([]() { std::wcout << L"Pressed! (" << Input::get_instance().get_window_mouse_position().to_string() << L")" << std::endl; Input::get_instance().set_screen_mouse_position(Point2(100, 100)); });
+
+	auto saves = SaveLoad::get_saves();
+	for (const String& i : saves)
+	{
+		std::wcout << i << std::endl;
+	}
+	std::wcout << std::endl;
+	std::map<String, String> data;
+	data.insert(std::pair<String, String>(L"Hello"_s, L"world!"_s));
+	data.insert(std::pair<String, String>(L"Hi"_s, L"\"there\""_s));
+	data.insert(std::pair<String, String>(L"Hey"_s, L"Hey?\nH\\ey!"_s));
+	SaveLoad::save(L"hello", data);
+	data = SaveLoad::load(L"hello");
+	for (const auto& [key, value] : data)
+	{
+		std::wcout << key << L": " << value << std::endl;
+	}
 
 	_getch();
 	return 0;

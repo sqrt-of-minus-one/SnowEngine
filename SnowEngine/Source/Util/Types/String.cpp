@@ -1134,6 +1134,26 @@ bool String::operator!=(const String& string) const noexcept
 	return !(*this == string);
 }
 
+bool String::operator<(const String& string) const noexcept
+{
+	return compare(*this, string) < 0;
+}
+
+bool String::operator>(const String& string) const noexcept
+{
+	return compare(*this, string) > 0;
+}
+
+bool String::operator<=(const String& string) const noexcept
+{
+	return compare(*this, string) <= 0;
+}
+
+bool String::operator>=(const String& string) const noexcept
+{
+	return compare(*this, string) >= 0;
+}
+
 wchar_t& String::operator[](int index)
 {
 	if (index >= 0 && index < size())

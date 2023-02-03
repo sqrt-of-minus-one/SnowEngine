@@ -58,6 +58,7 @@
     <ClInclude Include="Source\Util\Lang\Text.h" />
     <ClInclude Include="Source\Util\Log\Log.h" />
     <ClInclude Include="Source\Util\ResourceManager.h" />
+    <ClInclude Include="Source\Util\SaveLoad\SaveLoad.h" />
     <ClInclude Include="Source\Util\Time\Time.h" />
     <ClInclude Include="Source\Util\Time\Timer.h" />
     <ClInclude Include="Source\Util\Time\TimerManager.h" />
@@ -104,12 +105,16 @@
     <ClCompile Include="Source\Util\Lang\Text.cpp" />
     <ClCompile Include="Source\Util\Log\Log.cpp" />
     <ClCompile Include="Source\Util\ResourceManager.cpp" />
+    <ClCompile Include="Source\Util\SaveLoad\SaveLoad.cpp" />
     <ClCompile Include="Source\Util\Time\Time.cpp" />
     <ClCompile Include="Source\Util\Time\Timer.cpp" />
     <ClCompile Include="Source\Util\Time\TimerManager.cpp" />
     <ClCompile Include="Source\Util\Types\String.cpp" />
     <ClCompile Include="Source\Util\Types\Transform.cpp" />
     <ClCompile Include="Source\Util\Util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\Systems.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
