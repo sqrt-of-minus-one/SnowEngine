@@ -238,6 +238,21 @@ public:
 
 	/**
 	 *	\~english
+	 *	\brief The period of the resource checks
+	 *	
+	 *	The time in seconds between the resource checks. While checking the references to unused
+	 *	and unloaded resources are deleted. Default value: 300.
+	 *	
+	 *	\~russian
+	 *	\brief Частота проверки ресурсов
+	 *	
+	 *	Время в секундах между проверками ресурсов. Во время проверки удаляются ссылки на
+	 *	неиспользуемые и выгруженные из памяти ресурсы. Значение по умолчанию: 300.
+	 */
+	float res_check_period_sec;
+
+	/**
+	 *	\~english
 	 *	\brief The path to textures
 	 *
 	 *	The path to the folder with texture files. Default value: `Resources\\Textures`.

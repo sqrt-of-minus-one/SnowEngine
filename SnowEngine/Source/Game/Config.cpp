@@ -91,6 +91,7 @@ String Config::to_string() const
 		L"\ntitle = " + check_string_(title) +
 		L"\n" +
 		L"\n[resources]" +
+		L"\nres_check_period_sec = " + util::to_string(res_check_period_sec) +
 		L"\nres_textures_path = " + check_string_(res_textures_path) +
 		L"\nres_fonts_path = " + check_string_(res_fonts_path) +
 		L"\nres_sounds_path = " + check_string_(res_sounds_path) +
@@ -129,6 +130,7 @@ void Config::save()
 		L"\ntitle = " << check_string_(title) <<
 		L"\n" <<
 		L"\n[resources]" <<
+		L"\nres_check_period_sec = " << util::to_string(res_check_period_sec) <<
 		L"\nres_textures_path = " << check_string_(res_textures_path) <<
 		L"\nres_fonts_path = " << check_string_(res_fonts_path) <<
 		L"\nres_sounds_path = " << check_string_(res_sounds_path) <<
@@ -247,7 +249,7 @@ end_loop:;
 						{
 							value.pop_back();
 						}
-						log_path = value;
+						saves_path = value;
 					}
 				}
 				else if (category == L"[window]")
@@ -279,6 +281,17 @@ end_loop:;
 				}
 				else if (category == L"[resources]")
 				{
+					if (field == L"res_check_period_sec")
+					{
+						try
+						{
+							res_check_period_sec = String(value).to_float();
+						}
+						catch (std::invalid_argument e)
+						{
+							res_check_period_sec = 300.f;
+						}
+					}
 					if (field == L"res_textures_path")
 					{
 						while (value.back() == L'\\' || value.back() == L'/')
@@ -362,6 +375,7 @@ Config::Config() :
 	titlebar_buttons(true),
 	title(L"The Game (powered by SnowEngine)"),
 		// resources
+	res_check_period_sec(300.f),
 	res_textures_path(L"Resources\\Textures"),
 	res_fonts_path(L"Resources\\Fonts"),
 	res_sounds_path(L"Resources\\Sounds"),
