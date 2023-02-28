@@ -849,26 +849,18 @@ const T& math::clamp(const T& value, const T& limit_1, const T& limit_2) noexcep
 			// Return the nearest limit
 			return (value - limit_2 > limit_1 - value) ? limit_1 : limit_2;
 		}
-		else
-		{
-			return value;
-		}
+		return value;
 	}
-	else
+
+	if (limit_1 > value)
 	{
-		if (limit_1 > value)
-		{
-			return limit_1;
-		}
-		else if (value > limit_2)
-		{
-			return limit_2;
-		}
-		else
-		{
-			return value;
-		}
+		return limit_1;
 	}
+	if (value > limit_2)
+	{
+		return limit_2;
+	}
+	return value;
 }
 
 }

@@ -94,10 +94,11 @@ void FloatRect::set_size(const Vector2& size)
 	
 bool FloatRect::overlap(const FloatRect& rect) const
 {
-	return position_.get_x() <= rect.get_corner_position().get_x() &&
-		   get_corner_position().get_x() >= rect.position_.get_x() &&
-		   position_.get_y() <= rect.get_corner_position().get_y() &&
-		   get_corner_position().get_y() >= rect.position_.get_y();
+	return
+		position_.get_x() <= rect.get_corner_position().get_x() &&
+		get_corner_position().get_x() >= rect.position_.get_x() &&
+		position_.get_y() <= rect.get_corner_position().get_y() &&
+		get_corner_position().get_y() >= rect.position_.get_y();
 }
 
 float FloatRect::perimeter() const

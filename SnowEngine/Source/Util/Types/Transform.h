@@ -285,7 +285,6 @@ private:
 	Vector2 position_;
 	Angle rotation_;
 	Vector2 scale_;
-
 };
 
 }

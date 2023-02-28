@@ -108,11 +108,8 @@ Angle Vector3::get_polar_angle() const
 	{
 		return (x_ == 0.f && y_ == 0.f) ? Angle::ZERO : Angle::RIGHT;
 	}
-	else
-	{
-		return z_ > 0.f ? math::arctg(static_cast<Vector2>(*this).length() / z_) :
-			math::arctg(static_cast<Vector2>(*this).length() / z_) + Angle::STRAIGHT;
-	}
+	return z_ > 0.f ? math::arctg(static_cast<Vector2>(*this).length() / z_) :
+		math::arctg(static_cast<Vector2>(*this).length() / z_) + Angle::STRAIGHT;
 }
 
 Angle Vector3::get_azimuthal_angle() const
@@ -201,26 +198,20 @@ const float Vector3::operator&(const Vector3& vector) const noexcept
 
 const Vector3 Vector3::operator/(float value) const
 {
-	if (value != 0.f)
-	{
-		return Vector3(x_ / value, y_ / value, z_ / value);
-	}
-	else
+	if (value == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Vector3(x_ / value, y_ / value, z_ / value);
 }
 
 const Vector3 Vector3::operator/(const Vector3& vector) const
 {
-	if (vector.x_ != 0.f && vector.y_ != 0.f && vector.z_ != 0.f)
-	{
-		return Vector3(x_ / vector.x_, y_ / vector.y_, z_ / vector.z_);
-	}
-	else
+	if (vector.x_ == 0.f || vector.y_ == 0.f || vector.z_ == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Vector3(x_ / vector.x_, y_ / vector.y_, z_ / vector.z_);
 }
 	
 Vector3& Vector3::operator+=(const Vector3& vector) noexcept
@@ -263,32 +254,26 @@ Vector3& Vector3::operator^=(const Vector3& vector) noexcept
 
 Vector3& Vector3::operator/=(float value)
 {
-	if (value != 0.f)
-	{
-		x_ /= value;
-		y_ /= value;
-		z_ /= value;
-		return *this;
-	}
-	else
+	if (value == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= value;
+	y_ /= value;
+	z_ /= value;
+	return *this;
 }
 
 Vector3& Vector3::operator/=(const Vector3& vector)
 {
-	if (vector.x_ != 0.f && vector.y_ != 0.f && vector.z_ != 0.f)
-	{
-		x_ /= vector.x_;
-		y_ /= vector.y_;
-		z_ /= vector.z_;
-		return *this;
-	}
-	else
+	if (vector.x_ == 0.f || vector.y_ == 0.f || vector.z_ == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= vector.x_;
+	y_ /= vector.y_;
+	z_ /= vector.z_;
+	return *this;
 }
 	
 bool Vector3::operator==(const Vector3& vector) const noexcept

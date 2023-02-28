@@ -134,14 +134,11 @@ const Angle snow::operator*(float value, const Angle& angle)
 
 const Angle Angle::operator/(float value) const
 {
-	if (value != 0.f)
-	{
-		return Angle(value_deg_ / value);
-	}
-	else
+	if (value == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Angle(value_deg_ / value);
 }
 
 Angle& Angle::operator+=(const  Angle& angle) noexcept
@@ -161,15 +158,12 @@ Angle& Angle::operator*=(float value) noexcept
 }
 Angle& Angle::operator/=(float value)
 {
-	if (value != 0.f)
-	{
-		value_deg_ /= value;
-		return *this;
-	}
-	else
+	if (value == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	value_deg_ /= value;
+	return *this;
 }
 
 bool Angle::operator==(const Angle& angle) const noexcept

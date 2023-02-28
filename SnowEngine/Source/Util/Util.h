@@ -504,10 +504,7 @@ String util::to_string(const std::unique_ptr<T>& var)
 	{
 		return L"UniquePtr: "_s + to_string(*var);
 	}
-	else
-	{
-		return L"UniquePtr: NULL"_s;
-	}
+	return L"UniquePtr: NULL"_s;
 }
 
 template<typename T>
@@ -517,10 +514,7 @@ String util::to_string(const std::shared_ptr<T>& var)
 	{
 		return L"SharedPtr: "_s + to_string(*var);
 	}
-	else
-	{
-		return L"SharedPtr: NULL"_s;
-	}
+	return L"SharedPtr: NULL"_s;
 }
 
 template<typename T>
@@ -531,10 +525,7 @@ String util::to_string(const std::weak_ptr<T>& var)
 	{
 		return L"WeakPtr: "_s + to_string(*var);
 	}
-	else
-	{
-		return L"WeakPtr: NULL"_s;
-	}
+	return L"WeakPtr: NULL"_s;
 }
 
 template<typename T>

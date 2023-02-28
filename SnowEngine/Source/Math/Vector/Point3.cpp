@@ -135,26 +135,20 @@ const Point3 Point3::operator*(const Point3& point) const
 
 const Point3 Point3::operator/(int value) const
 {
-	if (value != 0)
-	{
-		return Point3(x_ / value, y_ / value, z_ / value);
-	}
-	else
+	if (value == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Point3(x_ / value, y_ / value, z_ / value);
 }
 
 const Point3 Point3::operator/(const Point3& point) const
 {
-	if (point.x_ != 0 && point.y_ != 0 && point.z_ != 0)
-	{
-		return Point3(x_ / point.x_, y_ / point.y_, z_ / point.z_);
-	}
-	else
+	if (point.x_ == 0 || point.y_ == 0 || point.z_ == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Point3(x_ / point.x_, y_ / point.y_, z_ / point.z_);
 }
 	
 Point3& Point3::operator+=(const Point3& point) noexcept
@@ -191,32 +185,26 @@ Point3& Point3::operator*=(const Point3& point) noexcept
 
 Point3& Point3::operator/=(int value)
 {
-	if (value != 0)
-	{
-		x_ /= value;
-		y_ /= value;
-		z_ /= value;
-		return *this;
-	}
-	else
+	if (value == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= value;
+	y_ /= value;
+	z_ /= value;
+	return *this;
 }
 
 Point3& Point3::operator/=(const Point3& point)
 {
-	if (point.x_ != 0 && point.y_ != 0 && point.z_ != 0)
-	{
-		x_ /= point.x_;
-		y_ /= point.y_;
-		z_ /= point.z_;
-		return *this;
-	}
-	else
+	if (point.x_ == 0 || point.y_ == 0 || point.z_ == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= point.x_;
+	y_ /= point.y_;
+	z_ /= point.z_;
+	return *this;
 }
 	
 bool Point3::operator==(const Point3& point) const noexcept

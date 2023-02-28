@@ -84,22 +84,14 @@ Angle Vector2::get_angle() const
 		{
 			return Angle::ZERO;
 		}
-		else
-		{
-			return (y_ > 0.f ? Angle::RIGHT : -Angle::RIGHT);
-		}
+		return (y_ > 0.f ? Angle::RIGHT : -Angle::RIGHT);
 	}
-	else
+
+	if (x_ > 0.f)
 	{
-		if (x_ > 0.f)
-		{
-			return math::arctg(y_ / x_);
-		}
-		else
-		{
-			return math::arctg(y_ / x_) + (y_ >= 0 ? Angle::STRAIGHT : -Angle::STRAIGHT);
-		}
+		return math::arctg(y_ / x_);
 	}
+	return math::arctg(y_ / x_) + (y_ >= 0 ? Angle::STRAIGHT : -Angle::STRAIGHT);
 }
 
 Angle Vector2::get_angle(const Vector2& vector) const
@@ -174,26 +166,20 @@ const float Vector2::operator&(const Vector2& vector) const noexcept
 
 const Vector2 Vector2::operator/(float value) const
 {
-	if (value != 0.f)
-	{
-		return Vector2(x_ / value, y_ / value);
-	}
-	else
+	if (value == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Vector2(x_ / value, y_ / value);
 }
 
 const Vector2 Vector2::operator/(const Vector2& vector) const
 {
-	if (vector.x_ != 0.f  && vector.y_ != 0.f)
-	{
-		return Vector2(x_ / vector.x_, y_ / vector.y_);
-	}
-	else
+	if (vector.x_ == 0.f  || vector.y_ == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Vector2(x_ / vector.x_, y_ / vector.y_);
 }
 	
 Vector2& Vector2::operator+=(const Vector2& vector) noexcept
@@ -226,30 +212,24 @@ Vector2& Vector2::operator*=(const Vector2& vector) noexcept
 
 Vector2& Vector2::operator/=(float value)
 {
-	if (value != 0.f)
-	{
-		x_ /= value;
-		y_ /= value;
-		return *this;
-	}
-	else
+	if (value == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= value;
+	y_ /= value;
+	return *this;
 }
 
 Vector2& Vector2::operator/=(const Vector2& vector)
 {
-	if (vector.x_ != 0.f && vector.y_ != 0.f)
-	{
-		x_ /= vector.x_;
-		y_ /= vector.y_;
-		return *this;
-	}
-	else
+	if (vector.x_ == 0.f || vector.y_ == 0.f)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= vector.x_;
+	y_ /= vector.y_;
+	return *this;
 }
 	
 bool Vector2::operator==(const Vector2& vector) const noexcept

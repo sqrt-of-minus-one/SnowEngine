@@ -191,7 +191,6 @@ private:
 	/* lazy */ static std::mutex& res_mtx_() noexcept;
 
 	Log res_log_;
-
 };
 
 }

@@ -126,7 +126,7 @@ float math::cos(const Angle& angle)
 	{
 		return -cos(Angle::STRAIGHT - norm);
 	}
-	else if (norm < -Angle::RIGHT)
+	if (norm < -Angle::RIGHT)
 	{
 		return -cos(-Angle::STRAIGHT - norm);
 	}
@@ -141,7 +141,7 @@ float math::cos(const Angle& angle)
 	long long fact = 1;
 	float one = 1.f;
 	float rrad = 1;
-	int accuracy = (rad > 1.45f ? (rad > 1.55 ? 21 : 17) : 11); // The closer to zero, the fewer members of the series are needed
+	int accuracy = (rad > 1.45f ? (rad > 1.55 ? 21 : 17) : 11); // The closer to zero, the fewer terms in the series are needed
 	rad *= rad;
 	// Taylor series
 	for (int i = 0; i < accuracy; i += 2)
@@ -219,10 +219,7 @@ float math::ctg(const Angle& angle)
 	{
 		return 0.f;
 	}
-	else
-	{
-		return 1 / std::tanf(norm.get_radians());
-	}
+	return 1 / std::tanf(norm.get_radians());
 #endif
 }
 
@@ -247,11 +244,11 @@ Angle math::arcsin(float value)
 	{
 		return Angle::STRAIGHT;
 	}
-	else if (value == 0.7071067812f)
+	if (value == 0.7071067812f)
 	{
 		return 45_deg;
 	}
-	else if (value > 0.71f) // Value is too far from zero, Taylor series is not accurate enough
+	if (value > 0.71f) // Value is too far from zero, Taylor series is not accurate enough
 	{
 		return arccos(std::sqrt(1 - value * value));
 	}
@@ -299,15 +296,15 @@ Angle math::arccos(float value)
 	{
 		return Angle::ZERO;
 	}
-	else if (value == 0.7071067812f)
+	if (value == 0.7071067812f)
 	{
 		return 45_deg;
 	}
-	else if (value > 0.71f) // Value is too far from zero, Taylor series is not accurate enough
+	if (value > 0.71f) // Value is too far from zero, Taylor series is not accurate enough
 	{
 		return arcsin(std::sqrt(1 - value * value));
 	}
-	else if (value < -0.71f)
+	if (value < -0.71f)
 	{
 		return Angle::STRAIGHT - arcsin(std::sqrt(1 - value * value));
 	}

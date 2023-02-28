@@ -32,12 +32,15 @@ class String;
  *	\~english
  *	\brief The base class of all SnowEngine classes
  *	
- *	Every SnowEngine class is derived from this one.
+ *	Every SnowEngine class is derived from this one. This class has also a list with all existing
+ *	objects, so you can check if the pointer to an `Object` is valid using `is_valid` method.
  *	
  *	\~russian
  *	\brief Базовый класс для всех классов SnowEngine
  *	
- *	Каждый класс SnowEngine наследуется от этого.
+ *	Каждый класс SnowEngine наследуется от этого. Этот класс также имеет список всех существующих
+ *	объектов, и вы можете проверить, действителен ли указатель на `Object` с помощью метода
+ *	`is_valid`.
  */
 class Object
 {
