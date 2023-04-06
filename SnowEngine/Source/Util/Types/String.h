@@ -32,7 +32,8 @@ namespace snow
  *	\brief The class of string
  *	
  *	This class is used by SnowEngine functions as string. It is based on `std::wstring` class. Note
- *	that SnowEngine uses wide characters. You can use literal `_s` to simply create `snow::String`:
+ *	that SnowEngine uses wide characters. This means that you should use prefix `L` before
+ *	character and string constants. You can use literal `_s` to create `snow::String`:
  *	\code
  *		// These two string do the same:
  *		String::format(String(L"Hello %s!"), String(L"SnowEngine"));
@@ -43,7 +44,8 @@ namespace snow
  *	\brief Класс строки
  *
  *	Этот класс используется в SnowEngine в качестве строки. Он основан на классе `std::wstring`.
- *	Помните, что SnowEngine использует широкие символы. Мы можете использовать литерал `_s` для
+ *	Помните, что SnowEngine использует широкие символы. Это значит, что вам следует использовать
+ *	префикс `L` перед символьными и строковыми константами. Вы можете использовать литерал `_s` для
  *	простого создания `snow::String`:
  *	\code
  *		// Эти две строки делают одно и то же:
@@ -109,7 +111,7 @@ public:
 	 *		String str1(L'S');
 	 *		String str2 = L'E';
 	 *	\endcode
-	 *	\param ch The character that will be added to the string.
+	 *	\param ch The character that will be contained in the new string.
 	 *	
 	 *	\~russian
 	 *	\brief Создаёт строку с одним символом
@@ -120,7 +122,7 @@ public:
 	 *		String str1(L'S');
 	 *		String str2 = L'E';
 	 *	\endcode
-	 *	\param ch Символ, который будет добавлен к строке.
+	 *	\param ch Символ, который будет содержаться в новой строке.
 	 */
 	String(wchar_t ch);
 
@@ -205,14 +207,14 @@ public:
 	 *	\brief Hash code of the string
 	 *
 	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of an empty string is zero.
+	 *	objects can also have the same hash codes.
 	 *	\return Hash code of the object.
 	 *
 	 *	\~russian
 	 *	\brief Хеш-код строки
 	 *
 	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустой строки — ноль.
+	 *	также могут иметь одинаковые хеш-коды.
 	 *	\return Хеш-код объекта.
 	 */
 	virtual int hash_code() const noexcept override;
@@ -296,32 +298,32 @@ public:
 	 *
 	 *	Inserts a new character into the end of the string.
 	 *	\param ch The character that will be added.
-	 *	\return `true` if the character was successfully added, `false` otherwise.
+	 *	\return The reference to itself.
 	 *	
 	 *	\~russian
 	 *	\brief Добавляет новый символ
 	 *	
 	 *	Вставляет новый символ в конец строки.
 	 *	\param ch Символ, который будет добавлен.
-	 *	\return `true`, если символ был успешно добавлен; иначе `false`.
+	 *	\return Ссылка на себя.
 	 */
-	bool add(wchar_t ch);
+	String& add(wchar_t ch);
 
 	/**
 	 *	\brief Adds characters of the passed string
 	 *
 	 *	Inserts the passed string into the end of this one.
 	 *	\param string The string that will be added.
-	 *	\return The number of characters that were successfully added.
+	 *	\return The reference to itself.
 	 *
 	 *	\~russian
 	 *	\brief Добавляет символы переданной строки
 	 *
 	 *	Вставляет переданную строку в конец этой.
 	 *	\param string Строка, которая будет добавлена.
-	 *	\return Количество символов, которые были успешно добавлены.
+	 *	\return Ссылка на себя.
 	 */
-	int add(const String& string);
+	String& add(const String& string);
 
 	/**
 	 *	\~english
@@ -330,7 +332,8 @@ public:
 	 *	Inserts the passed character in the specified position of the string.
 	 *	\param ch The character that will be added.
 	 *	\param pos Index that the inserted character will have.
-	 *	\return `true` if the character was successfully added, `false` otherwise.
+	 *	\return The reference to itself.
+	 *	\throw std::range_error The index is out of bounds (`pos < 0` or `pos > size()`).
 	 *
 	 *	\~russian
 	 *	\brief Добавляет новый символ в укзанное место
@@ -338,9 +341,10 @@ public:
 	 *	Вставляет новый символ в указанное место строки.
 	 *	\param ch Символ, который будет добавлен.
 	 *	\param pos Индекс, который вставленный символ будет иметь.
-	 *	\return `true`, если символ был успешно добавлен; иначе `false`.
+	 *	\return Ссылка на себя.
+	 *	\throw std::range_error Индекс вне диапазона (`pos < 0` или `pos > size()`).
 	 */
-	bool add(wchar_t ch, int pos);
+	String& add(wchar_t ch, int pos);
 
 	/**
 	 *	\~english
@@ -349,7 +353,8 @@ public:
 	 *	Inserts the passed string into the specified position of the string.
 	 *	\param string The string that will be added.
 	 *	\param pos Index that the first character of the inserted string will have.
-	 *	\return The number of characters that were successfully added.
+	 *	\return The reference to itself.
+	 *	\throw std::range_error The index is out of bounds (`pos < 0` or `pos > size()`).
 	 *
 	 *	\~russian
 	 *	\brief Добавляет символы переданной строки в указанное место
@@ -357,9 +362,10 @@ public:
 	 *	Вставляет переданную строку в указанное место строки.
 	 *	\param string Строка, которая будет добавлена.
 	 *	\param pos Индекс, который будет иметь первый символ вставленной строки.
-	 *	\return Количество символов, которые были успешно добавлены.
+	 *	\return Ссылка на себя.
+	 *	\throw std::range_error Индекс вне диапазона (`pos < 0` или `pos > size()`).
 	 */
-	int add(const String& string, int pos);
+	String& add(const String& string, int pos);
 
 	/**
 	 *	\~english
@@ -367,43 +373,78 @@ public:
 	 *	
 	 *	Removes a character in the specified position.
 	 *	\param pos The index of the character that will be removed.
-	 *	\return `true` if the character has been successfully removed, `false` otherwise.
+	 *	\return The reference to itself.
+	 *	\throw std::range_error The index is out of bounds (`pos < 0` or `pos >= size()`).
 	 *	
 	 *	\~russian
 	 *	\brief Удаляет символ на заданной позиции
 	 *	
 	 *	Удаляет символ на заданной позиции
 	 *	\param pos Индекс символа, который будет удалён.
-	 *	\return `true`, если символ был успешно удалён, иначе `false`.
+	 *	\return Ссылка на себя.
+	 *	\throw std::range_error Индекс вне диапазона (`pos < 0` или `pos >= size()`).
 	 */
-	bool remove(int pos);
+	String& remove(int pos);
 
 	/**
 	 *	\~english
 	 *	\brief Removes characters in the specified range
 	 *	
-	 *	Removes the specified substring. If the passed range is invalid (e. g. if one of its
-	 *	borders is out of string range), no characters will be removed.
+	 *	Removes the specified substring.
 	 *	\param from The index of the first character that will be removed.
 	 *	\param to The index of the first character after the removed range.
-	 *	\return The number of characters that have been successfully removed.
+	 *	\return The reference to itself.
+	 *	\throw std::range_error The specified range is invalid (e. g. if `from >= to`).
 	 *	
 	 *	\~russian
 	 *	\brief Удаляет символы в заданном диапазоне
 	 *	
-	 *	Удаляет заданную подстроку. Если переданный диапазон некорректен (например, если одна из
-	 *	его границ лежит за пределами строки), никакие символы не будут удалены.
+	 *	Удаляет заданную подстроку.
 	 *	\param from Индекс первого символа, который будет удалён.
 	 *	\param to Индекс первого символа после удаляемого диапазона.
-	 *	\return Количество успешно удалённых символов.
+	 *	\return Ссылка на себя.
+	 *	\throw std::range_error Заданный диапазон некорректен (например, если `from >= to`).
 	 */
-	int remove(int from, int to);
+	String& remove(int from, int to);
+
+	/**
+	 *	\~english
+	 *	\brief Converts the string to `long long`
+	 *	
+	 *	Converts the string to an integer.
+	 *	\tparam base The base of numeral system. If more than 10, characters A—Z (or a—z) are also
+	 *	used as digits. The base cannot be less than 2 or more than 36.
+	 *	\param allow_point If `true`, the string can represent a floating-point number and contain
+	 *	a point (or comma). The fractional part of the number is ignored. If `false`, the string
+	 *	cannot contain a point (an exception will be thrown otherwise).
+	 *	\return A resultant integer.
+	 *	\throw std::invalid_argument The string content is not an integer.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует строку в `long long`
+	 *	
+	 *	Конвертирует строку в целое число.
+	 *	\tparam base Основание системы счисления. Если больше 10, в качестве цифр также
+	 *	используются символы A—Z (или a—z). Основание не может быть меньше 2 или больше 36.
+	 *	\param allow_point Если `true`, строка может представлять число с плавающей запятой и
+	 *	содержать точку (или запятую). Дробная часть числа игнорируется. Если `false`, строка не
+	 *	может содержать точку (иначе будет выброшено исключение).
+	 *	\return Получившееся целое число.
+	 *	\throw std::invalid_argument Содержимое строки не является целым числом.
+	 */
+	template<int base = 10>
+	long long to_long_long(bool allow_point = true) const;
 
 	/**
 	 *	\~english
 	 *	\brief Converts the string to `int`
 	 *	
 	 *	Converts the string to an integer.
+	 *	\tparam base The base of numeral system. If more than 10, characters A—Z (or a—z) are also
+	 *	used as digits. The base cannot be less than 2 or more than 36.
+	 *	\param allow_point If `true`, the string can represent a floating-point number and contain
+	 *	a point (or comma). The fractional part of the number is ignored. If `false`, the string
+	 *	cannot contain a point (an exception will be thrown otherwise).
 	 *	\return A resultant integer.
 	 *	\throw std::invalid_argument The string content is not an integer.
 	 *	
@@ -411,80 +452,31 @@ public:
 	 *	\brief Конвертирует строку в `int`
 	 *	
 	 *	Конвертирует строку в целое число.
+	 *	\tparam base Основание системы счисления. Если больше 10, в качестве цифр также
+	 *	используются символы A—Z (или a—z). Основание не может быть меньше 2 или больше 36.
+	 *	\param allow_point Если `true`, строка может представлять число с плавающей запятой и
+	 *	содержать точку (или запятую). Дробная часть числа игнорируется. Если `false`, строка не
+	 *	может содержать точку (иначе будет выброшено исключение).
 	 *	\return Получившееся целое число.
 	 *	\throw std::invalid_argument Содержимое строки не является целым числом.
 	 */
-	int to_int() const;
-
-	/**
-	 *	\~english
-	 *	\brief Converts the string to `int` as binary number
-	 *	
-	 *	Converts the string to an integer. The string is supposed to be a binary representation of
-	 *	a number.
-	 *	\return A resultant integer.
-	 *	\throw std::invalid_argument The string content is not a binary integer.
-	 *	
-	 *	\~russian
-	 *	\brief Конвертирует строку в `int` как двоичное число
-	 *	
-	 *	Конвертирует строку в целое число. Предполагается, что строка является двоичной записью
-	 *	числа.
-	 *	\return Получившееся целое число.
-	 *	\throw std::invalid_argument Содержимое строки не является двоичным целым числом.
-	 */
-	int to_int_bin() const;
-	
-	/**
-	 *	\~english
-	 *	\brief Converts the string to `int` as octal number
-	 *	
-	 *	Converts the string to an integer. The string is supposed to be an octal representation of
-	 *	a number.
-	 *	\return A resultant integer.
-	 *	\throw std::invalid_argument The string content is not an octal integer.
-	 *	
-	 *	\~russian
-	 *	\brief Конвертирует строку в `int` как восьмеричное число
-	 *	
-	 *	Конвертирует строку в целое число. Предполагается, что строка является восьмеричной записью
-	 *	числа.
-	 *	\return Получившееся целое число.
-	 *	\throw std::invalid_argument Содержимое строки не является восьмеричным целым числом.
-	 */
-	int to_int_oct() const;
-
-	/**
-	 *	\~english
-	 *	\brief Converts the string to `int` as hexadecimal number
-	 *	
-	 *	Converts the string to an integer. The string is supposed to be a hexadecimal
-	 *	representation of a number.
-	 *	\return A resultant integer.
-	 *	\throw std::invalid_argument The string content is not a hexadecimal integer.
-	 *	
-	 *	\~russian
-	 *	\brief Конвертирует строку в `int` как шестнадцатеричное число
-	 *	
-	 *	Конвертирует строку в целое число. Предполагается, что строка является шестнадцатеричной
-	 *	записью числа.
-	 *	\return Получившееся целое число.
-	 *	\throw std::invalid_argument Содержимое строки не является шестнадцатеричным целым числом.
-	 */
-	int to_int_hex() const;
+	template<int base = 10>
+	int to_int(bool allow_point = true) const;
 
 	/**
 	 *	\~english
 	 *	\brief Converts the string to `float`
 	 *	
-	 *	Converts the string to a float.
+	 *	Converts the string to a float. The integer and fractional parts can be separated either by
+	 *	a point or a comma.
 	 *	\return A resultant float.
 	 *	\throw std::invalid_argument The string content is not a float.
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует строку в `float`
 	 *	
-	 *	Конвертирует строку в число с плавающей запятой.
+	 *	Конвертирует строку в число с плавающей запятой. Целая и дробная части могут разделяться
+	 *	либо точкой, либо запятой.
 	 *	\return Получившееся число с плавающей запятой.
 	 *	\throw std::invalid_argument Содержимое строки не является числом с плавающей запятой.
 	 */
@@ -581,7 +573,7 @@ public:
 	 *	first occurrence.
 	 *	\param string The desired substring.
 	 *	\return An index of the first character of the first occurrence of the substring; a
-	 *	negative value if no match has been found.
+	 *	negative value if no match has been found or the passed string is empty.
 	 *
 	 *	\~russian
 	 *	\brief Находит первое вхождение переданной строки
@@ -590,7 +582,7 @@ public:
 	 *	индекс первого вхождения.
 	 *	\param string Искомая подстрока.
 	 *	\return Индекс первого символа первого совпадения; отрицательное значение, если совпадений
-	 *	найдено не было.
+	 *	найдено не было или переданная строка пуста.
 	 */
 	int find_first(const String& string) const noexcept;
 
@@ -602,7 +594,7 @@ public:
 	 *	last occurrence.
 	 *	\param string The desired substring.
 	 *	\return An index of the first character of the last occurrence of the substring; a
-	 *	negative value if no match has been found.
+	 *	negative value if no match has been found or the passed string is empty.
 	 *
 	 *	\~russian
 	 *	\brief Находит последнее вхождение переданной строки
@@ -611,7 +603,7 @@ public:
 	 *	индекс последнего вхождения.
 	 *	\param string Искомая подстрока.
 	 *	\return Индекс первого символа последнего совпадения; отрицательное значение, если
-	 *	совпадений найдено не было.
+	 *	совпадений найдено не было или переданная строка пуста.
 	 */
 	int find_last(const String& string) const noexcept;
 
@@ -636,14 +628,16 @@ public:
 	 *	\~english
 	 *	\brief Checks whether the string contains the passed substring
 	 *
-	 *	Checks whether the string has a substring that is equal to the passed one.
+	 *	Checks whether the string has a substring that is equal to the passed one. It is supposed
+	 *	that the empty string is not contained by any string.
 	 *	\param string The desired substring.
 	 *	\return `true` if the string contains the passed substring, `false` otherwise.
 	 *
 	 *	\~russian
 	 *	\brief Проверяет, содержит ли строка переданную подстроку
 	 *
-	 *	Проверяет, содержит ли строка подстроку, равную переданной.
+	 *	Проверяет, содержит ли строка подстроку, равную переданной. Предполагается, что пустая
+	 *	строка не содержится ни в какой строка.
 	 *	\param string Искомая подстрока.
 	 *	\return `true`, если строка содержит переданную подстроку, иначе `false`.
 	 */
@@ -678,6 +672,7 @@ public:
 	 *		str.count(L"cd"_s); // == 2
 	 *		str.count(L"bb"_s); // == 2
 	 *	\endcode
+	 *	It is supposed that the empty string is not contained by any string.
 	 *	\param string The desired substring.
 	 *	\return A number of occurrences.
 	 *
@@ -692,6 +687,7 @@ public:
 	 *		str.count(L"cd"_s); // == 2
 	 *		str.count(L"bb"_s); // == 2
 	 *	\endcode
+	 *	Предполагается, что пустая строка не содержится ни в какой строка.
 	 *	\param string Искомая подстрока.
 	 *	\return Число вхождений.
 	 */
@@ -747,7 +743,8 @@ public:
 	 *	\brief Splits the string
 	 *	
 	 *	If the passed separator is contained in the string, this method splits it into the
-	 *	appropriate number of parts. The separator is not included in any of these parts.
+	 *	appropriate number of parts. The separator is not included in any of these parts. When the
+	 *	specified limit of parts is reached, the last parts will contain the rest of the string.
 	 *	\param separator The separator.
 	 *	\param parts The maximum number of parts. If it is non-positive, the maximum number is not
 	 *	limited.
@@ -759,7 +756,8 @@ public:
 	 *	\brief Делит строку
 	 *	
 	 *	Если в строке найдены вхождения переданного разделителя, делит её на соответствующее число
-	 *	частей. Сам разделитель не входит ни в одну из этих частей.
+	 *	частей. Сам разделитель не входит ни в одну из этих частей. Если достигнуто указанное
+	 *	максимальное число частей, в последнюю часть включается вся оставшаяся строка.
 	 *	\param separator Разделитель.
 	 *	\param parts Максимальное число частей, которое может получиться. Если число
 	 *	неположительное, максимальное число не ограничено.
@@ -827,6 +825,51 @@ public:
 	 *	\return Строка в верхний регистре.
 	 */
 	String to_upper() const;
+
+	/**
+	 *	\~english
+	 *	\brief Lexicographical comparison of two strings
+	 *
+	 *	This method uses `std::wstring::compare` to compare two strings. Is a non-static analogue
+	 *	of `compare` method.
+	 *	\param second The string to compare.
+	 *	\return A negative value, if this string appears before the passed one in lexicographical
+	 *	order; a positive value, if this string appears after the passed one; zero, if the strings
+	 *	are equal.
+	 *
+	 *	\~russian
+	 *	\brief Лексикографическое сравнение строк
+	 *
+	 *	Этот метод использует `std::wstring::compare` для сравнения двух строк. Это нестатический
+	 *	аналог метода `compare`.
+	 *	\param second Строка для сравнения.
+	 *	\return Отрицательное значение, если данная строка находится перед переданной в
+	 *	лексикографическом порядке; положительное значение, если переданная строка находится перед
+	 *	данной; ноль, если строки равны.
+	 */
+	int compare_to(const String& second) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Formats the string by inserting into it the passed values
+	 *
+	 *	The principle of this method is similar to the `printf`. Is a non-static analogue of the
+	 *	`format` method; you can find more details in its documentation.
+	 *	\tparam Args The types of the arguments.
+	 *	\param args The values that will be inserted in the string.
+	 *	\return The formatted string.
+	 *
+	 *	\~russian
+	 *	\brief Форматирует строку, вставляя в неё переданные значения
+	 *
+	 *	Принцип этого метода схож с `printf`. Это нестатический аналог метода `format`; вы можете
+	 *	найти более подробную информацию в его документации.
+	 *	\tparam Args Типы аргументов.
+	 *	\param args Значения, которые будут вставлены в строку.
+	 *	\return Форматированная строка.
+	 */
+	template<typename... Args>
+	String formatted(Args... args) const;
 
 	/**
 	 *	\~english
@@ -905,7 +948,7 @@ public:
 	 *	\~russian
 	 *	\brief Форматирует строку, вставляя в неё переданные значения
 	 *
-	 *	Принцип этого метода схож с `printf`. Метод ищес последовательности символов, начинающиеся
+	 *	Принцип этого метода схож с `printf`. Метод ищет последовательности символов, начинающиеся
 	 *	на `%`, и заменяет их на переданные значения в соответствии с таблицей ниже.
 	 *
 	 *	Последовательность | Заменяется на
@@ -1768,13 +1811,147 @@ private:
 	std::wstring string_;
 };
 
-// I don't know why, but without these four strings it doesn't work...
+// I don't know why, but it doesn't work without these four strings...
 String operator+(wchar_t ch, const String& string);
 String operator+(const wchar_t* ch, const String& string);
 String operator+(const std::wstring& std_str, const String& string);
 String operator*(int value, const String& string);
 
 String operator""_s(const wchar_t* string, std::size_t length);
+
+
+		/* DEFINITIONS */
+
+namespace
+{
+
+// string is supposed to be uppercase
+// allow_point: if false and the string contains a point, the exception is thrown
+// base is the base of the numeral system
+template<typename T, int base>
+T to_number_(const std::wstring& string, bool allow_point)
+{
+	static_assert(std::is_integral<T>::value || std::is_same<T, float>::value, "The wrong return type of to_number_() function");
+	static_assert(base >= 2 && base <= 36, "The base of numeral system must be between 2 and 36");
+	if (string.empty())
+	{
+		throw std::invalid_argument("Couldn't convert a string to number");
+	}
+
+	long long int_result = 0;
+	float float_result = 0.f;
+	int ten_pow_after_point = 1.f;
+	bool is_first = true;
+	bool is_negative = false;
+	bool was_point = false;
+	for (wchar_t i : string)
+	{
+		switch (i)
+		{
+		case L' ':
+		case L'\'':
+		case L'`':
+		case L'\t':
+		{
+			// Ignore these characters
+			// We don't need to reset is_first flag
+			continue;
+		}
+		case L'-':
+		case L'–':
+		{
+			// The minus can only be the first character
+			if (is_first)
+			{
+				is_negative = true;
+			}
+			else
+			{
+				throw std::invalid_argument("Couldn't convert a string to number");
+			}
+			break;
+		}
+		case L'.':
+		case L',':
+		{
+			// The point cannot appear more than once
+			if (!was_point && allow_point)
+			{
+				was_point = true;
+			}
+			else
+			{
+				throw std::invalid_argument("Couldn't convert a string to number");
+			}
+			break;
+		}
+		default:
+		{
+			int digit = -1;
+			if (i >= L'0' && i <= L'9')
+			{
+				digit = static_cast<int>(i - L'0');
+			}
+			else if (i >= L'A' && i <= L'Z')
+			{
+				digit = static_cast<int>(i - L'A') + 10;
+			}
+			else if (i >= L'a' && i <= L'z')
+			{
+				digit = static_cast<int>(i - L'a') + 10;
+			}
+
+			if (digit < 0 || digit >= base)
+			{
+				throw std::invalid_argument("Couldn't convert a string to number");
+			}
+
+			if (was_point)
+			{
+				if (std::is_same<T, float>::value)
+				{
+					float_result *= base;
+					float_result += digit;
+					ten_pow_after_point *= 10;
+				}
+			}
+			else
+			{
+				int_result *= base;
+				int_result += digit;
+			}
+			break;
+		}
+		}
+		is_first = false;
+	}
+
+	if (std::is_integral<T>::value)
+	{
+		return static_cast<T>(int_result);
+	}
+	return static_cast<float>(int_result) + float_result / ten_pow_after_point;
+}
+
+}
+
+template<int base>
+long long String::to_long_long(bool allow_point) const
+{
+	return to_number_<long long, base>(string_, allow_point);
+}
+
+template<int base>
+int String::to_int(bool allow_point) const
+{
+	return to_number_<int, base>(string_, allow_point);
+}
+
+template<typename... Args>
+String String::formatted(Args... args) const
+{
+	return format(*this, args...);
+}
 
 }
 

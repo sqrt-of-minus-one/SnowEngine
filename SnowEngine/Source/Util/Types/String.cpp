@@ -81,458 +81,56 @@ void String::shrink_to_fit()
 	string_.shrink_to_fit();
 }
 
-bool String::add(wchar_t ch)
+String& String::add(wchar_t ch)
 {
 	string_.push_back(ch);
-	return true;
+	return *this;
 }
 
-int String::add(const String& string)
+String& String::add(const String& string)
 {
 	string_.append(string.string_);
-	return string.size();
+	return *this;
 }
 
-bool String::add(wchar_t ch, int pos)
+String& String::add(wchar_t ch, int pos)
 {
 	return add(String(ch), pos);
 }
 
-int String::add(const String& string, int pos)
+String& String::add(const String& string, int pos)
 {
+	if (pos < 0 || pos > size())
+	{
+		throw std::range_error("Index is out of the string bounds");
+	}
 	string_.insert(pos, string.string_);
-	return string.size();
+	return *this;
 }
 
-bool String::remove(int pos)
+String& String::remove(int pos)
 {
-	if (pos >= 0 && pos < size())
+	if (pos < 0 || pos >= size())
 	{
-		string_.erase(pos, 1);
-		return true;
+		throw std::range_error("Index is out of the string bounds");
 	}
-	else
-	{
-		return false;
-	}
+	string_.erase(pos, 1);
+	return *this;
 }
 
-int String::remove(int from, int to)
+String& String::remove(int from, int to)
 {
-	if (from >= 0 && to <= size() && from < to)
+	if (from < 0 || to > size() || from >= to)
 	{
-		string_.erase(from, to - from);
-		return to - from;
+		throw std::range_error("The specified range is invalid");
 	}
-	else
-	{
-		return 0;
-	}
-}
-
-int String::to_int() const
-{
-	if (!is_empty())
-	{
-		int res = 0;
-		bool is_first = true;
-		bool is_negative = false;
-		bool was_dot = false;
-		for (wchar_t i : string_)
-		{
-			switch (i)
-			{
-			case L'-':
-			case L'–':
-			{
-				if (is_first)
-				{
-					is_negative = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to integer");
-				}
-				break;
-			}
-			case L'.':
-			case L',':
-			{
-				if (!was_dot)
-				{
-					was_dot = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to integer");
-				}
-				break;
-			}
-			case L'0':
-			case L'1':
-			case L'2':
-			case L'3':
-			case L'4':
-			case L'5':
-			case L'6':
-			case L'7':
-			case L'8':
-			case L'9':
-			{
-				if (!was_dot)
-				{
-					res *= 10;
-					res += static_cast<int>(i - L'0');
-				}
-				break;
-			}
-			case L' ':
-			case L'\'':
-			case L'`':
-			case L'\t':
-			{
-				// We don't need to reset is_first flag
-				continue;
-			}
-			default:
-			{
-				throw std::invalid_argument("Couldn't convert a string to integer");
-			}
-			}
-			is_first = false;
-		}
-		return res;
-	}
-	else
-	{
-		throw std::invalid_argument("Couldn't convert a string to integer");
-	}
-}
-
-int String::to_int_bin() const
-{
-	if (!is_empty())
-	{
-		int res = 0;
-		bool is_first = true;
-		bool is_negative = false;
-		bool was_dot = false;
-		for (wchar_t i : string_)
-		{
-			switch (i)
-			{
-			case L'-':
-			case L'–':
-			{
-				if (is_first)
-				{
-					is_negative = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to integer as binary");
-				}
-				break;
-			}
-			case L'.':
-			case L',':
-			{
-				if (!was_dot)
-				{
-					was_dot = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to integer as binary");
-				}
-				break;
-			}
-			case L'0':
-			case L'1':
-			{
-				if (!was_dot)
-				{
-					res *= 2;
-					res += static_cast<int>(i - L'0');
-				}
-				break;
-			}
-			case L' ':
-			case L'\'':
-			case L'`':
-			case L'\t':
-			{
-				// We don't need to reset is_first flag
-				continue;
-			}
-			default:
-			{
-				throw std::invalid_argument("Couldn't convert a string to integer as binary");
-			}
-			}
-			is_first = false;
-		}
-		return res;
-	}
-	else
-	{
-		throw std::invalid_argument("Couldn't convert a string to integer as binary");
-	}
-}
-
-int String::to_int_oct() const
-{
-	if (!is_empty())
-	{
-		int res = 0;
-		bool is_first = true;
-		bool is_negative = false;
-		bool was_dot = false;
-		for (wchar_t i : string_)
-		{
-			switch (i)
-			{
-			case L'-':
-			case L'–':
-			{
-				if (is_first)
-				{
-					is_negative = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to integer as octal");
-				}
-				break;
-			}
-			case L'.':
-			case L',':
-			{
-				if (!was_dot)
-				{
-					was_dot = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to integer as octal");
-				}
-				break;
-			}
-			case L'0':
-			case L'1':
-			case L'2':
-			case L'3':
-			case L'4':
-			case L'5':
-			case L'6':
-			case L'7':
-			{
-				if (!was_dot)
-				{
-					res *= 8;
-					res += static_cast<int>(i - L'0');
-				}
-				break;
-			}
-			case L' ':
-			case L'\'':
-			case L'`':
-			case L'\t':
-			{
-				// We don't need to reset is_first flag
-				continue;
-			}
-			default:
-			{
-				throw std::invalid_argument("Couldn't convert a string to integer as octal");
-			}
-			}
-			is_first = false;
-		}
-		return res;
-	}
-	else
-	{
-		throw std::invalid_argument("Couldn't convert a string to integer as octal");
-	}
-}
-
-int String::to_int_hex() const
-{
-	if (!is_empty())
-	{
-		int res = 0;
-		bool is_first = true;
-		bool is_negative = false;
-		bool was_dot = false;
-		for (wchar_t i : string_)
-		{
-			switch (i)
-			{
-			case L'-':
-			case L'–':
-			{
-				if (is_first)
-				{
-					is_negative = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to integer as hexademical");
-				}
-				break;
-			}
-			case L'.':
-			case L',':
-			{
-				if (!was_dot)
-				{
-					was_dot = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to integer as hexademical");
-				}
-				break;
-			}
-			case L'0':
-			case L'1':
-			case L'2':
-			case L'3':
-			case L'4':
-			case L'5':
-			case L'6':
-			case L'7':
-			case L'8':
-			case L'9':
-			{
-				if (!was_dot)
-				{
-					res *= 16;
-					res += static_cast<int>(i - L'0');
-				}
-				break;
-			}
-			case L'A':
-			case L'B':
-			case L'C':
-			case L'D':
-			case L'E':
-			case L'F':
-			{
-				if (!was_dot)
-				{
-					res *= 16;
-					res += static_cast<int>(i - L'A') + 10;
-				}
-				break;
-			}
-			case L' ':
-			case L'\'':
-			case L'`':
-			case L'\t':
-			{
-				// We don't need to reset is_first flag
-				continue;
-			}
-			default:
-			{
-				throw std::invalid_argument("Couldn't convert a string to integer as hexademical");
-			}
-			}
-			is_first = false;
-		}
-		return res;
-	}
-	else
-	{
-		throw std::invalid_argument("Couldn't convert a string to integer as hexademical");
-	}
+	string_.erase(from, to - from);
+	return *this;
 }
 
 float String::to_float() const
 {
-	if (!is_empty())
-	{
-		int int_res = 0;
-		float float_res = 0.f;
-		bool is_first = true;
-		bool is_negative = false;
-		bool was_dot = false;
-		for (wchar_t i : string_)
-		{
-			switch (i)
-			{
-			case L'-':
-			case L'–':
-			{
-				if (is_first)
-				{
-					is_negative = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to float");
-				}
-				break;
-			}
-			case L'.':
-			case L',':
-			{
-				if (!was_dot)
-				{
-					was_dot = true;
-				}
-				else
-				{
-					throw std::invalid_argument("Couldn't convert a string to float");
-				}
-				break;
-			}
-			case L'0':
-			case L'1':
-			case L'2':
-			case L'3':
-			case L'4':
-			case L'5':
-			case L'6':
-			case L'7':
-			case L'8':
-			case L'9':
-			{
-				if (was_dot)
-				{
-					float_res /= 10.f;
-					float_res += static_cast<float>(i - L'0') / 10.f;
-				}
-				else
-				{
-					int_res *= 10;
-					int_res += static_cast<int>(i - L'0');
-				}
-				break;
-			}
-			case L' ':
-			case L'\'':
-			case L'`':
-			case L'\t':
-			{
-				// We don't need to reset is_first flag
-				continue;
-			}
-			default:
-			{
-				throw std::invalid_argument("Couldn't convert a string to float");
-			}
-			}
-			is_first = false;
-		}
-		return static_cast<float>(int_res) + float_res;
-	}
-	else
-	{
-		throw std::invalid_argument("Couldn't convert a string to float");
-	}
+	return to_number_<float, 10>(string_, true);
 }
 
 bool String::to_bool() const
@@ -546,20 +144,17 @@ bool String::to_bool() const
 	{
 		return true;
 	}
-	else if (lower == L"false" || lower == L"f" || lower == L"0")
+	if (lower == L"false" || lower == L"f" || lower == L"0")
 	{
 		return false;
 	}
-	else
+	try
 	{
-		try
-		{
-			return static_cast<bool>(to_float());
-		}
-		catch (std::invalid_argument e)
-		{
-			return true;
-		}
+		return static_cast<bool>(to_float());
+	}
+	catch (std::invalid_argument e)
+	{
+		return true;
 	}
 }
 
@@ -596,20 +191,20 @@ int String::find_first(const String& string) const noexcept
 		return -1;
 	}
 
-	int match = other_len - 1;
-	for (int i = size() - 1; i >= 0; i--)
+	int match = 0;
+	for (int i = 0; i < this_len; i++)
 	{
 		if ((*this)[i] == string[match])
 		{
-			match--;
-			if (match < 0)
+			match++;
+			if (match >= other_len)
 			{
-				return i;
+				return i - other_len + 1;
 			}
 		}
 		else
 		{
-			match = other_len - 1;
+			match = 0;
 		}
 	}
 	return -1;
@@ -655,15 +250,15 @@ bool String::contains(const String& string) const noexcept
 
 int String::count(wchar_t ch) const noexcept
 {
-	int res = 0;
+	int result = 0;
 	for (wchar_t i : string_)
 	{
 		if (i == ch)
 		{
-			res++;
+			result++;
 		}
 	}
-	return res;
+	return result;
 }
 
 int String::count(const String& string) const noexcept
@@ -673,7 +268,7 @@ int String::count(const String& string) const noexcept
 		return 0;
 	}
 
-	int res = 0;
+	int result = 0;
 	for (int i = 0; i <= size() - string.size(); i++)
 	{
 		bool match = true;
@@ -685,35 +280,31 @@ int String::count(const String& string) const noexcept
 				break;
 			}
 		}
-		res += static_cast<int>(match);
+		result += static_cast<int>(match);
 	}
-	return res;
+	return result;
 }
 
 String String::substring(int from, int to) const
 {
-	if (from >= 0 && to <= size() && from < to)
-	{
-		return String(string_.substr(from, to - from));
-	}
-	else
+	if (from < 0 || to > size() || from >= to)
 	{
 		throw std::invalid_argument("Couldn't create a substring because of invalid range");
 	}
+	return String(string_.substr(from, to - from));
 }
 
 std::vector<String> String::split(const String& separator, int parts, bool case_sensivity) const
 {
-	std::vector<String> ret;
+	std::vector<String> result;
 	if (parts <= 0)
 	{
-		parts = 0;
 		parts = size();
 	}
 	else if (parts == 1)
 	{
-		ret.push_back(*this);
-		return ret;
+		result.push_back(*this);
+		return result;
 	}
 	String current;
 
@@ -740,13 +331,13 @@ std::vector<String> String::split(const String& separator, int parts, bool case_
 
 		if (is_sep)
 		{
-			ret.push_back(current);
+			result.push_back(std::move(current));
 			current.clear();
 			i += separator.size() - 1;
-			if (ret.size() >= parts - 1 && i < size() - 1)
+			if (result.size() >= parts - 1 && i < size() - 1)
 			{
-				ret.push_back(substring(i + 1, size()));
-				return ret;
+				result.push_back(substring(i + 1, size()));
+				return result;
 			}
 		}
 		else
@@ -754,8 +345,8 @@ std::vector<String> String::split(const String& separator, int parts, bool case_
 			current.add((*this)[i]);
 		}
 	}
-	ret.push_back(current);
-	return ret;
+	result.push_back(current);
+	return result;
 }
 
 String String::reverse() const
@@ -788,6 +379,11 @@ String String::to_upper() const
 	return ret;
 }
 
+int String::compare_to(const String& second) const noexcept
+{
+	return compare(*this, second);
+}
+
 int String::compare(const String& first, const String& second) noexcept
 {
 	return first.to_std_string().compare(second.to_std_string());
@@ -795,7 +391,7 @@ int String::compare(const String& first, const String& second) noexcept
 
 String String::format(String string, ...)
 {
-	String ret;
+	String result;
 	va_list list;
 
 	va_start(list, string);
@@ -842,7 +438,7 @@ String String::format(String string, ...)
 				}
 				case L'b':
 				{
-					seq = util::to_string_bin(va_arg(list, int));
+					seq = util::to_string<2>(va_arg(list, int));
 					for (int j = seq.size(); j < value; j++)
 					{
 						seq.add(char_to_fill, 0);
@@ -879,7 +475,7 @@ String String::format(String string, ...)
 				}
 				case L'h':
 				{
-					seq = util::to_string_hex(va_arg(list, int));
+					seq = util::to_string<16>(va_arg(list, int));
 					for (int j = seq.size(); j < value; j++)
 					{
 						seq.add(char_to_fill, 0);
@@ -889,7 +485,7 @@ String String::format(String string, ...)
 				}
 				case L'o':
 				{
-					seq = util::to_string_oct(va_arg(list, int));
+					seq = util::to_string<8>(va_arg(list, int));
 					for (int j = seq.size(); j < value; j++)
 					{
 						seq.add(char_to_fill, 0);
@@ -909,17 +505,17 @@ String String::format(String string, ...)
 				}
 				}
 			}
-			ret += seq;
+			result += seq;
 			i--;
 		}
 		else
 		{
-			ret += string[i];
+			result += string[i];
 		}
 	}
 	va_end(list);
 
-	return ret;
+	return result;
 }
 
 std::wstring::iterator String::begin() noexcept
@@ -966,10 +562,7 @@ String& String::operator=(const wchar_t* ch)
 
 String& String::operator=(const std::wstring& string) 
 {
-	std::wstring str = L"Lo";
-	str = string;
-	string_ = L"Hello";
-	string_ = str;
+	string_ = string;
 	return *this;
 }
 
@@ -1008,23 +601,23 @@ String String::operator+(const std::wstring& string) const
 
 String String::operator+(const String& string) const
 {
-	String ret = *this;
-	ret.add(string);
-	return ret;
+	String result = *this;
+	result.add(string);
+	return result;
 }
 
 String snow::operator+(wchar_t ch, const String& string)
 {
-	String ret(string);
-	ret.add(ch, 0);
-	return ret;
+	String result(string);
+	result.add(ch, 0);
+	return result;
 }
 
 String snow::operator+(const wchar_t* ch, const String& string)
 {
-	String ret(string);
-	ret.add(ch, 0);
-	return ret;
+	String result(string);
+	result.add(ch, 0);
+	return result;
 }
 
 String snow::operator+(const std::wstring& std_str, const String& string)
@@ -1039,17 +632,17 @@ String String::operator*(int value) const
 		return String();
 	}
 
-	String res = string_;
+	String result = string_;
 	int i;
 	for (i = 1; 2 * i <= value; i *= 2)
 	{
-		res += res;
+		result += result;
 	}
 	for (; i < value; i++)
 	{
-		res += string_;
+		result += string_;
 	}
-	return res;
+	return result;
 }
 
 String snow::operator*(int value, const String& string)
@@ -1096,7 +689,7 @@ bool String::operator==(const wchar_t* ch) const noexcept
 {
 	for (int i = 0; i < size(); i++)
 	{
-		if (ch[i] == '\0' || ch[i] != string_[i])
+		if (ch[i] == L'\0' || ch[i] != string_[i])
 		{
 			return false;
 		}
@@ -1156,26 +749,20 @@ bool String::operator>=(const String& string) const noexcept
 
 wchar_t& String::operator[](int index)
 {
-	if (index >= 0 && index < size())
-	{
-		return string_[index];
-	}
-	else
+	if (index < 0 && index >= size())
 	{
 		throw std::out_of_range("Index is out of string bounds");
 	}
+	return string_[index];
 }
 
 const wchar_t& String::operator[](int index) const
 {
-	if (index >= 0 && index < size())
-	{
-		return string_[index];
-	}
-	else
+	if (index < 0 && index >= size())
 	{
 		throw std::out_of_range("Index is out of string bounds");
 	}
+	return string_[index];
 }
 
 std::wostream& snow::operator<<(std::wostream& stream, const String& string)

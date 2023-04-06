@@ -7,126 +7,37 @@
 #include "Util.h"
 
 #include <string>
-
-#include "../Math/Math.h"
+#include <cwchar>
 
 using namespace snow;
 
-String util::to_string(long long var)
+String util::to_string(float var, int precision)
 {
-	if (var == 0)
+	int abs_precision = math::abs(precision);
+	int str_len = abs_precision + 3; // How many characters we need to store the number as string
+	float tmp = math::abs(var);
+	while (tmp > 1.)
 	{
-		return String(L"0");
+		str_len++;
+		tmp /= 10;
 	}
-
-	String res;
-	long long a = math::abs(var);
-	while (a > 0)
+	wchar_t* str = new wchar_t[str_len]; // Using std::swprintf to convert the number into the string
+	str_len = std::swprintf(str, str_len, (L"%." + to_string(abs_precision) + L"f").to_std_string().c_str(), var);
+	if (precision < 0) // Discard zeros in the end 
 	{
-		res += static_cast<wchar_t>(static_cast<int>(L'0') + a % 10);
-		a /= 10;
-	}
-	if (var < 0)
-	{
-		res += L'-';
-	}
-	return res.reverse();
-}
-
-String util::to_string_bin(long long var)
-{
-	if (var == 0)
-	{
-		return String(L"0");
-	}
-
-	String res;
-	long long a = math::abs(var);
-	while (a > 0)
-	{
-		res += static_cast<wchar_t>(static_cast<int>(L'0') + a % 2);
-		a /= 2;
-	}
-	if (var < 0)
-	{
-		res += L'-';
-	}
-	return res.reverse();
-}
-
-String util::to_string_oct(long long var)
-{
-	if (var == 0)
-	{
-		return String(L"0");
-	}
-
-	String res;
-	long long a = math::abs(var);
-	while (a > 0)
-	{
-		res += static_cast<wchar_t>(static_cast<int>(L'0') + a % 8);
-		a /= 8;
-	}
-	if (var < 0)
-	{
-		res += L'-';
-	}
-	return res.reverse();
-}
-
-String util::to_string_hex(long long var)
-{
-	if (var == 0)
-	{
-		return String(L"0");
-	}
-
-	String res;
-	long long a = math::abs(var);
-	while (a > 0)
-	{
-		int t = a % 16;
-		if (t < 10)
+		while (str[str_len - 1] == L'0')
 		{
-			res += static_cast<wchar_t>(static_cast<int>(L'0') + t);
+			str_len--;
 		}
-		else
+		if (str[str_len - 1] == L'.') // If the last character is the point, discard it
 		{
-			res += static_cast<wchar_t>(static_cast<int>(L'A') + t - 10);
+			str_len--;
 		}
-		a /= 16;
 	}
-	if (var < 0)
-	{
-		res += L'-';
-	}
-	return res.reverse();
-}
-
-String util::to_string(int var)
-{
-	return to_string(static_cast<long long>(var));
-}
-
-String util::to_string_bin(int var)
-{
-	return to_string_bin(static_cast<long long>(var));
-}
-
-String util::to_string_oct(int var)
-{
-	return to_string_oct(static_cast<long long>(var));
-}
-
-String util::to_string_hex(int var)
-{
-	return to_string_hex(static_cast<long long>(var));
-}
-
-String util::to_string(float var)
-{
-	return std::to_wstring(var);
+	str[str_len] = L'\0'; // Set the new end of the string
+	String result= str;
+	delete[] str;
+	return result;
 }
 
 String util::to_string(wchar_t var)

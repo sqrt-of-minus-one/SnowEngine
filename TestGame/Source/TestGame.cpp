@@ -59,22 +59,11 @@ int main()
 
 	Input::get_instance().on_mouse_released(EButton::RIGHT).bind([]() { std::wcout << L"Pressed! (" << Input::get_instance().get_window_mouse_position().to_string() << L")" << std::endl; Input::get_instance().set_screen_mouse_position(Point2(100, 100)); });
 
-	auto saves = SaveLoad::get_saves();
-	for (const String& i : saves)
-	{
-		std::wcout << i << std::endl;
-	}
-	std::wcout << std::endl;
-	std::map<String, String> data;
-	data.insert(std::pair<String, String>(L"Hello"_s, L"world!"_s));
-	data.insert(std::pair<String, String>(L"Hi"_s, L"\"there\""_s));
-	data.insert(std::pair<String, String>(L"Hey"_s, L"Hey?\nH\\ey!"_s));
-	SaveLoad::save(L"hello", data);
-	data = SaveLoad::load(L"hello");
-	for (const auto& [key, value] : data)
-	{
-		std::wcout << key << L": " << value << std::endl;
-	}
+	std::wcout << util::to_string(-5.f) << std::endl <<
+		util::to_string(-5.67f, 0) << std::endl <<
+		util::to_string(-5.f, 4) << std::endl <<
+		util::to_string(-5.f, -4) << std::endl <<
+		util::to_string(5.67899f, 4) << std::endl;
 
 	_getch();
 	return 0;
