@@ -285,11 +285,11 @@ end_loop:;
 					{
 						try
 						{
-							res_check_period_sec = String(value).to_float();
+							res_check_period_sec = String(value).to_double();
 						}
 						catch (std::invalid_argument e)
 						{
-							res_check_period_sec = 300.f;
+							res_check_period_sec = 300.;
 						}
 					}
 					if (field == L"res_textures_path")
@@ -375,7 +375,7 @@ Config::Config() :
 	titlebar_buttons(true),
 	title(L"The Game (powered by SnowEngine)"),
 		// resources
-	res_check_period_sec(300.f),
+	res_check_period_sec(300.),
 	res_textures_path(L"Resources\\Textures"),
 	res_fonts_path(L"Resources\\Fonts"),
 	res_sounds_path(L"Resources\\Sounds"),

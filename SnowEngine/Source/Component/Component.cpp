@@ -175,7 +175,7 @@ void Component::scale(const Vector2& factor)
 
 		/* Component: protected */
 
-void Component::tick(float delta_sec)
+void Component::tick(double delta_sec)
 {
 	for (auto& i : components_)
 	{

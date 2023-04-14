@@ -66,7 +66,7 @@ const std::map<const Level*, std::list<CameraComponent*>>& CameraComponent::get_
 
 		/* CameraComponent: protected */
 
-void CameraComponent::tick(float delta_sec)
+void CameraComponent::tick(double delta_sec)
 {
 	Component::tick(delta_sec);
 

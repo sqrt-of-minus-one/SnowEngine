@@ -126,14 +126,14 @@ public:
 	 *	равен нулю или отрицателен, функция будет вызвана только один раз.
 	 *	\return Указатель (`std::shared_ptr`) на созданный таймер.
 	 */
-	std::shared_ptr<Timer> create_timer(const Delegate<void>& function, float delay_sec, float period_sec = 0);
+	std::shared_ptr<Timer> create_timer(const Delegate<void>& function, double delay_sec, double period_sec = 0.);
 	
 private:
 	TimerManager();
 
 	std::list<std::shared_ptr<Timer>> timers_;
 
-	void tick_(float delta_sec);
+	void tick_(double delta_sec);
 };
 
 }

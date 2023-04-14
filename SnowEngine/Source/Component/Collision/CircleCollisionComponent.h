@@ -120,7 +120,7 @@ public:
 	 *	на коэффициет масштаба из преобразования компонента.
 	 *	\param radius Радиус круга.
 	 */
-	void set_radius(float radius);
+	void set_radius(double radius);
 	
 	/**
 	 *	\~english
@@ -137,7 +137,7 @@ public:
 	 *	на коэффициет масштаба из преобразования компонента.
 	 *	\return Радиус круга.
 	 */
-	float get_radius() const;
+	double get_radius() const;
 
 			/* EVENTS */
 
@@ -149,7 +149,7 @@ public:
 	 *	of the component is changed (in its transform).
 	 *	
 	 *	Event parameters:
-	 *	- `float new_radius`: The new radius of the circle.
+	 *	- `double new_radius`: The new radius of the circle.
 	 *	
 	 *	\~russian
 	 *	\brief Размер круга изменён
@@ -158,9 +158,9 @@ public:
 	 *	изменяется масштаб компонента (в его преобразовании).
 	 *	
 	 *	Параметры события:
-	 *	- `float new_radius`: Новый радиус круга.
+	 *	- `double new_radius`: Новый радиус круга.
 	 */
-	EventBinder<float /*new_radius*/> on_resized;
+	EventBinder<double /*new_radius*/> on_resized;
 
 			/* CONSTANTS */
 
@@ -175,12 +175,12 @@ public:
 	 *	
 	 *	Радиус круглого компонента-коллизии по умолчанию.
 	 */
-	static const float DEFAULT_RADIUS;
+	static const double DEFAULT_RADIUS;
 
 private:
-	float radius_;
+	double radius_;
 
-	Event<float /*new_radius*/> on_resized_;
+	Event<double /*new_radius*/> on_resized_;
 };
 
 }

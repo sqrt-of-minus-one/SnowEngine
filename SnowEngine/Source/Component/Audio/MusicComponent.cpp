@@ -20,7 +20,7 @@ MusicComponent::MusicComponent(Actor& actor, Component* parent, const Transform&
 	music_(),
 	music_name_()
 {
-	music_.setPosition(transform.get_position().get_x(), transform.get_position().get_y(), 0.f);
+	music_.setPosition(transform.get_position().get_x(), transform.get_position().get_y(), 0.);
 }
 
 bool MusicComponent::set_music(const String& music)
@@ -50,5 +50,5 @@ void MusicComponent::when_transformed(const Transform& new_level_transform)
 {
 	Component::when_transformed(new_level_transform);
 
-	music_.setPosition(new_level_transform.get_position().get_x(), new_level_transform.get_position().get_y(), 0.f);
+	music_.setPosition(new_level_transform.get_position().get_x(), new_level_transform.get_position().get_y(), 0.);
 }

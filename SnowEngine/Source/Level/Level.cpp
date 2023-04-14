@@ -47,7 +47,7 @@ bool Level::is_destroyed() const noexcept
 
 		/* Level: protected */
 
-void Level::tick(float delta_sec)
+void Level::tick(double delta_sec)
 {
 	for (auto& i : actors_)
 	{

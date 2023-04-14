@@ -133,6 +133,7 @@ void ResourceManager::check_resources_()
 {
 	int resources_erased = 0;
 
+	// #CPP20
 	// Maybe one day SnowEngine will use C++20:
 	// 
 	// resources_erased += std::erase_if(textures_, [](const auto& item) { return !item.second.lock(); });

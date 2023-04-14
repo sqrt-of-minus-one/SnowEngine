@@ -36,7 +36,7 @@ int TimerManager::hash_code() const noexcept
 	return sign;
 }
 
-std::shared_ptr<Timer> TimerManager::create_timer(const Delegate<void>& function, float delay_sec, float period_sec)
+std::shared_ptr<Timer> TimerManager::create_timer(const Delegate<void>& function, double delay_sec, double period_sec)
 {
 	std::shared_ptr<Timer> p(new Timer(function, delay_sec, period_sec));
 	timers_.push_back(p);
@@ -49,7 +49,7 @@ TimerManager::TimerManager() :
 	timers_()
 {}
 
-void TimerManager::tick_(float delta_sec)
+void TimerManager::tick_(double delta_sec)
 {
 	for (auto i = timers_.begin(); i != timers_.end(); )
 	{

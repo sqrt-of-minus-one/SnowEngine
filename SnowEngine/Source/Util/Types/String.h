@@ -414,9 +414,9 @@ public:
 	 *	Converts the string to an integer.
 	 *	\tparam base The base of numeral system. If more than 10, characters A—Z (or a—z) are also
 	 *	used as digits. The base cannot be less than 2 or more than 36.
-	 *	\param allow_point If `true`, the string can represent a floating-point number and contain
-	 *	a point (or comma). The fractional part of the number is ignored. If `false`, the string
-	 *	cannot contain a point (an exception will be thrown otherwise).
+	 *	\param allow_point If `true`, the string can represent a real number and contain a point
+	 *	(or comma). The fractional part of the number is ignored. If `false`, the string cannot
+	 *	contain a point (an exception will be thrown otherwise).
 	 *	\return A resultant integer.
 	 *	\throw std::invalid_argument The string content is not an integer.
 	 *	
@@ -426,9 +426,9 @@ public:
 	 *	Конвертирует строку в целое число.
 	 *	\tparam base Основание системы счисления. Если больше 10, в качестве цифр также
 	 *	используются символы A—Z (или a—z). Основание не может быть меньше 2 или больше 36.
-	 *	\param allow_point Если `true`, строка может представлять число с плавающей запятой и
-	 *	содержать точку (или запятую). Дробная часть числа игнорируется. Если `false`, строка не
-	 *	может содержать точку (иначе будет выброшено исключение).
+	 *	\param allow_point Если `true`, строка может представлять вещественное число и содержать
+	 *	точку (или запятую). Дробная часть числа игнорируется. Если `false`, строка не может
+	 *	содержать точку (иначе будет выброшено исключение).
 	 *	\return Получившееся целое число.
 	 *	\throw std::invalid_argument Содержимое строки не является целым числом.
 	 */
@@ -442,9 +442,9 @@ public:
 	 *	Converts the string to an integer.
 	 *	\tparam base The base of numeral system. If more than 10, characters A—Z (or a—z) are also
 	 *	used as digits. The base cannot be less than 2 or more than 36.
-	 *	\param allow_point If `true`, the string can represent a floating-point number and contain
-	 *	a point (or comma). The fractional part of the number is ignored. If `false`, the string
-	 *	cannot contain a point (an exception will be thrown otherwise).
+	 *	\param allow_point If `true`, the string can represent a real number and contain a point
+	 *	(or comma). The fractional part of the number is ignored. If `false`, the string cannot
+	 *	contain a point (an exception will be thrown otherwise).
 	 *	\return A resultant integer.
 	 *	\throw std::invalid_argument The string content is not an integer.
 	 *	
@@ -454,9 +454,9 @@ public:
 	 *	Конвертирует строку в целое число.
 	 *	\tparam base Основание системы счисления. Если больше 10, в качестве цифр также
 	 *	используются символы A—Z (или a—z). Основание не может быть меньше 2 или больше 36.
-	 *	\param allow_point Если `true`, строка может представлять число с плавающей запятой и
-	 *	содержать точку (или запятую). Дробная часть числа игнорируется. Если `false`, строка не
-	 *	может содержать точку (иначе будет выброшено исключение).
+	 *	\param allow_point Если `true`, строка может представлять вещественное число и содержать
+	 *	точку (или запятую). Дробная часть числа игнорируется. Если `false`, строка не может
+	 *	содержать точку (иначе будет выброшено исключение).
 	 *	\return Получившееся целое число.
 	 *	\throw std::invalid_argument Содержимое строки не является целым числом.
 	 */
@@ -465,22 +465,22 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Converts the string to `float`
+	 *	\brief Converts the string to `double`
 	 *	
-	 *	Converts the string to a float. The integer and fractional parts can be separated either by
-	 *	a point or a comma.
-	 *	\return A resultant float.
-	 *	\throw std::invalid_argument The string content is not a float.
+	 *	Converts the string to a double. The integer and fractional parts can be separated either
+	 *	by a point or a comma.
+	 *	\return A resultant double.
+	 *	\throw std::invalid_argument The string content is not a double.
 	 *	
 	 *	\~russian
-	 *	\brief Конвертирует строку в `float`
+	 *	\brief Конвертирует строку в `double`
 	 *	
-	 *	Конвертирует строку в число с плавающей запятой. Целая и дробная части могут разделяться
-	 *	либо точкой, либо запятой.
-	 *	\return Получившееся число с плавающей запятой.
-	 *	\throw std::invalid_argument Содержимое строки не является числом с плавающей запятой.
+	 *	Конвертирует строку в вещественное число. Целая и дробная части могут разделяться либо
+	 *	точкой, либо запятой.
+	 *	\return Получившееся вещественное число.
+	 *	\throw std::invalid_argument Содержимое строки не является вещественным числом.
 	 */
-	float to_float() const;
+	double to_double() const;
 
 	/**
 	 *	\~english
@@ -491,7 +491,7 @@ public:
 	 *	1. If the string is empty, `false` is returned.
 	 *	1. If the string has value that is contained in the table below, the method returns the
 	 *	boolean according to the table.
-	 *	1. If the string can be converted to a float, `to_float()` method is called. Its result is
+	 *	1. If the string can be converted to a double, `to_double()` method is called. Its result is
 	 *	casted to boolean and returned.
 	 *	1. `true` is returned otherwise.
 	 *	The method is not case sensitive.
@@ -511,8 +511,8 @@ public:
 	 *	1. Если строка пустая, возвращается `false`.
 	 *	1. Если строка имеет значение, содержащееся в таблице ниже, метод возвращает булево
 	 *	значение в соответствии с таблицей.
-	 *	1. Если строка может быть конвертирована в число с плавающей запятой, вызывается метод
-	 *	`to_float()`. Его результат приводится к булевому значению и возвращается.
+	 *	1. Если строка может быть конвертирована в вещественное число, вызывается метод
+	 *	`to_double()`. Его результат приводится к булевому значению и возвращается.
 	 *	1. Иначе возвращается `true`.
 	 *	Метод не чувствителен к регистру.
 	 *
@@ -908,7 +908,7 @@ public:
 	 *	`%b`         | The integer in binary representation.
 	 *	`%c`         | The character (`wchar_t` type).
 	 *	`%d` or `%i` | The integer in decimal representation.
-	 *	`%f`         | The float number.
+	 *	`%f`         | The real number.
 	 *	`%h`         | The integer in hexadecimal representation.
 	 *	`%o`         | The integer in octal representation.
 	 *	`%s`         | The string (`snow::String` type).
@@ -957,7 +957,7 @@ public:
 	 *	`%b`               | Целое число в двоичной записи.
 	 *	`%c`               | Символ (тип `wchar_t`).
 	 *	`%d` or `%i`       | Целое число в десятичной записи.
-	 *	`%f`               | Число с плавающей запятой.
+	 *	`%f`               | Вещественное число.
 	 *	`%h`               | Целое число в шестнадцатеричной записи.
 	 *	`%o`               | Целое число в восьмеричной записи.
 	 *	`%s`               | Строка (тип `snow::String`).
@@ -1831,7 +1831,7 @@ namespace
 template<typename T, int base>
 T to_number_(const std::wstring& string, bool allow_point)
 {
-	static_assert(std::is_integral<T>::value || std::is_same<T, float>::value, "The wrong return type of to_number_() function");
+	static_assert(std::is_integral<T>::value || std::is_same<T, double>::value, "The wrong return type of to_number_() function");
 	static_assert(base >= 2 && base <= 36, "The base of numeral system must be between 2 and 36");
 	if (string.empty())
 	{
@@ -1839,8 +1839,8 @@ T to_number_(const std::wstring& string, bool allow_point)
 	}
 
 	long long int_result = 0;
-	float float_result = 0.f;
-	int ten_pow_after_point = 1.f;
+	double double_result = 0.;
+	int ten_pow_after_point = 1.;
 	bool is_first = true;
 	bool is_negative = false;
 	bool was_point = false;
@@ -1908,10 +1908,10 @@ T to_number_(const std::wstring& string, bool allow_point)
 
 			if (was_point)
 			{
-				if (std::is_same<T, float>::value)
+				if (std::is_same<T, double>::value)
 				{
-					float_result *= base;
-					float_result += digit;
+					double_result *= base;
+					double_result += digit;
 					ten_pow_after_point *= 10;
 				}
 			}
@@ -1930,7 +1930,7 @@ T to_number_(const std::wstring& string, bool allow_point)
 	{
 		return static_cast<T>(int_result);
 	}
-	return static_cast<float>(int_result) + float_result / ten_pow_after_point;
+	return static_cast<double>(int_result) + double_result / ten_pow_after_point;
 }
 
 }

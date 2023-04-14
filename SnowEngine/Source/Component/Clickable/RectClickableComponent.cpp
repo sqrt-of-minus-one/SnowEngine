@@ -27,7 +27,7 @@ bool RectClickableComponent::is_inside(const Vector2& position) const
 
 DoubleRect RectClickableComponent::get_boundary_rect() const
 {
-	return DoubleRect(get_level_position() - size_ * get_level_scale() / 2.f, size_);
+	return DoubleRect(get_level_position() - size_ * get_level_scale() / 2., size_);
 }
 
 void RectClickableComponent::set_size(Vector2 size)
@@ -42,4 +42,4 @@ Vector2 RectClickableComponent::get_size() const
 	return size_;
 }
 
-const Vector2 RectClickableComponent::DEFAULT_SIZE(100.f, 100.f);
+const Vector2 RectClickableComponent::DEFAULT_SIZE(100., 100.);

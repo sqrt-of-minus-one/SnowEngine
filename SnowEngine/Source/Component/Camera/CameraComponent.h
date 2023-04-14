@@ -157,7 +157,7 @@ protected:
 	 *	родительский `tick`.
 	 *	\param delta_sec Длительность тика в секундах.
 	 */
-	virtual void tick(float delta_sec) override;
+	virtual void tick(double delta_sec) override;
 
 			/* EVENT METHODS */
 

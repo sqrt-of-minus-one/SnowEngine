@@ -128,9 +128,9 @@ String& String::remove(int from, int to)
 	return *this;
 }
 
-float String::to_float() const
+double String::to_double() const
 {
-	return to_number_<float, 10>(string_, true);
+	return to_number_<double, 10>(string_, true);
 }
 
 bool String::to_bool() const
@@ -150,7 +150,7 @@ bool String::to_bool() const
 	}
 	try
 	{
-		return static_cast<bool>(to_float());
+		return static_cast<bool>(to_double());
 	}
 	catch (std::invalid_argument e)
 	{
@@ -465,7 +465,7 @@ String String::format(String string, ...)
 				}
 				case L'f':
 				{
-					seq = util::to_string(va_arg(list, float));
+					seq = util::to_string(va_arg(list, double));
 					for (int j = seq.size(); j < value; j++)
 					{
 						seq.add(char_to_fill, 0);

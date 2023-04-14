@@ -35,8 +35,8 @@ namespace util
  *	\~english
  *	\brief Converts `long long` to string
  *	
- *	Converts the passed integer to string in the specified numeral system. If more than 10, A—Z
- *	characters will also be used as digits.
+ *	Converts the passed integer to string in the specified numeral system. If the base is more than
+ *	10, A—Z characters will also be used as digits.
  *	\tparam base The base of the numeral system. Must be between 2 and 36.
  *	\param var The integer that will be converted to string.
  *	\return A string that represents the passed integer in decimal notation.
@@ -44,8 +44,8 @@ namespace util
  *	\~russian
  *	\brief Конвертирует `long long` в строку
  *	
- *	Конвертирует переданное целое число в строку в заданной системе счисления. Если больше 10, в
- *	качестве цифр также будут использованы символы A—Z.
+ *	Конвертирует переданное целое число в строку в заданной системе счисления. Если основание
+ *	больше 10, в качестве цифр также будут использованы символы A—Z.
  *	\tparam base Основание системы счисления. Должно находиться между 2 и 36.
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая десятичную запись переданного целого числа.
@@ -55,32 +55,10 @@ String to_string(long long var);
 
 /**
  *	\~english
- *	\brief Converts `int` to string
- *
- *	Converts the passed integer to string in the specified numeral system. If more than 10, A—Z
- *	characters will also be used as digits.
- *	\tparam base The base of the numeral system. Must be between 2 and 36.
- *	\param var The integer that will be converted to string.
- *	\return A string that represents the passed integer in decimal notation.
- *
- *	\~russian
- *	\brief Конвертирует `int` в строку
- *
- *	Конвертирует переданное целое число в строку в заданной системе счисления. Если больше 10, в
- *	качестве цифр также будут использованы символы A—Z.
- *	\tparam base Основание системы счисления. Должно находиться между 2 и 36.
- *	\param var Целое число, которое будет сконвертировано в строку.
- *	\return Строка, представляющая десятичную запись переданного целого числа.
- */
-template<int base = 10>
-String to_string(int var);
-
-/**
- *	\~english
- *	\brief Converts `float` to string
+ *	\brief Converts `double` to string
  *	
- *	Converts the passed float to string.
- *	\param var The float that will be converted to string.
+ *	Converts the passed double to string.
+ *	\param var The double that will be converted to string.
  *	\param precision The precision of the number representation. Positive values define the exact
  *	number of digits after point, negative ones limit the maximum number of digits. When excess
  *	digits are discarded, the last remaining digit is rounded according to rounding rules.
@@ -91,13 +69,13 @@ String to_string(int var);
  *		to_string(5.67f, -4) == L"5.67"_s;
  *		to_string(5.67895f, -4) == L"5.679"_s;
  *	\endcode
- *	\return A string that represents the passed float.
+ *	\return A string that represents the passed double.
  *	
  *	\~russian
- *	\brief Конвертирует `float` в строку
+ *	\brief Конвертирует `double` в строку
  *	
- *	Конвертирует переданное число с плавающей запятой в строку.
- *	\param var Число с плавающей запятой, которое будет сконвертировано в строку.
+ *	Конвертирует переданное вещественное число в строку.
+ *	\param var Вещественное число, которое будет сконвертировано в строку.
  *	\param precision Точность представления числа. Положительные значения определяют точное
  *	количество знаков после запятой, отрицательные — ограничивают максимальное количество знаков.
  *	Когда излишние знаки отбрасываются, последняя оставшаяся цифра округляется в соответствии с
@@ -109,9 +87,9 @@ String to_string(int var);
  *		to_string(5.67f, -4) == L"5.67"_s;
  *		to_string(5.67895f, -4) == L"5.679"_s;
  *	\endcode
- *	\return Строка, представляющая переданное число с плавающей запятой.
+ *	\return Строка, представляющая переданное вещественное число.
  */
-String to_string(float var, int precision = -5);
+String to_string(double var, int precision = -5);
 
 /**
  *	\~english
@@ -275,20 +253,20 @@ int hash_code(int var) noexcept;
 
 /**
  *	\~english
- *	\brief Hash code of `float`
+ *	\brief Hash code of `double`
  *
  *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
  *	objects can also have the same hash codes. Hash code of zero is zero.
  *	\return Hash code of the object.
  *
  *	\~russian
- *	\brief Хеш-код `float`
+ *	\brief Хеш-код `double`
  *
  *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
  *	также могут иметь одинаковые хеш-коды. Хеш-код нуля — ноль.
  *	\return Хеш-код объекта.
  */
-int hash_code(float var) noexcept;
+int hash_code(double var) noexcept;
 
 /**
  *	\~english
@@ -451,12 +429,6 @@ String util::to_string(long long var)
 		result += L'-';
 	}
 	return result.reverse();
-}
-
-template<int base>
-String util::to_string(int var)
-{
-	return to_string<base>(static_cast<long long>(var));
 }
 
 template<typename T>

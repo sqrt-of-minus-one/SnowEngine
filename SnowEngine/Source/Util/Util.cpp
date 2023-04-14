@@ -11,11 +11,29 @@
 
 using namespace snow;
 
-String util::to_string(float var, int precision)
+String util::to_string(double var, int precision)
 {
-	int abs_precision = math::abs(precision);
+	// #CPP20
+	// I hope one day SnowEngine will use C++20 and I'll be able to use std::format instead of std::swprintf:
+	// 
+	// int abs_precision = std::abs(precision);
+	// std::wstring str = std::format((L"{:." + to_string(abs_precision) + L"f}").to_std_string(), var);
+	// if (precision < 0) // Discard zeros in the end
+	// {
+	//	while (str.back() == L'0')
+	//	{
+	//		str.pop_back();
+	//	}
+	//	if (str.back() == L'.') // If the last characteer is the point, discard it
+	//	{
+	//		str.pop_back();
+	//	}
+	// }
+	// return String(str);
+
+	int abs_precision = std::abs(precision);
 	int str_len = abs_precision + 3; // How many characters we need to store the number as string
-	float tmp = math::abs(var);
+	double tmp = std::abs(var);
 	while (tmp > 1.)
 	{
 		str_len++;
@@ -35,7 +53,7 @@ String util::to_string(float var, int precision)
 		}
 	}
 	str[str_len] = L'\0'; // Set the new end of the string
-	String result= str;
+	String result = str;
 	delete[] str;
 	return result;
 }
@@ -55,10 +73,10 @@ int util::hash_code(int var) noexcept
 	return var;
 }
 
-int util::hash_code(float var) noexcept
+int util::hash_code(double var) noexcept
 {
-	// Often values of float variables are between 0 and 1. Their hash codes would be the same unless we multiplied them by 1000
-	return static_cast<int>(var * 1000);
+	// Often values of double variables are between 0 and 1. Their hash codes would be the same unless we multiplied them by something
+	return static_cast<int>(var * 1024.);
 }
 
 int util::hash_code(wchar_t var) noexcept

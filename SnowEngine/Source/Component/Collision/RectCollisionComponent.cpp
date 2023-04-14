@@ -32,7 +32,7 @@ bool RectCollisionComponent::overlap(const CollisionComponent& collision_compone
 
 DoubleRect RectCollisionComponent::get_boundary_rect() const
 {
-	return DoubleRect(get_level_position() - size_ * get_level_scale() / 2.f, size_);
+	return DoubleRect(get_level_position() - size_ * get_level_scale() / 2., size_);
 }
 
 void RectCollisionComponent::set_size(Vector2 size)
@@ -47,4 +47,4 @@ Vector2 RectCollisionComponent::get_size() const
 	return size_;
 }
 
-const Vector2 RectCollisionComponent::DEFAULT_SIZE(100.f, 100.f);
+const Vector2 RectCollisionComponent::DEFAULT_SIZE(100., 100.);

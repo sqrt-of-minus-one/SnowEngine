@@ -37,10 +37,10 @@ bool CircleCollisionComponent::overlap(const CollisionComponent& collision_compo
 			Vector2 scale = get_level_scale();
 			Vector2 RADUIS = radius_ * scale;
 			Vector2 RADUIS_SQ = RADUIS * RADUIS;
-			float radius_sq = radius_ * radius_;
+			double radius_sq = radius_ * radius_;
 			return ((pos - boundary_rect.get_position()) / scale).length_sq() <= radius_sq ||
-				   ((pos - boundary_rect.get_position() - Vector2(boundary_rect.get_size().get_x(), 0.f)) / scale).length_sq() <= radius_sq ||
-				   ((pos - boundary_rect.get_position() - Vector2(0.f, boundary_rect.get_size().get_y())) / scale).length_sq() <= radius_sq ||
+				   ((pos - boundary_rect.get_position() - Vector2(boundary_rect.get_size().get_x(), 0.)) / scale).length_sq() <= radius_sq ||
+				   ((pos - boundary_rect.get_position() - Vector2(0., boundary_rect.get_size().get_y())) / scale).length_sq() <= radius_sq ||
 				   ((pos - boundary_rect.get_corner_position()) / scale).length_sq() <= radius_sq ||
 				   pos.get_x() - RADUIS.get_x() >= boundary_rect.get_position().get_x() && pos.get_x() - RADUIS.get_x() <= boundary_rect.get_corner_position().get_x() &&
 				   pos.get_y() >= boundary_rect.get_position().get_y() && pos.get_y() - RADUIS.get_y() <= boundary_rect.get_corner_position().get_y() ||
@@ -60,19 +60,19 @@ bool CircleCollisionComponent::overlap(const CollisionComponent& collision_compo
 
 DoubleRect CircleCollisionComponent::get_boundary_rect() const
 {
-	return DoubleRect(get_level_position() - radius_ * get_level_scale(), 2.f * radius_ * get_level_scale());
+	return DoubleRect(get_level_position() - radius_ * get_level_scale(), 2. * radius_ * get_level_scale());
 }
 
-void CircleCollisionComponent::set_radius(float radius)
+void CircleCollisionComponent::set_radius(double radius)
 {
 	radius_ = radius;
 
 	on_resized_.execute(radius);
 }
 
-float CircleCollisionComponent::get_radius() const
+double CircleCollisionComponent::get_radius() const
 {
 	return radius_;
 }
 
-const float CircleCollisionComponent::DEFAULT_RADIUS = 50.f;
+const double CircleCollisionComponent::DEFAULT_RADIUS = 50.;

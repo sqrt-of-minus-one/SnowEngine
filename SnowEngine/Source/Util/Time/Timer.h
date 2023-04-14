@@ -118,7 +118,7 @@ public:
 	 *	отрицательное число.
 	 *	\return Период таймера, неположительное значение, если таймер непериодичен.
 	 */
-	float get_period_sec() const;
+	double get_period_sec() const;
 
 	/**
 	 *	\~english
@@ -135,7 +135,7 @@ public:
 	 *	периодом.
 	 *	\param period_sec Новый период таймера в секундах.
 	 */
-	void set_period_sec(float period_sec);
+	void set_period_sec(double period_sec);
 
 	/**
 	 *	\~english
@@ -207,15 +207,15 @@ public:
 	void remove();
 
 private:
-	Timer(const Delegate<void>& function, float delay_sec, float period_sec);
+	Timer(const Delegate<void>& function, double delay_sec, double period_sec);
 
 	Delegate<void> function_;
-	float period_sec_;
-	float left_sec_;
+	double period_sec_;
+	double left_sec_;
 	bool is_paused_;
 	bool is_active_;
 
-	void tick_(float delta_sec);
+	void tick_(double delta_sec);
 };
 
 }

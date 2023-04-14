@@ -160,7 +160,7 @@ void Game::loop_()
 
 		f_time = std::move(s_time);
 		s_time = std::chrono::steady_clock::now();
-		float delta_sec = std::chrono::duration_cast<std::chrono::microseconds>(s_time - f_time).count() / 1'000'000.f;
+		double delta_sec = std::chrono::duration_cast<std::chrono::microseconds>(s_time - f_time).count() / 1'000'000.;
 
 		TimerManager::get_instance().tick_(delta_sec);
 
