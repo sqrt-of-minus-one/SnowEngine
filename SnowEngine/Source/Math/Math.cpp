@@ -10,78 +10,13 @@
 
 using namespace snow;
 
-const float math::PI = 3.1415926f;
+const double math::PI = 3.141'592'653'589'793;
+const double math::E = 2.718'281'828'459'045;
 
-int math::round(float value) noexcept
+double math::sin(const Angle& angle)
 {
-#ifndef SNOW_USE_STD_MATH
-	return static_cast<int>(value >= 0 ? value + .5f : value - .5f);
-#else
-	return static_cast<int>(std::round(value));
-#endif
-}
-
-int math::floor(float value) noexcept
-{
-#ifndef SNOW_USE_STD_MATH
-	int int_value = static_cast<int>(value);
-	return (value == static_cast<float>(int_value) || value >= 0.f) ? int_value : int_value - 1;
-#else
-	return static_cast<int>(std::floor(value));
-#endif
-}
-
-int math::ceil(float value) noexcept
-{
-#ifndef SNOW_USE_STD_MATH
-	int int_value = static_cast<int>(value);
-	return (value == static_cast<float>(int_value) || value <= 0.f) ? int_value : int_value + 1;
-#else
-	return static_cast<int>(std::ceil(value));
-#endif
-}
-
-int math::floor_abs(float value) noexcept
-{
-	return static_cast<int>(value);
-}
-
-int math::ceil_abs(float value) noexcept
-{
-	int result = ceil(abs(value));
-	return value < 0 ? -result : result;
-}
-
-long long math::abs(long long value) noexcept
-{
-#ifndef SNOW_USE_STD_MATH
-	return value >= 0 ? value : -value;
-#else
-	return std::abs(value);
-#endif
-}
-
-int math::abs(int value) noexcept
-{
-#ifndef SNOW_USE_STD_MATH
-	return value >= 0 ? value : -value;
-#else
-	return std::abs(value);
-#endif
-}
-
-float math::abs(float value) noexcept
-{
-#ifndef SNOW_USE_STD_MATH
-	return value >= 0.f ? value : -value;
-#else
-	return std::abs(value);
-#endif
-}
-
-float math::sin(const Angle& angle)
-{
-#ifndef SNOW_USE_STD_MATH
+// Using Taylor series
+/*
 	// Uses Taylor series to find a sine
 
 	// The angle should be between -90_deg and 90_deg
@@ -110,14 +45,14 @@ float math::sin(const Angle& angle)
 		one *= -1.f;
 	}
 	return result;
-#else
-	return std::sinf(angle.get_radians());
-#endif
+*/
+	return std::sin(angle.get_radians());
 }
 
-float math::cos(const Angle& angle)
+double math::cos(const Angle& angle)
 {
-#ifndef SNOW_USE_STD_MATH
+// Using Taylor series
+/*
 	// Uses Taylor series to find a cosine
 
 	// A maximum accuracy is in a neighborhood of zero
@@ -152,63 +87,67 @@ float math::cos(const Angle& angle)
 		one *= -1.f;
 	}
 	return result;
-#else
-	return std::cosf(angle.get_radians());
-#endif
+*/
+	return std::cos(angle.get_radians());
 }
 
-float math::sec(const Angle& angle)
+double math::sec(const Angle& angle)
 {
-	float c = cos(angle);
-	if (c == 0.f)
+	double c = cos(angle);
+	if (c == 0.)
 	{
 		throw std::domain_error("Secant of passed angle does not exist");
 	}
-	return 1.f / c;
+	return 1. / c;
 }
 
-float math::cosec(const Angle& angle)
+double math::cosec(const Angle& angle)
 {
-	float s = sin(angle);
-	if (s == 0.f)
+	double s = sin(angle);
+	if (s == 0.)
 	{
 		throw std::domain_error("Cosecant of passed angle does not exist");
 	}
-	return 1.f / s;
+	return 1. / s;
 }
 
-const std::function<float(const Angle&)> math::csc = math::cosec;
-
-float math::tg(const Angle& angle)
+double math::csc(const Angle& angle)
 {
-#ifndef SNOW_USE_STD_MATH
+	return cosec(angle);
+}
+
+double math::tg(const Angle& angle)
+{
+/*
 	float s = sin(angle);
 	if (s == 1.f || s == -1.f)
 	{
 		throw std::domain_error("Tangent of passed angle does not exist");
 	}
 	return s / sqrt(1 - s * s);
-#else
+*/
 	if (angle.get_normalized_180().abs() == Angle::RIGHT)
 	{
 		throw std::domain_error("Tangent of passed angle does not exist");
 	}
-	return std::tanf(angle.get_radians());
-#endif
+	return std::tan(angle.get_radians());
 }
 
-const std::function<float(const Angle&)> math::tan = math::tg;
-
-float math::ctg(const Angle& angle)
+double math::tan(const Angle& angle)
 {
-#ifndef SNOW_USE_STD_MATH
+	return tg(angle);
+}
+
+double math::ctg(const Angle& angle)
+{
+/*
 	float c = cos(angle);
 	if (c == 1.f || c == -1.f)
 	{
 		throw std::domain_error("Cotangent of passed angle does not exist");
 	}
 	return c / sqrt(1 - c * c);
-#else
+*/
 	Angle norm = angle.get_normalized_180();
 	if (norm == Angle::ZERO || norm == Angle::STRAIGHT)
 	{
@@ -217,23 +156,24 @@ float math::ctg(const Angle& angle)
 
 	if (norm.abs() == Angle::RIGHT)
 	{
-		return 0.f;
+		return 0.;
 	}
-	return 1 / std::tanf(norm.get_radians());
-#endif
+	return 1. / std::tan(norm.get_radians());
 }
 
-const std::function<float(const Angle&)> math::cot = math::ctg;
-
-Angle math::arcsin(float value)
+double math::cot(const Angle& angle)
 {
-	if (value < -1.f || value > 1.f)
+	return ctg(angle);
+}
+
+Angle math::arcsin(double value)
+{
+	if (value < -1. || value > 1.)
 	{
 		throw std::domain_error("Arcsine of passed value does not exist");
 	}
 	double result;
-
-#ifndef SNOW_USE_STD_MATH
+/*
 	// Uses Taylor series to find an arcsine
 	if (value < 0.f)
 	{
@@ -271,26 +211,26 @@ Angle math::arcsin(float value)
 		four_pow_i *= 4;
 		value_pow_2i_plus_1 *= value_pow_2;
 	}
-#else
-	result = std::asinf(value);
-#endif
-
+*/
+	result = std::asin(value);
 	Angle result_angle;
-	result_angle.set_radians(static_cast<float>(result));
+	result_angle.set_radians(result);
 	return result_angle;
 }
 
-const std::function<Angle(float)> math::asin = math::arcsin;
+Angle math::asin(double value)
+{
+	return arcsin(value);
+}
 
-Angle math::arccos(float value)
+Angle math::arccos(double value)
 {
 	if (value < -1.f || value > 1.f)
 	{
 		throw std::domain_error("Arccosine of passed value does not exist");
 	}
 	double result;
-
-#ifndef SNOW_USE_STD_MATH
+/*
 	// Uses Taylor series to find an arccosine
 	if (value == 1.f)
 	{
@@ -326,55 +266,67 @@ Angle math::arccos(float value)
 		four_pow_i *= 4;
 		value_pow_2i_plus_1 *= value_pow_2;
 	}
-#else
+*/
 	result = std::acos(value);
-#endif
-
 	Angle result_angle;
-	result_angle.set_radians(static_cast<float>(result));
+	result_angle.set_radians(result);
 	return result_angle;
 }
 
-const std::function<Angle(float)> math::acos = math::arccos;
-
-Angle math::arcsec(float value)
+Angle math::acos(double value)
 {
-	if (value > -1.f && value < 1.f)
+	return arccos(value);
+}
+
+Angle math::arcsec(double value)
+{
+	if (value > -1. && value < 1.)
 	{
 		throw std::domain_error("Arcsecant of passed value does not exist");
 	}
-	return arccos(1 / value);
+	return arccos(1. / value);
 }
 
-const std::function<Angle(float)> math::asec = math::arcsec;
-
-Angle math::arccosec(float value)
+Angle math::asec(double value)
 {
-	if (value > -1.f && value < 1.f)
+	return arcsec(value);
+}
+
+Angle math::arccosec(double value)
+{
+	if (value > -1. && value < 1.)
 	{
 		throw std::domain_error("Arccosecant of passed value does not exist");
 	}
-	return arcsin(1 / value);
+	return arcsin(1. / value);
 }
 
-const std::function<Angle(float)> math::acsc = math::arccosec;
-
-Angle math::arctg(float value)
+Angle math::acsc(double value)
 {
-#ifndef SNOW_USE_STD_MATH
+	return arccosec(value);
+}
+
+Angle math::arctg(double value)
+{
+/*
 	return arcsin(value / std::sqrt(1 + value * value));
-#else
+*/
 	Angle result;
 	result.set_radians(std::atan(value));
 	return result;
-#endif
 }
 
-const std::function<Angle(float)> math::atan = math::arctg;
+Angle math::atan(double value)
+{
+	return arctg(value);
+}
 
-Angle math::arcctg(float value)
+Angle math::arcctg(double value)
 {
 	return arccos(value / std::sqrt(1 + value * value));
 }
 
-const std::function<Angle(float)> math::acot = math::arcctg;
+Angle math::acot(double value)
+{
+	return arcctg(value);
+}

@@ -101,7 +101,7 @@ public:
 	 *	компонента такой прямоугольник совпадает с кликбельной областью.
 	 *	\return Прямоугольник, содержащий компонент.
 	 */
-	virtual FloatRect get_boundary_rect() const override;
+	virtual DoubleRect get_boundary_rect() const override;
 
 			/* METHODS */
 

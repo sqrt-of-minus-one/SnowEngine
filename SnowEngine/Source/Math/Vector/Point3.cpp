@@ -90,6 +90,11 @@ bool Point3::is_zero() const noexcept
 	return x_ == 0 && y_ == 0 && z_ == 0;
 }
 
+Point3 Point3::abs() const noexcept
+{
+	return Point3(std::abs(x_), std::abs(y_), std::abs(z_));
+}
+
 Point3& Point3::operator=(const Point3& point) noexcept
 {
 	x_ = point.x_;
@@ -224,7 +229,7 @@ Point3::operator Point2() const
 
 Point3::operator Vector3() const
 {
-	return Vector3(static_cast<float>(x_), static_cast<float>(y_), static_cast<float>(z_));
+	return Vector3(static_cast<double>(x_), static_cast<double>(y_), static_cast<double>(z_));
 }
 
 const Point3 Point3::ZERO(0, 0, 0);

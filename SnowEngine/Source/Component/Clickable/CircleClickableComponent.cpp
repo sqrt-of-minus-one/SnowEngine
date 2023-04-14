@@ -24,9 +24,9 @@ bool CircleClickableComponent::is_inside(const Vector2& position) const
 	return ((position - get_level_position()) / get_level_scale()).length_sq() <= radius_ * radius_;
 }
 
-FloatRect CircleClickableComponent::get_boundary_rect() const
+DoubleRect CircleClickableComponent::get_boundary_rect() const
 {
-	return FloatRect(get_level_position() - radius_ * get_level_scale(), 2.f * radius_ * get_level_scale());
+	return DoubleRect(get_level_position() - radius_ * get_level_scale(), 2.f * radius_ * get_level_scale());
 }
 
 void CircleClickableComponent::set_radius(float radius)

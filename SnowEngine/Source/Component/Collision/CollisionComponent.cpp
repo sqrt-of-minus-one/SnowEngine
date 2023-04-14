@@ -81,7 +81,7 @@ void CollisionComponent::when_transformed(const Transform& new_level_transform)
 
 void CollisionComponent::setup_chunks_()
 {
-	FloatRect new_boundary_rect = get_boundary_rect();
+	DoubleRect new_boundary_rect = get_boundary_rect();
 	Point2 new_min_chunk = static_cast<Point2>(new_boundary_rect.get_position()) / Game::config.collision_chunk_size;
 	Point2 new_max_chunk = static_cast<Point2>(new_boundary_rect.get_position() + new_boundary_rect.get_size()) / Game::config.collision_chunk_size;
 	auto& map = collision_chunks_[&get_level()];

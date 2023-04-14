@@ -31,12 +31,20 @@ class Point2;
  *	\~english
  *	\brief The class of two-dimensional vector
  *	
- *	This class is used for working with two-dimensional vectors.
+ *	This class represents a two-dimensional vector. It has two real coordinates: X and Y. You can
+ *	access them via `get_x()`, `get_y()` and `set_x()`, `set_y()` methods.
+ *	\sa
+ *	- `Vector3`: three-dimensional vector
+ *	- `Point2`, `Point3`: vectors with integer coordinates
  *	
  *	\~russian
  *	\brief Класс двумерного вектора
  *	
- *	Этот класс используется для работы с двумерными векторами.
+ *	Этот класс представляет двумерный вектор. Он имеет две вещественные координаты: X и Y. Вы
+ *	можете получить к ним доступ с помощью методов `get_x()`, `get_y()` и `set_x()`, `set_y()`.
+ *	\sa
+ *	- `Vector3`: трёхмерный вектор
+ *	- `Point2`, `Point3`: векторы с целочисленными координатами
  */
 class Vector2 : public Object
 {
@@ -86,7 +94,7 @@ public:
 	 *	\param x Координата X вектора.
 	 *	\param y Координата Y вектора.
 	 */
-	Vector2(float x, float y);
+	Vector2(double x, double y);
 
 			/* METHODS FROM Object */
 
@@ -138,7 +146,7 @@ public:
 	 *	Позволяет получить координату X вектора.
 	 *	\return Координата X вектора.
 	 */
-	float get_x() const noexcept;
+	double get_x() const noexcept;
 
 	/**
 	 *	\~english
@@ -153,7 +161,7 @@ public:
 	 *	Позволяет получить координату Y вектора.
 	 *	\return Координата Y вектора.
 	 */
-	float get_y() const noexcept;
+	double get_y() const noexcept;
 
 	/**
 	 *	\~english
@@ -168,7 +176,7 @@ public:
 	 *	Позволяет изменить координату X вектора.
 	 *	\param x Новое значение координаты X вектора.
 	 */
-	void set_x(float x) noexcept;
+	void set_x(double x) noexcept;
 
 	/**
 	 *	\~english
@@ -183,7 +191,7 @@ public:
 	 *	Позволяет изменить координату Y вектора.
 	 *	\param y Новое значение координаты Y вектора.
 	 */
-	void set_y(float y) noexcept;
+	void set_y(double y) noexcept;
 	
 	/**
 	 *	\~english
@@ -199,52 +207,68 @@ public:
 	 *	\return `true`, если вектор нулевой, иначе `false`.
 	 */
 	bool is_zero() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The absolute value of the vector
+	 *	
+	 *	Creates the copy of the vector and replaces the coordinates of the copy with their absolute
+	 *	values.
+	 *	\return The absolute value of the vector.
+	 *	
+	 *	\~russian
+	 *	\brief Абсолютное значение вектора
+	 *	
+	 *	Создаёт копию вектора и заменяет координаты этой копии на их абсолютные значения.
+	 *	\return Абсолютное значение вектора.
+	 */
+	Vector2 abs() const noexcept;
 	
 	/**
 	 *	\~english
 	 *	\brief The vector length
 	 *	
 	 *	Allows to get the vector length. It is equal to \f$\sqrt{x^2 + y^2}\f$. If you need the
-	 *	squared length, you should use the `length_sq` method, which is more effective and fast.
+	 *	squared length, you should use the `length_sq()` method, which is more efficient and fast.
 	 *	\return The vector length.
 	 *	
 	 *	\~russian
 	 *	\brief Длина вектора
 	 *	
 	 *	Позволяет получить длину вектора. Она равна \f$\sqrt{x^2 + y^2}\f$. Если вам нужен квадрат
-	 *	длины, следует использовать более эффективный и быстрый метод `length_sq`.
+	 *	длины, следует использовать более эффективный и быстрый метод `length_sq()`.
 	 *	\return Длина вектора.
 	 */
-	float length() const noexcept;
+	double length() const noexcept;
 
 	/**
 	 *	\~english
 	 *	\brief The squared vector length
 	 *	
-	 *	Allows to get the squared vector length. Is more effective than the `length` function.
+	 *	Allows to get the squared vector length. Is more efficient than the `length()` function.
 	 *	\return The squared vector length.
 	 *	
 	 *	\~russian
 	 *	\brief Квадрат длины вектора
 	 *	
-	 *	Позволяет получить длину вектора в квадрате. Эта функция более эффективна, чем `length`.
+	 *	Позволяет получить длину вектора в квадрате. Эта функция более эффективна, чем `length()`.
 	 *	\return Квадрат длины вектора.
 	 */
-	float length_sq() const noexcept;
+	double length_sq() const noexcept;
 	
 	/**
 	 *	\~english
 	 *	\brief An angle between the vector and the positive direction of X-axis
 	 *	
 	 *	Allows to get an angle between the vector and the positive direction of X-axis. The result
-	 *	is between -180° and 180°.
+	 *	is between –180° and 180°.
 	 *	\return An angle between the vector and the positive direction of X-axis.
 	 *	
 	 *	\~russian
 	 *	\brief Угол между вектором и положительным направлением оси X
 	 *	
 	 *	Позволяет получить угол между вектором и положительным направлением оси X. Результат
-	 *	находится между -180° и 180°.
+	 *	находится между –180° и 180°.
 	 *	\return Угол между вектором и положительным направлением оси X.
 	 */
 	Angle get_angle() const;
@@ -271,6 +295,8 @@ public:
 	 *	Allows to check whether two vectors are collinear (parallel). A zero vector is collinear to
 	 *	any other.
 	 *	\return `true` if two vectors are collinear, `false` otherwise.
+	 *	\sa
+	 *	- `is_co_directed()`, `is_orthogonal()`
 	 *	
 	 *	\~russian
 	 *	\brief Проверяет, коллинеарны ли два вектора
@@ -278,6 +304,8 @@ public:
 	 *	Позволяет проверить, являются ли два вектора коллинеарными (параллельными). Нулевой вектор
 	 *	коллинеарен любому другому.
 	 *	\return `true`, если два вектора коллинеарны, иначе `false`.
+	 *	\sa
+	 *	- `is_co_directed()`, `is_orthogonal()`
 	 */
 	bool is_collinear(const Vector2& vector) const noexcept;
 
@@ -288,6 +316,8 @@ public:
 	 *	Two vectors are co-directed, if they are collinear and have the same direction. A zero
 	 *	vector is co-directed to any other.
 	 *	\return `true` if two vectors are co-directed, `false` otherwise.
+	 *	\sa
+	 *	- `is_collinear()`, `is_orthogonal()`
 	 *
 	 *	\~russian
 	 *	\brief Проверяет, сонаправлены ли два вектора
@@ -295,6 +325,8 @@ public:
 	 *	Два вектора сонаправлены, если они коллинеарны и имеют одинаковое направление. Нулевой
 	 *	вектор сонаправлен любому другому.
 	 *	\return `true`, если два вектора сонаправлены, иначе `false`.
+	 *	\sa
+	 *	- `is_collinear()`, `is_orthogonal()`
 	 */
 	bool is_co_directed(const Vector2& vector) const noexcept;
 
@@ -305,6 +337,8 @@ public:
 	 *	Allows to check whether two vectors are orthogonal (perpendicular). A zero vector is
 	 *	orthogonal to any other.
 	 *	\return `true` if two vectors are orthogonal, `false` otherwise.
+	 *	\sa
+	 *	- `is_collinear()`, `is_co_directed()`
 	 *
 	 *	\~russian
 	 *	\brief Проверяет, ортогональны ли два вектора
@@ -312,6 +346,8 @@ public:
 	 *	Позволяет проверить, являются ли два вектора ортогональными (перпендикулярными). Нулевой
 	 *	вектор ортогонален любому другому.
 	 *	\return `true`, если два вектора ортогональны, иначе `false`.
+	 *	\sa
+	 *	- `is_collinear()`, `is_co_directed()`
 	 */
 	bool is_orthogonal(const Vector2& vector) const noexcept;
 	
@@ -423,7 +459,7 @@ public:
 	 *	\param value Множитель.
 	 *	\return Произведение вектора и числа.
 	 */
-	const Vector2 operator*(float value) const;
+	const Vector2 operator*(double value) const;
 	
 	/**
 	 *	\~english
@@ -444,7 +480,7 @@ public:
 	 *	\param vector Вектор.
 	 *	\return Произведение вектора и числа.
 	 */
-	friend const Vector2 operator*(float value, const Vector2& vector);
+	friend const Vector2 operator*(double value, const Vector2& vector);
 
 	/**
 	 *	\~english
@@ -453,7 +489,7 @@ public:
 	 *	Separately multiplies X and Y coordinates of two vectors:
 	 *	\f$\{x_1, y_1\} * \{x_2, y_2\} = \{x_1 \cdot x_2, y_1 \cdot y_2\}\f$.
 	 *	\warning Do not confuse this operation and dot product. If you need the latter, use
-	 *	operator `&`.
+	 *	`operator&()`.
 	 *	\param vector The multiplier.
 	 *	\return The coordinate-wise product of two vectors.
 	 *	
@@ -463,7 +499,7 @@ public:
 	 *	По отдельности умножает X и Y координаты двух векторов:
 	 *	\f$\{x_1; y_1\} * \{x_2; y_2\} = \{x_1 \cdot x_2; y_1 \cdot y_2\}\f$.
 	 *	\warning Не путайте эту операцию со скалярным произведением. Если вам нужно последнее,
-	 *	используйте оператор `&`.
+	 *	используйте `operator&()`.
 	 *	\param vector Множитель.
 	 *	\return Покоординатное произведение двух векторов.
 	 */
@@ -475,13 +511,13 @@ public:
 	 *	
 	 *	Finds a dot product of two vectors by the formula:
 	 *	\f$\{x_1, y_1\} \cdot \{x_2, y_2\} = x_1 \cdot x_2 + y_1 \cdot y_2\f$.
-	 *	\warning `&` operator has pretty low priority (lower than comparison operators). Use
+	 *	\warning The `&` operator has pretty low priority (lower than comparison operators). Use
 	 *	parenthesis with it:
 	 *	\code
-	 *		if (vector & other_vector > 0.f) // Error: > has higher priority than &
+	 *		if (vector & other_vector > 0.) // Error: > has higher priority than &
 	 *			// ...
 	 *		
-	 *		if ((vector & other_vector) > 0.f) // Correct
+	 *		if ((vector & other_vector) > 0.) // Correct
 	 *			// ...
 	 *	\endcode
 	 *	\param vector The second multiplier.
@@ -495,16 +531,16 @@ public:
 	 *	\warning Оператор `&` имеет довольно низкий приоритет (ниже, чем у операций сравнения).
 	 *	Используйте его вместе со скобками:
 	 *	\code
-	 *		if (vector & other_vector > 0.f) // Ошибка: > имеет больший приоритет, чем &
+	 *		if (vector & other_vector > 0.) // Ошибка: > имеет больший приоритет, чем &
 	 *			// ...
 	 *
-	 *		if ((vector & other_vector) > 0.f) // Верно
+	 *		if ((vector & other_vector) > 0.) // Верно
 	 *			// ...
 	 *	\endcode
 	 *	\param vector Второй множитель.
 	 *	\return Скалярное произведение двух векторов.
 	 */
-	const float operator&(const Vector2& vector) const noexcept;
+	const double operator&(const Vector2& vector) const noexcept;
 
 	/**
 	 *	\~english
@@ -525,7 +561,7 @@ public:
 	 *	\return Частное вектора и числа.
 	 *	\throw std::domain_error Делитель равен нулю.
 	 */
-	const Vector2 operator/(float value) const;
+	const Vector2 operator/(double value) const;
 
 	/**
 	 *	\~english
@@ -627,19 +663,19 @@ public:
 	 *	\param value Множитель.
 	 *	\return Ссылка на себя.
 	 */
-	Vector2& operator*=(float value) noexcept;
+	Vector2& operator*=(double value) noexcept;
 
 	/**
 	 *	\~english
 	 *	\brief Separately multiplies its own X and Y coordinates by coordinates of a passed vector
 	 *
 	 *	Finds the coordinate-wise product of two vectors and assigns it to itself.
-	 *	\warning Do not confuse this operation and dot product.
 	 *	\code
 	 *		// These strings do the same:
 	 *		vector *= another_vector;
 	 *		vector = vector * another_vector;
 	 *	\endcode
+	 *	\warning Do not confuse this operation and dot product.
 	 *	\param vector The multiplier.
 	 *	\return A reference to itself.
 	 *
@@ -647,12 +683,12 @@ public:
 	 *	\brief По отдельности умножает свои X и Y координаты на координаты переданного вектора
 	 *
 	 *	Находит покоординатное произведение двух векторов и присваивает себе его значение.
-	 *	\warning Не путайте эту операцию со скалярным произведением.
 	 *	\code
 	 *		// Эти строки делают одно и то же:
 	 *		vector *= another_vector;
 	 *		vector = vector * another_vector;
 	 *	\endcode
+	 *	\warning Не путайте эту операцию со скалярным произведением.
 	 *	\param vector Множитель.
 	 *	\return Ссылка на себя.
 	 */
@@ -685,7 +721,7 @@ public:
 	 *	\return Ссылка на себя.
 	 *	\throw std::domain_error Делитель равен нулю.
 	 */
-	Vector2& operator/=(float value);
+	Vector2& operator/=(double value);
 
 	/**
 	 *	\~english
@@ -759,10 +795,10 @@ public:
 	 *	Allows to get a 2D-point with integer coordinates.
 	 *	\code
 	 *		Point2 point(1, 2);
-	 *		Vector2 vector(1.5f, 2.f);
+	 *		Vector2 vector(1.5, 2.);
 	 *		static_cast<Point2>(vector) == point; // true
 	 *	\endcode
-	 *	\warning Data loss is possible: float is converted to integer.
+	 *	\warning Data loss is possible: double is converted to integer.
 	 *	\return The 2D-point with integer coordinates that are equal to the coordinates of this
 	 *	point casted to integer.
 	 *
@@ -772,7 +808,7 @@ public:
 	 *	Позволяет получить 2D-точку с целочисленными координатами.
 	 *	\code
 	 *		Point2 point(1, 2);
-	 *		Vector2 vector(1.5f, 2.f);
+	 *		Vector2 vector(1.5, 2.);
 	 *		static_cast<Point2>(vector) == point; // true
 	 *	\endcode
 	 *	\warning Возможна потеря данных: вещественные числа конвертируются в целые.
@@ -787,11 +823,15 @@ public:
 	 *	\brief The zero vector
 	 *	
 	 *	The zero vector. Both of its X and Y coordinates are zero. It's \f$\{0, 0\}\f$.
+	 *	\sa
+	 *	- `Vector2::I`, `Vector2::J`
 	 *	
 	 *	\~russian
 	 *	\brief Нулевой вектор
 	 *	
 	 *	Нулевой вектор. Обе его X и Y координаты равны нулю: \f$\{0; 0\}\f$.
+	 *	\sa
+	 *	- `Vector2::I`, `Vector2::J`
 	 */
 	static const Vector2 ZERO;
 
@@ -800,11 +840,15 @@ public:
 	 *	\brief The ort of the X-axis
 	 *	
 	 *	The ort of the abscissa axis. It's \f$\{1, 0\}\f$.
+	 *	\sa
+	 *	- `Vector2::ZERO`, `Vector2::J`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси X
 	 *
 	 *	Орт оси абсцисс: \f$\{1; 0\}\f$.
+	 *	\sa
+	 *	- `Vector2::ZERO`, `Vector2::J`
 	 */
 	static const Vector2 I;
 
@@ -813,16 +857,20 @@ public:
 	 *	\brief The ort of the Y-axis
 	 *
 	 *	The ort of the ordinate axis. It's \f$\{0, 1\}\f$.
+	 *	\sa
+	 *	- `Vector2::ZERO`, `Vector2::I`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси Y
 	 *
 	 *	Орт оси ординат: \f$\{0; 1\}\f$.
+	 *	\sa
+	 *	- `Vector2::ZERO`, `Vector2::I`
 	 */
 	static const Vector2 J;
 		
 private:
-	float x_, y_;
+	double x_, y_;
 };
 
 }

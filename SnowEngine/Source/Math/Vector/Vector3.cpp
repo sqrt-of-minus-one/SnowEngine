@@ -18,9 +18,9 @@ using namespace snow;
 		/* Vector3: public */
 
 Vector3::Vector3() :
-	x_(0.f),
-	y_(0.f),
-	z_(0.f)
+	x_(0.),
+	y_(0.),
+	z_(0.)
 {}
 
 Vector3::Vector3(const Vector3& vector) :
@@ -32,16 +32,16 @@ Vector3::Vector3(const Vector3& vector) :
 Vector3::Vector3(const Vector2& vector) :
 	x_(vector.get_x()),
 	y_(vector.get_y()),
-	z_(0.f)
+	z_(0.)
 {}
 
-Vector3::Vector3(const Vector2& vector, float z) :
+Vector3::Vector3(const Vector2& vector, double z) :
 	x_(vector.get_x()),
 	y_(vector.get_y()),
 	z_(z)
 {}
 
-Vector3::Vector3(float x, float y, float z) :
+Vector3::Vector3(double x, double y, double z) :
 	x_(x),
 	y_(y),
 	z_(z)
@@ -57,59 +57,67 @@ int Vector3::hash_code() const noexcept
 	return static_cast<int>(x_ + y_ + z_);
 }
 
-float Vector3::get_x() const noexcept
+double Vector3::get_x() const noexcept
 {
 	return x_;
 }
 
-float Vector3::get_y() const noexcept
+double Vector3::get_y() const noexcept
 {
 	return y_;
 }
 
-float Vector3::get_z() const noexcept
+double Vector3::get_z() const noexcept
 {
 	return z_;
 }
 
-void Vector3::set_x(float x) noexcept
+void Vector3::set_x(double x) noexcept
 {
 	x_ = x;
 }
 
-void Vector3::set_y(float y) noexcept
+void Vector3::set_y(double y) noexcept
 {
 	y_ = y;
 }
 
-void Vector3::set_z(float z) noexcept
+void Vector3::set_z(double z) noexcept
 {
 	z_ = z;
 }
 
 bool Vector3::is_zero() const noexcept
 {
-	return x_ == 0.f && y_ == 0.f && z_ == 0.f;
+	return x_ == 0. && y_ == 0. && z_ == 0.;
 }
 
-float Vector3::length() const noexcept
+Vector3 Vector3::abs() const noexcept
+{
+	return Vector3(std::abs(x_), std::abs(y_), std::abs(z_));
+}
+
+double Vector3::length() const noexcept
 {
 	return std::sqrt(length_sq());
 }
 
-float Vector3::length_sq() const noexcept
+double Vector3::length_sq() const noexcept
 {
 	return x_ * x_ + y_ * y_ + z_ * z_;
 }
 
 Angle Vector3::get_polar_angle() const
 {
-	if (z_ == 0.f)
+	if (z_ == 0.)
 	{
-		return (x_ == 0.f && y_ == 0.f) ? Angle::ZERO : Angle::RIGHT;
+		return (x_ == 0. && y_ == 0.) ? Angle::ZERO : Angle::RIGHT;
 	}
-	return z_ > 0.f ? math::arctg(static_cast<Vector2>(*this).length() / z_) :
-		math::arctg(static_cast<Vector2>(*this).length() / z_) + Angle::STRAIGHT;
+	if (z_ > 0.)
+	{
+		return math::arctg(static_cast<Vector2>(*this).length() / z_);
+	}
+	return math::arctg(static_cast<Vector2>(*this).length() / z_) + Angle::STRAIGHT;
 }
 
 Angle Vector3::get_azimuthal_angle() const
@@ -132,12 +140,12 @@ bool Vector3::is_co_directed(const Vector3& vector) const noexcept
 {
 	return is_zero() || vector.is_zero() ||
 		is_collinear(vector) &&
-		!((x_ > 0.f) ^ (vector.x_ > 0.f)) && !((y_ > 0.f) ^ (vector.y_ > 0.f)) && !((z_ > 0.f) ^ (vector.z_ > 0.f));
+		!((x_ > 0.) ^ (vector.x_ > 0.)) && !((y_ > 0.) ^ (vector.y_ > 0.)) && !((z_ > 0.) ^ (vector.z_ > 0.));
 }
 
 bool Vector3::is_orthogonal(const Vector3& vector) const noexcept
 {
-	return (*this & vector) == 0.f;
+	return (*this & vector) == 0.;
 }
 
 Vector3& Vector3::operator=(const Vector3& vector) noexcept
@@ -168,12 +176,12 @@ const Vector3 Vector3::operator-(const Vector3& vector) const
 	return Vector3(x_ - vector.x_, y_ - vector.y_, z_ - vector.z_);
 }
 
-const Vector3 Vector3::operator*(float value) const
+const Vector3 Vector3::operator*(double value) const
 {
 	return Vector3(x_ * value, y_ * value, z_ * value);
 }
 
-const Vector3 snow::operator*(float value, const Vector3& vector)
+const Vector3 snow::operator*(double value, const Vector3& vector)
 {
 	return vector * value;
 }
@@ -191,14 +199,14 @@ const Vector3 Vector3::operator^(const Vector3& vector) const
 		x_ * vector.y_ - y_ * vector.x_);
 }
 
-const float Vector3::operator&(const Vector3& vector) const noexcept
+const double Vector3::operator&(const Vector3& vector) const noexcept
 {
 	return x_ * vector.x_ + y_ * vector.y_ + z_ * vector.z_;
 }
 
-const Vector3 Vector3::operator/(float value) const
+const Vector3 Vector3::operator/(double value) const
 {
-	if (value == 0.f)
+	if (value == 0.)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
@@ -207,7 +215,7 @@ const Vector3 Vector3::operator/(float value) const
 
 const Vector3 Vector3::operator/(const Vector3& vector) const
 {
-	if (vector.x_ == 0.f || vector.y_ == 0.f || vector.z_ == 0.f)
+	if (vector.x_ == 0. || vector.y_ == 0. || vector.z_ == 0.)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
@@ -230,7 +238,7 @@ Vector3& Vector3::operator-=(const Vector3& vector) noexcept
 	return *this;
 }
 
-Vector3& Vector3::operator*=(float value) noexcept
+Vector3& Vector3::operator*=(double value) noexcept
 {
 	x_ *= value;
 	y_ *= value;
@@ -252,9 +260,9 @@ Vector3& Vector3::operator^=(const Vector3& vector) noexcept
 	return *this;
 }
 
-Vector3& Vector3::operator/=(float value)
+Vector3& Vector3::operator/=(double value)
 {
-	if (value == 0.f)
+	if (value == 0.)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
@@ -266,7 +274,7 @@ Vector3& Vector3::operator/=(float value)
 
 Vector3& Vector3::operator/=(const Vector3& vector)
 {
-	if (vector.x_ == 0.f || vector.y_ == 0.f || vector.z_ == 0.f)
+	if (vector.x_ == 0. || vector.y_ == 0. || vector.z_ == 0.)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
@@ -296,7 +304,7 @@ Vector3::operator Point3() const
 	return Point3(static_cast<int>(x_), static_cast<int>(y_), static_cast<int>(z_));
 }
 
-const Vector3 Vector3::ZERO(0.f, 0.f, 0.f);
-const Vector3 Vector3::I(1.f, 0.f, 0.f);
-const Vector3 Vector3::J(0.f, 1.f, 0.f);
-const Vector3 Vector3::K(0.f, 0.f, 1.f);
+const Vector3 Vector3::ZERO(0., 0., 0.);
+const Vector3 Vector3::I(1., 0., 0.);
+const Vector3 Vector3::J(0., 1., 0.);
+const Vector3 Vector3::K(0., 0., 1.);

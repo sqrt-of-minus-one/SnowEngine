@@ -47,13 +47,13 @@ CameraComponent::~CameraComponent()
 	}
 }
 
-FloatRect CameraComponent::get_viewport() const
+DoubleRect CameraComponent::get_viewport() const
 {
 	sf::FloatRect viewport = view_.getViewport();
-	return FloatRect(Vector2(viewport.left, viewport.top), Vector2(viewport.width, viewport.height));
+	return DoubleRect(Vector2(viewport.left, viewport.top), Vector2(viewport.width, viewport.height));
 }
 
-void CameraComponent::set_viewport(const FloatRect& rect)
+void CameraComponent::set_viewport(const DoubleRect& rect)
 {
 	view_.setViewport(sf::FloatRect(rect.get_position().get_x(), rect.get_position().get_y(),
 									rect.get_size().get_x(), rect.get_size().get_y()));

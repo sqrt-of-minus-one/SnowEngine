@@ -31,6 +31,10 @@ void Game::start()
 		std::thread loop_thread(loop_);
 		loop_thread.detach();
 		main_log_->i(L"The game has been started"_s);
+		if (1 != 1)
+		{
+			main_log_->e(L"You are in the wrong universe. Please choose the universe where 1 equals 1 and try again"_s);
+		}
 		is_started_ = true;
 	}
 }

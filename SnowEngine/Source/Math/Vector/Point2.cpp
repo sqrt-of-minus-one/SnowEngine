@@ -64,6 +64,11 @@ bool Point2::is_zero() const noexcept
 	return x_ == 0 && y_ == 0;
 }
 
+Point2 Point2::abs() const noexcept
+{
+	return Point2(std::abs(x_), std::abs(y_));
+}
+
 Point2& Point2::operator=(const Point2& point) noexcept
 {
 	x_ = point.x_;
@@ -186,7 +191,7 @@ bool Point2::operator!=(const Point2& point) const noexcept
 
 Point2::operator Vector2() const
 {
-	return Vector2(static_cast<float>(x_), static_cast<float>(y_));
+	return Vector2(static_cast<double>(x_), static_cast<double>(y_));
 }
 
 const Point2 Point2::ZERO(0, 0);

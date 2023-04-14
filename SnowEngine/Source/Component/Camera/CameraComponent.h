@@ -25,7 +25,7 @@
 
 #include <SFML/Graphics/View.hpp>
 
-#include "../../Math/Shape/FloatRect.h"
+#include "../../Math/Shape/DoubleRect.h"
 
 namespace snow
 {
@@ -103,24 +103,24 @@ public:
 	 *	Область игрового окна, где отображается вид с камеры, выраженный в коэффициентах.
 	 *	\return Прямоугольник, занятый видом с камеры.
 	 */
-	FloatRect get_viewport() const;
+	DoubleRect get_viewport() const;
 
 	/**
 	 *	\~english
 	 *	\brief Set the viewport of the camera
 	 *	
 	 *	Sets the area of the game window where a view of the camera is displayed. It is expressed
-	 *	as a factor, e. g. the `set_viewport(FloatRect(0, 0, 1, 1))` makes a full-window viewport.
+	 *	as a factor, e. g. the `set_viewport(DoubleRect(0, 0, 1, 1))` makes a full-window viewport.
 	 *	\param rect The viewport.
 	 *	
 	 *	\~russian
 	 *	\brief Устанавливает область просмотра камеры
 	 *	
 	 *	Задаёт область игрового окна, где будет отображаться вид с камеры. Область выражается в
-	 *	коэффициентах, например, `set_viewport(FloatRect(0, 0, 1, 1))` развернёт область просмотра
+	 *	коэффициентах, например, `set_viewport(DoubleRect(0, 0, 1, 1))` развернёт область просмотра
 	 *	на всё окно.
 	 */
-	void set_viewport(const FloatRect& rect);
+	void set_viewport(const DoubleRect& rect);
 
 	/**
 	 *	\~english

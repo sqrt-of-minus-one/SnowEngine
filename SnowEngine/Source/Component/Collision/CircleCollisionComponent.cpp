@@ -32,7 +32,7 @@ bool CircleCollisionComponent::overlap(const CollisionComponent& collision_compo
 		const RectCollisionComponent* rect;
 		if (rect = dynamic_cast<const RectCollisionComponent*>(&collision_component))
 		{
-			FloatRect boundary_rect = collision_component.get_boundary_rect();
+			DoubleRect boundary_rect = collision_component.get_boundary_rect();
 			Vector2 pos = get_level_position();
 			Vector2 scale = get_level_scale();
 			Vector2 RADUIS = radius_ * scale;
@@ -58,9 +58,9 @@ bool CircleCollisionComponent::overlap(const CollisionComponent& collision_compo
 	}
 }
 
-FloatRect CircleCollisionComponent::get_boundary_rect() const
+DoubleRect CircleCollisionComponent::get_boundary_rect() const
 {
-	return FloatRect(get_level_position() - radius_ * get_level_scale(), 2.f * radius_ * get_level_scale());
+	return DoubleRect(get_level_position() - radius_ * get_level_scale(), 2.f * radius_ * get_level_scale());
 }
 
 void CircleCollisionComponent::set_radius(float radius)

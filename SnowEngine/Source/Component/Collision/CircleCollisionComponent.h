@@ -101,7 +101,7 @@ public:
 	 *	это прямоугольник, чьи стороны касаются круга коллизии.
 	 *	\return Прямоугольник, содержащий компонент.
 	 */
-	virtual FloatRect get_boundary_rect() const override;
+	virtual DoubleRect get_boundary_rect() const override;
 
 			/* METHODS */
 

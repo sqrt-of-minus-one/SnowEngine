@@ -31,12 +31,22 @@ class Vector3;
  *	\~english
  *	\brief The class of three-dimensional point (integer vector)
  *
- *	This class is used for working with three-dimensional points (vectors of integer).
+ *	This class represents a three-dimensional point (i. e. integer vector). It has three integer
+ *	coordinates: X, Y, and Z. You can access them via `get_x()`, `get_y()`, `get_z()` and
+ *	`set_x()`, `set_y()`, `set_z()` methods.
+ *	\sa
+ *	- `Point2`: two-dimensional point
+ *	- `Vector2`, `Vector3`: real vectors
  *
  *	\~russian
  *	\brief Класс трёхмерной точки (целочисленного вектора)
  *
- *	Этот класс используется для работы с трёхмерными точками (целочисленными веторами).
+ *	Этот класс представляет трёхмерную точку (т. е. целочисленный вектор). Она имеет три
+ *	целочисленные координаты: X, Y и Z. Вы можете получить к ним доступ с помощью методов
+ *	`get_x()`, `get_y()`, `get_z()` и `set_x()`, `set_y()`, `set_z()`.
+ *	\sa
+ *	- `Point2`: двумерная точка
+ *	- `Vector2`, `Vector3`: вещественные векторы
  */
 class Point3 : public Object
 {
@@ -267,6 +277,22 @@ public:
 	 *	\return `true`, если точка нулевая, иначе `false`.
 	 */
 	bool is_zero() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The absolute value of the point
+	 *
+	 *	Creates the copy of the point and replaces the coordinates of the copy with their absolute
+	 *	values.
+	 *	\return The absolute value of the point.
+	 *
+	 *	\~russian
+	 *	\brief Абсолютное значение точки
+	 *
+	 *	Создаёт копию точки и заменяет координаты этой копии на их абсолютные значения.
+	 *	\return Абсолютное значение точки.
+	 */
+	Point3 abs() const noexcept;
 	
 			/* OPERATORS */
 
@@ -407,7 +433,7 @@ public:
 	 *	\f$\{x_1, y_1, z_1\} * \{x_2, y_2, z_2\} = \{x_1 \cdot x_2, y_1 \cdot y_2, z_1 \cdot
 	 *	z_2\}\f$.
 	 *	\warning Do not confuse this operation and dot product. If you need the latter, use
-	 *	operator `&` of the `Vector3` class.
+	 *	`Vector3::operator&()`.
 	 *	\param point The multiplier.
 	 *	\return The coordinate-wise product of two points.
 	 *
@@ -418,7 +444,7 @@ public:
 	 *	\f$\{x_1; y_1; z_1\} * \{x_2; y_2; z_2\} = \{x_1 \cdot x_2; y_1 \cdot y_2; z_1 \cdot
 	 *	z_2\}\f$.
 	 *	\warning Не путайте эту операцию со скалярным произведением. Если вам нужно последнее,
-	 *	используйте оператор `&` класса `Vector3`.
+	 *	`Vector3::operator&()`.
 	 *	\param point Множитель.
 	 *	\return Покоординатное произведение двух точек.
 	 */
@@ -702,8 +728,8 @@ public:
 	 *
 	 *	Позволяет получить 2D-точку с X и Y координатами этой 3D-точки.
 	 *	\code
-	 *		Point3 point3(1.f, 2.f, 3.f);
-	 *		Point2 point2(1.f, 2.f);
+	 *		Point3 point3(1, 2, 3);
+	 *		Point2 point2(1, 2);
 	 *		static_cast<Point2>(point3) == point2; // true
 	 *	\endcode
 	 *	\warning Возможна потеря данных: координата Z игнорируется.
@@ -715,13 +741,13 @@ public:
 	 *	\~english
 	 *	\brief Cast to `Vector3`
 	 *
-	 *	Allows to get a 3D-vector with float coordinates.
+	 *	Allows to get a 3D-vector with real coordinates.
 	 *	\code
 	 *		Point3 point(1, 2, 3);
-	 *		Vector3 vector(1.f, 2.f, 3.f);
+	 *		Vector3 vector(1., 2., 3.);
 	 *		static_cast<Vector3>(point) == vector; // true
 	 *	\endcode
-	 *	\return The 3D-vector with float coordinates that are equal to the coordinates of this
+	 *	\return The 3D-vector with real coordinates that are equal to the coordinates of this
 	 *	point.
 	 *
 	 *	\~russian
@@ -730,7 +756,7 @@ public:
 	 *	Позволяет получить 3D-вектор с вещественными координатами.
 	 *	\code
 	 *		Point3 point(1, 2, 3);
-	 *		Vector3 vector(1.f, 2.f, 3.f);
+	 *		Vector3 vector(1., 2., 3.);
 	 *		static_cast<Vector3>(point) == vector; // true
 	 *	\endcode
 	 *	\return 3D-вектор с вещественными координатами, равными координатам этой точки.
@@ -744,11 +770,15 @@ public:
 	 *	\brief The zero point
 	 *
 	 *	The zero point. Each of its X, Y, and Z coordinates is zero. It's \f$\{0, 0, 0\}\f$.
+	 *	\sa
+	 *	- `Point3::I`, `Point3::J`, `Point3::K`
 	 *
 	 *	\~russian
 	 *	\brief Нулевая точка
 	 *
 	 *	Нулевая точка. Каждая из её координат X, Y и Z равна нулю: \f$\{0; 0; 0\}\f$.
+	 *	\sa
+	 *	- `Point3::I`, `Point3::J`, `Point3::K`
 	 */
 	static const Point3 ZERO;
 
@@ -757,11 +787,15 @@ public:
 	 *	\brief The ort of the X-axis
 	 *
 	 *	The ort of the abscissa axis. It's \f$\{1, 0, 0\}\f$.
+	 *	\sa
+	 *	- `Point3::ZERO`, `Point3::J`, `Point3::K`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси X
 	 *
 	 *	Орт оси абсцисс: \f$\{1; 0; 0\}\f$.
+	 *	\sa
+	 *	- `Point3::ZERO`, `Point3::J`, `Point3::K`
 	 */
 	static const Point3 I;
 
@@ -770,11 +804,15 @@ public:
 	 *	\brief The ort of the Y-axis
 	 *
 	 *	The ort of the ordinate axis. It's \f$\{0, 1, 0\}\f$.
+	 *	\sa
+	 *	- `Point3::ZERO`, `Point3::I`, `Point3::K`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси Y
 	 *
 	 *	Орт оси ординат: \f$\{0; 1; 0\}\f$.
+	 *	\sa
+	 *	- `Point3::ZERO`, `Point3::I`, `Point3::K`
 	 */
 	static const Point3 J;
 	
@@ -783,11 +821,15 @@ public:
 	 *	\brief The ort of the Z-axis
 	 *
 	 *	The ort of the applicate axis. It's \f$\{0, 0, 1\}\f$.
+	 *	\sa
+	 *	- `Point3::ZERO`, `Point3::I`, `Point3::J`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси Z
 	 *
 	 *	Орт оси аппликат: \f$\{0; 0; 1\}\f$.
+	 *	\sa
+	 *	- `Point3::ZERO`, `Point3::I`, `Point3::J`
 	 */
 	static const Point3 K;
 		

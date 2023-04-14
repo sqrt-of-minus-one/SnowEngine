@@ -1,7 +1,7 @@
 ﻿    ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
- //  File: FloatRect.h                 //
+ //  File: DoubleRect.h                 //
 ////////////////////////////////////////
 
 #pragma once
@@ -9,14 +9,14 @@
 /**
  *	\file
  *	\~english
- *	\brief The file with `FloatRect` class
+ *	\brief The file with `DoubleRect` class
  *
- *	This file contains the definition of the `FloatRect` class.
+ *	This file contains the definition of the `DoubleRect` class.
  *
  *	\~russian
- *	\brief Файл с классом `FloatRect`
+ *	\brief Файл с классом `DoubleRect`
  *
- *	Этот файл содержит определение класса `FloatRect`.
+ *	Этот файл содержит определение класса `DoubleRect`.
  */
 
 #include "../../Object.h"
@@ -28,19 +28,24 @@ namespace snow
 
 /**
  *	\~english
- *	\brief The class of a rectangle with float sides
+ *	\brief The class of a rectangle with real sides
  *
- *	This class represents a rectangle whose sides are float. The rectangle is set by its position
+ *	This class represents a rectangle whose sides are real. The rectangle is set by its position
  *	and size. The position of the rectangle is the position of its corner with the smallest
  *	coordinates.
+ *	\sa
+ *	- `IntRect`: the rectangle with integer sides
  *
  *	\~russian
- *	\brief Класс прямоугольника с дробными сторонами
+ *	\brief Класс прямоугольника с вещественными сторонами
  *
- *	Этот класс представляет прямоугольник, чьи стороны дробные. Прямоугольник задаётся позицией и
- *	размером. Позиция прямоугольника — это положение его угла с наименьшими координатами.
+ *	Этот класс представляет прямоугольник, чьи стороны вещественные. Прямоугольник задаётся
+ *	положением и размером. Положение прямоугольника — это положение его угла с наименьшими
+ *	координатами.
+ *	\sa
+ *	- `IntRect`: прямоугольник с целочисленными сторонами
  */
-class FloatRect : public Object
+class DoubleRect : public Object
 {
 public:
 			/* CONSTRUCTORS */
@@ -56,7 +61,7 @@ public:
 	 *	
 	 *	Создаёт нулевой прямоугольник в начале координат.
 	*/
-	FloatRect();
+	DoubleRect();
 
 	/**
 	 *	\~english
@@ -71,7 +76,7 @@ public:
 	 *	Создаёт копию прямоугольника.
 	 *	\param rect Прямоугольник, который будет скопирован.
 	 */
-	FloatRect(const FloatRect& rect);
+	DoubleRect(const DoubleRect& rect);
 
 	/**
 	 *	\~english
@@ -88,7 +93,7 @@ public:
 	 *	\param position Положение угла с наименьшими координатами.
 	 *	\param size Размер прямоугольника.
 	 */
-	FloatRect(const Vector2& position, const Vector2& size);
+	DoubleRect(const Vector2& position, const Vector2& size);
 
 			/* METHODS FROM Object */
 
@@ -251,7 +256,7 @@ public:
 	 *	\param rect Прямоугольник для проверки.
 	 *	\return `true`, если прямоугольники пересекаются, иначе `false`.
 	 */
-	bool overlap(const FloatRect& rect) const;
+	bool overlap(const DoubleRect& rect) const;
 
 	/**
 	 *	\~english
@@ -266,7 +271,7 @@ public:
 	 *	Вычисляет периметр прямоугольника.
 	 *	\return Периметр.
 	 */
-	float perimeter() const;
+	double perimeter() const;
 
 	/**
 	 *	\~english
@@ -281,7 +286,7 @@ public:
 	 *	Вычисляет площадь прямоугольника.
 	 *	\return Площадь.
 	 */
-	float area() const;
+	double area() const;
 	
 			/* OPERATORS */
 
@@ -300,7 +305,7 @@ public:
 	 *	\param rect Прямоугольник, который будет скопирован.
 	 *	\return Ссылка на себя.
 	 */
-	FloatRect& operator=(const FloatRect& rect);
+	DoubleRect& operator=(const DoubleRect& rect);
 
 	/**
 	 *	\~english
@@ -317,7 +322,7 @@ public:
 	 *	\param rect Прямоугольник для сравнения.
 	 *	\return `true`, если прямоугольники равны, иначе `false`.
 	 */
-	bool operator==(const FloatRect& rect) const;
+	bool operator==(const DoubleRect& rect) const;
 
 	/**
 	 *	\~english
@@ -334,7 +339,7 @@ public:
 	 *	\param rect Прямоугольник для сравнения.
 	 *	\return `true`, если прямоугольники не равны, иначе `false`.
 	 */
-	bool operator!=(const FloatRect& rect) const;
+	bool operator!=(const DoubleRect& rect) const;
 
 private:
 	Vector2 position_;

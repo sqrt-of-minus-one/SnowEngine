@@ -35,12 +35,12 @@ namespace snow
  *		Angle angle2 = angle1 - 50.5_grad;
  *		Angle angle3(90_deg + 3.1415_rad);
  *	\endcode
- *	You can also use the constants `ZERO`, `RIGHT` and `STRAIGHT`.
+ *	You can also use the constants `Angle::ZERO`, `Angle::RIGHT`, and `Angle::STRAIGHT`.
  *	
  *	\~russian
  *	\brief Класс угла
  *
- *	Класс угла, используемый SnowEngine поддерживает задание в градусах, радианах и градах. Чтобы
+ *	Класс угла, используемый SnowEngine. Поддерживает задание в градусах, радианах и градах. Чтобы
  *	создать угол, можно использовать литералы `_deg` для градусов, `_rad` для радиан и `_grad`
  *	для градов:
  *	\code
@@ -48,7 +48,7 @@ namespace snow
  *		Angle angle2 = angle1 - 50.5_grad;
  *		Angle angle3(90_deg + 3.1415_rad);
  *	\endcode
- *	Вы также можете использовать константы `ZERO`, `RIGHT` и `STRAIGHT`.
+ *	Вы также можете использовать константы `Angle::ZERO`, `Angle::RIGHT` и `Angle::STRAIGHT`.
  */
 class Angle : public Object
 {
@@ -93,12 +93,14 @@ public:
 	 *	\code
 	 *		Angle angle1 = 90_deg;
 	 *		
-	 *		float radians_value = 3.1415;
+	 *		double radians_value = 3.1415;
 	 *		Angle angle2;
 	 *		angle2.set_radians(radians_value);
 	 *		
 	 *		Angle angle3;
 	 *		angle3.set_radians(math::PI);
+	 *		
+	 *		Angle angle4(1.2); // Degrees? Radians? Gradians?
 	 *	\endcode
 	 *	\param degrees A value of a new angle in degrees
 	 *
@@ -112,16 +114,18 @@ public:
 	 *	\code
 	 *		Angle angle1 = 90_deg;
 	 *
-	 *		float radians_value = 3.1415;
+	 *		double radians_value = 3.1415;
 	 *		Angle angle2;
 	 *		angle2.set_radians(radians_value);
 	 *
 	 *		Angle angle3;
 	 *		angle3.set_radians(math::PI);
+	 *		
+	 *		Angle angle4(1.2); // Градусы? Радианы? Грады?
 	 *	\endcode
 	 *	\param degrees Значение нового угла в градусах.
 	 */
-	Angle(float degrees);
+	Angle(double degrees);
 
 			/* METHODS FROM Object */
 
@@ -172,7 +176,7 @@ public:
 	 *	Позволяет получить значение угла в градусах.
 	 *	\return Значение угла в градусах.
 	 */
-	float get_degrees() const noexcept;
+	double get_degrees() const noexcept;
 
 	/**
 	 *	\~english
@@ -187,7 +191,7 @@ public:
 	 *	Позволяет получить значение угла в радианах.
 	 *	\return Величина угла в радианах.
 	 */
-	float get_radians() const noexcept;
+	double get_radians() const noexcept;
 
 	/**
 	 *	\~english
@@ -202,7 +206,7 @@ public:
 	 *	Позволяет получить значение угла в градах.
 	 *	\return Величина угла в градах.
 	 */
-	float get_gradians() const noexcept;
+	double get_gradians() const noexcept;
 
 	/**
 	 *	\~english
@@ -217,7 +221,7 @@ public:
 	 *	Позволяет изменить величину угла.
 	 *	\param degrees Новая величина угла в градусах.
 	 */
-	void set_degrees(float degrees) noexcept;
+	void set_degrees(double degrees) noexcept;
 
 	/**
 	 *	\~english
@@ -232,7 +236,7 @@ public:
 	 *	Позволяет изменить величину угла.
 	 *	\param radians Новая величина угла в радианах.
 	 */
-	void set_radians(float radians) noexcept;
+	void set_radians(double radians) noexcept;
 
 	/**
 	 *	\~english
@@ -247,14 +251,13 @@ public:
 	 *	Позволяет изменить величину угла.
 	 *	\param gradians Новая величина угла в градах.
 	 */
-	void set_gradians(float gradians) noexcept;
+	void set_gradians(double gradians) noexcept;
 
 	/**
 	 *	\~english
-	 *	\brief Normalizes an angle value so that it is inside \f$[0, 360)\f$ degrees
+	 *	\brief Normalizes an angle value so that it is inside \f$[0°, 360°)\f$
 	 *
-	 *	Changes an angle value to the equivalien that it is inside the interval \f$[0, 360)\f$
-	 *	degrees.
+	 *	Changes an angle value to the equivalent that it is inside the interval \f$[0°, 360°)\f$.
 	 *	\code
 	 *		Angle angle1(30_deg);
 	 *		angle1.normalize_360(); // Now angle1 == 30_deg;
@@ -275,12 +278,14 @@ public:
 	 *		angle6.normalize_360(); // Now angle6 == 90_deg;
 	 *	\endcode
 	 *	\return A reference to itself.
+	 *	\sa
+	 *	- `normalize_180()`
+	 *	- `get_normalized_360()`, `get_normalized_180()`
 	 *
 	 *	\~russian
-	 *	\brief Нормализует величину угла, чтобы она попадала в полуинтервал \f$[0; 360)\f$
-	 *	градусов.
+	 *	\brief Нормализует величину угла, чтобы она попадала в полуинтервал \f$[0°; 360°)\f$
 	 *
-	 *	Изменяет величину угла на эквивалентную, лежащую в полуинтервале \f$[0; 360)\f$ градусов.
+	 *	Изменяет величину угла на эквивалентную, лежащую в полуинтервале \f$[0°; 360°)\f$.
 	 *	\code
 	 *		Angle angle1(30_deg);
 	 *		angle1.normalize_360(); // Теперь angle1 == 30_deg;
@@ -301,15 +306,18 @@ public:
 	 *		angle6.normalize_360(); // Теперь angle6 == 90_deg;
 	 *	\endcode
 	 *	\return Ссылка на себя.
+	 *	\sa
+	 *	- `normalize_180()`
+	 *	- `get_normalized_360()`, `get_normalized_180()`
 	 */
 	Angle& normalize_360();
 
 	/**
 	 *	\~english
-	 *	\brief Normalizes an angle value so that it is inside \f$(-180, 180]\f$ degrees
+	 *	\brief Normalizes an angle value so that it is inside \f$(-180°, 180°]\f$
 	 *
-	 *	Changes an angle value to the equivalien that it is inside the interval \f$(-180, 180]\f$
-	 *	degrees.
+	 *	Changes an angle value to the equivalien that it is inside the interval
+	 *	\f$(-180°, 180°]\f$.
 	 *	\code
 	 *		Angle angle1(30_deg);
 	 *		angle1.normalize_180(); // Now angle1 == 30_deg;
@@ -330,13 +338,14 @@ public:
 	 *		angle6.normalize_180(); // Now angle6 == 90_deg;
 	 *	\endcode
 	 *	\return A reference to itself.
+	 *	\sa
+	 *	- `normalize_360()`
+	 *	- `get_normalized_360()`, `get_normalized_180()`
 
 	 *	\~russian
-	 *	\brief Нормализует величину угла, чтобы она попадала в полуинтервал \f$(-180; 180]\f$
-	 *	градусов.
+	 *	\brief Нормализует величину угла, чтобы она попадала в полуинтервал \f$(-180°; 180°]\f$
 	 *
-	 *	Изменяет величину угла на эквивалентную, лежащую в полуинтервале \f$(-180; 180]\f$
-	 *	градусов.
+	 *	Изменяет величину угла на эквивалентную, лежащую в полуинтервале \f$(-180°; 180°]\f$.
 	 *	\code
 	 *		Angle angle1(30_deg);
 	 *		angle1.normalize_180(); // Теперь angle1 == 30_deg;
@@ -357,15 +366,18 @@ public:
 	 *		angle6.normalize_180(); // Теперь angle6 == 90_deg;
 	 *	\endcode
 	 *	\return Ссылка на себя.
+	 *	\sa
+	 *	- `normalize_360()`
+	 *	- `get_normalized_360()`, `get_normalized_180()`
 	 */
 	Angle& normalize_180();
 
 	/**
 	 *	\~english
-	 *	\brief A normalized angle with value inside \f$[0, 360)\f$ degrees
+	 *	\brief A normalized angle with value inside \f$[0°, 360°)\f$
 	 *
 	 *	Allows to get an angle that is equivalent to this one, but with a value inside
-	 *	\f$[0, 360)\f$ degrees.
+	 *	\f$[0°, 360°)\f$.
 	 *	\code
 	 *		const Angle angle1(30_deg);
 	 *		angle1.get_normalized_360() == 30_deg;
@@ -386,12 +398,15 @@ public:
 	 *		angle6.get_normalized_360() == 90_deg;
 	 *	\endcode
 	 *	\return A normalized angle.
+	 *	\sa
+	 *	- `get_normalized_180()`
+	 *	- `normalize_360()`, `normalize_180()`
 	 *
 	 *	\~russian
-	 *	\brief Нормализованный угол со значением в полуинтервале \f$[0; 360)\f$ градусов
+	 *	\brief Нормализованный угол со значением в полуинтервале \f$[0°; 360°)\f$
 	 *	
 	 *	Позволяет получить угол, эквивалентный данному, но со значением в полуинтервале
-	 *	\f$[0; 360)\f$ градусов.
+	 *	\f$[0°; 360°)\f$.
 	 *	\code
 	 *		const Angle angle1(30_deg);
 	 *		angle1.get_normalized_360() == 30_deg;
@@ -412,15 +427,18 @@ public:
 	 *		angle6.get_normalized_360() == 90_deg;
 	 *	\endcode
 	 *	\return Нормализованный угол.
+	 *	\sa
+	 *	- `get_normalized_180()`
+	 *	- `normalize_360()`, `normalize_180()`
 	 */
 	const Angle get_normalized_360() const;
 
 	/**
 	 *	\~english
-	 *	\brief A normalized angle with value inside \f$(-180, 180]\f$ degrees.
+	 *	\brief A normalized angle with value inside \f$(-180°, 180°]\f$
 	 *
 	 *	Allows to get an angle that is equivalent to this one, but with a value inside
-	 *	\f$(-180, 180]\f$ degrees.
+	 *	\f$(-180°, 180°]\f$.
 	 *	\code
 	 *		const Angle angle1(30_deg);
 	 *		angle1.get_normalized_180() == 30_deg;
@@ -441,12 +459,15 @@ public:
 	 *		angle6.get_normalized_180() == 90_deg;
 	 *	\endcode
 	 *	\return A normalized angle.
+	 *	\sa
+	 *	- `get_normalized_360()`
+	 *	- `normalize_360()`, `normalize_180()`
 	 *
 	 *	\~russian
-	 *	\brief Нормализованный угол со значением в полуинтервале \f$(-180, 180]\f$ градусов
+	 *	\brief Нормализованный угол со значением в полуинтервале \f$(-180°, 180°]\f$
 	 *
 	 *	Позволяет получить угол, эквивалентный данному, но со значением в полуинтервале
-	 *	\f$(-180, 180]\f$ градусов.
+	 *	\f$(-180°, 180°]\f$.
 	 *	\code
 	 *		const Angle angle1(30_deg);
 	 *		angle1.get_normalized_180() == 30_deg;
@@ -467,6 +488,9 @@ public:
 	 *		angle6.get_normalized_180() == 90_deg;
 	 *	\endcode
 	 *	\return Нормализованный угол.
+	 *	\sa
+	 *	- `get_normalized_360()`
+	 *	- `normalize_360()`, `normalize_180()`
 	 */
 	const Angle get_normalized_180() const;
 
@@ -603,7 +627,7 @@ public:
 	 *	\param value Множитель.
 	 *	\return Произведение угла и числа.
 	 */
-	const Angle operator*(float value) const;
+	const Angle operator*(double value) const;
 
 	/**
 	 *	\~english
@@ -622,7 +646,7 @@ public:
 	 *	\param angle Угол.
 	 *	\return Произведение числа и угла.
 	 */
-	friend const Angle operator*(float value, const Angle& angle);
+	friend const Angle operator*(double value, const Angle& angle);
 
 	/**
 	 *	\~english
@@ -641,7 +665,7 @@ public:
 	 *	\return Частное угла и числа.
 	 *	\throw std::domain_error Делитель равен нулю.
 	 */
-	const Angle operator/(float value) const;
+	const Angle operator/(double value) const;
 
 	/**
 	 *	\~english
@@ -722,7 +746,7 @@ public:
 	 *	\param value Множитель.
 	 *	\return Ссылка на себя.
 	 */
-	Angle& operator*=(float value) noexcept;
+	Angle& operator*=(double value) noexcept;
 
 	/**
 	 *	\~english
@@ -751,22 +775,20 @@ public:
 	 *	\return Ссылка на себя.
 	 *	\throw std::domain_error Делитель равен нулю.
 	 */
-	Angle& operator/=(float value);
+	Angle& operator/=(double value);
 
 	/**
 	 *	\~english
 	 *	\brief Checks whether two angles are equal
 	 *
-	 *	Checks whether two angles are equal. Note that 0_deg is not equal to 360_deg.
+	 *	Checks whether two angles are equal. Note that 0° is not equal to 360°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 360_deg;
 	 *		
-	 *		// false
-	 *		angle1 == angle2;
+	 *		angle1 == angle2; // false
 	 *		
-	 *		// true
-	 *		angle1.get_normalized_360() == angle2.get_normalized_360();
+	 *		angle1.get_normalized_360() == angle2.get_normalized_360(); // true
 	 *	\endcode
 	 *	\param angle An angle to compare.
 	 *	\return `true` if angles are equal, `false` otherwise.
@@ -774,16 +796,14 @@ public:
 	 *	\~russian
 	 *	\brief Проверяет, равны ли два угла
 	 *
-	 *	Проверяет равны ли два угла. Учтите, что 0_deg не равно 360_deg.
+	 *	Проверяет равны ли два угла. Учтите, что 0° не равно 360°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// false
-	 *		angle1 == angle2;
+	 *		angle1 == angle2; // false
 	 *
-	 *		// true
-	 *		angle1.get_normalized_360() == angle2.get_normalized_360();
+	 *		angle1.get_normalized_360() == angle2.get_normalized_360(); // true
 	 *	\endcode
 	 *	\param angle Угол для сравнения.
 	 *	\return `true`, если углы равны, иначе `false`.
@@ -794,20 +814,17 @@ public:
 	 *	\~english
 	 *	\brief Checks whether two angles are different
 	 *
-	 *	Checks whether two angles are different. Note that 0_deg is not equal to 360_deg.
+	 *	Checks whether two angles are different. Note that 0° is not equal to 360°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// true
-	 *		angle1 != angle2;
+	 *		angle1 != angle2; // true
 	 *		
-	 *		// true
-	 *		angle1 != angle3;
+	 *		angle1 != angle3; // true
 	 *
-	 *		// false
-	 *		angle1.get_normalized_360() != angle3.get_normalized_360();
+	 *		angle1.get_normalized_360() != angle3.get_normalized_360(); // false
 	 *	\endcode
 	 *	\param angle An angle to compare.
 	 *	\return `true` if angles are not equal, `false` otherwise.
@@ -815,20 +832,17 @@ public:
 	 *	\~russian
 	 *	\brief Проверяет, различаются ли два угла
 	 *
-	 *	Проверяет различаются ли два угла. Учтите, что 0_deg не равно 360_deg.
+	 *	Проверяет различаются ли два угла. Учтите, что 0° не равно 360°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// true
-	 *		angle1 != angle2;
+	 *		angle1 != angle2; // true
 	 *
-	 *		// true
-	 *		angle1 != angle3;
+	 *		angle1 != angle3; // true
 	 *
-	 *		// false
-	 *		angle1.get_normalized_360() != angle3.get_normalized_360();
+	 *		angle1.get_normalized_360() != angle3.get_normalized_360(); // false
 	 *	\endcode
 	 *	\param angle Угол для сравнения.
 	 *	\return `true`, если углы не равны, иначе `false`.
@@ -839,20 +853,17 @@ public:
 	 *	\~english
 	 *	\brief Checks whether the angle is less than a passed one
 	 *
-	 *	Checks whether the angle is less than a passed one. Note that 270_deg is less than 360_deg.
+	 *	Checks whether the angle is less than a passed one. Note that 270° is less than 450°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// false
-	 *		angle2 < angle1;
+	 *		angle2 < angle1; // false
 	 *
-	 *		// true
-	 *		angle2 < angle3;
+	 *		angle2 < angle3; // true
 	 *
-	 *		// false
-	 *		angle2.get_normalized_360() < angle3.get_normalized_360();
+	 *		angle2.get_normalized_360() < angle3.get_normalized_360(); // false
 	 *	\endcode
 	 *	\param angle An angle to compare.
 	 *	\return `true` if the angle is less than a passed one, `false` otherwise.
@@ -860,21 +871,18 @@ public:
 	 *	\~russian
 	 *	\brief Проверяет, меньше ли значение данного угла, чем значение переданного.
 	 *
-	 *	Проверяет, меньше ли значение данного угла, чем значение переданного. Учтите, что 270_deg
-	 *	меньше, чем 360_deg.
+	 *	Проверяет, меньше ли значение данного угла, чем значение переданного. Учтите, что 270°
+	 *	меньше, чем 450°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// false
-	 *		angle2 < angle1;
+	 *		angle2 < angle1; // false
 	 *
-	 *		// true
-	 *		angle2 < angle3;
+	 *		angle2 < angle3; // true
 	 *
-	 *		// false
-	 *		angle2.get_normalized_360() < angle3.get_normalized_360();
+	 *		angle2.get_normalized_360() < angle3.get_normalized_360(); // false
 	 *	\endcode
 	 *	\param angle Угол для сравнения.
 	 *	\return `true`, если данный угол меньше, чем переданный, иначе `false`.
@@ -885,21 +893,17 @@ public:
 	 *	\~english
 	 *	\brief Checks whether the angle is greater than a passed one
 	 *
-	 *	Checks whether the angle is greater than a passed one. Note that 270_deg is less than
-	 *	360_deg.
+	 *	Checks whether the angle is greater than a passed one. Note that 270° is less than 360°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// true
-	 *		angle2 > angle1;
+	 *		angle2 > angle1; // true
 	 *
-	 *		// false
-	 *		angle2 > angle3;
+	 *		angle2 > angle3; // false
 	 *
-	 *		// true
-	 *		angle2.get_normalized_360() > angle3.get_normalized_360();
+	 *		angle2.get_normalized_360() > angle3.get_normalized_360(); // true
 	 *	\endcode
 	 *	\param angle An angle to compare.
 	 *	\return `true` if the angle is greater than a passed one, `false` otherwise.
@@ -907,21 +911,18 @@ public:
 	 *	\~russian
 	 *	\brief Проверяет, больше ли значение данного угла, чем значение переданного.
 	 *
-	 *	Проверяет, больше ли значение данного угла, чем значение переданного. Учтите, что 270_deg
-	 *	меньше, чем 360_deg.
+	 *	Проверяет, больше ли значение данного угла, чем значение переданного. Учтите, что 270°
+	 *	меньше, чем 360°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// true
-	 *		angle2 > angle1;
+	 *		angle2 > angle1; // true
 	 *
-	 *		// false
-	 *		angle2 > angle3;
+	 *		angle2 > angle3; // false
 	 *
-	 *		// true
-	 *		angle2.get_normalized_360() > angle3.get_normalized_360();
+	 *		angle2.get_normalized_360() > angle3.get_normalized_360(); // true
 	 *	\endcode
 	 *	\param angle Угол для сравнения.
 	 *	\return `true`, если данный угол больше, чем переданный, иначе `false`.
@@ -932,21 +933,18 @@ public:
 	 *	\~english
 	 *	\brief Checks whether the angle is less than or equal to a passed one
 	 *
-	 *	Checks whether the angle is less than or equal to a passed one. Note that 270_deg is less
-	 *	than 360_deg.
+	 *	Checks whether the angle is less than or equal to a passed one. Note that 270° is less than
+	 *	450°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// false
-	 *		angle2 <= angle1;
+	 *		angle2 <= angle1; // false
 	 *
-	 *		// true
-	 *		angle2 <= angle3;
+	 *		angle2 <= angle3; // true
 	 *
-	 *		// false
-	 *		angle2.get_normalized_360() <= angle3.get_normalized_360();
+	 *		angle2.get_normalized_360() <= angle3.get_normalized_360(); // false
 	 *	\endcode
 	 *	\param angle An angle to compare.
 	 *	\return `true` if the angle is less than or equal to a passed one, `false` otherwise.
@@ -955,20 +953,17 @@ public:
 	 *	\brief Проверяет, меньше или равно ли значение данного угла значению переданного.
 	 *
 	 *	Проверяет, меньше или равно ли значение данного угла значению переданного. Учтите, что
-	 *	270_deg меньше, чем 360_deg.
+	 *	270° меньше, чем 450°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// false
-	 *		angle2 <= angle1;
+	 *		angle2 <= angle1; // false
 	 *
-	 *		// true
-	 *		angle2 <= angle3;
+	 *		angle2 <= angle3; // true
 	 *
-	 *		// false
-	 *		angle2.get_normalized_360() <= angle3.get_normalized_360();
+	 *		angle2.get_normalized_360() <= angle3.get_normalized_360(); // false
 	 *	\endcode
 	 *	\param angle Угол для сравнения.
 	 *	\return `true`, если данный угол меньше или равен переданному, иначе `false`.
@@ -979,21 +974,18 @@ public:
 	 *	\~english
 	 *	\brief Checks whether the angle is greater than or equal to a passed one
 	 *
-	 *	Checks whether the angle is greater than or equal to a passed one. Note that 270_deg is
-	 *	less than 360_deg.
+	 *	Checks whether the angle is greater than or equal to a passed one. Note that 270° is less
+	 *	than 450°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// true
-	 *		angle2 >= angle1;
+	 *		angle2 >= angle1; // true
 	 *
-	 *		// false
-	 *		angle2 >= angle3;
+	 *		angle2 >= angle3; // false
 	 *
-	 *		// true
-	 *		angle2.get_normalized_360() >= angle3.get_normalized_360();
+	 *		angle2.get_normalized_360() >= angle3.get_normalized_360(); // true
 	 *	\endcode
 	 *	\param angle An angle to compare.
 	 *	\return `true` if the angle is greater than or equal to a passed one, `false` otherwise.
@@ -1002,20 +994,17 @@ public:
 	 *	\brief Проверяет, больше или равно ли значение данного угла значению переданного.
 	 *
 	 *	Проверяет, больше или равно ли значение данного угла значению переданного. Учтите, что
-	 *	270_deg меньше, чем 360_deg.
+	 *	270° меньше, чем 450°.
 	 *	\code
 	 *		Angle angle1 = 0_deg;
 	 *		Angle angle2 = 90_deg;
 	 *		Angle angle2 = 360_deg;
 	 *
-	 *		// true
-	 *		angle2 >= angle1;
+	 *		angle2 >= angle1; // true
 	 *
-	 *		// false
-	 *		angle2 >= angle3;
+	 *		angle2 >= angle3; // false
 	 *
-	 *		// true
-	 *		angle2.get_normalized_360() >= angle3.get_normalized_360();
+	 *		angle2.get_normalized_360() >= angle3.get_normalized_360(); // true
 	 *	\endcode
 	 *	\param angle Угол для сравнения.
 	 *	\return `true`, если данный угол больше или равен переданному, иначе `false`.
@@ -1228,12 +1217,12 @@ public:
 	 *	\~english
 	 *	\brief The zero angle
 	 *	
-	 *	This angle is equal to 0_deg.
+	 *	This angle is equal to 0°.
 	 *
 	 *	\~russian
 	 *	\brief Нулевой угол
 	 *
-	 *	Значение этого угла — ноль градусов.
+	 *	Этот угол равен 0°.
 	 */
 	static const Angle ZERO;
 
@@ -1241,12 +1230,12 @@ public:
 	 *	\~english
 	 *	\brief The right angle
 	 *	
-	 *	This angle is equal to 90_deg.
+	 *	This angle is equal to 90°.
 	 *
 	 *	\~russian
 	 *	\brief Прямой угол
 	 *
-	 *	Значение этого угла — девяносто градусов.
+	 *	Этот угол равен 90°.
 	 */
 	static const Angle RIGHT;
 
@@ -1254,17 +1243,17 @@ public:
 	 *	\~english
 	 *	\brief The straight angle
 	 *	
-	 *	This angle is equal to 180_deg.
+	 *	This angle is equal to 180°.
 	 *
 	 *	\~russian
 	 *	\brief Развёрнутый угол угол
 	 *
-	 *	Значение этого угла — сто восемьдесят градусов.
+	 *	Этот угол равен 180°.
 	 */
 	static const Angle STRAIGHT;
 
 private:
-	float value_deg_;
+	double value_deg_;
 };
 
 Angle operator""_deg(long double degrees);

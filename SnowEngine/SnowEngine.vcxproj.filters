@@ -161,9 +161,6 @@
     <ClInclude Include="Source\Util\Animation\SimpleSpriteAnimation.h">
       <Filter>Source Files\Util\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Math\Shape\FloatRect.h">
-      <Filter>Source Files\Math\Shape</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Math\Shape\IntRect.h">
       <Filter>Source Files\Math\Shape</Filter>
     </ClInclude>
@@ -211,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Source\Util\SaveLoad\SaveLoad.h">
       <Filter>Source Files\Util\SaveLoad</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Shape\DoubleRect.h">
+      <Filter>Source Files\Math\Shape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +301,6 @@
     <ClCompile Include="Source\Util\Animation\SimpleSpriteAnimation.cpp">
       <Filter>Source Files\Util\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math\Shape\FloatRect.cpp">
-      <Filter>Source Files\Math\Shape</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Math\Shape\IntRect.cpp">
       <Filter>Source Files\Math\Shape</Filter>
     </ClCompile>
@@ -348,6 +345,9 @@
     </ClCompile>
     <ClCompile Include="Source\Util\SaveLoad\SaveLoad.cpp">
       <Filter>Source Files\Util\SaveLoad</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Shape\DoubleRect.cpp">
+      <Filter>Source Files\Math\Shape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

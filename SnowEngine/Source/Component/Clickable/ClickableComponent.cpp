@@ -85,7 +85,7 @@ std::vector<ClickableComponent*> ClickableComponent::get_clicked(const Level& le
 
 void ClickableComponent::setup_chunks()
 {
-	FloatRect new_boundary_rect = get_boundary_rect();
+	DoubleRect new_boundary_rect = get_boundary_rect();
 	Point2 new_min_chunk = static_cast<Point2>(new_boundary_rect.get_position()) / Game::config.clickable_chunk_size;
 	Point2 new_max_chunk = static_cast<Point2>(new_boundary_rect.get_position() + new_boundary_rect.get_size()) / Game::config.clickable_chunk_size;
 	auto& map = clickable_chunks_[&get_level()];

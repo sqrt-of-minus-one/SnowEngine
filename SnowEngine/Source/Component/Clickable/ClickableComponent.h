@@ -27,7 +27,7 @@
 #include <unordered_set>
 
 #include "../../Util/Input/Keys.h"
-#include "../../Math/Shape/FloatRect.h"
+#include "../../Math/Shape/DoubleRect.h"
 #include "../../Math/Vector/Point2.h"
 
 namespace snow
@@ -126,7 +126,7 @@ public:
 	 *	Позволяет получить прямоугольник, который содержит весь компонент.
 	 *	\return Прямоугольник, содержащий компонент.
 	 */
-	virtual FloatRect get_boundary_rect() const = 0;
+	virtual DoubleRect get_boundary_rect() const = 0;
 
 	/**
 	 *	\~english
@@ -298,7 +298,7 @@ protected:
 	virtual void when_released(EButton button);
 
 private:
-	FloatRect boundary_rect_;
+	DoubleRect boundary_rect_;
 	Point2 min_chunk_;
 	Point2 max_chunk_;
 
