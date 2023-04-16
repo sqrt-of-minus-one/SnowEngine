@@ -72,6 +72,9 @@
     <Filter Include="Source Files\Util\SaveLoad">
       <UniqueIdentifier>{50c2068a-2a11-4eaa-a494-61e207d217f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Json">
+      <UniqueIdentifier>{26c99a44-df1d-49c2-b72e-3964f19bf1d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Math\Math.h">
@@ -212,6 +215,18 @@
     <ClInclude Include="Source\Math\Shape\DoubleRect.h">
       <Filter>Source Files\Math\Shape</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\Json\Array.h">
+      <Filter>Source Files\Util\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Json\Element.h">
+      <Filter>Source Files\Util\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Json\Value.h">
+      <Filter>Source Files\Util\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Json\JsonObject.h">
+      <Filter>Source Files\Util\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Math\Math.cpp">
@@ -348,6 +363,15 @@
     </ClCompile>
     <ClCompile Include="Source\Math\Shape\DoubleRect.cpp">
       <Filter>Source Files\Math\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Json\Array.cpp">
+      <Filter>Source Files\Util\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Json\Element.cpp">
+      <Filter>Source Files\Util\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Json\JsonObject.cpp">
+      <Filter>Source Files\Util\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

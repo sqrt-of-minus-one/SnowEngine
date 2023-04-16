@@ -55,6 +55,28 @@ String to_string(long long var);
 
 /**
  *	\~english
+ *	\brief Converts `int` to string
+ *
+ *	Converts the passed integer to string in the specified numeral system. If the base is more than
+ *	10, A—Z characters will also be used as digits.
+ *	\tparam base The base of the numeral system. Must be between 2 and 36.
+ *	\param var The integer that will be converted to string.
+ *	\return A string that represents the passed integer in decimal notation.
+ *
+ *	\~russian
+ *	\brief Конвертирует `int` в строку
+ *
+ *	Конвертирует переданное целое число в строку в заданной системе счисления. Если основание
+ *	больше 10, в качестве цифр также будут использованы символы A—Z.
+ *	\tparam base Основание системы счисления. Должно находиться между 2 и 36.
+ *	\param var Целое число, которое будет сконвертировано в строку.
+ *	\return Строка, представляющая десятичную запись переданного целого числа.
+ */
+template<int base = 10>
+String to_string(int var);
+
+/**
+ *	\~english
  *	\brief Converts `double` to string
  *	
  *	Converts the passed double to string.
@@ -410,7 +432,7 @@ String util::to_string(long long var)
 	}
 
 	String result;
-	long long a = math::abs(var);
+	long long a = std::abs(var);
 	while (a > 0)
 	{
 		int t = a % base;
@@ -429,6 +451,12 @@ String util::to_string(long long var)
 		result += L'-';
 	}
 	return result.reverse();
+}
+
+template<int base>
+String util::to_string(int var)
+{
+	return to_string<base>(static_cast<long long>(var));
 }
 
 template<typename T>

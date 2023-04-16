@@ -826,6 +826,10 @@ public:
 	 */
 	String to_upper() const;
 
+	String escape() const;
+
+	String unescape() const;
+
 	/**
 	 *	\~english
 	 *	\brief Lexicographical comparison of two strings

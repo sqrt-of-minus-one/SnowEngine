@@ -54,6 +54,10 @@
     <ClInclude Include="Source\Util\Function\DelegateBinder.h" />
     <ClInclude Include="Source\Util\Input\Input.h" />
     <ClInclude Include="Source\Util\Input\Keys.h" />
+    <ClInclude Include="Source\Util\Json\Array.h" />
+    <ClInclude Include="Source\Util\Json\Element.h" />
+    <ClInclude Include="Source\Util\Json\JsonObject.h" />
+    <ClInclude Include="Source\Util\Json\Value.h" />
     <ClInclude Include="Source\Util\Lang\Lang.h" />
     <ClInclude Include="Source\Util\Lang\Text.h" />
     <ClInclude Include="Source\Util\Log\Log.h" />
@@ -101,6 +105,9 @@
     <ClCompile Include="Source\Util\Function\EventBinder.h" />
     <ClCompile Include="Source\Util\Input\Input.cpp" />
     <ClCompile Include="Source\Util\Input\Keys.cpp" />
+    <ClCompile Include="Source\Util\Json\Array.cpp" />
+    <ClCompile Include="Source\Util\Json\Element.cpp" />
+    <ClCompile Include="Source\Util\Json\JsonObject.cpp" />
     <ClCompile Include="Source\Util\Lang\Lang.cpp" />
     <ClCompile Include="Source\Util\Lang\Text.cpp" />
     <ClCompile Include="Source\Util\Log\Log.cpp" />

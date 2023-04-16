@@ -379,6 +379,146 @@ String String::to_upper() const
 	return ret;
 }
 
+String String::escape() const
+{
+	String result;
+	for (wchar_t i : string_)
+	{
+		switch (i)
+		{
+		case L'\'':
+		{
+			result += L"\\\'";
+			break;
+		}
+		case L'\"':
+		{
+			result += L"\\\"";
+			break;
+		}
+		case L'\\':
+		{
+			result += L"\\\\";
+			break;
+		}
+		case L'\a':
+		{
+			result += L"\\\a";
+			break;
+		}
+		case L'\b':
+		{
+			result += L"\\\b";
+			break;
+		}
+		case L'\f':
+		{
+			result += L"\\\f";
+			break;
+		}
+		case L'\n':
+		{
+			result += L"\\\n";
+			break;
+		}
+		case L'\r':
+		{
+			result += L"\\\r";
+			break;
+		}
+		case L'\t':
+		{
+			result += L"\\\t";
+			break;
+		}
+		case L'\v':
+		{
+			result += L"\\\v";
+			break;
+		}
+		default:
+		{
+			result += i;
+		}
+		}
+	}
+	return result;
+}
+
+String String::unescape() const
+{
+	String result;
+	for (int i = 0; i < string_.length(); i++)
+	{
+		if (string_[i] == L'\\' && i < string_.length() - 1)
+		{
+			switch (string_[++i])
+			{
+			case L'\'':
+			{
+				result += L'\'';
+				break;
+			}
+			case L'\"':
+			{
+				result += L'\"';
+				break;
+			}
+			case L'\\':
+			{
+				result += L'\\';
+				break;
+			}
+			case L'a':
+			{
+				result += L'\a';
+				break;
+			}
+			case L'b':
+			{
+				result += L'\b';
+				break;
+			}
+			case L'f':
+			{
+				result += L'\f';
+				break;
+			}
+			case L'n':
+			{
+				result += L'\n';
+				break;
+			}
+			case L'r':
+			{
+				result += L'\r';
+				break;
+			}
+			case L't':
+			{
+				result += L'\t';
+				break;
+			}
+			case L'v':
+			{
+				result += L'\v';
+				break;
+			}
+			default:
+			{
+				result += L'\\';
+				i--;
+			}
+			}
+		}
+		else
+		{
+			result += string_[i];
+		}
+	}
+	return result;
+}
+
 int String::compare_to(const String& second) const noexcept
 {
 	return compare(*this, second);

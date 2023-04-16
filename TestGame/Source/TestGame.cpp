@@ -17,11 +17,16 @@
 #include "Source/Component/Clickable/RectClickableComponent.h"
 #include "Source/Util/SaveLoad/SaveLoad.h"
 
+#include "Source/Util/Json/Value.h"
+
 using namespace snow;
 
 int main()
 {
 	snow::Game::start();
+
+	json::Value_<String> value;
+	std::wcout << (value.get_type() == json::EType::STRING_VALUE);
 
 	std::shared_ptr<Level> level = Game::create_level<Level>();
 	std::shared_ptr<Actor> actor = level->spawn_actor<Actor>(Transform(Vector2::ZERO));
@@ -59,11 +64,11 @@ int main()
 
 	Input::get_instance().on_mouse_released(EButton::RIGHT).bind([]() { std::wcout << L"Pressed! (" << Input::get_instance().get_window_mouse_position().to_string() << L")" << std::endl; Input::get_instance().set_screen_mouse_position(Point2(100, 100)); });
 
-	std::wcout << util::to_string(-5.f) << std::endl <<
-		util::to_string(-5.67f, 0) << std::endl <<
-		util::to_string(-5.f, 4) << std::endl <<
-		util::to_string(-5.f, -4) << std::endl <<
-		util::to_string(5.67899f, 4) << std::endl;
+	std::wcout << util::to_string(-5.) << std::endl <<
+		util::to_string(-5.67, 0) << std::endl <<
+		util::to_string(-5., 4) << std::endl <<
+		util::to_string(-5., -4) << std::endl <<
+		util::to_string(5.67899, 4) << std::endl;
 
 	_getch();
 	return 0;
