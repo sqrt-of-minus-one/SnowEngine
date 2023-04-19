@@ -4,6 +4,14 @@
  //  File: JsonObject.cpp              //
 ////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//*+ *+ *+ *+ *** ____************************* ____***|*******SnowStorm*************************//
+//**+ *+ *+ *+ **|*****************************|*******|*****************************************//
+//*+ *+ *+ *+ ***____ ** ___ ** ___ **|*****|**____ **_|_** ___ ** ___ ** __ __ *****************//
+//**+ *+ *+ *+ ******|**|***|**|***|**|**|**|******|***|***|***|**|***_**|**|**|*** SnowEngine **//
+//*+ *+ *+ *+ ***_____**_***_**_____***__|__***_____***__**_____**_******_**_**_** JSON  system *//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 #include "JsonObject.h"
 
 #include "../Types/String.h"
@@ -34,16 +42,6 @@ json::EType json::JsonObject::get_type() const
 	return EType::OBJECT;
 }
 
-std::map<String, std::unique_ptr<json::Element>>& json::JsonObject::get_content() noexcept
-{
-	return content_;
-}
-
-const std::map<String, std::unique_ptr<json::Element>>& json::JsonObject::get_content() const noexcept
-{
-	return content_;
-}
-
 void json::JsonObject::to_stream(std::wostream& stream, int nesting) const
 {
 	wchar_t* tab = new wchar_t[nesting + 2];
@@ -67,4 +65,14 @@ void json::JsonObject::to_stream(std::wostream& stream, int nesting) const
 		stream << L'\n' << (tab + 1);
 	}
 	stream << L'}';
+}
+
+std::map<String, std::unique_ptr<json::Element>>& json::JsonObject::get_content() noexcept
+{
+	return content_;
+}
+
+const std::map<String, std::unique_ptr<json::Element>>& json::JsonObject::get_content() const noexcept
+{
+	return content_;
 }

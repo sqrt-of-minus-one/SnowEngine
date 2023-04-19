@@ -25,8 +25,11 @@ int main()
 {
 	snow::Game::start();
 
-	json::Value_<String> value;
-	std::wcout << (value.get_type() == json::EType::STRING_VALUE);
+	String test_json = L"{ \"key1\": \"value1\" /* comment */, // Another comment\n\"key2\": 43, \"key3\": [ 3.2, true, null, \"array element\\\"\" ], \"last key\" /*and comment*/ : { \"the last key\": {}, \"yes\" : false }}";
+	std::unique_ptr<json::Element> test = json::Element::from_string(test_json);
+	std::wcout << std::endl << test->to_string() << std::endl << std::endl;
+
+	std::wcout << util::to_string(String::is_asbuka(L'Û')) << std::endl;
 
 	std::shared_ptr<Level> level = Game::create_level<Level>();
 	std::shared_ptr<Actor> actor = level->spawn_actor<Actor>(Transform(Vector2::ZERO));

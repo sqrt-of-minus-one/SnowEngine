@@ -830,6 +830,22 @@ public:
 
 	String unescape() const;
 
+	bool is_num() const;
+
+	static bool is_num(wchar_t c);
+
+	bool is_alpha() const;
+
+	static bool is_alpha(wchar_t c);
+
+	bool is_asbuka() const;
+
+	static bool is_asbuka(wchar_t c);
+
+	bool is_space() const;
+
+	static bool is_space(wchar_t c);
+
 	/**
 	 *	\~english
 	 *	\brief Lexicographical comparison of two strings
@@ -855,28 +871,6 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Formats the string by inserting into it the passed values
-	 *
-	 *	The principle of this method is similar to the `printf`. Is a non-static analogue of the
-	 *	`format` method; you can find more details in its documentation.
-	 *	\tparam Args The types of the arguments.
-	 *	\param args The values that will be inserted in the string.
-	 *	\return The formatted string.
-	 *
-	 *	\~russian
-	 *	\brief Форматирует строку, вставляя в неё переданные значения
-	 *
-	 *	Принцип этого метода схож с `printf`. Это нестатический аналог метода `format`; вы можете
-	 *	найти более подробную информацию в его документации.
-	 *	\tparam Args Типы аргументов.
-	 *	\param args Значения, которые будут вставлены в строку.
-	 *	\return Форматированная строка.
-	 */
-	template<typename... Args>
-	String formatted(Args... args) const;
-
-	/**
-	 *	\~english
 	 *	\brief Lexicographical comparison of two strings
 	 *
 	 *	This method uses `std::wstring::compare` to compare two strings.
@@ -897,6 +891,28 @@ public:
 	 *	первой; ноль, если строки равны.
 	 */
 	static int compare(const String& first, const String& second) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Formats the string by inserting into it the passed values
+	 *
+	 *	The principle of this method is similar to the `printf`. Is a non-static analogue of the
+	 *	`format` method; you can find more details in its documentation.
+	 *	\tparam Args The types of the arguments.
+	 *	\param args The values that will be inserted in the string.
+	 *	\return The formatted string.
+	 *
+	 *	\~russian
+	 *	\brief Форматирует строку, вставляя в неё переданные значения
+	 *
+	 *	Принцип этого метода схож с `printf`. Это нестатический аналог метода `format`; вы можете
+	 *	найти более подробную информацию в его документации.
+	 *	\tparam Args Типы аргументов.
+	 *	\param args Значения, которые будут вставлены в строку.
+	 *	\return Форматированная строка.
+	 */
+	template<typename... Args>
+	String formatted(Args... args) const;
 
 	/**
 	 *	\~english

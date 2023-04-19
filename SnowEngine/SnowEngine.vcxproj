@@ -108,6 +108,7 @@
     <ClCompile Include="Source\Util\Json\Array.cpp" />
     <ClCompile Include="Source\Util\Json\Element.cpp" />
     <ClCompile Include="Source\Util\Json\JsonObject.cpp" />
+    <ClCompile Include="Source\Util\Json\Value.cpp" />
     <ClCompile Include="Source\Util\Lang\Lang.cpp" />
     <ClCompile Include="Source\Util\Lang\Text.cpp" />
     <ClCompile Include="Source\Util\Log\Log.cpp" />

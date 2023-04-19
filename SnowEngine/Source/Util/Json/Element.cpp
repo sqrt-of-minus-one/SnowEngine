@@ -4,6 +4,14 @@
  //  File: Element.cpp                 //
 ////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//*+ *+ *+ *+ *** ____************************* ____***|*******SnowStorm*************************//
+//**+ *+ *+ *+ **|*****************************|*******|*****************************************//
+//*+ *+ *+ *+ ***____ ** ___ ** ___ **|*****|**____ **_|_** ___ ** ___ ** __ __ *****************//
+//**+ *+ *+ *+ ******|**|***|**|***|**|**|**|******|***|***|***|**|***_**|**|**|*** SnowEngine **//
+//*+ *+ *+ *+ ***_____**_***_**_____***__|__***_____***__**_____**_******_**_**_** JSON  system *//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 #include "Element.h"
 
 #include <fstream>
@@ -16,13 +24,6 @@
 #include "Value.h"
 
 using namespace snow;
-
-#define PASS(c) \
-	while ((c) == L' ' || (c) == L'\t' || (c) == L'\n') \
-	{ \
-		stream.get(c); \
-		(c) = stream.peek(); \
-	} \
 
 String json::Element::to_string() const
 {
@@ -49,7 +50,7 @@ void json::Element::save(const String& filename) const
 std::unique_ptr<json::Element> json::Element::from_string(const String& string)
 {
 	std::wistringstream stream(string.to_std_string());
-	return read_element_(stream);
+	return from_stream(stream);
 }
 
 std::unique_ptr<json::Element> json::Element::load(const String& filename)
@@ -59,36 +60,39 @@ std::unique_ptr<json::Element> json::Element::load(const String& filename)
 	{
 		throw std::runtime_error("The file does not exist or cannot be accessed");
 	}
-	
-	return read_element_(file);
+	return from_stream(file);
 }
 
-std::unique_ptr<json::Element> json::Element::read_element_(std::wistream& stream)
+std::unique_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 {
 	wchar_t c;
 	while (stream.read(&c, 1))
 	{
+		// Ignore space characters
+		if (String::is_space(c))
+		{
+			continue;
+		}
+
 		switch (c)
 		{
-		case L' ':
-		case L'\t':
-		case L'\n':
-		{
-			break;
-		}
+		// The beginning of an object
 		case L'{':
 		{
 			return read_object_(stream);
 		}
+		// The beginning of an array
 		case L'[':
 		{
 			return read_array_(stream);
 		}
+		// The bebinning of a string value
 		case L'"':
 		case L'\'':
 		{
 			return std::make_unique<StringValue>(read_string_(stream, c));
 		}
+		// The beginning of an integer or double value
 		case L'0':
 		case L'1':
 		case L'2':
@@ -105,6 +109,7 @@ std::unique_ptr<json::Element> json::Element::read_element_(std::wistream& strea
 		{
 			return read_number_(stream, c);
 		}
+		// The beginning of the true boolean value
 		case L't':
 		case L'T':
 		{
@@ -114,6 +119,7 @@ std::unique_ptr<json::Element> json::Element::read_element_(std::wistream& strea
 			}
 			return std::make_unique<BoolValue>(true);
 		}
+		// The beginning of the false boolean value
 		case L'f':
 		case L'F':
 		{
@@ -123,6 +129,7 @@ std::unique_ptr<json::Element> json::Element::read_element_(std::wistream& strea
 			}
 			return std::make_unique<BoolValue>(false);
 		}
+		// The beginning of the null value
 		case L'n':
 		case L'N':
 		{
@@ -132,11 +139,13 @@ std::unique_ptr<json::Element> json::Element::read_element_(std::wistream& strea
 			}
 			return std::make_unique<NullValue>();
 		}
+		// The beginning of a comment
 		case L'/':
 		{
 			read_comment_(stream);
 			break;
 		}
+		// JSON cannot have anything else => throw the exception
 		default:
 		{
 			throw std::runtime_error("Invalid JSON");
@@ -148,17 +157,18 @@ std::unique_ptr<json::Element> json::Element::read_element_(std::wistream& strea
 
 std::unique_ptr<json::JsonObject> json::Element::read_object_(std::wistream& stream)
 {
-	std::unique_ptr<JsonObject> result;
+	std::unique_ptr<JsonObject> result = std::make_unique<JsonObject>();
 	while (true)
 	{
 		wchar_t c = stream.peek();
-		PASS(c);
+		pass_(stream, c);
 		if (c == L'}')
 		{
 			stream.get(c);
 			return result;
 		}
 		
+		// Read a key
 		String key;
 		if (c == L'"' || c == L'\'')
 		{
@@ -171,23 +181,19 @@ std::unique_ptr<json::JsonObject> json::Element::read_object_(std::wistream& str
 		}
 		
 		c = stream.peek();
-		PASS(c);
+		pass_(stream, c);
 		if (c != L':')
 		{
-			throw("Invalid JSON: invalid object, ':' was expected aftee the key");
+			throw("Invalid JSON: invalid object, ':' was expected after the key");
 		}
 		stream.get(c);
 		c = stream.peek();
-		PASS(c);
+		pass_(stream, c);
 		
-		result->get_content()[key] = read_element_(stream);
+		result->get_content()[key] = from_stream(stream);
 		
 		c = stream.peek();
-		while (c == L' ' || c == L'\t' || c == L'\n')
-		{
-			stream.get(c);
-			c = stream.peek();
-		}
+		pass_(stream, c);
 		if (c == L'}')
 		{
 			stream.get(c);
@@ -195,6 +201,7 @@ std::unique_ptr<json::JsonObject> json::Element::read_object_(std::wistream& str
 		}
 		if (c == L',')
 		{
+			stream.get(c);
 			continue;
 		}
 		throw std::runtime_error("Invalid JSON: invalid object");
@@ -203,21 +210,21 @@ std::unique_ptr<json::JsonObject> json::Element::read_object_(std::wistream& str
 
 std::unique_ptr<json::Array> json::Element::read_array_(std::wistream& stream)
 {
-	std::unique_ptr<Array> result;
+	std::unique_ptr<Array> result = std::make_unique<Array>();
 	while (true)
 	{
 		wchar_t c = stream.peek();
-		PASS(c);
+		pass_(stream, c);
 		if (c == L']')
 		{
 			stream.get(c);
 			return result;
 		}
 		
-		result->get_content().push_back(read_element_(stream));
+		result->get_content().push_back(from_stream(stream));
 		
 		c = stream.peek();
-		PASS(c);
+		pass_(stream, c);
 		if (c == L']')
 		{
 			stream.get(c);
@@ -225,6 +232,7 @@ std::unique_ptr<json::Array> json::Element::read_array_(std::wistream& stream)
 		}
 		if (c == L',')
 		{
+			stream.get(c);
 			continue;
 		}
 		throw std::runtime_error("Invalid JSON: invalid array");
@@ -240,68 +248,20 @@ String json::Element::read_string_(std::wistream& stream, wchar_t first)
 	{
 		if (escape)
 		{
-			switch (c)
-			{
-			case L't':
-			{
-				str += L'\t';
-				break;
-			}
-			case L'n':
-			{
-				str += L'\n';
-				break;
-			}
-			case L'r':
-			{
-				str += L'\r';
-				break;
-			}
-			case L'f':
-			{
-				str += L'\f';
-				break;
-			}
-			case L'b':
-			{
-				str += L'\b';
-				break;
-			}
-			case L'\n':
-			{
-				break;
-			}
-			default:
-			{
-				str += c;
-			}
-			}
 			escape = false;
 		}
 		else
 		{
-			switch (c)
+			if (c == first)
 			{
-			case L'\\':
+				return str.unescape();
+			}
+			if (c == L'\\')
 			{
 				escape = true;
-				break;
-			}
-			case L'"':
-			case L'\'':
-			{
-				if (c == first)
-				{
-					return str;
-				}
-				[[fallthrough]];
-			}
-			default:
-			{
-				str += c;
-			}
 			}
 		}
+		str += c;
 	}
 	throw std::runtime_error("Invalid JSON: the string is not closed");
 }
@@ -311,35 +271,56 @@ std::unique_ptr<json::Element> json::Element::read_number_(std::wistream& stream
 {
 	String result;
 	wchar_t c = stream.peek();
+
+	// Define the base
 	int base = 10;
-	if (first == L'0' && (c == L'x' || c == L'X' || c == L'h' || c == L'H'))
+	if (first == L'0')
 	{
-		base = 16;
-		stream.get(c);
-		c = stream.peek();
-	}
-	else if (first == L'0' && (c == L'b' || c == L'B'))
-	{
-		base = 2;
-		stream.get(c);
-		c = stream.peek();
-	}
-	else if (first == L'0' && (c == L'o' || c == L'O'))
-	{
-		base = 8;
-		stream.get(c);
-		c = stream.peek();
+		switch (c)
+		{
+		case L'x':
+		case L'X':
+		case L'h':
+		case L'H':
+		{
+			base = 16;
+			stream.get(c);
+			c = stream.peek();
+			break;
+		}
+		case L'b':
+		case L'B':
+		{
+			base = 2;
+			stream.get(c);
+			c = stream.peek();
+			break;
+		}
+		case L'o':
+		case L'O':
+		{
+			base = 8;
+			stream.get(c);
+			c = stream.peek();
+			break;
+		}
+		default:
+		{
+			result += first;
+		}
+		}
 	}
 	else
 	{
 		result += first;
 	}
-	double has_point = false;
+
+	bool has_point = false;
 	while (c >= L'0' && c <= L'9' ||
 		   c >= L'A' && c <= L'F' ||
 		   c == L'.' || c == L'\'')
 	{
-		has_point = c == L'.';
+		has_point |= c == L'.';
 		result += c;
 		stream.get(c);
 		c = stream.peek();
@@ -351,25 +332,26 @@ std::unique_ptr<json::Element> json::Element::read_number_(std::wistream& stream
 		{
 		case 2:
 		{
-			return std::make_unique<IntValue>(result.to_int<2>());
+			return std::make_unique<IntValue>(result.to_int<2>(false));
 		}
 		case 8:
 		{
-			return std::make_unique<IntValue>(result.to_int<8>());
+			return std::make_unique<IntValue>(result.to_int<8>(false));
 		}
 		case 10:
 		{
-			if (has_point && base == 10)
+			if (has_point)
 			{
 				return std::make_unique<DoubleValue>(result.to_double());
 			}
-			return std::make_unique<IntValue>(result.to_int<10>());
+			return std::make_unique<IntValue>(result.to_int<10>(false));
 		}
 		case 16:
 		{
-			return std::make_unique<IntValue>(result.to_int<16>());
+			return std::make_unique<IntValue>(result.to_int<16>(false));
 		}
 		}
+		throw std::runtime_error("Invalid JSON");
 	}
 	catch (std::invalid_argument e)
 	{
@@ -381,6 +363,7 @@ bool json::Element::read_lit_(std::wistream& stream, const String& lit)
 {
 	String up = lit.to_upper();
 	String low = lit.to_lower();
+	// The first character is supposed to be already read
 	for (int i = 1; i < lit.size(); i++)
 	{
 		wchar_t c = stream.peek();
@@ -416,4 +399,29 @@ void json::Element::read_comment_(std::wistream& stream)
 		throw std::runtime_error("Invalid JSON: the multi-line comment is not closed");
 	}
 	throw std::runtime_error("Invalid JSON");
+}
+
+void json::Element::pass_(std::wistream& stream, wchar_t& c)
+{
+	while (true)
+	{
+		if (c == std::wistream::traits_type::eof())
+		{
+			throw std::runtime_error("Invalid JSON: unexpected end of JSON");
+		}
+		if (c == L'//')
+		{
+			stream.get(c);
+			read_comment_(stream);
+			c = stream.peek();
+			continue;
+		}
+		if (String::is_space(c))
+		{
+			stream.get(c);
+			c = stream.peek();
+			continue;
+		}
+		break;
+	}
 }

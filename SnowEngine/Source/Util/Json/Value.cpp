@@ -1,7 +1,7 @@
     ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
- //  File: JsonObject.h                //
+ //  File: Value.cpp                   //
 ////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,37 +12,54 @@
 //*+ *+ *+ *+ ***_____**_***_**_____***__|__***_____***__**_____**_******_**_**_** JSON  system *//
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "Value.h"
 
-#include "Element.h"
+using namespace snow;
 
-#include <map>
+json::snow_::Value_<std::nullptr_t>::Value_()
+{}
 
-namespace snow
+int json::snow_::Value_<std::nullptr_t>::hash_code() const noexcept
 {
-
-namespace json
-{
-
-class JsonObject : public Element
-{
-public:
-	JsonObject();
-	JsonObject(JsonObject&& object);
-	
-	virtual int hash_code() const noexcept override;
-	
-	virtual EType get_type() const override;
-
-	virtual void to_stream(std::wostream& stream, int nesting = 0) const override;
-	
-	std::map<String, std::unique_ptr<Element>>& get_content() noexcept;
-	const std::map<String, std::unique_ptr<Element>>& get_content() const noexcept;
-	
-private:
-	std::map<String, std::unique_ptr<Element>> content_;
-};
-
+	return 0;
 }
 
+json::EType json::snow_::Value_<std::nullptr_t>::get_type() const
+{
+	return EType::NULL_VALUE;
+}
+
+void json::snow_::Value_<std::nullptr_t>::to_stream(std::wostream& stream, int nesting) const
+{
+	stream << L"null";
+}
+
+template<>
+json::EType json::snow_::type_<String>() noexcept
+{
+	return EType::STRING_VALUE;
+}
+
+template<>
+json::EType json::snow_::type_<int>() noexcept
+{
+	return EType::INT_VALUE;
+}
+
+template<>
+json::EType json::snow_::type_<double>() noexcept
+{
+	return EType::DOUBLE_VALUE;
+}
+
+template<>
+json::EType json::snow_::type_<bool>() noexcept
+{
+	return EType::BOOL_VALUE;
+}
+
+template<>
+json::EType json::snow_::type_<std::nullptr_t>() noexcept
+{
+	return EType::NULL_VALUE;
 }

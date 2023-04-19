@@ -373,6 +373,9 @@
     <ClCompile Include="Source\Util\Json\JsonObject.cpp">
       <Filter>Source Files\Util\Json</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Util\Json\Value.cpp">
+      <Filter>Source Files\Util\Json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Source\Systems.txt">

@@ -519,6 +519,76 @@ String String::unescape() const
 	return result;
 }
 
+bool String::is_num() const
+{
+	for (wchar_t i : string_)
+	{
+		if (!is_num(i))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool String::is_num(wchar_t c)
+{
+	return c >= L'0' && c <= L'9';
+}
+
+bool String::is_alpha() const
+{
+	for (wchar_t i : string_)
+	{
+		if (!is_alpha(i))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool String::is_alpha(wchar_t c)
+{
+	return c >= L'a' && c <= L'z' ||
+		   c >= L'A' && c <= L'Z';
+}
+
+bool String::is_asbuka() const
+{
+	for (wchar_t i : string_)
+	{
+		if (!is_asbuka(i))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool String::is_asbuka(wchar_t c)
+{
+	return c >= L'à' && c <= L'ÿ' ||
+		   c >= L'À' && c <= L'ß';
+}
+
+bool String::is_space() const
+{
+	for (wchar_t i : string_)
+	{
+		if (!is_space(i))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool String::is_space(wchar_t c)
+{
+	return c == L' ' || c == L'\t' || c == L'\n' || c == L'\r' || c == L'\v' || c == L'\f';
+}
+
 int String::compare_to(const String& second) const noexcept
 {
 	return compare(*this, second);
