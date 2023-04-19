@@ -15,12 +15,21 @@
 #include "Source/Util/Animation/AdvancedSpriteAnimation.h"
 #include "Source/Util/Input/Input.h"
 #include "Source/Component/Clickable/RectClickableComponent.h"
+#include "Source/Util/SaveLoad/SaveLoad.h"
+
+#include "Source/Util/Json/Value.h"
 
 using namespace snow;
 
 int main()
 {
 	snow::Game::start();
+
+	String test_json = L"{ \"key1\": \"value1\" /* comment */, // Another comment\n\"key2\": 43, \"key3\": [ 3.2, true, null, \"array element\\\"\" ], \"last key\" /*and comment*/ : { \"the last key\": {}, \"yes\" : false }}";
+	std::unique_ptr<json::Element> test = json::Element::from_string(test_json);
+	std::wcout << std::endl << test->to_string() << std::endl << std::endl;
+
+	std::wcout << util::to_string(String::is_asbuka(L'Û')) << std::endl;
 
 	std::shared_ptr<Level> level = Game::create_level<Level>();
 	std::shared_ptr<Actor> actor = level->spawn_actor<Actor>(Transform(Vector2::ZERO));
@@ -57,6 +66,12 @@ int main()
 	TimerManager::get_instance().create_timer(sound_delegate, 0.f, 5.f);
 
 	Input::get_instance().on_mouse_released(EButton::RIGHT).bind([]() { std::wcout << L"Pressed! (" << Input::get_instance().get_window_mouse_position().to_string() << L")" << std::endl; Input::get_instance().set_screen_mouse_position(Point2(100, 100)); });
+
+	std::wcout << util::to_string(-5.) << std::endl <<
+		util::to_string(-5.67, 0) << std::endl <<
+		util::to_string(-5., 4) << std::endl <<
+		util::to_string(-5., -4) << std::endl <<
+		util::to_string(5.67899, 4) << std::endl;
 
 	_getch();
 	return 0;

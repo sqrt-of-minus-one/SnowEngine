@@ -195,7 +195,7 @@ protected:
 	 *	родительский `tick`.
 	 *	\param delta_sec Длительность тика в секундах.
 	 */
-	virtual void tick(float delta_sec);
+	virtual void tick(double delta_sec);
 
 private:
 	static int levels_counter_;

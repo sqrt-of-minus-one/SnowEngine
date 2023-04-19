@@ -30,12 +30,22 @@ class Vector2;
  *	\~english
  *	\brief The class of two-dimensional point (integer vector)
  *	
- *	This class is used for working with two-dimensional points (vectors of integer).
+ *	This class represents a two-dimensional point (i. e. integer vector). It has two integer
+ *	coordinates: X and Y. You can access them via `get_x()`, `get_y()` and `set_x()`, `set_y()`
+ *	methods.
+ *	\sa
+ *	- `Point3`: three-dimensional point
+ *	- `Vector2`, `Vector3`: real vectors
  *	
  *	\~russian
  *	\brief Класс двумерной точки (целочисленого вектора)
  *	
- *	Этот класс используется для работы с двумерными точками (целочисленными векторами).
+ *	Этот класс представляет двумерную точку (т. е. целочисленный вектор). Она имеет две
+ *	целочисленные координаты: X и Y. Вы можете получить к ним доступ с помощью методов `get_x()`,
+ *	`get_y()` и `set_x()`, `set_y()`.
+ *	\sa
+ *	- `Point3`: трёхмерная точка
+ *	- `Vector2`, `Vector3`: вещественные векторы
  */
 class Point2 : public Object
 {
@@ -198,6 +208,22 @@ public:
 	 *	\return `true`, если точка нулевая, иначе `false`.
 	 */
 	bool is_zero() const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief The absolute value of the point
+	 *
+	 *	Creates the copy of the point and replaces the coordinates of the copy with their absolute
+	 *	values.
+	 *	\return The absolute value of the point.
+	 *
+	 *	\~russian
+	 *	\brief Абсолютное значение точки
+	 *
+	 *	Создаёт копию точки и заменяет координаты этой копии на их абсолютные значения.
+	 *	\return Абсолютное значение точки.
+	 */
+	Point2 abs() const noexcept;
 	
 			/* OPERATORS */
 	
@@ -337,7 +363,7 @@ public:
 	 *	Separately multiplies X and Y coordinates of two points:
 	 *	\f$\{x_1, y_1\} * \{x_2, y_2\} = \{x_1 \cdot x_2, y_1 \cdot y_2\}\f$.
 	 *	\warning Do not confuse this operation and dot product. If you need the latter, use
-	 *	operator `&` of the `Vector2` class.
+	 *	`Vector2::operator&()`.
 	 *	\param point The multiplier.
 	 *	\return The coordinate-wise product of two points.
 	 *	
@@ -347,7 +373,7 @@ public:
 	 *	По отдельности умножает X и Y координаты двух точек:
 	 *	\f$\{x_1; y_1\} * \{x_2; y_2\} = \{x_1 \cdot x_2; y_1 \cdot y_2\}\f$.
 	 *	\warning Не путайте эту операцию со скалярным произведением. Если вам нужно последнее,
-	 *	используйте оператор `&` класса `Vector2`.
+	 *	`Vector2::operator&()`.
 	 *	\param point Множитель.
 	 *	\return Покоординатное произведение двух точек.
 	 */
@@ -485,12 +511,12 @@ public:
 	 *	\brief Separately multiplies its own X and Y coordinates by coordinates of a passed point
 	 *
 	 *	Finds the coordinate-wise product of two points and assigns it to itself.
-	 *	\warning Do not confuse this operation and dot product.
 	 *	\code
 	 *		// These strings do the same:
 	 *		point *= another_point;
 	 *		point = point * another_point;
 	 *	\endcode
+	 *	\warning Do not confuse this operation and dot product.
 	 *	\param point The multiplier.
 	 *	\return A reference to itself.
 	 *
@@ -498,12 +524,12 @@ public:
 	 *	\brief По отдельности умножает свои X и Y координаты на координаты переданной точки
 	 *
 	 *	Находит покоординатное произведение двух точек и присваивает себе его значение.
-	 *	\warning Не путайте эту операцию со скалярным произведением.
 	 *	\code
 	 *		// Эти строки делают одно и то же:
 	 *		point *= another_point;
 	 *		point = point * another_point;
 	 *	\endcode
+	 *	\warning Не путайте эту операцию со скалярным произведением.
 	 *	\param point Множитель.
 	 *	\return Ссылка на себя.
 	 */
@@ -611,13 +637,13 @@ public:
 	 *	\~english
 	 *	\brief Cast to `Vector2`
 	 *
-	 *	Allows to get a 2D-vector with float coordinates.
+	 *	Allows to get a 2D-vector with real coordinates.
 	 *	\code
 	 *		Point2 point(1, 2);
-	 *		Vector2 vector(1.f, 2.f);
+	 *		Vector2 vector(1., 2.);
 	 *		static_cast<Vector2>(point) == vector; // true
 	 *	\endcode
-	 *	\return The 2D-vector with float coordinates that are equal to the coordinates of this
+	 *	\return The 2D-vector with real coordinates that are equal to the coordinates of this
 	 *	point.
 	 *
 	 *	\~russian
@@ -626,7 +652,7 @@ public:
 	 *	Позволяет получить 2D-вектор с вещественными координатами.
 	 *	\code
 	 *		Point2 point(1, 2);
-	 *		Vector2 vector(1.f, 2.f);
+	 *		Vector2 vector(1., 2.);
 	 *		static_cast<Vector2>(point) == vector; // true
 	 *	\endcode
 	 *	\return 2D-вектор с вещественными координатами, равными координатам этой точки.
@@ -640,11 +666,15 @@ public:
 	 *	\brief The zero point
 	 *	
 	 *	The zero point. Both of its X and Y coordinates are zero. It's \f$\{0, 0\}\f$.
+	 *	\sa
+	 *	- `Point2::I`, `Point2::J`
 	 *	
 	 *	\~russian
 	 *	\brief Нулевой точка
 	 *	
 	 *	Нулевая точка. Обе её X и Y координаты равны нулю: \f$\{0; 0\}\f$.
+	 *	\sa
+	 *	- `Point2::I`, `Point2::J`
 	 */
 	static const Point2 ZERO;
 
@@ -653,11 +683,15 @@ public:
 	 *	\brief The ort of the X-axis
 	 *	
 	 *	The ort of the abscissa axis. It's \f$\{1, 0\}\f$.
+	 *	\sa
+	 *	- `Point2::ZERO`, `Point2::J`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси X
 	 *
 	 *	Орт оси абсцисс: \f$\{1; 0\}\f$.
+	 *	\sa
+	 *	- `Point2::ZERO`, `Point2::J`
 	 */
 	static const Point2 I;
 
@@ -666,11 +700,15 @@ public:
 	 *	\brief The ort of the Y-axis
 	 *
 	 *	The ort of the ordinate axis. It's \f$\{0, 1\}\f$.
+	 *	\sa
+	 *	- `Point2::ZERO`, `Point2::I`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси Y
 	 *
 	 *	Орт оси ординат: \f$\{0; 1\}\f$.
+	 *	\sa
+	 *	- `Point2::ZERO`, `Point2::I`
 	 */
 	static const Point2 J;
 		

@@ -42,7 +42,8 @@ Log::Log(const String& category_name) :
 		}
 		std::wstring tmp = (Game::config.log_path + L"\\Log.log").to_std_string();
 		log_file_().open(tmp);
-		tmp = String::format(L"[%s][SnowCat] SnowCat log file is opened (meow!)"_s, Time::now().to_string()).to_std_string();
+		tmp = String::format(L"[%s][SnowCat] SnowCat log file is opened (meow!)"_s,
+			time::to_string(std::chrono::steady_clock::now())).to_std_string();
 		log_file_() << tmp << std::endl;
 	}
 }
@@ -52,7 +53,8 @@ Log::~Log()
 	if (--object_counter_ <= 0 && log_file_().is_open())
 	{
 		std::lock_guard<std::mutex> log_grd(log_file_mtx_());
-		log_file_() << String::format(L"[%s][SnowCat] SnowCat log file is closed"_s, Time::now().to_string()) << std::endl;
+		log_file_() << String::format(L"[%s][SnowCat] SnowCat log file is closed"_s,
+			time::to_string(std::chrono::steady_clock::now())) << std::endl;
 		log_file_().close();
 	}
 }
@@ -132,7 +134,7 @@ std::wofstream& Log::log_file_()
 void Log::log_(const String& type, const String& message)
 {
 	std::lock_guard<std::mutex> log_grd(log_file_mtx_());
-	String time_str = Time::now().to_string();
+	String time_str = time::to_string(std::chrono::steady_clock::now());
 
 	log_file_() << L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;
 	std::wcout << L"[" << time_str << L"]" << type << name_ << ": " << message << std::endl;

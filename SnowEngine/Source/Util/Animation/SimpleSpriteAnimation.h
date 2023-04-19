@@ -83,7 +83,7 @@ public:
 	 *	то анимация будет содержать четыре спрайта, по два в каждом ряду.
 	 *	\param frequency_sec Время в секундах между сменами спрайтов.
 	 */
-	SimpleSpriteAnimation(const Point2& sprite_size, const Point2& origin, const Point2& grid_size, float frequency_sec);
+	SimpleSpriteAnimation(const Point2& sprite_size, const Point2& origin, const Point2& grid_size, double frequency_sec);
 
 	/**
 	 *	\~english
@@ -159,7 +159,7 @@ private:
 	Point2 sprite_size_;
 	Point2 origin_;
 	Point2 grid_size_;
-	float frequency_sec_;
+	double frequency_sec_;
 
 	Point2 current_position_;
 

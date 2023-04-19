@@ -127,6 +127,21 @@ public:
 	 */
 	String log_path;
 
+	/**
+	 *	\~english
+	 *	\brief The path to save files
+	 *	
+	 *	The path to the folder with saves. If it doesn't exist, it will be created. Default value:
+	 *	`Saves`.
+	 *	
+	 *	\~russian
+	 *	\brief Путь к файлам сохранений
+	 *	
+	 *	Путь к директории с файлами сохранений. Если она не существует, то будет создана. Значение
+	 *	по умолчанию: `Saves`.
+	 */
+	String saves_path;
+
 			/* FIELDS
 				SECTION: window */
 
@@ -220,6 +235,21 @@ public:
 
 			/* FIELDS
 				SECTION: resources */
+
+	/**
+	 *	\~english
+	 *	\brief The period of the resource checks
+	 *	
+	 *	The time in seconds between the resource checks. While checking the references to unused
+	 *	and unloaded resources are deleted. Default value: 300.
+	 *	
+	 *	\~russian
+	 *	\brief Частота проверки ресурсов
+	 *	
+	 *	Время в секундах между проверками ресурсов. Во время проверки удаляются ссылки на
+	 *	неиспользуемые и выгруженные из памяти ресурсы. Значение по умолчанию: 300.
+	 */
+	double res_check_period_sec;
 
 	/**
 	 *	\~english

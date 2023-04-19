@@ -5,7 +5,7 @@
 ////////////////////////////////////////
 
 //      _         /====  -  -  -  -  -  -  -  - ==     ==  -  -  -  -  -  -  -  -  -  -  -  -    //
-//     /_\        |                             | \   / |                   /=/==============\   //
+//     /_\  \|/   |                             | \   / |                   /=/==============\   //
 //    (`v`)  W    |      \===    ===   |     |  |  \ /  |   ===/   \===    | |=  SnowEngine  =|  //
 //     >-<   |    \===\  |   |  |   |  |     |  |   V   |  |   |   |   |   | |=   resource   =|  //
 // ---/ * \--|        |  |   |  |   |  |  ^  |  |SnowMan|  |   |   |   |   | |=  management  =|  //
@@ -31,6 +31,8 @@
 
 #include <unordered_map>
 
+#include "Log/Log.h"
+
 namespace sf
 {
 class Texture;
@@ -48,8 +50,8 @@ namespace snow
  *
  *	This class is used to manage resourced such as textures, fonts and sounds. It is singleton,
  *	only one resource manager may exist. You can get it using `get_instance` static method. Use
- *	`config.ini` file to set directories of resource files. This class is designed for internal
- *	use.
+ *	`config.ini` file to set directories of resource files.
+ *	\warning This class is designed for internal use. Do not use it in your project directly.
  *
  *	\~russian
  *	\brief Класс диспетчера ресурсов SnowMan
@@ -57,7 +59,9 @@ namespace snow
  *	Этот класс используется для управления ресурсами: текстурами, шрифтами и звуками. Он является
  *	одиночкой: может существовать только один диспетчер ресурсов. Вы можете получить его, используя
  *	статический метод `get_instance`. Используйте файл `config.ini`, чтобы установить директории
- *	файлов ресурсов. Этот класс предназначен для внутреннего использования.
+ *	файлов ресурсов.
+ *	\warning Этот класс предназначен для внутреннего использования. Не используйте его
+ *	непосредственно в своём проекте.
  */
 class ResourceManager : public Object
 {
@@ -182,6 +186,11 @@ private:
 	std::unordered_map<std::wstring, std::weak_ptr<sf::Texture>> textures_;
 	std::unordered_map<std::wstring, std::weak_ptr<sf::Font>> fonts_;
 	std::unordered_map<std::wstring, std::weak_ptr<sf::SoundBuffer>> sounds_;
+	// Music is loaded from file directly, without resource manager
+
+	/* lazy */ static std::mutex& res_mtx_() noexcept;
+
+	Log res_log_;
 };
 
 }

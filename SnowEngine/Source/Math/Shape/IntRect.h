@@ -33,13 +33,17 @@ namespace snow
  *	This class represents a rectangle whose sides are integer. The rectangle is set by its position
  *	and size. The position of the rectangle is the position of its corner with the smallest
  *	coordinates.
+ *	\sa
+ *	- `DoubleRect`: the rectangle with real sides
  *	
  *	\~russian
  *	\brief Класс прямоугольника с целочисленными сторонами
  *	
  *	Этот класс представляет прямоугольник, чьи стороны целочисленны. Прямоугольник задаётся
- *	позицией и размером. Позиция прямоугольника — это положение его угла с наименьшими
+ *	положением и размером. Положение прямоугольника — это положение его угла с наименьшими
  *	координатами.
+ *	\sa
+ *	- `DoubleRect`: прямоугольник с вещественными сторонами
  */
 class IntRect : public Object
 {
@@ -199,7 +203,7 @@ public:
 	 *	the position of the rectangle. The value of the position variable may be changed if the new
 	 *	corner coordinates become less than rectangle coordinates.
 	 *	\code
-	 *													// {{pos }, {size}}
+	 *													// {{pos }, {size}}:
 	 *		IntRect rect(Point2(2, 2), Point2(2, 2));	// {{2, 2}, {2, 2}}
 	 *		rect.set_corner_position(Point2(5, 5));		// {{2, 2}, {3, 3}}
 	 *		rect.set_corner_position(Point2(1, 1));		// {{1, 1}, {1, 1}}
@@ -213,7 +217,7 @@ public:
 	 *	прямоугольника. Значение переменной, хранящей положение, может быть изменено, если новые
 	 *	координаты угла становятся меньше, чем координаты прямоугольника.
 	 *	\code
-	 *													// {{пол }, {разм}}
+	 *													// {{пол }, {разм}}:
 	 *		IntRect rect(Point2(2, 2), Point2(2, 2));	// {{2, 2}, {2, 2}}
 	 *		rect.set_corner_position(Point2(5, 5));		// {{2, 2}, {3, 3}}
 	 *		rect.set_corner_position(Point2(1, 1));		// {{1, 1}, {1, 1}}

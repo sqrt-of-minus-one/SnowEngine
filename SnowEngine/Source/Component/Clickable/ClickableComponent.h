@@ -27,7 +27,7 @@
 #include <unordered_set>
 
 #include "../../Util/Input/Keys.h"
-#include "../../Math/Shape/FloatRect.h"
+#include "../../Math/Shape/DoubleRect.h"
 #include "../../Math/Vector/Point2.h"
 
 namespace snow
@@ -126,7 +126,7 @@ public:
 	 *	Позволяет получить прямоугольник, который содержит весь компонент.
 	 *	\return Прямоугольник, содержащий компонент.
 	 */
-	virtual FloatRect get_boundary_rect() const = 0;
+	virtual DoubleRect get_boundary_rect() const = 0;
 
 	/**
 	 *	\~english
@@ -142,6 +142,25 @@ public:
 	 *	\return `true`, если мышь над компонентом, иначе `false`.
 	 */
 	bool is_mouse_over() const;
+
+	/**
+	 *	\~english
+	 *	\brief The components which contain the specified point
+	 *
+	 *	Forms the vector of components which would be triggered if the mouse had clicked in the
+	 *	specified point.
+	 *	\param level The level.
+	 *	\param position The point to check.
+	 *
+	 *	\~russian
+	 *	\brief Компоненты, которые содержат заданную точку
+	 *
+	 *	Формирует вектор компонентов, которые были бы активированы, если бы мышь кликнула в
+	 *	заданной точке.
+	 *	\param level Уровень.
+	 *	\param position Точка для проверки.
+	 */
+	static std::vector<ClickableComponent*> get_clicked(const Level& level, const Vector2& position);
 
 			/* EVENTS */
 
@@ -186,26 +205,26 @@ public:
 	 */
 	EventBinder<EButton /*button*/> on_released;
 
+protected:
+			/* METHODS */
+
 	/**
 	 *	\~english
-	 *	\brief The components which contain the specified point
+	 *	\brief Determines in which chunks the component is
 	 *	
-	 *	Forms the vector of components which would be triggered if the mouse had clicked in the
-	 *	specified point.
-	 *	\param level The level.
-	 *	\param position The point to check.
+	 *	Determines chunks where the component is. This method is automatically called when the
+	 *	component is transformed and should be called when the shape or the size of clickable area
+	 *	is changed.
 	 *	
 	 *	\~russian
-	 *	\brief Компоненты, которые содержат заданную точку
+	 *	\brief Определяет, в каких чанках находится компонент
 	 *	
-	 *	Формирует вектор компонентов, которые были бы активированы, если бы мышь кликнула в
-	 *	заданной точке.
-	 *	\param level Уровень.
-	 *	\param position Точка для проверки.
+	 *	Определяет чанки, где находится компонент. Этот метод автоматически вызывается, когда
+	 *	компонент преобразуется и должен также вызываться, когда форма или размер кликабельной
+	 *	области изменяется.
 	 */
-	static std::vector<ClickableComponent*> get_clicked(const Level& level, const Vector2& position);
+	void setup_chunks();
 
-protected:
 			/* EVENT METHODS FROM Component */
 
 	/**
@@ -242,6 +261,8 @@ protected:
 	 */
 	virtual void when_transformed(const Transform& new_level_transform) override;
 
+			/* EVENT METHODS */
+
 	/**
 	 *	\~english
 	 *	\brief The mouse button is pressed over the component
@@ -277,7 +298,7 @@ protected:
 	virtual void when_released(EButton button);
 
 private:
-	FloatRect boundary_rect_;
+	DoubleRect boundary_rect_;
 	Point2 min_chunk_;
 	Point2 max_chunk_;
 

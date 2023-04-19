@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor\Actor.h" />
+    <ClInclude Include="Source\Actor\SimpleActor.h" />
     <ClInclude Include="Source\Component\Audio\MusicComponent.h" />
     <ClInclude Include="Source\Component\Audio\SoundComponent.h" />
     <ClInclude Include="Source\Component\Camera\CameraComponent.h" />
@@ -39,7 +40,7 @@
     <ClInclude Include="Source\Level\Level.h" />
     <ClInclude Include="Source\Math\Angle.h" />
     <ClInclude Include="Source\Math\Math.h" />
-    <ClInclude Include="Source\Math\Shape\FloatRect.h" />
+    <ClInclude Include="Source\Math\Shape\DoubleRect.h" />
     <ClInclude Include="Source\Math\Shape\IntRect.h" />
     <ClInclude Include="Source\Math\Vector\Point2.h" />
     <ClInclude Include="Source\Math\Vector\Point3.h" />
@@ -53,12 +54,16 @@
     <ClInclude Include="Source\Util\Function\DelegateBinder.h" />
     <ClInclude Include="Source\Util\Input\Input.h" />
     <ClInclude Include="Source\Util\Input\Keys.h" />
+    <ClInclude Include="Source\Util\Json\Array.h" />
+    <ClInclude Include="Source\Util\Json\Element.h" />
+    <ClInclude Include="Source\Util\Json\JsonObject.h" />
+    <ClInclude Include="Source\Util\Json\Value.h" />
     <ClInclude Include="Source\Util\Lang\Lang.h" />
     <ClInclude Include="Source\Util\Lang\Text.h" />
     <ClInclude Include="Source\Util\Log\Log.h" />
     <ClInclude Include="Source\Util\ResourceManager.h" />
+    <ClInclude Include="Source\Util\SaveLoad\SaveLoad.h" />
     <ClInclude Include="Source\Util\Time\Time.h" />
-    <ClInclude Include="Source\Util\Time\TimeInterval.h" />
     <ClInclude Include="Source\Util\Time\Timer.h" />
     <ClInclude Include="Source\Util\Time\TimerManager.h" />
     <ClInclude Include="Source\Util\Types\String.h" />
@@ -86,7 +91,7 @@
     <ClCompile Include="Source\Level\Level.cpp" />
     <ClCompile Include="Source\Math\Angle.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
-    <ClCompile Include="Source\Math\Shape\FloatRect.cpp" />
+    <ClCompile Include="Source\Math\Shape\DoubleRect.cpp" />
     <ClCompile Include="Source\Math\Shape\IntRect.cpp" />
     <ClCompile Include="Source\Math\Vector\Point2.cpp" />
     <ClCompile Include="Source\Math\Vector\Point3.cpp" />
@@ -100,17 +105,24 @@
     <ClCompile Include="Source\Util\Function\EventBinder.h" />
     <ClCompile Include="Source\Util\Input\Input.cpp" />
     <ClCompile Include="Source\Util\Input\Keys.cpp" />
+    <ClCompile Include="Source\Util\Json\Array.cpp" />
+    <ClCompile Include="Source\Util\Json\Element.cpp" />
+    <ClCompile Include="Source\Util\Json\JsonObject.cpp" />
+    <ClCompile Include="Source\Util\Json\Value.cpp" />
     <ClCompile Include="Source\Util\Lang\Lang.cpp" />
     <ClCompile Include="Source\Util\Lang\Text.cpp" />
     <ClCompile Include="Source\Util\Log\Log.cpp" />
     <ClCompile Include="Source\Util\ResourceManager.cpp" />
+    <ClCompile Include="Source\Util\SaveLoad\SaveLoad.cpp" />
     <ClCompile Include="Source\Util\Time\Time.cpp" />
-    <ClCompile Include="Source\Util\Time\TimeInterval.cpp" />
     <ClCompile Include="Source\Util\Time\Timer.cpp" />
     <ClCompile Include="Source\Util\Time\TimerManager.cpp" />
     <ClCompile Include="Source\Util\Types\String.cpp" />
     <ClCompile Include="Source\Util\Types\Transform.cpp" />
     <ClCompile Include="Source\Util\Util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\Systems.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

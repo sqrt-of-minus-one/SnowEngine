@@ -21,6 +21,7 @@
 
 #include "../Object.h"
 #include "Types/String.h"
+#include "../Math/Math.h"
 
 namespace snow
 {
@@ -32,104 +33,101 @@ namespace util
 
 /**
  *	\~english
- *	\brief Converts `int` to string
+ *	\brief Converts `long long` to string
  *	
- *	Converts the passed integer to string.
+ *	Converts the passed integer to string in the specified numeral system. If the base is more than
+ *	10, A—Z characters will also be used as digits.
+ *	\tparam base The base of the numeral system. Must be between 2 and 36.
  *	\param var The integer that will be converted to string.
  *	\return A string that represents the passed integer in decimal notation.
  *	
  *	\~russian
- *	\brief Конвертирует `int` в строку
+ *	\brief Конвертирует `long long` в строку
  *	
- *	Конвертирует переданное целое число в строку.
+ *	Конвертирует переданное целое число в строку в заданной системе счисления. Если основание
+ *	больше 10, в качестве цифр также будут использованы символы A—Z.
+ *	\tparam base Основание системы счисления. Должно находиться между 2 и 36.
  *	\param var Целое число, которое будет сконвертировано в строку.
  *	\return Строка, представляющая десятичную запись переданного целого числа.
  */
+template<int base = 10>
+String to_string(long long var);
+
+/**
+ *	\~english
+ *	\brief Converts `int` to string
+ *
+ *	Converts the passed integer to string in the specified numeral system. If the base is more than
+ *	10, A—Z characters will also be used as digits.
+ *	\tparam base The base of the numeral system. Must be between 2 and 36.
+ *	\param var The integer that will be converted to string.
+ *	\return A string that represents the passed integer in decimal notation.
+ *
+ *	\~russian
+ *	\brief Конвертирует `int` в строку
+ *
+ *	Конвертирует переданное целое число в строку в заданной системе счисления. Если основание
+ *	больше 10, в качестве цифр также будут использованы символы A—Z.
+ *	\tparam base Основание системы счисления. Должно находиться между 2 и 36.
+ *	\param var Целое число, которое будет сконвертировано в строку.
+ *	\return Строка, представляющая десятичную запись переданного целого числа.
+ */
+template<int base = 10>
 String to_string(int var);
 
 /**
  *	\~english
- *	\brief Converts `int` to string in binary notation
+ *	\brief Converts `double` to string
  *	
- *	Converts the passed integer to string as binary number.
- *	\param var The integer that will be converted to string.
- *	\return A string that represents the passed integer in binary notation.
+ *	Converts the passed double to string.
+ *	\param var The double that will be converted to string.
+ *	\param precision The precision of the number representation. Positive values define the exact
+ *	number of digits after point, negative ones limit the maximum number of digits. When excess
+ *	digits are discarded, the last remaining digit is rounded according to rounding rules.
+ *	\code
+ *		to_string(5.67f) == L"5.67"_s;
+ *		to_string(5.67f, 0) == L"6"_s;
+ *		to_string(5.67f, 4) == L"5.6700"_s;
+ *		to_string(5.67f, -4) == L"5.67"_s;
+ *		to_string(5.67895f, -4) == L"5.679"_s;
+ *	\endcode
+ *	\return A string that represents the passed double.
  *	
  *	\~russian
- *	\brief Конвертирует `int` в строку в двоичной записи
+ *	\brief Конвертирует `double` в строку
  *	
- *	Конвертирует переданное целое число в строку как двоичное число.
- *	\param var Целое число, которое будет сконвертировано в строку.
- *	\return Строка, представляющая двоичную запись переданного целого числа.
+ *	Конвертирует переданное вещественное число в строку.
+ *	\param var Вещественное число, которое будет сконвертировано в строку.
+ *	\param precision Точность представления числа. Положительные значения определяют точное
+ *	количество знаков после запятой, отрицательные — ограничивают максимальное количество знаков.
+ *	Когда излишние знаки отбрасываются, последняя оставшаяся цифра округляется в соответствии с
+ *	правилами округления.
+ *	\code
+ *		to_string(5.67f) == L"5.67"_s;
+ *		to_string(5.67f, 0) == L"6"_s;
+ *		to_string(5.67f, 4) == L"5.6700"_s;
+ *		to_string(5.67f, -4) == L"5.67"_s;
+ *		to_string(5.67895f, -4) == L"5.679"_s;
+ *	\endcode
+ *	\return Строка, представляющая переданное вещественное число.
  */
-String to_string_bin(int var);
+String to_string(double var, int precision = -5);
 
 /**
  *	\~english
- *	\brief Converts `int` to string in octal notation
- *	
- *	Converts the passed integer to string as octal number.
- *	\param var The integer that will be converted to string.
- *	\return A string that represents the passed integer in octal notation.
- *	
- *	\~russian
- *	\brief Конвертирует `int` в строку в восьмеричной записи
- *	
- *	Конвертирует переданное целое число в строку как восьмеричное число.
- *	\param var Целое число, которое будет сконвертировано в строку.
- *	\return Строка, представляющая восьмеричную запись переданного целого числа.
- */
-String to_string_oct(int var);
-
-/**
- *	\~english
- *	\brief Converts `int` to string in hexadecimal notation
- *	
- *	Converts the passed integer to string as hexadecimal number.
- *	\param var The integer that will be converted to string.
- *	\return A string that represents the passed integer in hexadecimal notation.
+ *	\brief Converts `wchar_t` to string
+ *
+ *	Creates a string that contains the passed character.
+ *	\param var The character that will be converted to string.
+ *	\return A string that represents the passed character.
  *	
  *	\~russian
- *	\brief Конвертирует `int` в строку в шестнадцатеричной записи
+ *	\brief Конвертирует `wchar_t` в строку
  *	
- *	Конвертирует переданное целое число в строку как шестнадцатеричное число.
- *	\param var Целое число, которое будет сконвертировано в строку.
- *	\return Строка, представляющая шестнадцатеричную запись переданного целого числа.
+ *	Создаёт строку, содержащую переданный символ
+ *	\param var Символ, который будет сконвертирован в строку.
+ *	\return Строка, представляющая переданный символ.
  */
-String to_string_hex(int var);
-
- /**
-  *	\~english
-  *	\brief Converts `float` to string
-  *	
-  *	Converts the passed float to string.
-  *	\param var The float that will be converted to string.
-  *	\return A string that represents the passed float.
-  *	
-  *	\~russian
-  *	\brief Конвертирует `float` в строку
-  *	
-  *	Конвертирует переданное число с плавающей запятой в строку.
-  *	\param var Число с плавающей запятой, которое будет сконвертировано в строку.
-  *	\return Строка, представляющая переданное число с плавающей запятой.
-  */
-String to_string(float var);
-
- /**
-  *	\~english
-  *	\brief Converts `wchar_t` to string
-  *
-  *	Creates a string that contains the passed character.
-  *	\param var The character that will be converted to string.
-  *	\return A string that represents the passed character.
-  *	
-  *	\~russian
-  *	\brief Конвертирует `wchar_t` в строку
-  *	
-  *	Создаёт строку, содержащую переданный символ
-  *	\param var Символ, который будет сконвертирован в строку.
-  *	\return Строка, представляющая переданный символ.
-  */
 String to_string(wchar_t var);
 
 /**
@@ -277,20 +275,20 @@ int hash_code(int var) noexcept;
 
 /**
  *	\~english
- *	\brief Hash code of `float`
+ *	\brief Hash code of `double`
  *
  *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
  *	objects can also have the same hash codes. Hash code of zero is zero.
  *	\return Hash code of the object.
  *
  *	\~russian
- *	\brief Хеш-код `float`
+ *	\brief Хеш-код `double`
  *
  *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
  *	также могут иметь одинаковые хеш-коды. Хеш-код нуля — ноль.
  *	\return Хеш-код объекта.
  */
-int hash_code(float var) noexcept;
+int hash_code(double var) noexcept;
 
 /**
  *	\~english
@@ -423,6 +421,44 @@ int hash_code(const T& var) noexcept;
 
 		/* DEFINITIONS */
 
+template<int base>
+String util::to_string(long long var)
+{
+	static_assert(base >= 2 && base <= 36, "The base of numeral system must be between 2 and 36");
+
+	if (var == 0)
+	{
+		return String(L"0");
+	}
+
+	String result;
+	long long a = std::abs(var);
+	while (a > 0)
+	{
+		int t = a % base;
+		if (t < 10)
+		{
+			result += static_cast<wchar_t>(static_cast<int>(L'0') + t);
+		}
+		else
+		{
+			result += static_cast<wchar_t>(static_cast<int>(L'A') + t - 10);
+		}
+		a /= base;
+	}
+	if (var < 0)
+	{
+		result += L'-';
+	}
+	return result.reverse();
+}
+
+template<int base>
+String util::to_string(int var)
+{
+	return to_string<base>(static_cast<long long>(var));
+}
+
 template<typename T>
 String util::to_string(T* var)
 {
@@ -436,10 +472,7 @@ String util::to_string(const std::unique_ptr<T>& var)
 	{
 		return L"UniquePtr: "_s + to_string(*var);
 	}
-	else
-	{
-		return L"UniquePtr: NULL"_s;
-	}
+	return L"UniquePtr: NULL"_s;
 }
 
 template<typename T>
@@ -449,10 +482,7 @@ String util::to_string(const std::shared_ptr<T>& var)
 	{
 		return L"SharedPtr: "_s + to_string(*var);
 	}
-	else
-	{
-		return L"SharedPtr: NULL"_s;
-	}
+	return L"SharedPtr: NULL"_s;
 }
 
 template<typename T>
@@ -463,10 +493,7 @@ String util::to_string(const std::weak_ptr<T>& var)
 	{
 		return L"WeakPtr: "_s + to_string(*var);
 	}
-	else
-	{
-		return L"WeakPtr: NULL"_s;
-	}
+	return L"WeakPtr: NULL"_s;
 }
 
 template<typename T>

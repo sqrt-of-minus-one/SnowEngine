@@ -101,7 +101,66 @@ public:
 	 *	компонента такой прямоугольник совпадает с кликбельной областью.
 	 *	\return Прямоугольник, содержащий компонент.
 	 */
-	virtual FloatRect get_boundary_rect() const override;
+	virtual DoubleRect get_boundary_rect() const override;
+
+			/* METHODS */
+
+	/**
+	 *	\~english
+	 *	\brief Set the size of the clickable area
+	 *	
+	 *	Allows to set the size of the clickable rectangle. The actual size is the size of the
+	 *	rectangle multiplied by the scale factor of the component transform.
+	 *	\param size The size of the rectangle.
+	 *	
+	 *	\~russian
+	 *	\brief Устанавливает размер кликабельной области
+	 *	
+	 *	Позволяет установить размер кликабельного прямоугольника. Настоящий размер — это размер
+	 *	прямоугольника, умноженный на коэффициет масштаба из преобразования компонента.
+	 *	\param size Размер прямоугольника.
+	 */
+	void set_size(Vector2 size);
+	
+	/**
+	 *	\~english
+	 *	\brief The size of the clickable area
+	 *	
+	 *	Allows to get the size of the clickable rectangle. The actual size is the size of the
+	 *	rectangle multiplied by the scale factor of the component transform.
+	 *	\return The size of the rectangle.
+	 *
+	 *	\~russian
+	 *	\brief Размер кликабельной области
+	 *
+	 *	Позволяет получить размер кликабельного прямоугольника. Настоящий размер — это размер
+	 *	прямоугольника, умноженный на коэффициет масштаба из преобразования компонента.
+	 *	\return Размер прямоугольника.
+	 */
+	Vector2 get_size() const;
+
+			/* EVENTS */
+
+	/**
+	 *	\~english
+	 *	\brief The rectangle is resized
+	 *	
+	 *	This event is called when the clickable rectangle is resized. It isn't called when the
+	 *	scale of the component is changed (in its transform).
+	 *	
+	 *	Event parameters:
+	 *	- `Vector2 new_size`: The new size of the rectangle.
+	 *	
+	 *	\~russian
+	 *	\brief Размер прямоугольника изменён
+	 *	
+	 *	Это событие вызывается, когда размер кликабельного прямоугольника изменён. Оно не
+	 *	вызывается, когда изменяется масштаб компонента (в его преобразовании).
+	 *	
+	 *	Параметры события:
+	 *	- `Vector2 new_size`: Новый размер прямоугольника.
+	 */
+	EventBinder<Vector2 /*new_size*/> on_resized;
 
 			/* CONSTANTS */
 
@@ -117,6 +176,11 @@ public:
 	 *	Размер прямоугольного кликабельного компонента по умолчанию.
 	 */
 	static const Vector2 DEFAULT_SIZE;
+
+private:
+	Vector2 size_;
+
+	Event<Vector2 /*new_size*/> on_resized_;
 };
 
 }

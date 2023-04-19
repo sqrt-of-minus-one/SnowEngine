@@ -11,7 +11,10 @@ using namespace snow;
 		/* RectCollisionComponent: public */
 
 RectCollisionComponent::RectCollisionComponent(Actor& actor, Component* parent, const Transform& transform) :
-	CollisionComponent(actor, parent, transform)
+	CollisionComponent(actor, parent, transform),
+	size_(DEFAULT_SIZE),
+	on_resized_(),
+	on_resized(on_resized_)
 {}
 
 bool RectCollisionComponent::overlap(const CollisionComponent& collision_component) const
@@ -27,9 +30,21 @@ bool RectCollisionComponent::overlap(const CollisionComponent& collision_compone
 	}
 }
 
-FloatRect RectCollisionComponent::get_boundary_rect() const
+DoubleRect RectCollisionComponent::get_boundary_rect() const
 {
-	return FloatRect(get_level_position() - DEFAULT_SIZE * get_level_scale() / 2, DEFAULT_SIZE);
+	return DoubleRect(get_level_position() - size_ * get_level_scale() / 2., size_);
 }
 
-const Vector2 RectCollisionComponent::DEFAULT_SIZE(100.f, 100.f);
+void RectCollisionComponent::set_size(Vector2 size)
+{
+	size_ = size;
+
+	on_resized_.execute(size);
+}
+
+Vector2 RectCollisionComponent::get_size() const
+{
+	return size_;
+}
+
+const Vector2 RectCollisionComponent::DEFAULT_SIZE(100., 100.);

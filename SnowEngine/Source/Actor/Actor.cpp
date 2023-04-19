@@ -166,7 +166,7 @@ bool Actor::is_destroyed() const noexcept
 
 		/* Actor: protected */
 
-void Actor::tick(float delta_sec)
+void Actor::tick(double delta_sec)
 {
 	root_component_->tick(delta_sec);
 }

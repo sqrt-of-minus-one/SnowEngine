@@ -64,6 +64,11 @@ bool Point2::is_zero() const noexcept
 	return x_ == 0 && y_ == 0;
 }
 
+Point2 Point2::abs() const noexcept
+{
+	return Point2(std::abs(x_), std::abs(y_));
+}
+
 Point2& Point2::operator=(const Point2& point) noexcept
 {
 	x_ = point.x_;
@@ -108,26 +113,20 @@ const Point2 Point2::operator*(const Point2& point) const
 
 const Point2 Point2::operator/(int value) const
 {
-	if (value != 0)
-	{
-		return Point2(x_ / value, y_ / value);
-	}
-	else
+	if (value == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Point2(x_ / value, y_ / value);
 }
 
 const Point2 Point2::operator/(const Point2& point) const
 {
-	if (point.x_ != 0  && point.y_ != 0)
-	{
-		return Point2(x_ / point.x_, y_ / point.y_);
-	}
-	else
+	if (point.x_ == 0 || point.y_ == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Point2(x_ / point.x_, y_ / point.y_);
 }
 	
 Point2& Point2::operator+=(const Point2& point) noexcept
@@ -160,30 +159,24 @@ Point2& Point2::operator*=(const Point2& point) noexcept
 
 Point2& Point2::operator/=(int value)
 {
-	if (value != 0)
-	{
-		x_ /= value;
-		y_ /= value;
-		return *this;
-	}
-	else
+	if (value == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= value;
+	y_ /= value;
+	return *this;
 }
 
 Point2& Point2::operator/=(const Point2& point)
 {
-	if (point.x_ != 0 && point.y_ != 0)
-	{
-		x_ /= point.x_;
-		y_ /= point.y_;
-		return *this;
-	}
-	else
+	if (point.x_ == 0 && point.y_ == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= point.x_;
+	y_ /= point.y_;
+	return *this;
 }
 	
 bool Point2::operator==(const Point2& point) const noexcept
@@ -198,7 +191,7 @@ bool Point2::operator!=(const Point2& point) const noexcept
 
 Point2::operator Vector2() const
 {
-	return Vector2(static_cast<float>(x_), static_cast<float>(y_));
+	return Vector2(static_cast<double>(x_), static_cast<double>(y_));
 }
 
 const Point2 Point2::ZERO(0, 0);

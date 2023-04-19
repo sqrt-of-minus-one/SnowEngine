@@ -68,12 +68,20 @@ void CollisionComponent::when_begin_play()
 {
 	Component::when_begin_play();
 
-	when_transformed(get_level_transform());
+	setup_chunks_();
 }
 
 void CollisionComponent::when_transformed(const Transform& new_level_transform)
 {
-	FloatRect new_boundary_rect = get_boundary_rect();
+	Component::when_transformed(new_level_transform);
+	setup_chunks_();
+}
+
+		/* CollisionComponent: private */
+
+void CollisionComponent::setup_chunks_()
+{
+	DoubleRect new_boundary_rect = get_boundary_rect();
 	Point2 new_min_chunk = static_cast<Point2>(new_boundary_rect.get_position()) / Game::config.collision_chunk_size;
 	Point2 new_max_chunk = static_cast<Point2>(new_boundary_rect.get_position() + new_boundary_rect.get_size()) / Game::config.collision_chunk_size;
 	auto& map = collision_chunks_[&get_level()];
@@ -103,7 +111,5 @@ void CollisionComponent::when_transformed(const Transform& new_level_transform)
 	min_chunk_ = new_min_chunk;
 	max_chunk_ = new_max_chunk;
 }
-
-		/* CollisionComponent: private */
 
 std::map<const Level*, std::unordered_map<int /*x*/, std::unordered_map<int /*y*/, std::unordered_set<CollisionComponent*>>>> CollisionComponent::collision_chunks_;

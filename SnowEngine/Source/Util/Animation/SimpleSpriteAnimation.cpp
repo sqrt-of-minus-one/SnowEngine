@@ -18,7 +18,7 @@ SimpleSpriteAnimation::SimpleSpriteAnimation(const SimpleSpriteAnimation& animat
 	SimpleSpriteAnimation(animation.sprite_size_, animation.origin_, animation.grid_size_, animation.frequency_sec_)
 {}
 
-SimpleSpriteAnimation::SimpleSpriteAnimation(const Point2& sprite_size, const Point2& origin, const Point2& grid_size, float frequency_sec) :
+SimpleSpriteAnimation::SimpleSpriteAnimation(const Point2& sprite_size, const Point2& origin, const Point2& grid_size, double frequency_sec) :
 	sprite_size_(sprite_size),
 	origin_(origin),
 	grid_size_(grid_size),
@@ -28,6 +28,7 @@ SimpleSpriteAnimation::SimpleSpriteAnimation(const Point2& sprite_size, const Po
 {
 	Delegate<void> delegate;
 	delegate.bind<SimpleSpriteAnimation>(*this, &SimpleSpriteAnimation::next_frame_);
+	// The Timer copies the delegate so it will exist after exit from this method
 	timer_ = TimerManager::get_instance().create_timer(delegate, frequency_sec, frequency_sec);
 }
 

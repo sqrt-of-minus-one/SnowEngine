@@ -1,0 +1,12 @@
+	////////////////////////////////////////
+   //      SnowEngine by SnegirSoft      //
+  //                                    //
+ //  File: Systems.txt                 //
+////////////////////////////////////////
+
+SnowBall		Util/Input/		SnowEngine input system
+SnowCat			Util/Log/		SnowEngine logging system
+SnowFall		Util/SaveLoad/	SnowEngine saving system
+SnowFlake		Util/Lang/		SnowEngine localization system
+SnowMan			Util/			SnowEngine resource management system
+SnowStorm		Util/Json       SnowEngine JSON system

@@ -90,6 +90,11 @@ bool Point3::is_zero() const noexcept
 	return x_ == 0 && y_ == 0 && z_ == 0;
 }
 
+Point3 Point3::abs() const noexcept
+{
+	return Point3(std::abs(x_), std::abs(y_), std::abs(z_));
+}
+
 Point3& Point3::operator=(const Point3& point) noexcept
 {
 	x_ = point.x_;
@@ -135,26 +140,20 @@ const Point3 Point3::operator*(const Point3& point) const
 
 const Point3 Point3::operator/(int value) const
 {
-	if (value != 0)
-	{
-		return Point3(x_ / value, y_ / value, z_ / value);
-	}
-	else
+	if (value == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Point3(x_ / value, y_ / value, z_ / value);
 }
 
 const Point3 Point3::operator/(const Point3& point) const
 {
-	if (point.x_ != 0 && point.y_ != 0 && point.z_ != 0)
-	{
-		return Point3(x_ / point.x_, y_ / point.y_, z_ / point.z_);
-	}
-	else
+	if (point.x_ == 0 || point.y_ == 0 || point.z_ == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	return Point3(x_ / point.x_, y_ / point.y_, z_ / point.z_);
 }
 	
 Point3& Point3::operator+=(const Point3& point) noexcept
@@ -191,32 +190,26 @@ Point3& Point3::operator*=(const Point3& point) noexcept
 
 Point3& Point3::operator/=(int value)
 {
-	if (value != 0)
-	{
-		x_ /= value;
-		y_ /= value;
-		z_ /= value;
-		return *this;
-	}
-	else
+	if (value == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= value;
+	y_ /= value;
+	z_ /= value;
+	return *this;
 }
 
 Point3& Point3::operator/=(const Point3& point)
 {
-	if (point.x_ != 0 && point.y_ != 0 && point.z_ != 0)
-	{
-		x_ /= point.x_;
-		y_ /= point.y_;
-		z_ /= point.z_;
-		return *this;
-	}
-	else
+	if (point.x_ == 0 || point.y_ == 0 || point.z_ == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
+	x_ /= point.x_;
+	y_ /= point.y_;
+	z_ /= point.z_;
+	return *this;
 }
 	
 bool Point3::operator==(const Point3& point) const noexcept
@@ -236,7 +229,7 @@ Point3::operator Point2() const
 
 Point3::operator Vector3() const
 {
-	return Vector3(static_cast<float>(x_), static_cast<float>(y_), static_cast<float>(z_));
+	return Vector3(static_cast<double>(x_), static_cast<double>(y_), static_cast<double>(z_));
 }
 
 const Point3 Point3::ZERO(0, 0, 0);

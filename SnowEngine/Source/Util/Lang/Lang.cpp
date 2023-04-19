@@ -195,5 +195,5 @@ std::pair<String, String> Lang::split_to_table_key_(const String& key)
 	int sep_pos = key.find_first(L'.');
 	return std::make_pair(
 		sep_pos <= 0 ? Game::config.default_table : key.substring(0, sep_pos),
-		key.substring(math::max(sep_pos + 1, 0), key.size()));
+		key.substring(std::max(sep_pos + 1, 0), key.size()));
 }
