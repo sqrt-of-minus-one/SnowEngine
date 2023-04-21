@@ -18,6 +18,8 @@
 
 using namespace snow;
 
+		/* Array: public */
+
 json::Array::Array() :
 	content_()
 {}

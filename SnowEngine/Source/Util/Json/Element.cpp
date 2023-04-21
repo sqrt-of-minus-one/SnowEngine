@@ -25,6 +25,8 @@
 
 using namespace snow;
 
+		/* Element: public */
+
 String json::Element::to_string() const
 {
 	std::wostringstream stream;
