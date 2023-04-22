@@ -569,7 +569,8 @@ bool String::is_asbuka() const
 bool String::is_asbuka(wchar_t c)
 {
 	return c >= L'à' && c <= L'ÿ' ||
-		   c >= L'À' && c <= L'ß';
+		   c >= L'À' && c <= L'ß' ||
+		   c == L'¸' || c == L'¨';
 }
 
 bool String::is_space() const

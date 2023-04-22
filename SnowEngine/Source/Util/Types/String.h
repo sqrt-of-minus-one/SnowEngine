@@ -826,24 +826,260 @@ public:
 	 */
 	String to_upper() const;
 
+	/**
+	 *	\~english
+	 *	\brief Replace special characters with their escape codes
+	 *	
+	 *	Creates a new string based on this one. Replaces all the characters contained in the table
+	 *	below with their escase sequences.
+	 *	Sequence | Символ
+	 *	---------|----------------
+	 *	`\\'`    | `'`
+	 *	`\\"`    | `"`
+	 *	`\\\\`   | `\\`
+	 *	`\\a`    | Audible bell
+	 *	`\\b`    | Backspace
+	 *	`\\f`    | Form feed
+	 *	`\\n`    | Line feed
+	 *	`\\r`    | Carriage return
+	 *	`\\t`    | Horizontal tab
+	 *	`\\v`    | Vertical tab
+	 *	\return The string with replacements completed.
+	 *	
+	 *	\~russian
+	 *	\brief Заменить специальные символы на их управляющие последовательности
+	 *	
+	 *	Создаёт новую строку на основе данной. Заменяет на соответствующие управляющие
+	 *	последовательности все символы, содержащиеся в таблице ниже.
+	 *	Последовательность | Символ
+	 *	-------------------|-------------------------
+	 *	`\\'`              | `'`
+	 *	`\\"`              | `"`
+	 *	`\\\\`             | `\\`
+	 *	`\\a`              | Звуковой сигнал
+	 *	`\\b`              | Забой
+	 *	`\\f`              | Новая страница
+	 *	`\\n`              | Новая строка
+	 *	`\\r`              | Возврат каретки
+	 *	`\\t`              | Горизонтальная табуляция
+	 *	`\\v`              | Вертикальная табуляция
+	 *	\return Строка с выполненными заменами.
+	 */
 	String escape() const;
 
+	/**
+	 *	\~english
+	 *	\brief Replace the escape codes with corresponding characters
+	 *
+	 *	Creates a new string based on this one. Replaces all escape sequences starting with `\\`
+	 *	with corresponding characters according to the table below.
+	 *	Sequence | Символ
+	 *	---------|------------------------------------------
+	 *	`\\'`    | `'`
+	 *	`\\"`    | `"`
+	 *	`\\\\`   | `\\`
+	 *	`\\a`    | Audible bell
+	 *	`\\b`    | Backspace
+	 *	`\\f`    | Form feed
+	 *	`\\n`    | Line feed
+	 *	`\\r`    | Carriage return
+	 *	`\\t`    | Horizontal tab
+	 *	`\\v`    | Vertical tab
+	 *	`\\<…>`  | `<…>`, where `<…>` is any other character
+	 *	\return The string with replacements completed.
+	 *
+	 *	\~russian
+	 *	\brief Заменить управляющие последовательности на соответствующие символы
+	 *
+	 *	Создаёт новую строку на основе данной. Заменяет все управляющие последовательности,
+	 *	начинающиеся с `\\`, на соответствующие символы в соответствии с таблицей ниже.
+	 *	Последовательность | Символ
+	 *	-------------------|---------------------------------------
+	 *	`\\'`              | `'`
+	 *	`\\"`              | `"`
+	 *	`\\\\`             | `\\`
+	 *	`\\a`              | Звуковой сигнал
+	 *	`\\b`              | Забой
+	 *	`\\f`              | Новая страница
+	 *	`\\n`              | Новая строка
+	 *	`\\r`              | Возврат каретки
+	 *	`\\t`              | Горизонтальная табуляция
+	 *	`\\v`              | Вертикальная табуляция
+	 *	`\\<…>`            | `<…>`, где `<…>` — любой другой символ
+	 *	\return Строка с выполненными заменами.
+	 */
 	String unescape() const;
 
+	/**
+	 *	\~english
+	 *	\brief Whether the string only contains numbers
+	 *	
+	 *	Checks if every character of the string is a number:
+	 *	- `0123456789`
+	 *	\return `true` if the string contains nothing but numbers, `false` otherwise.
+	 *	
+	 *	\~russian
+	 *	\brief Содержит ли строка только цифры
+	 *	
+	 *	Проверяет, является ли каждый символ строки цифрой:
+	 *	- `0123456789`
+	 *	\return `true`, если строка не содержит ничего, кроме цифр, иначе `false`.
+	 */
 	bool is_num() const;
 
+	/**
+	 *	\~english
+	 *	\brief Whether the character is a number
+	 *	
+	 *	Checks if the passed character is a number:
+	 *	- `0123456789`
+	 *	\param c The character to check.
+	 *	\return `true` if the character is a number, `false` otherwise.
+	 *	
+	 *	\~russian
+	 *	\brief Является ли символ цифрой
+	 *	
+	 *	Проверяет, является ли символ цифрой:
+	 *	- `0123456789`
+	 *	\param c Символ для проверки.
+	 *	\return `true`, если символ является цифрой, иначе `false`.
+	 */
 	static bool is_num(wchar_t c);
 
+	/**
+	 *	\~english
+	 *	\brief Whether the string only contains latin letters
+	 *
+	 *	Checks if every character of the string is a latin letter:
+	 *	- `abcdefghijklmnopqrstuvwxyz`
+	 *	- `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
+	 *	\return `true` if the string contains nothing but latin letters, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Содержит ли строка только латинские буквы
+	 *
+	 *	Проверяет, является ли каждый символ строки латинской буквой:
+	 *	- `abcdefghijklmnopqrstuvwxyz`
+	 *	- `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
+	 *	\return `true`, если строка не содержит ничего, кроме латинских букв, иначе `false`.
+	 */
 	bool is_alpha() const;
 
+	/**
+	 *	\~english
+	 *	\brief Whether the character is a latin letter
+	 *
+	 *	Checks if the passed character is a latin letter:
+	 *	- `abcdefghijklmnopqrstuvwxyz`
+	 *	- `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
+	 *	\param c The character to check.
+	 *	\return `true` if the character is a latin letter, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Является ли символ латинской буквой
+	 *
+	 *	Проверяет, является ли символ латинской буквой:
+	 *	- `abcdefghijklmnopqrstuvwxyz`
+	 *	- `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
+	 *	\param c Символ для проверки.
+	 *	\return `true`, если символ является латинской буквой, иначе `false`.
+	 */
 	static bool is_alpha(wchar_t c);
 
+	/**
+	 *	\~english
+	 *	\brief Whether the string only contains cyrillic letters
+	 *
+	 *	Checks if every character of the string is a cyrillic letter:
+	 *	- `абвгдеёжзийклмнопрстуфхцчшщъыьэюя`
+	 *	- `АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ`
+	 *	\return `true` if the string contains nothing but cyrillic letters, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Содержит ли строка только буквы кириллицы
+	 *
+	 *	Проверяет, является ли каждый символ строки буквой кириллицы:
+	 *	- `абвгдеёжзийклмнопрстуфхцчшщъыьэюя`
+	 *	- `АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ`
+	 *	\return `true`, если строка не содержит ничего, кроме букв кириллицы, иначе `false`.
+	 */
 	bool is_asbuka() const;
 
+	/**
+	 *	\~english
+	 *	\brief Whether the character is a cyrillic letter
+	 *
+	 *	Checks if the passed character is a cyrillic letter:
+	 *	- `абвгдеёжзийклмнопрстуфхцчшщъыьэюя`
+	 *	- `АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ`
+	 *	\param c The character to check.
+	 *	\return `true` if the character is a cyrillic letter, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Является ли символ буквой кириллицы
+	 *
+	 *	Проверяет, является ли символ буквой кириллицы:
+	 *	- `абвгдеёжзийклмнопрстуфхцчшщъыьэюя`
+	 *	- `АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ`
+	 *	\param c Символ для проверки.
+	 *	\return `true`, если символ является буквой кириллицы, иначе `false`.
+	 */
 	static bool is_asbuka(wchar_t c);
 
+	/**
+	 *	\~english
+	 *	\brief Whether the string only contains space characters
+	 *
+	 *	Checks if every character of the string is a space character:
+	 *	- ` `
+	 *	- `\\t`
+	 *	- `\\n`
+	 *	- `\\r`
+	 *	- `\\v`
+	 *	- `\\f`
+	 *	\return `true` if the string contains nothing but space characters, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Содержит ли строка только пробельные символы
+	 *
+	 *	Проверяет, является ли каждый символ строки пробельным символом:
+	 *	- ` `
+	 *	- `\\t`
+	 *	- `\\n`
+	 *	- `\\r`
+	 *	- `\\v`
+	 *	- `\\f`
+	 *	\return `true`, если строка не содержит ничего, кроме пробельных символов, иначе `false`.
+	 */
 	bool is_space() const;
 
+	/**
+	 *	\~english
+	 *	\brief Whether the character is a space character
+	 *
+	 *	Checks if the passed character is a space character:
+	 *	- ` `
+	 *	- `\\t`
+	 *	- `\\n`
+	 *	- `\\r`
+	 *	- `\\v`
+	 *	- `\\f`
+	 *	\param c The character to check.
+	 *	\return `true` if the character is a space character, `false` otherwise.
+	 *
+	 *	\~russian
+	 *	\brief Является ли символ пробельным символом
+	 *
+	 *	Проверяет, является ли символ пробельным символом:
+	 *	- ` `
+	 *	- `\\t`
+	 *	- `\\n`
+	 *	- `\\r`
+	 *	- `\\v`
+	 *	- `\\f`
+	 *	\param c Символ для проверки.
+	 *	\return `true`, если символ является пробельным символом, иначе `false`.
+	 */
 	static bool is_space(wchar_t c);
 
 	/**

@@ -19,6 +19,8 @@
 
 using namespace snow;
 
+		/* JsonObject: public */
+
 json::JsonObject::JsonObject() :
 	content_()
 {}
