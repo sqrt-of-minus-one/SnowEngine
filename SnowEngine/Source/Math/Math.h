@@ -6,29 +6,43 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with math functions
- *	
- *	This file contains declarations of mathematical functions and constants.
- *	
- *	\~russian
- *	\brief Файл с математическими функциями
- *	
- *	Этот файл содержит определения математических функций и констант.
- */
-
 #include <cmath>
 #include <functional>
 
 namespace snow
 {
-
 class Angle;
 
 namespace math
 {
+
+/**
+ *	\defgroup Math Math
+ *	\~english
+ *	\brief Mathematical classes, functions and methods
+ *	
+ *	Mathematics in SnowEngine contains:
+ *	- 2D- and 3D-vectors with real (`Vector2`, `Vector3`) and integer (`Point2`, `Point3`)
+ *	coordinates
+ *	- Rectangles with real (`DoubleRect`) and integer (`IntRect`) coordinates
+ *	- Angles (`Angle`)
+ *	- Auxiliary math functions of the `math` namespace
+ *	
+ *	\~russian
+ *	\brief Математические классы, функции и методы
+ *	
+ *	Математика в SnowEngine включает в себя:
+ *	- 2D- и 3D-векторы с вещественными (`Vector2`, `Vector3`) и целочисленными (`Point2`, `Point3`)
+ *	координатами
+ *	- Прямоугольники с вещественными (`DoubleRect`) и целочисленными (`IntRect`) координатами.
+ *	- Углы (`Angle`)
+ *	- Вспомогательные функции из пространства имён `math`
+ */
+
+/**
+ *	\addtogroup Math
+ *	\{
+ */
 
 		/* CONSTANTS */
 
@@ -501,6 +515,11 @@ Angle arcctg(double value);
  *	\return Арккотангенс переданного значения.
  */
 Angle acot(double value);
+
+/**
+ *	\}
+ */
+
 }
 
 

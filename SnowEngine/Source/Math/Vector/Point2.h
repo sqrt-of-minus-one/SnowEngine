@@ -6,23 +6,15 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Point2` class
- *	
- *	This file contains the definition of the `Point2` class.
- *	
- *	\~russian
- *	\brief Файл с классом `Point2`
- *	
- *	Этот файл содержит определение класса `Point2`.
- */
-
 #include "../../Object.h"
 
 namespace snow
 {
+
+/**
+ *	\addtogroup Math
+ *	\{
+ */
 
 class Vector2;
 
@@ -715,5 +707,9 @@ public:
 private:
 	int x_, y_;
 };
+
+/**
+ *	\}
+ */
 
 }

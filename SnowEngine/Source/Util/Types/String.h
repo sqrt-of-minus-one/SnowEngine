@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `String` class
- *
- *	This file contains the definition of the `String` class.
- *
- *	\~russian
- *	\brief Файл с классом `String`
- *
- *	Этот файл содержит определение класса `String`.
- */
-
 #include "../../Object.h"
 
 #include <string>
@@ -31,22 +18,22 @@ namespace snow
  *	\~english
  *	\brief The class of string
  *	
- *	This class is used by SnowEngine functions as string. It is based on `std::wstring` class. Note
- *	that SnowEngine uses wide characters. This means that you should use prefix `L` before
- *	character and string constants. You can use literal `_s` to create `snow::String`:
+ *	This class is used by SnowEngine functions as string. Note that SnowEngine uses wide
+ *	characters. This means that you should use prefix `L` before character and string constants.
+ *	You can use literal `operator""_s()` to create a `snow::String`:
  *	\code
- *		// These two string do the same:
+ *		// These two lines do the same:
  *		String::format(String(L"Hello %s!"), String(L"SnowEngine"));
  *		String::format(L"Hello %s!"_s, L"SnowEngine"_s);
  *	\endcode
  *	
  *	\~russian
  *	\brief Класс строки
- *
- *	Этот класс используется в SnowEngine в качестве строки. Он основан на классе `std::wstring`.
- *	Помните, что SnowEngine использует широкие символы. Это значит, что вам следует использовать
- *	префикс `L` перед символьными и строковыми константами. Вы можете использовать литерал `_s` для
- *	простого создания `snow::String`:
+ *	
+ *	Этот класс используется в SnowEngine в качестве строки. Помните, что SnowEngine использует
+ *	широкие символы. Это значит, что вам следует использовать префикс `L` перед символьными и
+ *	строковыми константами. Вы можете использовать литерал `operator""_s()` для создания
+ *	`snow::String`:
  *	\code
  *		// Эти две строки делают одно и то же:
  *		String::format(String(L"Hello %s!"), String(L"SnowEngine"));
@@ -61,12 +48,12 @@ public:
 	/**
 	 *	\~english
 	 *	\brief The default constructor
-	 *
+	 *	
 	 *	Creates an empty string.
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Конструктор по умолчанию
-	 *
+	 *	
 	 *	Создаёт пустую строку.
 	 */
 	String();
@@ -74,13 +61,13 @@ public:
 	/**
 	 *	\~english
 	 *	\brief The copy constructor
-	 *
+	 *	
 	 *	Copies the string.
 	 *	\param string The string that will be copied.
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Конструктор копирования
-	 *
+	 *	
 	 *	Копирует строку.
 	 *	\param string Строка, который будет скопирован.
 	 */
@@ -89,13 +76,13 @@ public:
 	/**
 	 *	\~english
 	 *	\brief The move constructor
-	 *
+	 *	
 	 *	Moves the value of the passed string to a new one.
 	 *	\param string The string that will be moved.
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Конструктор перемещения
-	 *
+	 *	
 	 *	Перемещает значение переданной строки в новую.
 	 *	\param string Строка, которая будет перемещена.
 	 */
@@ -154,14 +141,14 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Creates a string by copying the passed one
-	 *
+	 *	
 	 *	Copies the passed string. Note that SnowEngine uses wide characters, so you should use 
 	 *	`std::wstring` instead of `std::string`.
 	 *	\param string Standard string whose value will be assigned to a new one.
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Создаёт строку, копируя переданную
-	 *
+	 *	
 	 *	Копирует переданную строку. Помните, что SnowEngine использует широкие символы, поэтому вам
 	 *	следует использовать `std::wstring` вместо `std::string`.
 	 *	\param string Стандартная строка, чьё значение будет присвоено новой строке.
@@ -171,14 +158,14 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Creates a string by moving the passed one
-	 *
+	 *	
 	 *	Moves the passed string. Note that SnowEngine uses wide characters, so you should use
 	 *	`std::wstring` instead of `std::string`.
 	 *	\param string Standard string whose value will be moved to a new one.
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Создаёт строку, перемещая переданную
-	 *
+	 *	
 	 *	Перемещает переданную строку. Помните, что SnowEngine использует широкие символы, поэтому
 	 *	вам следует использовать `std::wstring` вместо `std::string`.
 	 *	\param string Стандартная строка, чьё значение будет перемещено в новую строку.
@@ -190,7 +177,7 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Creates a copy of the string
-	 *
+	 *	
 	 *	Creates a copy of itself.
 	 *	\return A copy of the string.
 	 *	
@@ -205,14 +192,14 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Hash code of the string
-	 *
+	 *	
 	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
 	 *	objects can also have the same hash codes.
 	 *	\return Hash code of the object.
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Хеш-код строки
-	 *
+	 *	
 	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
 	 *	также могут иметь одинаковые хеш-коды.
 	 *	\return Хеш-код объекта.
@@ -224,7 +211,7 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Converts the SnowEngine string to the standard string
-	 *
+	 *	
 	 *	Converts `snow::String` to `std::wstring`.
 	 *	\return The standard string with the value of the SnowEngine string.
 	 *	
@@ -239,7 +226,7 @@ public:
 	/**
 	 *	\~english
 	 *	\brief The length of the string
-	 *
+	 *	
 	 *	Allows to get number of characters in the string.
 	 *	\return The length of the string.
 	 *	
@@ -254,7 +241,7 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Checks whether the string is empty
-	 *
+	 *	
 	 *	Checks whether the string has no characters.
 	 *	\return `true` if the string has no characters, `false` otherwise.
 	 *	
@@ -262,14 +249,14 @@ public:
 	 *	\brief Проверяет, пуста ли строка
 	 *	
 	 *	Проверяет, не содержит ли массив никаких символов.
-	 *	\return `true`, если массив нет содержит никаких символов; иначе `false`.
+	 *	\return `true`, если строка нет содержит никаких символов; иначе `false`.
 	 */
 	bool is_empty() const noexcept;
 
 	/**
 	 *	\~english
 	 *	\brief Clears the string
-	 *
+	 *	
 	 *	Removes all of the characters in the string.
 	 *	
 	 *	\~russian
@@ -284,7 +271,7 @@ public:
 	 *	\brief Frees the memory that is not used by the string
 	 *	
 	 *	Frees unused memory and decreases memory usage.
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Освобождает память, которая не используется строкой
 	 *	
@@ -295,7 +282,7 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Adds a new character
-	 *
+	 *	
 	 *	Inserts a new character into the end of the string.
 	 *	\param ch The character that will be added.
 	 *	\return The reference to itself.
@@ -328,16 +315,16 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Adds a new character in the specified position
-	 *
+	 *	
 	 *	Inserts the passed character in the specified position of the string.
 	 *	\param ch The character that will be added.
 	 *	\param pos Index that the inserted character will have.
 	 *	\return The reference to itself.
 	 *	\throw std::range_error The index is out of bounds (`pos < 0` or `pos > size()`).
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Добавляет новый символ в укзанное место
-	 *
+	 *	
 	 *	Вставляет новый символ в указанное место строки.
 	 *	\param ch Символ, который будет добавлен.
 	 *	\param pos Индекс, который вставленный символ будет иметь.
@@ -349,16 +336,16 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Adds characters of the passed string in the specified position
-	 *
+	 *	
 	 *	Inserts the passed string into the specified position of the string.
 	 *	\param string The string that will be added.
 	 *	\param pos Index that the first character of the inserted string will have.
 	 *	\return The reference to itself.
 	 *	\throw std::range_error The index is out of bounds (`pos < 0` or `pos > size()`).
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Добавляет символы переданной строки в указанное место
-	 *
+	 *	
 	 *	Вставляет переданную строку в указанное место строки.
 	 *	\param string Строка, которая будет добавлена.
 	 *	\param pos Индекс, который будет иметь первый символ вставленной строки.
@@ -390,7 +377,7 @@ public:
 	 *	\~english
 	 *	\brief Removes characters in the specified range
 	 *	
-	 *	Removes the specified substring.
+	 *	Removes the specified substring — \f$[from, to)\f$.
 	 *	\param from The index of the first character that will be removed.
 	 *	\param to The index of the first character after the removed range.
 	 *	\return The reference to itself.
@@ -399,7 +386,7 @@ public:
 	 *	\~russian
 	 *	\brief Удаляет символы в заданном диапазоне
 	 *	
-	 *	Удаляет заданную подстроку.
+	 *	Удаляет заданную подстроку — \f$[from, to)\f$.
 	 *	\param from Индекс первого символа, который будет удалён.
 	 *	\param to Индекс первого символа после удаляемого диапазона.
 	 *	\return Ссылка на себя.
@@ -419,6 +406,8 @@ public:
 	 *	contain a point (an exception will be thrown otherwise).
 	 *	\return A resultant integer.
 	 *	\throw std::invalid_argument The string content is not an integer.
+	 *	\sa
+	 *	- `to_int()`, `to_double()`, `to_bool()`
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует строку в `long long`
@@ -431,6 +420,8 @@ public:
 	 *	содержать точку (иначе будет выброшено исключение).
 	 *	\return Получившееся целое число.
 	 *	\throw std::invalid_argument Содержимое строки не является целым числом.
+	 *	\sa
+	 *	- `to_int()`, `to_double()`, `to_bool()`
 	 */
 	template<int base = 10>
 	long long to_long_long(bool allow_point = true) const;
@@ -447,6 +438,8 @@ public:
 	 *	contain a point (an exception will be thrown otherwise).
 	 *	\return A resultant integer.
 	 *	\throw std::invalid_argument The string content is not an integer.
+	 *	\sa
+	 *	- `to_long_long()`, `to_double()`, `to_bool()`
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует строку в `int`
@@ -459,6 +452,8 @@ public:
 	 *	содержать точку (иначе будет выброшено исключение).
 	 *	\return Получившееся целое число.
 	 *	\throw std::invalid_argument Содержимое строки не является целым числом.
+	 *	\sa
+	 *	- `to_long_long()`, `to_double()`, `to_bool()`
 	 */
 	template<int base = 10>
 	int to_int(bool allow_point = true) const;
@@ -471,6 +466,8 @@ public:
 	 *	by a point or a comma.
 	 *	\return A resultant double.
 	 *	\throw std::invalid_argument The string content is not a double.
+	 *	\sa
+	 *	- `to_long_long()`, `to_int()`, `to_bool()`
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует строку в `double`
@@ -479,6 +476,8 @@ public:
 	 *	точкой, либо запятой.
 	 *	\return Получившееся вещественное число.
 	 *	\throw std::invalid_argument Содержимое строки не является вещественным числом.
+	 *	\sa
+	 *	- `to_long_long()`, `to_int()`, `to_bool()`
 	 */
 	double to_double() const;
 
@@ -495,14 +494,14 @@ public:
 	 *	casted to boolean and returned.
 	 *	1. `true` is returned otherwise.
 	 *	The method is not case sensitive.
-	 *
 	 *	true values | false values
 	 *	------------|-------------
 	 *	`"true"`    | `"false"`
 	 *	`"t"`       | `"f"`
 	 *	`"1"`       | `"0"`
-	 *
 	 *	\return A resultant boolean.
+	 *	\sa
+	 *	- `to_long_long()`, `to_int()`, `to_double()`
 	 *
 	 *	\~russian
 	 *	\brief Конвертирует строку в `bool`
@@ -515,14 +514,14 @@ public:
 	 *	`to_double()`. Его результат приводится к булевому значению и возвращается.
 	 *	1. Иначе возвращается `true`.
 	 *	Метод не чувствителен к регистру.
-	 *
 	 *	истинные значения | ложные значения
 	 *	------------------|----------------
 	 *	`"true"`          | `"false"`
 	 *	`"t"`             | `"f"`
 	 *	`"1"`             | `"0"`
-	 *
 	 *	\return Получившееся булево значение.
+	 *	\sa
+	 *	- `to_long_long()`, `to_int()`, `to_double()`
 	 */
 	bool to_bool() const;
 
@@ -533,7 +532,10 @@ public:
 	 *	Compares characters of the string with the passed one starting from the beginning. If a
 	 *	match is found, returns its index.
 	 *	\param ch The desired character.
+	 *	\param case_sensivity Whether the method is case sensitive.
 	 *	\return An index of the first match; a negative value if no match has been found.
+	 *	\sa
+	 *	- `find_last()`
 	 *
 	 *	\~russian
 	 *	\brief Находит первый символ, который равен переданному
@@ -541,9 +543,12 @@ public:
 	 *	Сравнивает символы строки с переданным, начиная с начала. Если совпадение найдено,
 	 *	возвращает его индекс.
 	 *	\param ch Искомый символ.
+	 *	\param case_sensivity Является ли метод чувствительным к регистру.
 	 *	\return Индекс первого совпадения; отрицательное значение, если совпадения найдено не было.
+	 *	\sa
+	 *	- `find_last()`
 	 */
-	int find_first(wchar_t ch) const noexcept;
+	int find_first(wchar_t ch, bool case_sensivity = true) const noexcept;
 
 	/**
 	 *	\~english
@@ -552,7 +557,10 @@ public:
 	 *	Compares characters of the string with the passed one starting from the end. If a match
 	 *	is found, returns its index.
 	 *	\param ch The desired character.
+	 *	\param case_sensivity Whether the method is case sensitive.
 	 *	\return An index of the last match; a negative value if no match has been found.
+	 *	\sa
+	 *	- `find_first()`
 	 *
 	 *	\~russian
 	 *	\brief Находит последний символ, который равен переданному
@@ -560,10 +568,13 @@ public:
 	 *	Сравнивает символы строки с переданным, начиная с конца. Если совпадение найдено,
 	 *	возвращает его индекс.
 	 *	\param ch Искомый символ.
+	 *	\param case_sensivity Является ли метод чувствительным к регистру.
 	 *	\return Индекс последнего совпадения; отрицательное значение, если совпадения найдено не
 	 *	было.
+	 *	\sa
+	 *	- `find_first()`
 	 */
-	int find_last(wchar_t ch) const noexcept;
+	int find_last(wchar_t ch, bool case_sensivity = true) const noexcept;
 
 	/**
 	 *	\~english
@@ -572,8 +583,11 @@ public:
 	 *	Scans the string. If it contains the passed string as substring, return an index of the
 	 *	first occurrence.
 	 *	\param string The desired substring.
+	 *	\param case_sensivity Whether the method is case sensitive.
 	 *	\return An index of the first character of the first occurrence of the substring; a
 	 *	negative value if no match has been found or the passed string is empty.
+	 *	\sa
+	 *	- `find_last()`
 	 *
 	 *	\~russian
 	 *	\brief Находит первое вхождение переданной строки
@@ -581,10 +595,13 @@ public:
 	 *	Сканирует строку. Если она содержит переданную строку в качестве подстроки; возвращает
 	 *	индекс первого вхождения.
 	 *	\param string Искомая подстрока.
+	 *	\param case_sensivity Является ли метод чувствительным к регистру.
 	 *	\return Индекс первого символа первого совпадения; отрицательное значение, если совпадений
 	 *	найдено не было или переданная строка пуста.
+	 *	\sa
+	 *	- `find_last()`
 	 */
-	int find_first(const String& string) const noexcept;
+	int find_first(const String& string, bool case_sensivity = true) const noexcept;
 
 	/**
 	 *	\~english
@@ -593,8 +610,11 @@ public:
 	 *	Scans the string. If it contains the passed string as substring, return an index of the
 	 *	last occurrence.
 	 *	\param string The desired substring.
+	 *	\param case_sensivity Whether the method is case sensitive.
 	 *	\return An index of the first character of the last occurrence of the substring; a
 	 *	negative value if no match has been found or the passed string is empty.
+	 *	\sa
+	 *	- `find_first()`
 	 *
 	 *	\~russian
 	 *	\brief Находит последнее вхождение переданной строки
@@ -602,10 +622,13 @@ public:
 	 *	Сканирует строку. Если она содержит переданную строку в качестве подстроки; возвращает
 	 *	индекс последнего вхождения.
 	 *	\param string Искомая подстрока.
+	 *	\param case_sensivity Является ли метод чувствительным к регистру.
 	 *	\return Индекс первого символа последнего совпадения; отрицательное значение, если
 	 *	совпадений найдено не было или переданная строка пуста.
+	 *	\sa
+	 *	- `find_first()`
 	 */
-	int find_last(const String& string) const noexcept;
+	int find_last(const String& string, bool case_sensivity = true) const noexcept;
 
 	/**
 	 *	\~english
@@ -613,6 +636,7 @@ public:
 	 *
 	 *	Checks whether the string has a character that is equal to the passed one.
 	 *	\param ch The desired character.
+	 *	\param case_sensivity Whether the method is case sensitive.
 	 *	\return `true` if the string contains the passed character, `false` otherwise.
 	 *
 	 *	\~russian
@@ -620,9 +644,10 @@ public:
 	 *
 	 *	Проверяет, содержит ли строка символ, равный переданному.
 	 *	\param ch Искомый символ.
+	 *	\param case_sensivity Является ли метод чувствительным к регистру.
 	 *	\return `true`, если строка содержит переданный символ, иначе `false`.
 	 */
-	bool contains(wchar_t ch) const noexcept;
+	bool contains(wchar_t ch, bool case_sensivity = true) const noexcept;
 
 	/**
 	 *	\~english
@@ -631,6 +656,7 @@ public:
 	 *	Checks whether the string has a substring that is equal to the passed one. It is supposed
 	 *	that the empty string is not contained by any string.
 	 *	\param string The desired substring.
+	 *	\param case_sensivity Whether the method is case sensitive.
 	 *	\return `true` if the string contains the passed substring, `false` otherwise.
 	 *
 	 *	\~russian
@@ -639,9 +665,10 @@ public:
 	 *	Проверяет, содержит ли строка подстроку, равную переданной. Предполагается, что пустая
 	 *	строка не содержится ни в какой строка.
 	 *	\param string Искомая подстрока.
+	 *	\param case_sensivity Является ли метод чувствительным к регистру.
 	 *	\return `true`, если строка содержит переданную подстроку, иначе `false`.
 	 */
-	bool contains(const String& string) const noexcept;
+	bool contains(const String& string, bool case_sensivity = true) const noexcept;
 
 	/**
 	 *	\~english
@@ -649,6 +676,7 @@ public:
 	 *	
 	 *	Counts characters that are equal to the passed one.
 	 *	\param ch The desired character.
+	 *	\param case_sensivity Whether the method is case sensitive.
 	 *	\return Number of matches.
 	 *	
 	 *	\~russian
@@ -656,9 +684,10 @@ public:
 	 *	
 	 *	Подсчитывает символы, равные переданному.
 	 *	\param ch Требуемый символ.
+	 *	\param case_sensivity Является ли метод чувствительным к регистру.
 	 *	\return Количество совпадений.
 	 */
-	int count(wchar_t ch) const noexcept;
+	int count(wchar_t ch, bool case_sensivity = true) const noexcept;
 
 	/**
 	 *	\~english
@@ -674,6 +703,7 @@ public:
 	 *	\endcode
 	 *	It is supposed that the empty string is not contained by any string.
 	 *	\param string The desired substring.
+	 *	\param case_sensivity Whether the method is case sensitive.
 	 *	\return A number of occurrences.
 	 *
 	 *	\~russian
@@ -689,46 +719,47 @@ public:
 	 *	\endcode
 	 *	Предполагается, что пустая строка не содержится ни в какой строка.
 	 *	\param string Искомая подстрока.
+	 *	\param case_sensivity Является ли метод чувствительным к регистру.
 	 *	\return Число вхождений.
 	 */
-	int count(const String& string) const noexcept;
+	int count(const String& string, bool case_sensivity = true) const noexcept;
 	
 	/**
 	 *	\~english
 	 *	\brief The substring of the string
-	 *
+	 *	
 	 *	Allows to get the substring.
 	 *	\code
 	 *		String str = L"012345";
-	 *
+	 *		
 	 *		str.substring(1, 4);  // == L"123"_s
 	 *		str.substring(4, 5);  // == L"4"_s
 	 *		str.substring(4, 6);  // == L"45"_s
-	 *
-	 *	//	str.substring(-1, 4); // Error (std::invalid_argument)
-	 *	//	str.substring(4, 6);  // Error (std::invalid_argument)
-	 *	//	str.substring(4, 2);  // Error (std::invalid_argument)
+	 *		
+	 *		str.substring(-1, 4); // Error (std::invalid_argument)
+	 *		str.substring(4, 6);  // Error (std::invalid_argument)
+	 *		str.substring(4, 2);  // Error (std::invalid_argument)
 	 *	\endcode
 	 *	\param from The index of the first character of the substring.
 	 *	\param to The index of the first character after the substring (the last character of the
 	 *	substring has index `to - 1`).
 	 *	\return The desired substring.
 	 *	\throw std::invalid_argument The passed range is invalid (e. g. `from > to`).
-	 *
+	 *	
 	 *	\~russian
 	 *	\brief Подстрока строки
-	 *
+	 *	
 	 *	Позволяет получить подстроку.
 	 *	\code
 	 *		String str = L"012345";
-	 *
+	 *		
 	 *		str.substring(1, 4);  // == L"123"_s
 	 *		str.substring(4, 5);  // == L"4"_s
 	 *		str.substring(4, 6);  // == L"45"_s
-	 *
-	 *	//	str.substring(-1, 4); // Ошибка (std::invalid_argument)
-	 *	//	str.substring(4, 6);  // Ошибка (std::invalid_argument)
-	 *	//	str.substring(4, 2);  // Ошибка (std::invalid_argument)
+	 *	
+	 *		str.substring(-1, 4); // Ошибка (std::invalid_argument)
+	 *		str.substring(4, 6);  // Ошибка (std::invalid_argument)
+	 *		str.substring(4, 2);  // Ошибка (std::invalid_argument)
 	 *	\endcode
 	 *	\param from Индекс первого символа подстроки
 	 *	\param to Индекс первого символа после подстроки (последний символ подстроки имеет индекс
@@ -828,34 +859,36 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Replace special characters with their escape codes
+	 *	\brief Replaces special characters with their escape codes
 	 *	
 	 *	Creates a new string based on this one. Replaces all the characters contained in the table
 	 *	below with their escase sequences.
 	 *	Sequence | Символ
 	 *	---------|----------------
-	 *	`\\'`    | `'`
-	 *	`\\"`    | `"`
-	 *	`\\\\`   | `\\`
-	 *	`\\a`    | Audible bell
-	 *	`\\b`    | Backspace
-	 *	`\\f`    | Form feed
-	 *	`\\n`    | Line feed
-	 *	`\\r`    | Carriage return
-	 *	`\\t`    | Horizontal tab
-	 *	`\\v`    | Vertical tab
+	 *	`\&apos;`| `&apos;`
+	 *	`\&quot;`| `&quot;`
+	 *	`\\`     | `\`
+	 *	`\a`     | Audible bell
+	 *	`\b`     | Backspace
+	 *	`\f`     | Form feed
+	 *	`\n`     | Line feed
+	 *	`\r`     | Carriage return
+	 *	`\t`     | Horizontal tab
+	 *	`\v`     | Vertical tab
 	 *	\return The string with replacements completed.
+	 *	\sa
+	 *	- `unescape()`
 	 *	
 	 *	\~russian
-	 *	\brief Заменить специальные символы на их управляющие последовательности
+	 *	\brief Заменяет специальные символы на их управляющие последовательности
 	 *	
 	 *	Создаёт новую строку на основе данной. Заменяет на соответствующие управляющие
 	 *	последовательности все символы, содержащиеся в таблице ниже.
 	 *	Последовательность | Символ
 	 *	-------------------|-------------------------
-	 *	`\\'`              | `'`
-	 *	`\\"`              | `"`
-	 *	`\\\\`             | `\\`
+	 *	`\&apos;`          | `&apos;`
+	 *	`\&quot;`          | `&quot;`
+	 *	`\\`               | `\`
 	 *	`\\a`              | Звуковой сигнал
 	 *	`\\b`              | Забой
 	 *	`\\f`              | Новая страница
@@ -864,40 +897,44 @@ public:
 	 *	`\\t`              | Горизонтальная табуляция
 	 *	`\\v`              | Вертикальная табуляция
 	 *	\return Строка с выполненными заменами.
+	 *	\sa
+	 *	- `unescape()`
 	 */
 	String escape() const;
 
 	/**
 	 *	\~english
-	 *	\brief Replace the escape codes with corresponding characters
+	 *	\brief Replaces the escape codes with corresponding characters
 	 *
-	 *	Creates a new string based on this one. Replaces all escape sequences starting with `\\`
+	 *	Creates a new string based on this one. Replaces all escape sequences starting with `\`
 	 *	with corresponding characters according to the table below.
 	 *	Sequence | Символ
 	 *	---------|------------------------------------------
-	 *	`\\'`    | `'`
-	 *	`\\"`    | `"`
-	 *	`\\\\`   | `\\`
-	 *	`\\a`    | Audible bell
-	 *	`\\b`    | Backspace
-	 *	`\\f`    | Form feed
-	 *	`\\n`    | Line feed
-	 *	`\\r`    | Carriage return
-	 *	`\\t`    | Horizontal tab
-	 *	`\\v`    | Vertical tab
-	 *	`\\<…>`  | `<…>`, where `<…>` is any other character
+	 *	`\&apos;`| `&apos;`
+	 *	`\&quot;`| `&quot;`
+	 *	`\\`     | `\`
+	 *	`\a`     | Audible bell
+	 *	`\b`     | Backspace
+	 *	`\f`     | Form feed
+	 *	`\n`     | Line feed
+	 *	`\r`     | Carriage return
+	 *	`\t`     | Horizontal tab
+	 *	`\v`     | Vertical tab
+	 *	`\<…>`   | `<…>`, where `<…>` is any other character
 	 *	\return The string with replacements completed.
+	 *	\sa
+	 *	- `escape()`
 	 *
 	 *	\~russian
-	 *	\brief Заменить управляющие последовательности на соответствующие символы
+	 *	\brief Заменяет управляющие последовательности на соответствующие символы
 	 *
 	 *	Создаёт новую строку на основе данной. Заменяет все управляющие последовательности,
-	 *	начинающиеся с `\\`, на соответствующие символы в соответствии с таблицей ниже.
+	 *	начинающиеся с `\`, на соответствующие символы в соответствии с таблицей ниже.
 	 *	Последовательность | Символ
 	 *	-------------------|---------------------------------------
-	 *	`\\'`              | `'`
-	 *	`\\"`              | `"`
-	 *	`\\\\`             | `\\`
+	 *	`\&apos;`          | `&apos;`
+	 *	`\&quot;`          | `&quot;`
+	 *	`\\`               | `\`
 	 *	`\\a`              | Звуковой сигнал
 	 *	`\\b`              | Забой
 	 *	`\\f`              | Новая страница
@@ -907,6 +944,8 @@ public:
 	 *	`\\v`              | Вертикальная табуляция
 	 *	`\\<…>`            | `<…>`, где `<…>` — любой другой символ
 	 *	\return Строка с выполненными заменами.
+	 *	\sa
+	 *	- `escape()`
 	 */
 	String unescape() const;
 
@@ -917,6 +956,8 @@ public:
 	 *	Checks if every character of the string is a number:
 	 *	- `0123456789`
 	 *	\return `true` if the string contains nothing but numbers, `false` otherwise.
+	 *	\sa
+	 *	- `is_alpha()`, `is_asbuk()`, `is_space()`
 	 *	
 	 *	\~russian
 	 *	\brief Содержит ли строка только цифры
@@ -924,6 +965,8 @@ public:
 	 *	Проверяет, является ли каждый символ строки цифрой:
 	 *	- `0123456789`
 	 *	\return `true`, если строка не содержит ничего, кроме цифр, иначе `false`.
+	 *	\sa
+	 *	- `is_alpha()`, `is_asbuk()`, `is_space()`
 	 */
 	bool is_num() const;
 
@@ -935,6 +978,8 @@ public:
 	 *	- `0123456789`
 	 *	\param c The character to check.
 	 *	\return `true` if the character is a number, `false` otherwise.
+	 *	\sa
+	 *	- `is_alpha()`, `is_asbuka()`, `is_space()`
 	 *	
 	 *	\~russian
 	 *	\brief Является ли символ цифрой
@@ -943,6 +988,8 @@ public:
 	 *	- `0123456789`
 	 *	\param c Символ для проверки.
 	 *	\return `true`, если символ является цифрой, иначе `false`.
+	 *	\sa
+	 *	- `is_alpha()`, `is_asbuka()`, `is_space()`
 	 */
 	static bool is_num(wchar_t c);
 
@@ -954,6 +1001,8 @@ public:
 	 *	- `abcdefghijklmnopqrstuvwxyz`
 	 *	- `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
 	 *	\return `true` if the string contains nothing but latin letters, `false` otherwise.
+	 *	\sa
+	 *	- `is_num()`, `is_asbuka()`, `is_space()`
 	 *
 	 *	\~russian
 	 *	\brief Содержит ли строка только латинские буквы
@@ -962,6 +1011,8 @@ public:
 	 *	- `abcdefghijklmnopqrstuvwxyz`
 	 *	- `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
 	 *	\return `true`, если строка не содержит ничего, кроме латинских букв, иначе `false`.
+	 *	\sa
+	 *	- `is_num()`, `is_asbuka()`, `is_space()`
 	 */
 	bool is_alpha() const;
 
@@ -974,6 +1025,8 @@ public:
 	 *	- `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
 	 *	\param c The character to check.
 	 *	\return `true` if the character is a latin letter, `false` otherwise.
+	 *	\sa
+	 *	- `is_num()`, `is_asbuka()`, `is_space()`
 	 *
 	 *	\~russian
 	 *	\brief Является ли символ латинской буквой
@@ -983,6 +1036,8 @@ public:
 	 *	- `ABCDEFGHIJKLMNOPQRSTUVWXYZ`
 	 *	\param c Символ для проверки.
 	 *	\return `true`, если символ является латинской буквой, иначе `false`.
+	 *	\sa
+	 *	- `is_num()`, `is_asbuka()`, `is_space()`
 	 */
 	static bool is_alpha(wchar_t c);
 
@@ -994,6 +1049,8 @@ public:
 	 *	- `абвгдеёжзийклмнопрстуфхцчшщъыьэюя`
 	 *	- `АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ`
 	 *	\return `true` if the string contains nothing but cyrillic letters, `false` otherwise.
+	 *	\sa
+	 *	- `is_num()`, `is_alpha()`, `is_space()`
 	 *
 	 *	\~russian
 	 *	\brief Содержит ли строка только буквы кириллицы
@@ -1002,6 +1059,8 @@ public:
 	 *	- `абвгдеёжзийклмнопрстуфхцчшщъыьэюя`
 	 *	- `АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ`
 	 *	\return `true`, если строка не содержит ничего, кроме букв кириллицы, иначе `false`.
+	 *	\sa
+	 *	- `is_num()`, `is_alpha()`, `is_space()`
 	 */
 	bool is_asbuka() const;
 
@@ -1014,6 +1073,8 @@ public:
 	 *	- `АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ`
 	 *	\param c The character to check.
 	 *	\return `true` if the character is a cyrillic letter, `false` otherwise.
+	 *	\sa
+	 *	- `is_num()`, `is_alpha()`, `is_space()`
 	 *
 	 *	\~russian
 	 *	\brief Является ли символ буквой кириллицы
@@ -1023,6 +1084,8 @@ public:
 	 *	- `АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ`
 	 *	\param c Символ для проверки.
 	 *	\return `true`, если символ является буквой кириллицы, иначе `false`.
+	 *	\sa
+	 *	- `is_num()`, `is_alpha()`, `is_space()`
 	 */
 	static bool is_asbuka(wchar_t c);
 
@@ -1031,25 +1094,29 @@ public:
 	 *	\brief Whether the string only contains space characters
 	 *
 	 *	Checks if every character of the string is a space character:
-	 *	- ` `
-	 *	- `\\t`
-	 *	- `\\n`
-	 *	- `\\r`
-	 *	- `\\v`
-	 *	- `\\f`
+	 *	- ` ` (space)
+	 *	- `\t`
+	 *	- `\n`
+	 *	- `\r`
+	 *	- `\v`
+	 *	- `\f`
 	 *	\return `true` if the string contains nothing but space characters, `false` otherwise.
+	 *	\sa
+	 *	- `is_num()`, `is_alpha()`, `is_asbuka()`
 	 *
 	 *	\~russian
 	 *	\brief Содержит ли строка только пробельные символы
 	 *
 	 *	Проверяет, является ли каждый символ строки пробельным символом:
-	 *	- ` `
-	 *	- `\\t`
-	 *	- `\\n`
-	 *	- `\\r`
-	 *	- `\\v`
-	 *	- `\\f`
+	 *	- ` ` (пробел)
+	 *	- `\t`
+	 *	- `\n`
+	 *	- `\r`
+	 *	- `\v`
+	 *	- `\f`
 	 *	\return `true`, если строка не содержит ничего, кроме пробельных символов, иначе `false`.
+	 *	\sa
+	 *	- `is_num()`, `is_alpha()`, `is_asbuka()`
 	 */
 	bool is_space() const;
 
@@ -1058,27 +1125,31 @@ public:
 	 *	\brief Whether the character is a space character
 	 *
 	 *	Checks if the passed character is a space character:
-	 *	- ` `
-	 *	- `\\t`
-	 *	- `\\n`
-	 *	- `\\r`
-	 *	- `\\v`
-	 *	- `\\f`
+	 *	- ` ` (space)
+	 *	- `\t`
+	 *	- `\n`
+	 *	- `\r`
+	 *	- `\v`
+	 *	- `\f`
 	 *	\param c The character to check.
 	 *	\return `true` if the character is a space character, `false` otherwise.
+	 *	\sa
+	 *	- `is_num()`, `is_alpha()`, `is_asbuka()`
 	 *
 	 *	\~russian
 	 *	\brief Является ли символ пробельным символом
 	 *
 	 *	Проверяет, является ли символ пробельным символом:
-	 *	- ` `
-	 *	- `\\t`
-	 *	- `\\n`
-	 *	- `\\r`
-	 *	- `\\v`
-	 *	- `\\f`
+	 *	- ` ` (пробел)
+	 *	- `\t`
+	 *	- `\n`
+	 *	- `\r`
+	 *	- `\v`
+	 *	- `\f`
 	 *	\param c Символ для проверки.
 	 *	\return `true`, если символ является пробельным символом, иначе `false`.
+	 *	\sa
+	 *	- `is_num()`, `is_alpha()`, `is_asbuka()`
 	 */
 	static bool is_space(wchar_t c);
 
@@ -1086,8 +1157,8 @@ public:
 	 *	\~english
 	 *	\brief Lexicographical comparison of two strings
 	 *
-	 *	This method uses `std::wstring::compare` to compare two strings. Is a non-static analogue
-	 *	of `compare` method.
+	 *	This method uses `std::wstring::compare()` to compare two strings. Is a non-static analogue
+	 *	of `compare()` method.
 	 *	\param second The string to compare.
 	 *	\return A negative value, if this string appears before the passed one in lexicographical
 	 *	order; a positive value, if this string appears after the passed one; zero, if the strings
@@ -1096,8 +1167,8 @@ public:
 	 *	\~russian
 	 *	\brief Лексикографическое сравнение строк
 	 *
-	 *	Этот метод использует `std::wstring::compare` для сравнения двух строк. Это нестатический
-	 *	аналог метода `compare`.
+	 *	Этот метод использует `std::wstring::compare()` для сравнения двух строк. Это нестатический
+	 *	аналог метода `compare()`.
 	 *	\param second Строка для сравнения.
 	 *	\return Отрицательное значение, если данная строка находится перед переданной в
 	 *	лексикографическом порядке; положительное значение, если переданная строка находится перед
@@ -1109,22 +1180,26 @@ public:
 	 *	\~english
 	 *	\brief Lexicographical comparison of two strings
 	 *
-	 *	This method uses `std::wstring::compare` to compare two strings.
+	 *	This method uses `std::wstring::compare()` to compare two strings.
 	 *	\param first The first string to compare.
 	 *	\param second The second string to compare.
 	 *	\return A negative value, if the first string appears before the second one in
 	 *	lexicographical order; a positive value, if the first string appears after the second one;
 	 *	zero, if the strings are equal.
+	 *	\sa
+	 *	- `compare_to()`
 	 *
 	 *	\~russian
 	 *	\brief Лексикографическое сравнение строк
 	 *
-	 *	Этот метод использует `std::wstring::compare` для сравнения двух строк.
+	 *	Этот метод использует `std::wstring::compare()` для сравнения двух строк.
 	 *	\param first Первая строка для сравнения.
 	 *	\param second Вторая строка для сравнения.
 	 *	\return Отрицательное значение, если первая строка находится перед второй в
 	 *	лексикографическом порядке; положительное значение, если вторая строка находится перед
 	 *	первой; ноль, если строки равны.
+	 *	\sa
+	 *	- `compare_to()`
 	 */
 	static int compare(const String& first, const String& second) noexcept;
 
@@ -1132,7 +1207,7 @@ public:
 	 *	\~english
 	 *	\brief Formats the string by inserting into it the passed values
 	 *
-	 *	The principle of this method is similar to the `printf`. Is a non-static analogue of the
+	 *	The principle of this method is similar to the `printf()`. Is a non-static analogue of the
 	 *	`format` method; you can find more details in its documentation.
 	 *	\tparam Args The types of the arguments.
 	 *	\param args The values that will be inserted in the string.
@@ -1141,8 +1216,8 @@ public:
 	 *	\~russian
 	 *	\brief Форматирует строку, вставляя в неё переданные значения
 	 *
-	 *	Принцип этого метода схож с `printf`. Это нестатический аналог метода `format`; вы можете
-	 *	найти более подробную информацию в его документации.
+	 *	Принцип этого метода схож с `printf()`. Это нестатический аналог метода `format()`; вы
+	 *	можете найти более подробную информацию в его документации.
 	 *	\tparam Args Типы аргументов.
 	 *	\param args Значения, которые будут вставлены в строку.
 	 *	\return Форматированная строка.
@@ -1158,16 +1233,16 @@ public:
 	 *	sequences starting with `%` and replaces them with the passed values according to the table
 	 *	below.
 	 *
-	 *	Sequence     | Is replaced with
-	 *	-------------|------------------
-	 *	`%%`         | `%`.
-	 *	`%b`         | The integer in binary representation.
-	 *	`%c`         | The character (`wchar_t` type).
-	 *	`%d` or `%i` | The integer in decimal representation.
-	 *	`%f`         | The real number.
-	 *	`%h`         | The integer in hexadecimal representation.
-	 *	`%o`         | The integer in octal representation.
-	 *	`%s`         | The string (`snow::String` type).
+	 *	Sequence   | Is replaced with
+	 *	-----------|-------------------------------------------
+	 *	%%         | \%
+	 *	\%b        | The integer in binary representation
+	 *	\%c        | The character (`wchar_t` type)
+	 *	\%d or \%i | The integer in decimal representation
+	 *	\%f        | The real number
+	 *	\%h        | The integer in hexadecimal representation
+	 *	\%o        | The integer in octal representation
+	 *	\%s        | The string (`snow::String` type)
 	 *
 	 *	After percent sign there may be a number. It defines how many positions will be allocated
 	 *	for the value. In this case the value will be right-aligned. Empty positions will be
@@ -1182,7 +1257,7 @@ public:
 	 *		str1 == L"Hello, world! I want to tell you, hi."_s;
 	 *
 	 *		String str2 =
-	 *			String::format(L"Player name: %s. Health: %f/%d. Score: %04d"_s, L"player", 56.3f, 100, 19);
+	 *			String::format(L"Player name: %s. Health: %f/%d. Score: %04d"_s, L"player", 56.3, 100, 19);
 	 *		str2 == L"Player name: player. Health: 56.3/100. Score: 0019";
 	 *
 	 *		String str3 =
@@ -1208,15 +1283,15 @@ public:
 	 *	на `%`, и заменяет их на переданные значения в соответствии с таблицей ниже.
 	 *
 	 *	Последовательность | Заменяется на
-	 *	-------------------|---------------
-	 *	`%%`               | `%`.
-	 *	`%b`               | Целое число в двоичной записи.
-	 *	`%c`               | Символ (тип `wchar_t`).
-	 *	`%d` or `%i`       | Целое число в десятичной записи.
-	 *	`%f`               | Вещественное число.
-	 *	`%h`               | Целое число в шестнадцатеричной записи.
-	 *	`%o`               | Целое число в восьмеричной записи.
-	 *	`%s`               | Строка (тип `snow::String`).
+	 *	-------------------|----------------------------------------
+	 *	%%                 | \%
+	 *	\%b                | Целое число в двоичной записи
+	 *	\%c                | Символ (тип `wchar_t`)
+	 *	\%d or \%i         | Целое число в десятичной записи
+	 *	\%f                | Вещественное число
+	 *	\%h                | Целое число в шестнадцатеричной записи
+	 *	\%o                | Целое число в восьмеричной записи
+	 *	\%s                | Строка (тип `snow::String`)
 	 *
 	 *	После знака процента может находиться число. Оно определяет, сколько позиций будет выделено
 	 *	для значения. В этом случае значение будет выровнено по правому краю. Пустые позиции будут
@@ -1231,7 +1306,7 @@ public:
 	 *		str1 == L"Здравствуй, мир! Я хочу сказать тебе «привет»."_s;
 	 *
 	 *		String str2 =
-	 *			String::format(L"Имя игрока: %s. Здоровье: %f/%d. Очки: %04d"_s, L"player", 56.3f, 100, 19);
+	 *			String::format(L"Имя игрока: %s. Здоровье: %f/%d. Очки: %04d"_s, L"player", 56.3, 100, 19);
 	 *		str2 == L"Имя игрока: player. Здоровье: 56.3/100. Оски: 0019";
 	 *
 	 *		String str3 =
@@ -1628,7 +1703,7 @@ public:
 	 *		String str;
 	 *		wchar_t c;
 	 *		// ...
-	 *		str += c;   // These two strings
+	 *		str += c;   // These two lines
 	 *		str.add(c); //   do the same
 	 *	\endcode
 	 *	\param ch The character that will be added.
@@ -1637,7 +1712,7 @@ public:
 	 *	\~russian
 	 *	\brief Добавляет к себе переданный символ
 	 *
-	 *	Добавляет переданный символ в конец строки (метод `add` делает то же самое):
+	 *	Добавляет переданный символ в конец строки (метод `add()` делает то же самое):
 	 *	\code
 	 *		String str;
 	 *		wchar_t c;
@@ -1654,12 +1729,12 @@ public:
 	 *	\~english
 	 *	\brief Adds the passed string to itself
 	 *
-	 *	Adds the passed string to the end of this one (`add` method does the same):
+	 *	Adds the passed string to the end of this one (`add()` method does the same):
 	 *	\code
 	 *		String str;
 	 *		const wchar_t* c = L"Hello SnowEngine!";
 	 *		// ...
-	 *		str += c;   // These two strings
+	 *		str += c;   // These two lines
 	 *		str.add(c); //   do the same
 	 *	\endcode
 	 *	\param ch The string that will be added.
@@ -1668,7 +1743,7 @@ public:
 	 *	\~russian
 	 *	\brief Добавляет к себе переданную строку
 	 *
-	 *	Добавляет переданную строку в конец данной (метод `add` делает то же самое):
+	 *	Добавляет переданную строку в конец данной (метод `add()` делает то же самое):
 	 *	\code
 	 *		String str;
 	 *		const wchar_t* c = L"Hello SnowEngine!";
@@ -1685,12 +1760,12 @@ public:
 	 *	\~english
 	 *	\brief Adds the passed string to itself
 	 *
-	 *	Adds the passed string to the end of this one (`add` method does the same):
+	 *	Adds the passed string to the end of this one (`add()` method does the same):
 	 *	\code
 	 *		String str;
 	 *		std::wstring s;
 	 *		// ...
-	 *		str += c;   // These two strings
+	 *		str += c;   // These two lines
 	 *		str.add(c); //   do the same
 	 *	\endcode
 	 *	\param string The string that will be added.
@@ -1699,7 +1774,7 @@ public:
 	 *	\~russian
 	 *	\brief Добавляет к себе переданную строку
 	 *
-	 *	Добавляет переданную строку в конец данной (метод `add` делает то же самое):
+	 *	Добавляет переданную строку в конец данной (метод `add()` делает то же самое):
 	 *	\code
 	 *		String str;
 	 *		std::wstring s;
@@ -1716,12 +1791,12 @@ public:
 	 *	\~english
 	 *	\brief Adds the passed string to itself
 	 *
-	 *	Adds the passed string to the end of this one (`add` method does the same):
+	 *	Adds the passed string to the end of this one (`add()` method does the same):
 	 *	\code
 	 *		String str1;
 	 *		String str2;
 	 *		// ...
-	 *		str1 += str2;   // These two strings
+	 *		str1 += str2;   // These two lines
 	 *		str1.add(str2); //   do the same
 	 *	\endcode
 	 *	\param string The string that will be added.
@@ -1730,7 +1805,7 @@ public:
 	 *	\~russian
 	 *	\brief Добавляет к себе переданную строку
 	 *
-	 *	Добавляет переданную строку в конец данной (метод `add` делает то же самое):
+	 *	Добавляет переданную строку в конец данной (метод `add()` делает то же самое):
 	 *	\code
 	 *		String str1;
 	 *		String str2;
@@ -1900,7 +1975,7 @@ public:
 	 *	\~english
 	 *	\brief Lexicographical comparison of two strings
 	 *
-	 *	This method uses `compare` to compare two strings.
+	 *	This method uses `compare()` to compare two strings.
 	 *	\param String The string to compare.
 	 *	\return `true` if the passed string appears after this one in lexicographical order,
 	 *	`false` otherwise or if the strings are equal.
@@ -1908,7 +1983,7 @@ public:
 	 *	\~russian
 	 *	\brief Лексикографическое сравнение строк
 	 *
-	 *	Этот метод использует `compare` для сравнения двух строк.
+	 *	Этот метод использует `compare()` для сравнения двух строк.
 	 *	\param string Строка для сравнения.
 	 *	\return `true`, если переданная строка находится после данной в лексикографическом порядке,
 	 *	иначе (или если строки равны) `false`.
@@ -1919,7 +1994,7 @@ public:
 	 *	\~english
 	 *	\brief Lexicographical comparison of two strings
 	 *
-	 *	This method uses `compare` to compare two strings.
+	 *	This method uses `compare()` to compare two strings.
 	 *	\param String The string to compare.
 	 *	\return `true` if the passed string appears before this one in lexicographical order,
 	 *	`false` otherwise or if the strings are equal.
@@ -1927,7 +2002,7 @@ public:
 	 *	\~russian
 	 *	\brief Лексикографическое сравнение строк
 	 *
-	 *	Этот метод использует `compare` для сравнения двух строк.
+	 *	Этот метод использует `compare()` для сравнения двух строк.
 	 *	\param string Строка для сравнения.
 	 *	\return `true`, если переданная строка находится перед данной в лексикографическом порядке,
 	 *	иначе (или если строки равны) `false`.
@@ -1938,7 +2013,7 @@ public:
 	 *	\~english
 	 *	\brief Lexicographical comparison of two strings
 	 *
-	 *	This method uses `compare` to compare two strings.
+	 *	This method uses `compare()` to compare two strings.
 	 *	\param String The string to compare.
 	 *	\return `true` if the passed string appears after this one in lexicographical order or if
 	 *	the strings are equal, `false` otherwise.
@@ -1946,7 +2021,7 @@ public:
 	 *	\~russian
 	 *	\brief Лексикографическое сравнение строк
 	 *
-	 *	Этот метод использует `compare` для сравнения двух строк.
+	 *	Этот метод использует `compare()` для сравнения двух строк.
 	 *	\param string Строка для сравнения.
 	 *	\return `true`, если переданная строка находится после данной в лексикографическом порядке
 	 *	или если строки равны, иначе `false`.
@@ -1958,7 +2033,7 @@ public:
 	 *	\~english
 	 *	\brief Lexicographical comparison of two strings
 	 *
-	 *	This method uses `compare` to compare two strings.
+	 *	This method uses `compare()` to compare two strings.
 	 *	\param String The string to compare.
 	 *	\return `true` if the passed string appears before this one in lexicographical order or if
 	 *	the strings are equal, `false` otherwise.
@@ -1966,7 +2041,7 @@ public:
 	 *	\~russian
 	 *	\brief Лексикографическое сравнение строк
 	 *
-	 *	Этот метод использует `compare` для сравнения двух строк.
+	 *	Этот метод использует `compare()` для сравнения двух строк.
 	 *	\param string Строка для сравнения.
 	 *	\return `true`, если переданная строка находится перед данной в лексикографическом порядке
 	 *	или если строки равны, иначе `false`.
@@ -2042,7 +2117,7 @@ public:
 	 *	
 	 *	Can be used to create a SnowEngine string:
 	 *	\code
-	 *		// These two string do the same:
+	 *		// These two lines do the same:
 	 *		String::format(String(L"Hello %s!"), String(L"SnowEngine"));
 	 *		String::format(L"Hello %s!"_s, L"SnowEngine"_s);
 	 *	\endcode
@@ -2065,6 +2140,9 @@ public:
 
 private:
 	std::wstring string_;
+
+	template<typename T, int base>
+	static T to_number_(const std::wstring& string, bool allow_point);
 };
 
 // I don't know why, but it doesn't work without these four strings...
@@ -2075,17 +2153,38 @@ String operator*(int value, const String& string);
 
 String operator""_s(const wchar_t* string, std::size_t length);
 
+}
+
 
 		/* DEFINITIONS */
 
-namespace
+		/* String: public */
+
+template<int base>
+long long String::to_long_long(bool allow_point) const
 {
+	return to_number_<long long, base>(string_, allow_point);
+}
+
+template<int base>
+int String::to_int(bool allow_point) const
+{
+	return to_number_<int, base>(string_, allow_point);
+}
+
+template<typename... Args>
+String String::formatted(Args... args) const
+{
+	return format(*this, args...);
+}
+
+		/* String: private */
 
 // string is supposed to be uppercase
 // allow_point: if false and the string contains a point, the exception is thrown
 // base is the base of the numeral system
 template<typename T, int base>
-T to_number_(const std::wstring& string, bool allow_point)
+T snow::String::to_number_(const std::wstring& string, bool allow_point)
 {
 	static_assert(std::is_integral<T>::value || std::is_same<T, double>::value, "The wrong return type of to_number_() function");
 	static_assert(base >= 2 && base <= 36, "The base of numeral system must be between 2 and 36");
@@ -2187,28 +2286,6 @@ T to_number_(const std::wstring& string, bool allow_point)
 		return static_cast<T>(int_result);
 	}
 	return static_cast<double>(int_result) + double_result / ten_pow_after_point;
-}
-
-}
-
-template<int base>
-long long String::to_long_long(bool allow_point) const
-{
-	return to_number_<long long, base>(string_, allow_point);
-}
-
-template<int base>
-int String::to_int(bool allow_point) const
-{
-	return to_number_<int, base>(string_, allow_point);
-}
-
-template<typename... Args>
-String String::formatted(Args... args) const
-{
-	return format(*this, args...);
-}
-
 }
 
 using snow::operator""_s;

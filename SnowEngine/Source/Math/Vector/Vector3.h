@@ -6,23 +6,15 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Vector3` class
- *	
- *	This file contains the definition of the `Vector3` class.
- *	
- *	\~russian
- *	\brief Файл с классом `Vector3`
- *	
- *	Этот файл содержит определение класса `Vector3`.
- */
-
 #include "../../Object.h"
 
 namespace snow
 {
+
+/**
+ *	\addtogroup Math
+ *	\{
+ */
 
 class Vector2;
 class Point3;

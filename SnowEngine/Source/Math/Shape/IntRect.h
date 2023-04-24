@@ -6,25 +6,17 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `IntRect` class
- *
- *	This file contains the definition of the `IntRect` class.
- *
- *	\~russian
- *	\brief Файл с классом `IntRect`
- *
- *	Этот файл содержит определение класса `IntRect`.
- */
-
 #include "../../Object.h"
 
 #include "../Vector/Point2.h"
 
 namespace snow
 {
+
+/**
+ *	\addtogroup Math
+ *	\{
+ */
 
 /**
  *	\~english
@@ -345,5 +337,9 @@ private:
 	Point2 position_;
 	Point2 size_;
 };
+
+/**
+ *	\}
+ */
 
 }

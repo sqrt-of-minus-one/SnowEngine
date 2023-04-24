@@ -6,23 +6,15 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Angle` class
- *	
- *	This file contains the definition of the `Angle` class.
- *	
- *	\~russian
- *	\brief Файл с классом `Angle`
- *	
- *	Этот файл содержит определение класса `Angle`.
- */
-
 #include "../Object.h"
 
 namespace snow
 {
+
+/**
+ *	\addtogroup Math
+ *	\{
+ */
 
 /**
  *	\~english
@@ -1262,6 +1254,10 @@ Angle operator""_rad(long double radians);
 Angle operator""_rad(unsigned long long radians);
 Angle operator""_grad(long double gradians);
 Angle operator""_grad(unsigned long long gradians);
+
+/**
+ *	\}
+ */
 
 }
 

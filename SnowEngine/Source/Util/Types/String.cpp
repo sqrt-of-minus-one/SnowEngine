@@ -1,4 +1,4 @@
-    ////////////////////////////////////////
+Ôªø    ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
  //  File: String.cpp                  //
@@ -158,8 +158,13 @@ bool String::to_bool() const
 	}
 }
 
-int String::find_first(wchar_t ch) const noexcept
+int String::find_first(wchar_t ch, bool case_sensivity) const noexcept
 {
+	if (!case_sensivity)
+	{
+		return to_lower().find_first(std::towlower(ch), true);
+	}
+
 	for (int i = 0; i < size(); i++)
 	{
 		if (string_[i] == ch)
@@ -170,8 +175,13 @@ int String::find_first(wchar_t ch) const noexcept
 	return -1;
 }
 
-int String::find_last(wchar_t ch) const noexcept
+int String::find_last(wchar_t ch, bool case_sensivity) const noexcept
 {
+	if (!case_sensivity)
+	{
+		return to_lower().find_last(std::towlower(ch), true);
+	}
+
 	for (int i = size() - 1; i >= 0; i--)
 	{
 		if (string_[i] == ch)
@@ -182,8 +192,13 @@ int String::find_last(wchar_t ch) const noexcept
 	return -1;
 }
 
-int String::find_first(const String& string) const noexcept
+int String::find_first(const String& string, bool case_sensivity) const noexcept
 {
+	if (!case_sensivity)
+	{
+		return to_lower().find_first(string.to_lower(), true);
+	}
+
 	int this_len = size();
 	int other_len = string.size();
 	if (this_len < other_len || other_len == 0)
@@ -192,9 +207,9 @@ int String::find_first(const String& string) const noexcept
 	}
 
 	int match = 0;
-	for (int i = 0; i < this_len; i++)
+	for (int i = 0; i < (this_len - other_len + match + 1); i++)
 	{
-		if ((*this)[i] == string[match])
+		if (string_[i] == string.string_[match])
 		{
 			match++;
 			if (match >= other_len)
@@ -210,8 +225,13 @@ int String::find_first(const String& string) const noexcept
 	return -1;
 }
 
-int String::find_last(const String& string) const noexcept
+int String::find_last(const String& string, bool case_sensivity) const noexcept
 {
+	if (!case_sensivity)
+	{
+		return to_lower().find_last(string.to_lower(), true);
+	}
+
 	int this_len = size();
 	int other_len = string.size();
 	if (this_len < other_len)
@@ -220,9 +240,9 @@ int String::find_last(const String& string) const noexcept
 	}
 
 	int match = other_len - 1;
-	for (int i = size() - 1; i >= 0; i--)
+	for (int i = size() - 1; i >= match; i--)
 	{
-		if ((*this)[i] == string[match])
+		if (string_[i] == string.string_[match])
 		{
 			match--;
 			if (match < 0)
@@ -238,18 +258,23 @@ int String::find_last(const String& string) const noexcept
 	return -1;
 }
 
-bool String::contains(wchar_t ch) const noexcept
+bool String::contains(wchar_t ch, bool case_sensivity) const noexcept
 {
-	return find_first(ch) > 0;
+	return find_first(ch, case_sensivity) > 0;
 }
 
-bool String::contains(const String& string) const noexcept
+bool String::contains(const String& string, bool case_sensivity) const noexcept
 {
-	return find_first(string) > 0;
+	return find_first(string, case_sensivity) > 0;
 }
 
-int String::count(wchar_t ch) const noexcept
+int String::count(wchar_t ch, bool case_sensivity) const noexcept
 {
+	if (!case_sensivity)
+	{
+		return to_lower().count(std::towlower(ch), true);
+	}
+
 	int result = 0;
 	for (wchar_t i : string_)
 	{
@@ -261,8 +286,13 @@ int String::count(wchar_t ch) const noexcept
 	return result;
 }
 
-int String::count(const String& string) const noexcept
+int String::count(const String& string, bool case_sensivity) const noexcept
 {
+	if (!case_sensivity)
+	{
+		to_lower().count(string.to_lower(), true);
+	}
+
 	if (string.is_empty())
 	{
 		return 0;
@@ -274,7 +304,7 @@ int String::count(const String& string) const noexcept
 		bool match = true;
 		for (int j = 0; j < string.size(); j++)
 		{
-			if ((*this)[i + j] != string[j])
+			if (string_[i + j] != string.string_[j])
 			{
 				match = false;
 				break;
@@ -306,46 +336,22 @@ std::vector<String> String::split(const String& separator, int parts, bool case_
 		result.push_back(*this);
 		return result;
 	}
-	String current;
 
-	for (int i = 0; i < size(); i++)
+	String string = *this;
+	for (int i = 0; i < parts; i++)
 	{
-		bool is_sep = true;
-		if (size() - i > separator.size())
+		int sep_pos = string.find_first(separator, case_sensivity);
+		if (sep_pos < 0)
 		{
-			for (int j = 0; j < separator.size() && i + j < size(); j++)
-			{
-				if (case_sensivity ?
-					(*this)[i + j] != separator[j] :
-					std::towlower((*this)[i + j]) != std::towlower(separator[j]))
-				{
-					is_sep = false;
-					break;
-				}
-			}
+			break;
 		}
 		else
 		{
-			is_sep = false;
-		}
-
-		if (is_sep)
-		{
-			result.push_back(std::move(current));
-			current.clear();
-			i += separator.size() - 1;
-			if (result.size() >= parts - 1 && i < size() - 1)
-			{
-				result.push_back(substring(i + 1, size()));
-				return result;
-			}
-		}
-		else
-		{
-			current.add((*this)[i]);
+			result.push_back(string.substring(0, sep_pos));
+			string.remove(0, sep_pos + separator.size());
 		}
 	}
-	result.push_back(current);
+	result.push_back(string);
 	return result;
 }
 
@@ -354,7 +360,7 @@ String String::reverse() const
 	String ret = *this;
 	for (int i = 0; i < size(); i++)
 	{
-		ret[i] = (*this)[size() - 1 - i];
+		ret.string_[i] = string_[size() - 1 - i];
 	}
 	return ret;
 }
@@ -364,7 +370,7 @@ String String::to_lower() const
 	String ret = *this;
 	for (int i = 0; i < size(); i++)
 	{
-		ret[i] = std::towlower(ret[i]);
+		ret.string_[i] = std::towlower(ret.string_[i]);
 	}
 	return ret;
 }
@@ -374,7 +380,7 @@ String String::to_upper() const
 	String ret = *this;
 	for (int i = 0; i < size(); i++)
 	{
-		ret[i] = std::towupper(ret[i]);
+		ret.string_[i] = std::towupper(ret.string_[i]);
 	}
 	return ret;
 }
@@ -568,9 +574,9 @@ bool String::is_asbuka() const
 
 bool String::is_asbuka(wchar_t c)
 {
-	return c >= L'‡' && c <= L'ˇ' ||
-		   c >= L'¿' && c <= L'ﬂ' ||
-		   c == L'∏' || c == L'®';
+	return c >= L'–∞' && c <= L'—è' ||
+		   c >= L'–ê' && c <= L'–Ø' ||
+		   c == L'—ë' || c == L'–Å';
 }
 
 bool String::is_space() const
@@ -608,12 +614,13 @@ String String::format(String string, ...)
 	va_start(list, string);
 	for (int i = 0; i < string.size(); i++)
 	{
-		if (string[i] == L'%')
+		if (string.string_[i] == L'%')
 		{
 			String seq = L'%';
 			bool finish = false;
 			int value = 0;
 			wchar_t char_to_fill = L' ';
+			// If the number starts with 0, we should put 0's before value
 			if (string[i + 1] == L'0')
 			{
 				char_to_fill = L'0';
