@@ -14,19 +14,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `JsonObject` class
- *	
- *	This file contains the definition of the `JsonObject` class of SnowStorm system.
- *	
- *	\~russian
- *	\brief Файл с классом `JsonObject`
- *	
- *	Этот файл содержит определение класса `JsonObject` системы SnowStorm.
- */
-
 #include "Element.h"
 
 #include <map>
@@ -36,6 +23,11 @@ namespace snow
 
 namespace json
 {
+
+/**
+ *	\addtogroup SnowStorm
+ *	\{
+ */
 
 /**
  *	\~english
@@ -171,6 +163,10 @@ public:
 private:
 	std::map<String, std::unique_ptr<Element>> content_;
 };
+
+/**
+ *	\}
+ */
 
 }
 

@@ -14,19 +14,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Array` class
- *	
- *	This file contains the definition of the `Array` class of SnowStorm system.
- *	
- *	\~russian
- *	\brief Файл с классом `Array`
- *	
- *	Этот файл содержит определение класса `Array` системы SnowStorm.
- */
-
 #include "Element.h"
 
 #include <vector>
@@ -36,6 +23,11 @@ namespace snow
 
 namespace json
 {
+
+/**
+ *	\addtogroup SnowStorm
+ *	\{
+ */
 
 /**
  *	\~english
@@ -170,6 +162,10 @@ public:
 private:
 	std::vector<std::unique_ptr<Element>> content_;
 };
+
+/**
+ *	\}
+ */
 
 }
 

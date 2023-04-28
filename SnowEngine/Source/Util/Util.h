@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with auxiliary functions
- *	
- *	This file contains declarations of auxiliary functions from the `util` namespace.
- *	
- *	\~russian
- *	\brief Файл со вспомогательными функциями
- *	
- *	Этот файл содержит объявления вспомогательных функций из пространства имён `util`.
- */
-
 #include "../Object.h"
 #include "Types/String.h"
 #include "../Math/Math.h"
@@ -85,11 +72,11 @@ String to_string(int var);
  *	number of digits after point, negative ones limit the maximum number of digits. When excess
  *	digits are discarded, the last remaining digit is rounded according to rounding rules.
  *	\code
- *		to_string(5.67f) == L"5.67"_s;
- *		to_string(5.67f, 0) == L"6"_s;
- *		to_string(5.67f, 4) == L"5.6700"_s;
- *		to_string(5.67f, -4) == L"5.67"_s;
- *		to_string(5.67895f, -4) == L"5.679"_s;
+ *		to_string(5.67) == L"5.67"_s;
+ *		to_string(5.67, 0) == L"6"_s;
+ *		to_string(5.67, 4) == L"5.6700"_s;
+ *		to_string(5.67, -4) == L"5.67"_s;
+ *		to_string(5.67895, -4) == L"5.679"_s;
  *	\endcode
  *	\return A string that represents the passed double.
  *	
@@ -103,11 +90,11 @@ String to_string(int var);
  *	Когда излишние знаки отбрасываются, последняя оставшаяся цифра округляется в соответствии с
  *	правилами округления.
  *	\code
- *		to_string(5.67f) == L"5.67"_s;
- *		to_string(5.67f, 0) == L"6"_s;
- *		to_string(5.67f, 4) == L"5.6700"_s;
- *		to_string(5.67f, -4) == L"5.67"_s;
- *		to_string(5.67895f, -4) == L"5.679"_s;
+ *		to_string(5.67) == L"5.67"_s;
+ *		to_string(5.67, 0) == L"6"_s;
+ *		to_string(5.67, 4) == L"5.6700"_s;
+ *		to_string(5.67, -4) == L"5.67"_s;
+ *		to_string(5.67895, -4) == L"5.679"_s;
  *	\endcode
  *	\return Строка, представляющая переданное вещественное число.
  */
@@ -462,7 +449,7 @@ String util::to_string(int var)
 template<typename T>
 String util::to_string(T* var)
 {
-	return L"Ptr: 0x"_s + to_string_hex(reinterpret_cast<int>(var));
+	return L"Ptr: 0x"_s + to_string<16>(reinterpret_cast<int>(var));
 }
 
 template<typename T>

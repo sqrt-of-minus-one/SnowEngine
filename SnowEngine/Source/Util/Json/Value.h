@@ -14,19 +14,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with JSON value classes
- *	
- *	This file contains the definition of the value classes of SnowStorm system.
- *	
- *	\~russian
- *	\brief Файл с классами значений JSON
- *	
- *	Этот файл содержит определение классов значений системы SnowStorm.
- */
-
 #include "Element.h"
 
 #include <type_traits>
@@ -41,6 +28,11 @@ namespace json
 
 namespace snow_
 {
+
+/**
+ *	\addtogroup SnowStorm
+ *	\{
+ */
 
 /**
  *	\~english
@@ -328,6 +320,10 @@ public:
 	virtual void to_stream(std::wostream& stream, int nesting = 0) const override;
 };
 
+/**
+ *	\}
+ */
+
 template<typename T>
 extern EType type_() noexcept = delete;
 
@@ -348,11 +344,20 @@ extern EType type_<std::nullptr_t>() noexcept;
 
 }
 
-using StringValue = snow_::Value_<String>;			/// \~english The string value \~russian Строковое значение
-using IntValue = snow_::Value_<int>;				/// \~english The integer value \~russian Целочисленное значение
-using DoubleValue = snow_::Value_<double>;			/// \~english The double value \~russian Вещественное значение
-using BoolValue = snow_::Value_<bool>;				/// \~english The boolean value \~russian Булево значение
-using NullValue = snow_::Value_<std::nullptr_t>;	/// \~english The null value \~russian Нулевое значение
+/**
+ *	\addtogroup SnowStorm
+ *	\{
+ */
+
+using StringValue = snow_::Value_<String>;			///< \~english The string value \~russian Строковое значение
+using IntValue = snow_::Value_<int>;				///< \~english The integer value \~russian Целочисленное значение
+using DoubleValue = snow_::Value_<double>;			///< \~english The double value \~russian Вещественное значение
+using BoolValue = snow_::Value_<bool>;				///< \~english The boolean value \~russian Булево значение
+using NullValue = snow_::Value_<std::nullptr_t>;	///< \~english The null value \~russian Нулевое значение
+
+/**
+ *	\}
+ */
 
 }
 

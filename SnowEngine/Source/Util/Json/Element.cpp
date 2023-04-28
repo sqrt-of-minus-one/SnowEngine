@@ -320,6 +320,7 @@ std::unique_ptr<json::Element> json::Element::read_number_(std::wistream& stream
 	bool has_point = false;
 	while (c >= L'0' && c <= L'9' ||
 		   c >= L'A' && c <= L'F' ||
+		   c >= L'a' && c <= L'f' ||
 		   c == L'.' || c == L'\'')
 	{
 		has_point |= c == L'.';

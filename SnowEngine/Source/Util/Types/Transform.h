@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Transform` class
- *
- *	This file contains the definition of the `Transform` class.
- *
- *	\~russian
- *	\brief Файл с классом `Transform`
- *
- *	Этот файл содержит определение класса `Transform`.
- */
-
 #include "../../Object.h"
 
 #include "../../Math/Vector/Vector2.h"
@@ -29,12 +16,12 @@ namespace snow
 
 /**
  *	\~english
- *	\brief Position, rotation & scale in one class
+ *	\brief Position, rotation, and scale in one class
  *	
  *	The transform object contains the information about position, rotation, and scale.
  *	- The position is the `Vector2` object containing the coordinates.
  *	- The rotation is the `Angle` object containing the angle of rotation.
- *	- The scale is the `Vector2` object containing the factors of scale (`Vector2(1.f, 1.f)` is the
+ *	- The scale is the `Vector2` object containing the factors of scale (`Vector2(1., 1.)` is the
  *	normal scale).
  *	
  *	\~russian
@@ -55,16 +42,31 @@ public:
 	 *	\~english
 	 *	\brief A default transform
 	 *	
-	 *	Creates a default transform: position is `Vector2(0.f, 0.f)`, rotation is `0_deg`, scale is
-	 *	`Vector2(1.f, 1.f)`.
+	 *	Creates a default transform: position is `Vector2(0., 0.)`, rotation is `0_deg`, scale is
+	 *	`Vector2(1., 1.)`.
 	 *	
 	 *	\~russian
 	 *	\brief Преобразование по умолчанию
 	 *	
-	 *	Создаёт преобразование по умолчанию: положение — `Vector2(0.f, 0.f)`, поворот — `0_def`,
-	 *	масштаб — `Vector2(1.f, 1.f)`.
+	 *	Создаёт преобразование по умолчанию: положение — `Vector2(0., 0.)`, поворот — `0_deg`,
+	 *	масштаб — `Vector2(1., 1.)`.
 	 */
 	Transform();
+
+	/**
+	 *	\~english
+	 *	\brief The copy constructor
+	 *	
+	 *	Copies the passed transform.
+	 *	\param transform The transform that will be copied.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор копирования
+	 *	
+	 *	Копирует переданное преобразование.
+	 *	\param transform Преобразование, которое будет скопировано.
+	 */
+	Transform(const Transform& transform);
 	
 	/**
 	 *	\~english
@@ -83,22 +85,7 @@ public:
 	 *	\param rotation Поворот.
 	 *	\param scale Масштаб.
 	 */
-	Transform(const Vector2& position = Vector2::ZERO, const Angle& rotation = Angle::ZERO, const Vector2& scale = Vector2(1.f, 1.f));
-
-	/**
-	 *	\~english
-	 *	\brief The copy constructor
-	 *	
-	 *	Copies the passed transform.
-	 *	\param transform The transform that will be copied.
-	 *	
-	 *	\~russian
-	 *	\brief Конструктор копирования
-	 *	
-	 *	Копирует переданное преобразование.
-	 *	\param transform Преобразование, которое будет скопировано.
-	 */
-	Transform(const Transform& transform);
+	Transform(const Vector2& position, const Angle& rotation, const Vector2& scale);
 
 			/* METHODS FROM Object */
 	

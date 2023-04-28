@@ -15,7 +15,7 @@ using namespace snow;
 Transform::Transform() :
 	position_(Vector2::ZERO),
 	rotation_(Angle::ZERO),
-	scale_(Vector2(1.f, 1.f))
+	scale_(Vector2(1., 1.))
 {}
 
 Transform::Transform(const Vector2& position, const Angle& rotation, const Vector2& scale) :
