@@ -143,7 +143,7 @@ public:
 	 *	Позволяет получить доступ к парам ключ-значение объекта.
 	 *	\return Константная ссылка на словарь с содержимым объекта.
 	 */
-	std::map<String, std::unique_ptr<Element>>& get_content() noexcept;
+	std::map<String, std::shared_ptr<Element>>& get_content() noexcept;
 
 	/**
 	 *	\~english
@@ -158,10 +158,10 @@ public:
 	 *	Позволяет прочитать пары ключ-значение объекта.
 	 *	\return Ссылка на словарь с содержимым объекта.
 	 */
-	const std::map<String, std::unique_ptr<Element>>& get_content() const noexcept;
+	const std::map<String, std::shared_ptr<Element>>& get_content() const noexcept;
 	
 private:
-	std::map<String, std::unique_ptr<Element>> content_;
+	std::map<String, std::shared_ptr<Element>> content_;
 };
 
 /**

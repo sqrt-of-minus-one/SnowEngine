@@ -142,7 +142,7 @@ public:
 	 *	Позволяет получить доступ к элементам массива.
 	 *	\return Ссылка на вектор с содержимым массива.
 	 */
-	std::vector<std::unique_ptr<Element>>& get_content() noexcept;
+	std::vector<std::shared_ptr<Element>>& get_content() noexcept;
 
 	/**
 	 *	\~english
@@ -157,10 +157,10 @@ public:
 	 *	Позволяет прочитать к элементам массива.
 	 *	\return Константная ссылка на вектор с содержимым массива.
 	 */
-	const std::vector<std::unique_ptr<Element>>& get_content() const noexcept;
+	const std::vector<std::shared_ptr<Element>>& get_content() const noexcept;
 	
 private:
-	std::vector<std::unique_ptr<Element>> content_;
+	std::vector<std::shared_ptr<Element>> content_;
 };
 
 /**

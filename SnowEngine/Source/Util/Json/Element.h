@@ -185,7 +185,9 @@ public:
 	 *	
 	 *	Saves the element in the file in JSON format.
 	 *	\param filename The path to the file where the element will be saved.
-	 *	\throw std::runtime_error The file cannot be created or accessed.
+	 *	\param allow_override Allows to override existing file with the same name. If `false`, the
+	 *	file cannot be overriden and the exception is thrown.
+	 *	\throw std::runtime_error The file cannot be created, accessed or overriden.
 	 *	\sa
 	 *	- `load()`
 	 *	
@@ -194,11 +196,14 @@ public:
 	 *	
 	 *	Сохраняет элемент в файл в формате JSON.
 	 *	\param filename Путь к файлу, где элемент будет сохранён.
-	 *	\throw std::runtime_error Файл не может быть создан или к нему не удаётся получить доступ.
+	 *	\param allow_override Позволяет перезаписывать существующий файл с таким же именем. Если
+	 *	`false`, файл не может быть перезаписан, и выбрасывается исключение.
+	 *	\throw std::runtime_error Файл не может быть создан, перезаписан или к нему не удаётся
+	 *	получить доступ.
 	 *	\sa
 	 *	- `load()`
 	 */
-	void save(const String& filename) const;
+	void save(const String& filename, bool allow_override = false) const;
 
 	/**
 	 *	\~english
@@ -227,7 +232,7 @@ public:
 	 *	
 	 *	Converts the string to the JSON element.
 	 *	\param string The string with JSON.
-	 *	\return The unique pointer to the created element.
+	 *	\return The shared pointer to the created element.
 	 *	\throw std::runtime_error The string is not valid JSON.
 	 *	\sa
 	 *	- `to_string()`
@@ -237,12 +242,12 @@ public:
 	 *	
 	 *	Конвертирует строку в элемент JSON.
 	 *	\param string Строка с JSON.
-	 *	\return Уникальный указатель на созданный элемент.
+	 *	\return Указатель на созданный элемент.
 	 *	\throw std::runtime_error Строка не является корректным JSON.
 	 *	\sa
 	 *	- `to_string()`
 	 */
-	static std::unique_ptr<Element> from_string(const String& string);
+	static std::shared_ptr<Element> from_string(const String& string);
 	
 	/**
 	 *	\~english
@@ -250,7 +255,7 @@ public:
 	 *	
 	 *	Loads the file content and creates the JSON element based on it.
 	 *	\param filename The path to the file with JSON.
-	 *	\return The unique pointer to the created element.
+	 *	\return The shared pointer to the created element.
 	 *	\throw std::runtime_error The file does not exist, cannot be accessed or doesn't contain a
 	 *	valid JSON.
 	 *	\sa
@@ -261,13 +266,13 @@ public:
 	 *	
 	 *	Загружает содержимое файла и создаёт на его основе элемент JSON.
 	 *	\param filename Путь к файлу с JSON.
-	 *	\return Уникальный указатель на созданный элемент.
+	 *	\return Указатель на созданный элемент.
 	 *	\throw std::runtime_error Файл не существует, к нему не удаётся получить доступ или он не
 	 *	содержит корректный JSON.
 	 *	\sa
 	 *	- `save()`
 	 */
-	static std::unique_ptr<Element> load(const String& filename);
+	static std::shared_ptr<Element> load(const String& filename);
 	
 	/**
 	 *	\~english
@@ -275,7 +280,7 @@ public:
 	 *	
 	 *	Reads the stream and converts its content to the JSON element.
 	 *	\param stream The stream with JSON.
-	 *	\return The unique pointer to the created element.
+	 *	\return The shared pointer to the created element.
 	 *	\throw std::runtime_error The stream doesn't contain a valid JSON.
 	 *	\sa
 	 *	- `to_stream()`
@@ -285,18 +290,18 @@ public:
 	 *	
 	 *	Конвертирует строку в элемент JSON.
 	 *	\param stream Поток с JSON.
-	 *	\return Уникальный указатель на созданный элемент.
+	 *	\return Указатель на созданный элемент.
 	 *	\throw std::runtime_error Поток не содержит корректный JSON.
 	 *	\sa
 	 *	- `to_stream()`
 	 */
-	static std::unique_ptr<Element> from_stream(std::wistream& stream);
+	static std::shared_ptr<Element> from_stream(std::wistream& stream);
 	
 private:
-	static std::unique_ptr<JsonObject> read_object_(std::wistream& stream); // The { character is supposed to be already read
-	static std::unique_ptr<Array> read_array_(std::wistream& stream); // The [ character is supposed to be already read
+	static std::shared_ptr<JsonObject> read_object_(std::wistream& stream); // The { character is supposed to be already read
+	static std::shared_ptr<Array> read_array_(std::wistream& stream); // The [ character is supposed to be already read
 	static String read_string_(std::wistream& stream, wchar_t first); // The " or ' character is supposed to be already read and is passed as argument (first)
-	static std::unique_ptr<Element> read_number_(std::wistream& stream, wchar_t first); // The first character is supposed to be already read and is passed as argument (first)
+	static std::shared_ptr<Element> read_number_(std::wistream& stream, wchar_t first); // The first character is supposed to be already read and is passed as argument (first)
 	static bool read_lit_(std::wistream& stream, const String& lit); // The first character is supposed to be already read; returns false if couldn't read a desired literal (lit)
 	static void read_comment_(std::wistream& stream); // The / character is supposed to be already read
 	static void pass_(std::wistream& stream, wchar_t& c); // Pass the space characters and comments

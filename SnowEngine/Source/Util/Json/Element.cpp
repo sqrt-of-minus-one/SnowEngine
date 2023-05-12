@@ -34,12 +34,17 @@ String json::Element::to_string() const
 	return stream.str();
 }
 
-void json::Element::save(const String& filename) const
+void json::Element::save(const String& filename, bool allow_override) const
 {
 	if (!std::filesystem::exists(filename.to_std_string()))
 	{
 		std::filesystem::create_directories(filename.to_std_string());
 	}
+	else if (!allow_override)
+	{
+		throw std::runtime_error("The file with the same name already exists");
+	}
+
 	std::wofstream file(filename.to_std_string());
 	if (!file.is_open())
 	{
@@ -49,13 +54,13 @@ void json::Element::save(const String& filename) const
 	file.close();
 }
 
-std::unique_ptr<json::Element> json::Element::from_string(const String& string)
+std::shared_ptr<json::Element> json::Element::from_string(const String& string)
 {
 	std::wistringstream stream(string.to_std_string());
 	return from_stream(stream);
 }
 
-std::unique_ptr<json::Element> json::Element::load(const String& filename)
+std::shared_ptr<json::Element> json::Element::load(const String& filename)
 {
 	std::wifstream file(filename.to_std_string());
 	if (!file.is_open())
@@ -65,7 +70,7 @@ std::unique_ptr<json::Element> json::Element::load(const String& filename)
 	return from_stream(file);
 }
 
-std::unique_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
+std::shared_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 {
 	wchar_t c;
 	while (stream.read(&c, 1))
@@ -92,7 +97,7 @@ std::unique_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 		case L'"':
 		case L'\'':
 		{
-			return std::make_unique<StringValue>(read_string_(stream, c));
+			return std::make_shared<StringValue>(read_string_(stream, c));
 		}
 		// The beginning of an integer or double value
 		case L'0':
@@ -119,7 +124,7 @@ std::unique_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 			{
 				throw std::runtime_error("Invalid JSON");
 			}
-			return std::make_unique<BoolValue>(true);
+			return std::make_shared<BoolValue>(true);
 		}
 		// The beginning of the false boolean value
 		case L'f':
@@ -129,7 +134,7 @@ std::unique_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 			{
 				throw std::runtime_error("Invalid JSON");
 			}
-			return std::make_unique<BoolValue>(false);
+			return std::make_shared<BoolValue>(false);
 		}
 		// The beginning of the null value
 		case L'n':
@@ -139,7 +144,7 @@ std::unique_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 			{
 				throw std::runtime_error("Invalid JSON");
 			}
-			return std::make_unique<NullValue>();
+			return std::make_shared<NullValue>();
 		}
 		// The beginning of a comment
 		case L'/':
@@ -157,9 +162,9 @@ std::unique_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 	throw std::runtime_error("Invalid JSON");
 }
 
-std::unique_ptr<json::JsonObject> json::Element::read_object_(std::wistream& stream)
+std::shared_ptr<json::JsonObject> json::Element::read_object_(std::wistream& stream)
 {
-	std::unique_ptr<JsonObject> result = std::make_unique<JsonObject>();
+	std::shared_ptr<JsonObject> result = std::make_shared<JsonObject>();
 	while (true)
 	{
 		wchar_t c = stream.peek();
@@ -210,9 +215,9 @@ std::unique_ptr<json::JsonObject> json::Element::read_object_(std::wistream& str
 	}
 }
 
-std::unique_ptr<json::Array> json::Element::read_array_(std::wistream& stream)
+std::shared_ptr<json::Array> json::Element::read_array_(std::wistream& stream)
 {
-	std::unique_ptr<Array> result = std::make_unique<Array>();
+	std::shared_ptr<Array> result = std::make_shared<Array>();
 	while (true)
 	{
 		wchar_t c = stream.peek();
@@ -269,7 +274,7 @@ String json::Element::read_string_(std::wistream& stream, wchar_t first)
 }
 			
 
-std::unique_ptr<json::Element> json::Element::read_number_(std::wistream& stream, wchar_t first)
+std::shared_ptr<json::Element> json::Element::read_number_(std::wistream& stream, wchar_t first)
 {
 	String result;
 	wchar_t c = stream.peek();
@@ -335,23 +340,23 @@ std::unique_ptr<json::Element> json::Element::read_number_(std::wistream& stream
 		{
 		case 2:
 		{
-			return std::make_unique<IntValue>(result.to_int<2>(false));
+			return std::make_shared<IntValue>(result.to_int<2>(false));
 		}
 		case 8:
 		{
-			return std::make_unique<IntValue>(result.to_int<8>(false));
+			return std::make_shared<IntValue>(result.to_int<8>(false));
 		}
 		case 10:
 		{
 			if (has_point)
 			{
-				return std::make_unique<DoubleValue>(result.to_double());
+				return std::make_shared<DoubleValue>(result.to_double());
 			}
-			return std::make_unique<IntValue>(result.to_int<10>(false));
+			return std::make_shared<IntValue>(result.to_int<10>(false));
 		}
 		case 16:
 		{
-			return std::make_unique<IntValue>(result.to_int<16>(false));
+			return std::make_shared<IntValue>(result.to_int<16>(false));
 		}
 		}
 		throw std::runtime_error("Invalid JSON");

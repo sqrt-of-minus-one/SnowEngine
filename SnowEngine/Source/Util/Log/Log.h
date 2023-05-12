@@ -14,19 +14,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Log` class
- *
- *	This file contains the definition of the `Log` class of the SnowCat system.
- *
- *	\~russian
- *	\brief Файл с классом `Log`
- *
- *	Этот файл содержит определение класса `Log` системы SnowCat.
- */
-
 #include "../../Object.h"
 
 #include <mutex>
@@ -37,6 +24,24 @@ namespace snow
 {
 
 /**
+ *	\defgroup SnowCat SnowCat
+ *	\~english
+ *	\brief SnowCat, the SnowEngine logging system
+ *	
+ *	SnowCat is a simple tool allowing to keep a log.
+ *	
+ *	\~english
+ *	\brief SnowCat, система ведения лога SnowEngine
+ *	
+ *	SnowCat — это простой инструмент, позволяющий вести лог.
+ */
+
+/**
+ *	\addtogroup SnowCat
+ *	\{
+ */
+
+/**
  *	\~english
  *	\brief The class of the SnowCat logger
  *	
@@ -44,12 +49,12 @@ namespace snow
  *	should specify its log category. To write something in log use one of these methods:
  *	Method | Meaning
  *	-------|---------
- *	`i`    | Information.
- *	`w`    | Warning.
- *	`e`    | Error.
- *	`d`    | Debug message (is ignored unless debug mode is active).
- *	The debug mode is enabled by default if project configuration is Debug. The log is output to
- *	the console and saved in the file. The directory where log files are saved is specified by
+ *	`i()`  | Information.
+ *	`w()`  | Warning.
+ *	`e()`  | Error.
+ *	`d()`  | Debug message (is ignored unless debug mode is active).
+ *	The debug mode is disabled by default unless project configuration is Debug. The log is output
+ *	to the console and saved in the file. The directory where log files are saved is specified by
  *	`config.ini`.
  *	
  *	\~russian
@@ -60,10 +65,10 @@ namespace snow
  *	следующих методов:
  *	Метод  | Значение
  *	-------|----------
- *	`i`    | Информация.
- *	`w`    | Предупреждение.
- *	`e`    | Ошибка.
- *	`d`    | Сообщение для отладки (игнорируется, если режим отладки выключён).
+ *	`i()`  | Информация.
+ *	`w()`  | Предупреждение.
+ *	`e()`  | Ошибка.
+ *	`d()`  | Сообщение для отладки (игнорируется, если режим отладки выключён).
  *	Режим отладки по умолчанию активирован, если проект собирается в конфигурации Degub. Лог
  *	выводится в консоль и сохраняется в файле. Директория, где сохраняются файлы лога, определяется
  *	в `config.ini`.
@@ -141,13 +146,13 @@ public:
 	 *	\~english
 	 *	\brief Enables debug mode
 	 *	
-	 *	Enables debug mode. If debug mode is enabled, debug messages (`d` method) are logged.
+	 *	Enables debug mode. If debug mode is enabled, debug messages (`d()` method) are logged.
 	 *	
 	 *	\~russian
 	 *	\brief Активирует режим отладки
 	 *	
-	 *	Активирует режим отладки. Если режим отладки активирован, отладочные сообщения (метод `d`)
-	 *	сохраняются.
+	 *	Активирует режим отладки. Если режим отладки активирован, отладочные сообщения (метод
+	 *	`d()`) сохраняются.
 	 */
 	static void enable_debug_mode() noexcept;
 
@@ -155,13 +160,13 @@ public:
 	 *	\~english
 	 *	\brief Disables debug mode
 	 *
-	 *	Disables debug mode. If debug mode is disabled, debug messages (`d` method) are ignored.
+	 *	Disables debug mode. If debug mode is disabled, debug messages (`d()` method) are ignored.
 	 *
 	 *	\~russian
 	 *	\brief Деактивирует режим отладки
 	 *
 	 *	Деактивирует режим отладки. Если режим отладки деактивирован, отладочные сообщения (метод
-	 *	`d`) игнорируются.
+	 *	`d()`) игнорируются.
 	 */
 	static void disable_debug_mode() noexcept;
 
@@ -169,12 +174,12 @@ public:
 	 *	\~english
 	 *	\brief Checks whether debug mode is enabled
 	 *	
-	 *	Checks whether debug mode is enabled. If it is, debug messages (`d` method) are logged.
+	 *	Checks whether debug mode is enabled. If it is, debug messages (`d()` method) are logged.
 	 *	\return `true` if debug mode is enabled, `false` otherwise.
 	 *	
 	 *	\~russian
-	 *	\brief Проверяет, активирован ли режим отладки. Если да, отладочные сообщения (метод `d`),
-	 *	сохраняются.
+	 *	\brief Проверяет, активирован ли режим отладки. Если да, отладочные сообщения (метод
+	 *	`d()`), сохраняются.
 	 *	\return `true`, если режим отладки активирован, иначе `false`.
 	 */
 	static bool is_debug_mode_enabled() noexcept;
@@ -250,5 +255,9 @@ private:
 
 	static int object_counter_;
 };
+
+/**
+ *	\}
+ */
 
 }

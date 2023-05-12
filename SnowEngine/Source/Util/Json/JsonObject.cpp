@@ -69,12 +69,12 @@ void json::JsonObject::to_stream(std::wostream& stream, int nesting) const
 	stream << L'}';
 }
 
-std::map<String, std::unique_ptr<json::Element>>& json::JsonObject::get_content() noexcept
+std::map<String, std::shared_ptr<json::Element>>& json::JsonObject::get_content() noexcept
 {
 	return content_;
 }
 
-const std::map<String, std::unique_ptr<json::Element>>& json::JsonObject::get_content() const noexcept
+const std::map<String, std::shared_ptr<json::Element>>& json::JsonObject::get_content() const noexcept
 {
 	return content_;
 }

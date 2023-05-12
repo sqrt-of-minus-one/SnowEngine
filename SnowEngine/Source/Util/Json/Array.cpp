@@ -62,12 +62,12 @@ void json::Array::to_stream(std::wostream& stream, int nesting) const
 	stream << L" ]";
 }
 
-std::vector<std::unique_ptr<json::Element>>& json::Array::get_content() noexcept
+std::vector<std::shared_ptr<json::Element>>& json::Array::get_content() noexcept
 {
 	return content_;
 }
 
-const std::vector<std::unique_ptr<json::Element>>& json::Array::get_content() const noexcept
+const std::vector<std::shared_ptr<json::Element>>& json::Array::get_content() const noexcept
 {
 	return content_;
 }
