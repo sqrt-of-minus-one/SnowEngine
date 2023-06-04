@@ -38,12 +38,6 @@ public:
 	static Config load(const String& name);
 
 			/* FIELDS
-				SECTION: default */
-	
-	String path_log;
-	String path_saves;
-
-			/* FIELDS
 				SECTION: window */
 	
 	Point2 window_resolution;
@@ -54,13 +48,13 @@ public:
 	String window_title;
 
 			/* FIELDS
-				SECTION: resources */
+				SECTION: res */
 
-	double resources_check_period_sec;
-	String resources_textures_path;
-	String resources_fonts_path;
-	String resources_sounds_path;
-	String resources_music_path;
+	double res_check_period_sec;
+	String res_textures_path;
+	String res_fonts_path;
+	String res_sounds_path;
+	String res_music_path;
 
 			/* FIELDS
 				SECTION: chunks */
@@ -69,11 +63,11 @@ public:
 	Point2 chunks_clickable_size;
 
 			/* FIELDS
-				SECTION: localization */
+				SECTION: lang */
 	
-	String localization_path;
-	String localization_default_lang;
-	String localization_default_table;
+	String lang_path;
+	String lang_default_lang;
+	String lang_default_table;
 
 			/* FIELDS
 				SECTION: log */
@@ -93,6 +87,6 @@ private:
 	Config();
 
 	std::shared_ptr<json::JsonObject> make_json_() const;
-}
+};
 
 }

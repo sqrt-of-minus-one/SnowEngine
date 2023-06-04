@@ -57,7 +57,7 @@ template<typename T>
 class Value_ : public Element
 {
 	static_assert(std::is_same<T, String>::value || std::is_same<T, int>::value ||
-				  std::is_same<T, double>::value || std::is_same<T, bool>::value.
+				  std::is_same<T, double>::value || std::is_same<T, bool>::value,
 				  "Only String, int, double, bool, and nullptr_t are allowed to be the template parameter of the Value_ class");
 
 public:
