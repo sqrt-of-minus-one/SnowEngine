@@ -26,6 +26,7 @@ public:
 
 	Config(const Config& config);
 	Config(Config&& config);
+	Config(const String& name);
 	
 			/* METHODS FROM Object */
 
@@ -35,7 +36,6 @@ public:
 			/* METHODS */
 	
 	void save(const String& name, bool allow_override = false);
-	static Config load(const String& name);
 
 			/* FIELDS
 				SECTION: window */
@@ -78,6 +78,10 @@ public:
 				SECTION: saves */
 
 	String saves_path;
+	
+			/* OPERATORS */
+
+	Config& operator=(const Config& config) = default;
 
 			/* CONSTANTS */
 

@@ -31,14 +31,81 @@ const String& ConfigManager::get_path() const
 	return path_;
 }
 
+void ConfigManager::set_path(const String& path)
+{
+	path_ = path;
+}
+
 const Config& ConfigManager::get_current() const
 {
 	return current_;
 }
 
-void ConfigManager::set_current(const Config& config)
+void ConfigManager::set_current(const Config& config, bool reload)
 {
+	Config old = current_;
+	current_ = config;
 
+	// window
+
+	if (config.window_resolution != old.window_resolution ||
+		config.window_fullscreen != old.window_fullscreen ||
+		config.window_resize != old.window_resize ||
+		config.window_titlebar != old.window_titlebar ||
+		config.window_titlebar_buttons != old.window_titlebar_buttons ||
+		config.window_title != old.window_title ||
+		reload)
+	{
+		// Todo
+	}
+
+	// res
+	
+	if (config.res_check_period_sec != old.res_check_period_sec || reload)
+	{
+		// Todo
+	}
+	if (config.res_textures_path != old.res_textures_path || reload)
+	{
+		// Todo
+	}
+	if (config.res_fonts_path != old.res_fonts_path || reload)
+	{
+		// Todo
+	}
+	if (config.res_sounds_path != old.res_sounds_path || reload)
+	{
+		// Todo
+	}
+	if (config.res_music_path != old.res_music_path || reload)
+	{
+		// Todo
+	}
+
+	// chunks
+
+	if (config.chunks_collision_size != old.chunks_collision_size || reload)
+	{
+		// Todo
+	}
+	if (config.chunks_clickable_size != old.chunks_clickable_size || reload)
+	{
+		// Todo
+	}
+
+	// lang
+
+	if (config.lang_path != old.lang_path || reload)
+	{
+		// Todo
+	}
+
+	// log
+	
+	if (config.log_path != old.log_path || reload)
+	{
+		// Todo
+	}
 }
 
 void ConfigManager::save_current(const String& name, bool allow_override)
@@ -55,5 +122,8 @@ Config& ConfigManager::load_current(const String& name)
 		/* ConfigManager: private */
 
 ConfigManager::ConfigManager() :
-	current_()
+	path_(DEFAULT_PATH_),
+	current_(Config::DEFAULT)
 {}
+
+const String ConfigManager::DEFAULT_PATH_ = L"Config";

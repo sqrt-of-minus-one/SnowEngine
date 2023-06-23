@@ -6,6 +6,7 @@
 
 #include "Config.h"
 
+#include "ConfigManager.h"
 #include "../Util/Json/JsonObject.h"
 #include "../Util/Json/Array.h"
 #include "../Util/Json/Value.h"
@@ -156,6 +157,50 @@ Config::Config(Config&& config) :
 	saves_path(std::move(config.saves_path))
 {}
 
+Config::Config(const String& name) :
+	Config()
+{
+	std::shared_ptr<json::JsonObject> config_json =
+		std::dynamic_pointer_cast<json::JsonObject>(json::Element::load(ConfigManager::get_instance().get_path() + L"\\" + name + L".json"));
+	if (!config_json)
+	{
+		// Log
+	}
+	const std::map<String, std::shared_ptr<json::Element>>& sections = config_json->get_content();
+
+	std::shared_ptr<json::JsonObject> section;
+
+	load_section_(section, config_json, L"window"_s);
+	load_value_(window_resolution, section, L"resolution"_s);
+	load_value_(window_fullscreen, section, L"fullscreen"_s);
+	load_value_(window_resize, section, L"resize"_s);
+	load_value_(window_titlebar, section, L"titlebar"_s);
+	load_value_(window_titlebar_buttons, section, L"titlebar_buttons"_s);
+	load_value_(window_title, section, L"title"_s);
+
+	load_section_(section, config_json, L"res"_s);
+	load_value_(res_check_period_sec, section, L"check_period_sec"_s);
+	load_value_(res_textures_path, section, L"textures_path"_s);
+	load_value_(res_fonts_path, section, L"fonts_path"_s);
+	load_value_(res_sounds_path, section, L"sounds_path"_s);
+	load_value_(res_music_path, section, L"music_path"_s);
+
+	load_section_(section, config_json, L"chunks"_s);
+	load_value_(chunks_collision_size, section, L"collision_size"_s);
+	load_value_(chunks_clickable_size, section, L"clickable_size"_s);
+
+	load_section_(section, config_json, L"lang"_s);
+	load_value_(lang_path, section, L"path"_s);
+	load_value_(lang_default_lang, section, L"default_lang"_s);
+	load_value_(lang_default_table, section, L"default_table"_s);
+
+	load_section_(section, config_json, L"log"_s);
+	load_value_(log_path, section, L"path"_s);
+
+	load_section_(section, config_json, L"saves"_s);
+	load_value_(saves_path, section, L"path"_s);
+}
+
 String Config::to_string() const
 {
 	return make_json_()->to_string();
@@ -168,52 +213,7 @@ int Config::hash_code() const noexcept
 
 void Config::save(const String& name, bool allow_override)
 {
-	make_json_()->save(name + L".json", allow_override);
-}
-
-Config Config::load(const String& name)
-{
-	std::shared_ptr<json::JsonObject> config_json = std::dynamic_pointer_cast<json::JsonObject>(json::Element::load(name + L".json"));
-	if (!config_json)
-	{
-		// Log
-	}
-	const std::map<String, std::shared_ptr<json::Element>>& sections = config_json->get_content();
-
-	Config result; // With default properties
-	std::shared_ptr<json::JsonObject> section;
-
-	load_section_(section, config_json, L"window"_s);
-	load_value_(result.window_resolution, section, L"resolution"_s);
-	load_value_(result.window_fullscreen, section, L"fullscreen"_s);
-	load_value_(result.window_resize, section, L"resize"_s);
-	load_value_(result.window_titlebar, section, L"titlebar"_s);
-	load_value_(result.window_titlebar_buttons, section, L"titlebar_buttons"_s);
-	load_value_(result.window_title, section, L"title"_s);
-
-	load_section_(section, config_json, L"res"_s);
-	load_value_(result.res_check_period_sec, section, L"check_period_sec"_s);
-	load_value_(result.res_textures_path, section, L"textures_path"_s);
-	load_value_(result.res_fonts_path, section, L"fonts_path"_s);
-	load_value_(result.res_sounds_path, section, L"sounds_path"_s);
-	load_value_(result.res_music_path, section, L"music_path"_s);
-
-	load_section_(section, config_json, L"chunks"_s);
-	load_value_(result.chunks_collision_size, section, L"collision_size"_s);
-	load_value_(result.chunks_clickable_size, section, L"clickable_size"_s);
-
-	load_section_(section, config_json, L"lang"_s);
-	load_value_(result.lang_path, section, L"path"_s);
-	load_value_(result.lang_default_lang, section, L"default_lang"_s);
-	load_value_(result.lang_default_table, section, L"default_table"_s);
-
-	load_section_(section, config_json, L"log"_s);
-	load_value_(result.log_path, section, L"path"_s);
-
-	load_section_(section, config_json, L"saves"_s);
-	load_value_(result.saves_path, section, L"path"_s);
-
-	return result;
+	make_json_()->save(ConfigManager::get_instance().get_path() + L"\\" + name + L".json", allow_override);
 }
 
 const Config Config::DEFAULT;
