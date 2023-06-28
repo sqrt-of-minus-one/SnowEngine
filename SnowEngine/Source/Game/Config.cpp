@@ -13,6 +13,14 @@
 
 using namespace snow;
 
+void format_path_(String& path)
+{
+	while (path[path.size() - 1] == L'/' || path[path.size() - 1] == L'\\')
+	{
+		path.remove(path.size() - 1);
+	}
+}
+
 bool load_section_(std::shared_ptr<json::JsonObject> section, std::shared_ptr<json::JsonObject> json, const String& name)
 {
 	try
@@ -199,6 +207,14 @@ Config::Config(const String& name) :
 
 	load_section_(section, config_json, L"saves"_s);
 	load_value_(saves_path, section, L"path"_s);
+
+	format_path_(res_textures_path);
+	format_path_(res_fonts_path);
+	format_path_(res_sounds_path);
+	format_path_(res_music_path);
+	format_path_(lang_path);
+	format_path_(log_path);
+	format_path_(saves_path);
 }
 
 String Config::to_string() const

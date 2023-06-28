@@ -30,7 +30,6 @@ class RenderWindow;
 namespace snow
 {
 
-class Config;
 class Log;
 class Level;
 
@@ -116,23 +115,6 @@ public:
 	 */
 	template<typename T_Level>
 	static std::shared_ptr<T_Level> create_level();
-
-			/* FIELDS */
-
-	/**
-	 *	\~english
-	 *	\brief The configurations of the game
-	 *	
-	 *	This field is the main instance of the `Config` class, which contains game configurations.
-	 *	You can set them by `config.ini` file before the game starts.
-	 *	
-	 *	\~russian
-	 *	\brief Конфигурации игры
-	 *	
-	 *	Это поле — главный объект класса `Config`, содержащий конфигурации игры. Вы можете
-	 *	установить их с помощью файла `config.ini` перед запуском игры.
-	 */
-	static Config config;
 
 private:
 	static void loop_();

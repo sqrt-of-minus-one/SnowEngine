@@ -36,6 +36,7 @@
     <ClInclude Include="Source\Component\Visible\TextComponent.h" />
     <ClInclude Include="Source\Component\Visible\VisibleComponent.h" />
     <ClInclude Include="Source\Game\Config.h" />
+    <ClInclude Include="Source\Game\ConfigManager.h" />
     <ClInclude Include="Source\Game\Game.h" />
     <ClInclude Include="Source\Level\Level.h" />
     <ClInclude Include="Source\Math\Angle.h" />
@@ -87,6 +88,7 @@
     <ClCompile Include="Source\Component\Visible\TextComponent.cpp" />
     <ClCompile Include="Source\Component\Visible\VisibleComponent.cpp" />
     <ClCompile Include="Source\Game\Config.cpp" />
+    <ClCompile Include="Source\Game\ConfigManager.cpp" />
     <ClCompile Include="Source\Game\Game.cpp" />
     <ClCompile Include="Source\Level\Level.cpp" />
     <ClCompile Include="Source\Math\Angle.cpp" />

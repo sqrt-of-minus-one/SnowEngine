@@ -25,6 +25,8 @@ public:
 
 			/* METHODS */
 
+	void initialize();
+
 	const String& get_path() const;
 	void set_path(const String& path);
 
@@ -37,9 +39,12 @@ public:
 private:
 	ConfigManager();
 
+	bool is_initialized_;
+
 	String path_;
 	Config current_;
 
+	const static String INIT_FILE_;
 	const static String DEFAULT_PATH_;
 };
 
