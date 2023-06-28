@@ -7,42 +7,17 @@
 #include "ConfigManager.h"
 
 #include "../Util/Json/JsonObject.h"
+#include "../Util/Json/Value.h"
+#include "Game.h"
 
 using namespace snow;
 
 		/* ConfigManager: public */
 
-void ConfigManager::initialize()
-{
-	if (is_initialized_)
-	{
-		// Log
-		return;
-	}
-
-	std::shared_ptr<json::JsonObject> init_json =
-		std::dynamic_pointer_cast<json::JsonObject>(json::Element::load(INIT_FILE_));
-	if (!init_json)
-	{
-		// Error
-	}
-
-}
-
 ConfigManager& ConfigManager::get_instance()
 {
 	static ConfigManager config_manager;
 	return config_manager;
-}
-
-String ConfigManager::to_string() const
-{
-	return current_.to_string();
-}
-
-int ConfigManager::hash_code() const noexcept
-{
-	return current_.hash_code();
 }
 
 const String& ConfigManager::get_path() const
@@ -75,7 +50,7 @@ void ConfigManager::set_current(const Config& config, bool reload)
 		config.window_titlebar_buttons != old.window_titlebar_buttons ||
 		config.window_title != old.window_title)
 	{
-		// Todo
+		Game::get_instance().create_window_();
 	}
 
 	// res
@@ -141,10 +116,38 @@ Config& ConfigManager::load_current(const String& name)
 		/* ConfigManager: private */
 
 ConfigManager::ConfigManager() :
-	is_initialized_(false),
 	path_(DEFAULT_PATH_),
 	current_(Config::DEFAULT)
-{}
+{
+	std::shared_ptr<json::JsonObject> init_json =
+		std::dynamic_pointer_cast<json::JsonObject>(json::Element::load(INIT_FILE_));
+	if (!init_json)
+	{
+		// Error
+	}
+
+	std::shared_ptr<json::StringValue> path_json =
+		std::dynamic_pointer_cast<json::StringValue>(init_json->get_content().at(L"path"_s));
+	if (path_json)
+	{
+		path_ = path_json->get();
+	}
+	else
+	{
+		// Todo
+	}
+
+	std::shared_ptr<json::StringValue> default_json =
+		std::dynamic_pointer_cast<json::StringValue>(init_json->get_content().at(L"default"_s));
+	if (default_json)
+	{
+		set_current(Config(default_json->get()), true);
+	}
+	else
+	{
+		// Todo
+	}
+}
 
 const String ConfigManager::INIT_FILE_ = L"config_init.json";
 

@@ -48,10 +48,12 @@ class Level;
  */
 class Game
 {
-public:
-			/* CONSTRUCTORS */
+	friend class ConfigManager;
 
-	Game() = delete;
+public:
+			/* SINGLETON */
+
+	static Game& get_instance();
 
 			/* METHODS */
 
@@ -68,7 +70,7 @@ public:
 	 *	Этот метод запускает игру. Он может быть вызван только один раз, последующие вызовы будут
 	 *	проигнорированы. Игра начинается в новом потоке.
 	 */
-	static void start();
+	void start();
 
 	/**
 	 *	\~english
@@ -83,7 +85,7 @@ public:
 	 *	Проверяет, была ли игра начата методом `start`.
 	 *	\return `true`, если игра начата; иначе `false`.
 	 */
-	static bool is_started() noexcept;
+	bool is_started() noexcept;
 
 	/**
 	 *	\~english
@@ -102,7 +104,7 @@ public:
 	 *	напрямую.
 	 *	\return Указатель на текущее игровое окно. Нулевой указатель, если игра не была начата.
 	 */
-	static std::weak_ptr<sf::RenderWindow> get_window() noexcept;
+	std::weak_ptr<sf::RenderWindow> get_window() noexcept;
 
 	/**
 	 *	\~english
@@ -114,18 +116,22 @@ public:
 	 *	\return The pointer to the created level.
 	 */
 	template<typename T_Level>
-	static std::shared_ptr<T_Level> create_level();
+	std::shared_ptr<T_Level> create_level();
 
 private:
-	static void loop_();
+	Game();
+	
+	void loop_();
 
-	static void remove_level_(Level& level);
+	void create_window_();
 
-	static std::shared_ptr<sf::RenderWindow> window_;
-	static std::list<std::shared_ptr<Level>> levels_;
+	void remove_level_(Level& level);
 
-	static bool is_started_;
-	static std::unique_ptr<Log> main_log_;
+	std::shared_ptr<sf::RenderWindow> window_;
+	std::list<std::shared_ptr<Level>> levels_;
+
+	bool is_started_;
+	std::unique_ptr<Log> main_log_;
 };
 
 

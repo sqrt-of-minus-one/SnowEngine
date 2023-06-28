@@ -31,7 +31,6 @@ public:
 			/* METHODS FROM Object */
 
 	virtual String to_string() const override;
-	virtual int hash_code() const noexcept override;
 
 			/* METHODS */
 	

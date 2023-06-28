@@ -11,7 +11,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Config.h"
+#include "ConfigManager.h"
 #include "../Component/Camera/CameraComponent.h"
 #include "../Component/Clickable/ClickableComponent.h"
 #include "../Util/Lang/Lang.h"
@@ -24,11 +24,17 @@ using namespace snow;
 
 		/* Game: public */
 
+Game& Game::get_instance()
+{
+	static Game game;
+	return game;
+}
+
 void Game::start()
 {
 	if (!is_started_)
 	{
-		std::thread loop_thread(loop_);
+		std::thread loop_thread(&Game::loop_, this);
 		loop_thread.detach();
 		main_log_->i(L"The game has been started"_s);
 		if (1 != 1)
@@ -49,15 +55,18 @@ std::weak_ptr<sf::RenderWindow> Game::get_window() noexcept
 	return window_;
 }
 
-Config Game::config;
-
 		/* Game: private */
+
+Game::Game() :
+	window_(),
+	levels_(),
+	is_started_(false),
+	main_log_(new Log(L"Main"_s))
+{}
 
 void Game::loop_()
 {
-	window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(config.resolution.get_x(), config.resolution.get_y()), config.title.to_std_string(),
-		sf::Style::Titlebar * config.titlebar | sf::Style::Resize * config.resize |
-		sf::Style::Close * config.titlebar_buttons | sf::Style::Fullscreen * config.fullscreen);
+	create_window_();
 
 	auto f_time = std::chrono::steady_clock::now();
 	auto s_time = f_time;
@@ -176,6 +185,14 @@ void Game::loop_()
 	main_log_->i(L"The main window has been closed"_s);
 }
 
+void Game::create_window_()
+{
+	const Config& c = ConfigManager::get_instance().get_current();
+	window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(c.window_resolution.get_x(), c.window_resolution.get_y()), c.window_title.to_std_string(),
+		sf::Style::Titlebar * c.window_titlebar | sf::Style::Resize * c.window_resize |
+		sf::Style::Close * c.window_titlebar_buttons | sf::Style::Fullscreen * c.window_fullscreen);
+}
+
 void Game::remove_level_(Level& level)
 {
 	for (auto i = levels_.begin(); i != levels_.end(); i++)
@@ -187,8 +204,3 @@ void Game::remove_level_(Level& level)
 		}
 	}
 }
-
-std::shared_ptr<sf::RenderWindow> Game::window_;
-std::list<std::shared_ptr<Level>> Game::levels_;
-bool Game::is_started_ = false;
-std::unique_ptr<Log> Game::main_log_(new Log(L"Main"_s));

@@ -93,23 +93,6 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the object
-	 *	
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *	
-	 *	\~russian
-	 *	\brief Хеш-код объекта
-	 *	
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
-	 */
-	virtual int hash_code() const noexcept = 0;
-
-	/**
-	 *	\~english
 	 *	\brief Checks whether the object still exists
 	 *	
 	 *	Searches the address of the object in the list of existing objects.

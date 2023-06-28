@@ -11,21 +11,14 @@
 namespace snow
 {
 
-class ConfigManager : public Object
+class ConfigManager
 {
 public:
 			/* SINGLETON */
 
 	static ConfigManager& get_instance();
 
-			/* METHODS FROM Object */
-	
-	virtual String to_string() const override;
-	virtual int hash_code() const noexcept override;
-
 			/* METHODS */
-
-	void initialize();
 
 	const String& get_path() const;
 	void set_path(const String& path);
@@ -38,8 +31,6 @@ public:
 
 private:
 	ConfigManager();
-
-	bool is_initialized_;
 
 	String path_;
 	Config current_;

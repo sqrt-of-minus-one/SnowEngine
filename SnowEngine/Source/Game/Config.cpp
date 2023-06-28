@@ -222,11 +222,6 @@ String Config::to_string() const
 	return make_json_()->to_string();
 }
 
-int Config::hash_code() const noexcept
-{
-	return make_json_()->hash_code();
-}
-
 void Config::save(const String& name, bool allow_override)
 {
 	make_json_()->save(ConfigManager::get_instance().get_path() + L"\\" + name + L".json", allow_override);

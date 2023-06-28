@@ -67,24 +67,3 @@ String util::to_string(bool var)
 {
 	return var ? L"true"_s : L"false"_s;
 }
-
-int util::hash_code(int var) noexcept
-{
-	return var;
-}
-
-int util::hash_code(double var) noexcept
-{
-	// Often values of double variables are between 0 and 1. Their hash codes would be the same unless we multiplied them by something
-	return static_cast<int>(var * 1024.);
-}
-
-int util::hash_code(wchar_t var) noexcept
-{
-	return static_cast<int>(var);
-}
-
-int util::hash_code(bool var) noexcept
-{
-	return static_cast<int>(var);
-}
