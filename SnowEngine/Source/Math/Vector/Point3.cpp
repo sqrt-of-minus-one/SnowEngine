@@ -9,6 +9,8 @@
 #include "Point2.h"
 #include "Vector3.h"
 #include "../../Util/Types/String.h"
+#include "../../Util/Json/Array.h"
+#include "../../Util/Json/Value.h"
 #include "../../Util/Util.h"
 
 using namespace snow;
@@ -45,14 +47,56 @@ Point3::Point3(int x, int y, int z) :
 	z_(z)
 {}
 
-String Point3::to_string() const
+Point3::Point3(const std::shared_ptr<json::Element> json) :
+	x_(),
+	y_(),
+	z_()
 {
-	return L"{"_s + util::to_string(x_) + L", "_s + util::to_string(y_) + L", "_s + util::to_string(z_) + L"}"_s;
+	if (!json)
+	{
+		throw std::invalid_argument("Couldn't create a point: the JSON cannot be nullptr");
+	}
+
+	std::shared_ptr<json::Array> array = std::dynamic_pointer_cast<json::Array>(json);
+	if (!array) // The JSON must be an array
+	{
+		throw std::invalid_argument("Couldn't create a point: the JSON is not an array");
+	}
+	if (array->get_content().size() != 3) // The array must have 3 values
+	{
+		throw std::invalid_argument("Couldn't create a point: the JSON array must have 3 elements");
+	}
+	int c[3];
+	for (int i = 0; i < 3; i++) // For every coordinate
+	{
+		std::shared_ptr<json::IntValue> value = std::dynamic_pointer_cast<json::IntValue>(array->get_content()[i]);
+		if (value)
+		{
+			c[i] = value->get();
+			break;
+		}
+		else
+		{
+			throw std::invalid_argument("Couldn't create a point: both elements of the JSON must be integer values");
+		}
+	}
+	x_ = c[0];
+	y_ = c[1];
+	z_ = c[2];
 }
 
-int Point3::hash_code() const noexcept
+String Point3::to_string() const
 {
-	return x_ + y_ + z_;
+	return L"["_s + util::to_string(x_) + L", " + util::to_string(y_) + L", " + util::to_string(z_) + L"]";
+}
+
+std::shared_ptr<json::Element> Point3::to_json() const
+{
+	std::shared_ptr<json::Array> point = std::make_shared<json::Array>();
+	point->get_content().push_back(util::to_json(x_));
+	point->get_content().push_back(util::to_json(y_));
+	point->get_content().push_back(util::to_json(z_));
+	return point;
 }
 
 int Point3::get_x() const noexcept

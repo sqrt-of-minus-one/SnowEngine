@@ -64,9 +64,9 @@ String Log::to_string() const
 	return name_;
 }
 
-int Log::hash_code() const noexcept
+std::shared_ptr<json::Element> Log::to_json() const
 {
-	return name_.hash_code();
+	return name_.to_json();
 }
 
 void Log::enable_debug_mode() noexcept

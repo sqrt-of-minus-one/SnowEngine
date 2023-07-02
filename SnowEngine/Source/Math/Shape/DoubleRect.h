@@ -95,20 +95,43 @@ public:
 	 */
 	DoubleRect(const Vector2& position, const Vector2& size);
 
+	/**
+	 *	\~english
+	 *	\brief Creates a new rectangle from the JSON element
+	 *
+	 *	Creates a rectangle using values contained in the passed JSON element. It must be an array
+	 *	containing two other arrays, each containing two double or integer values. Values of the
+	 *	first array represent the position of the rectangle, values of the second one represent its
+	 *	size.
+	 *	\param json The JSON element with the values of a new rectangle.
+	 *	\throw std::invalid_argument The passed JSON is not a correct array.
+	 *
+	 *	\~russian
+	 *	\breif Создаёт новый прямоугольник из элемента JSON
+	 *
+	 *	Создаёт прямоугольник, используя значения, содержащиеся в переданном элементе JSON. Это
+	 *	должен быть массив, содержащий два других массива, каждый из которых содержит два
+	 *	вещественных или целочисленных значения. Значения первого массива представляют собой
+	 *	положение прямоугольника, значения второго — его размер.
+	 *	\param json Элемент JSON со значениями нового прямоугольника.
+	 *	\throw std::invalid_argument Переданный JSON не является корректным массивом.
+	 */
+	DoubleRect(const std::shared_ptr<json::Element> json);
+
 			/* METHODS FROM Object */
 
 	/**
 	 *	\~english
 	 *	\brief Converts the rectangle into a string
 	 *
-	 *	Creates a string with format `{{<px>, <py>}, {<sx>, <sy>}}`, where `<px>` and `<py>` are
+	 *	Creates a string with format `[[<px>, <py>], [<sx>, <sy>]]`, where `<px>` and `<py>` are
 	 *	the position, `<sx>` and `<sy>` are the size of the rectangle.
 	 *	\return The string with the rectangle characteristics.
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует прямоугольник в строку
 	 *	
-	 *	Создаёт строку в формате `{{<px>, <py>}, {<sx>, <sy>}}`, где `<px>` и `<py>` — положение, а
+	 *	Создаёт строку в формате `[[<px>, <py>], [<sx>, <sy>]]`, где `<px>` и `<py>` — положение, а
 	 *	`<sx>` и `<sy>` — размер прямоугольника.
 	 *	\return Строка с характеристиками прямоугольника.
 	 */
@@ -116,20 +139,20 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the rectangle
+	 *	\brief Converts the rectangle into a JSON element
 	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of a zero rectangle is zero.
-	 *	\return Hash code of the object.
+	 *	Creates a JSON array: `[[<px>, <py>], [<sx>, <sy>]]`, where `<px>` and `<py>` are
+	 *	the position, `<sx>` and `<sy>` are the size of the rectangle.
+	 *	\return The JSON array with the rectangle characteristics.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код прямоугольника
+	 *	\brief Конвертирует прямоугольник в элемент JSON
 	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого прямоугольника — ноль.
-	 *	\return Хеш-код объекта.
+	 *	Создаёт массив JSON: `[[<px>, <py>], [<sx>, <sy>]]`, где `<px>` и `<py>` — положение, а
+	 *	`<sx>` и `<sy>` — размер прямоугольника.
+	 *	\return Массив JSON с характеристиками прямоугольника.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 	
 			/* METHODS */
 

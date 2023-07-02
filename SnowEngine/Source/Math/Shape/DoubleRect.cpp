@@ -10,6 +10,7 @@
 
 #include "../Math.h"
 #include "../../Util/Types/String.h"
+#include "../../Util/Json/Array.h"
 
 using namespace snow;
 
@@ -40,15 +41,40 @@ DoubleRect::DoubleRect(const Vector2& position, const Vector2& size) :
 		size_.set_y(-size_.get_y());
 	}
 }
+
+DoubleRect::DoubleRect(const std::shared_ptr<json::Element> json) :
+	position_(),
+	size_()
+{
+	if (!json)
+	{
+		throw std::invalid_argument("Couldn't create a rectangle: the JSON cannot be nullptr");
+	}
+
+	std::shared_ptr<json::Array> array = std::dynamic_pointer_cast<json::Array>(json);
+	if (!array) // The JSON must be an array
+	{
+		throw std::invalid_argument("Couldn't create a rectangle: the JSON is not an array");
+	}
+	if (array->get_content().size() != 2) // The array must have 2 values
+	{
+		throw std::invalid_argument("Couldn't create a rectangle: the JSON array must have 2 elements");
+	}
+	position_ = Vector2(array->get_content()[0]);
+	size_ = Vector2(array->get_content()[1]);
+}
 	
 String DoubleRect::to_string() const
 {
-	return L"{"_s + position_.to_string() + L", " + size_.to_string() + L"}";
+	return L"["_s + position_.to_string() + L", " + size_.to_string() + L"]";
 }
 
-int DoubleRect::hash_code() const noexcept
+std::shared_ptr<json::Element> DoubleRect::to_json() const
 {
-	return position_.hash_code() - size_.hash_code();
+	std::shared_ptr<json::Array> rect = std::make_shared<json::Array>();
+	rect->get_content().push_back(position_.to_json());
+	rect->get_content().push_back(size_.to_json());
+	return rect;
 }
 
 const Vector2& DoubleRect::get_position() const

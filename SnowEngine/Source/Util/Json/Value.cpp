@@ -51,9 +51,9 @@ json::EType json::snow_::type_<std::nullptr_t>() noexcept
 json::snow_::Value_<std::nullptr_t>::Value_()
 {}
 
-int json::snow_::Value_<std::nullptr_t>::hash_code() const noexcept
+std::shared_ptr<json::Element> json::snow_::Value_<std::nullptr_t>::to_json() const
 {
-	return 0;
+	return std::make_shared<json::snow_::Value_<std::nullptr_t>>(*this);
 }
 
 json::EType json::snow_::Value_<std::nullptr_t>::get_type() const

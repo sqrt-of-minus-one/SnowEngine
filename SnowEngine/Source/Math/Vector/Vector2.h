@@ -88,40 +88,59 @@ public:
 	 */
 	Vector2(double x, double y);
 
+	/**
+	 *	\~english
+	 *	\brief Creates a new vector from the JSON element
+	 *	
+	 *	Creates a vector using values contained in the passed JSON element. It must be an array
+	 *	with two double or integer values.
+	 *	\param json The JSON element with the value of a new vector.
+	 *	\throw std::invalid_argument The passed JSON is not an array with two double or integer
+	 *	values.
+	 *	
+	 *	\~russian
+	 *	\breif Создаёт новый вектор из элемента JSON
+	 *	
+	 *	Создаёт вектор, используя значения, содержащиеся в переданном элементе JSON. Это должен
+	 *	быть массив с двумя вещественными или целочисленными значениями.
+	 *	\param json Элемент JSON со значением нового вектора.
+	 *	\throw std::invalid_argument Переданный JSON не является массивом с двумя вещественными или
+	 *	целочисленными значениями.
+	 */
+	Vector2(const std::shared_ptr<json::Element> json);
+
 			/* METHODS FROM Object */
 
 	/**
 	 *	\~english
 	 *	\brief Converts the vector into a string
 	 *
-	 *	Creates a string with format `{<x>, <y>}`, where `<x>` and `<y>` are coordinates of the
+	 *	Creates a string with format `[<x>, <y>]`, where `<x>` and `<y>` are coordinates of the
 	 *	vector.
 	 *	\return The string with the vector value.
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует вектор в строку
 	 *	
-	 *	Создаёт строку в формате `{<x>, <y>}`, где `<x>` и `<y>` — координаты вектора.
+	 *	Создаёт строку в формате `[<x>, <y>]`, где `<x>` и `<y>` — координаты вектора.
 	 *	\return Строка с координатами вектора.
 	 */
 	virtual String to_string() const override;
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the vector
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of a zero vector is zero.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Converts the vector into a JSON element
+	 *	
+	 *	Creates a JSON array. The elements of the array are the vector coordinates.
+	 *	\return The JSON array with the vector coordinates.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код вектора
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого вектора — ноль.
-	 *	\return Хеш-код объекта.
+	 *	\brief Конвертирует вектор в элемент JSON
+	 *	
+	 *	Создаёт массив JSON. Элементами массива являются координаты вектора.
+	 *	\return Массив JSON с координтами вектора.
 	 */
-	int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 	
 			/* METHODS */
 	

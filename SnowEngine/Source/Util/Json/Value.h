@@ -132,20 +132,18 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the value
+	 *	\brief Returns itself
 	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the value.
+	 *	Returns a copy of itself
+	 *	\return The JSON element.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код значения
+	 *	\brief Возвращает себя
 	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код значения.
+	 *	Возвращает копию себя.
+	 *	\return Элемент JSON.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<Element> to_json() const override;
 
 			/* METHODS FROM Element */
 	
@@ -270,20 +268,18 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the value
+	 *	\brief Returns itself
 	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of a null value is always zero.
-	 *	\return Hash code of the value.
+	 *	Returns a copy of itself
+	 *	\return The JSON element.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код значения
+	 *	\brief Возвращает себя
 	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого значения — всегда ноль.
-	 *	\return Хеш-код значения.
+	 *	Возвращает копию себя.
+	 *	\return Элемент JSON.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<Element> to_json() const override;
 
 			/* METHODS FROM Element */
 	
@@ -392,9 +388,9 @@ json::snow_::Value_<T>::Value_(T&& value) :
 {}
 
 template<typename T>
-int json::snow_::Value_<T>::hash_code() const noexcept
+std::shared_ptr<json::Element> json::snow_::Value_<T>::to_json() const
 {
-	return util::hash_code(value_);
+	return std::make_shared<json::snow_::Value_<T>>(*this);
 }
 
 template<typename T>

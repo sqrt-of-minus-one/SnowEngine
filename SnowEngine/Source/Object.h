@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Object` class
- *	
- *	This file contains the definition of the `Object` class.
- *
- *	\~russian
- *	\brief Файл с классом `Object`
- *
- *	Этот файл содержит определение класса `Object`.
- */
-
 #include <stdexcept>
 #include <memory>
 #include <unordered_set>
@@ -28,20 +15,25 @@ namespace snow
 
 class String;
 
+namespace json
+{
+class Element;
+}
+
 /**
  *	\~english
  *	\brief The base class of all SnowEngine classes
  *	
- *	Every SnowEngine class (except of the singletons) is derived from this one. This class has also
- *	a list with all objects, so you can check if the pointer to an `Object` is valid using
- *	`is_valid` method.
+ *	Every SnowEngine class (except of the singletons) is derived from this one. This class also
+ *	keeps a list of all objects, which lets you to check if the pointer to an `Object` is valid
+ *	using `is_valid()` method.
  *	
  *	\~russian
  *	\brief Базовый класс для всех классов SnowEngine
  *	
- *	Каждый класс SnowEngine (кроме одиночек) наследуется от этого. Этот класс также имеет список
- *	всех существующих объектов, и вы можете проверить, действителен ли указатель на `Object` с
- *	помощью метода `is_valid`.
+ *	Каждый класс SnowEngine (кроме одиночек) наследуется от этого. Этот класс также хранит список
+ *	всех существующих объектов, что позволяет вам проверить, действителен ли указатель на `Object`
+ *	с помощью метода `is_valid()`.
  */
 class Object
 {
@@ -90,6 +82,21 @@ public:
 	 *	\return Строка.
 	 */
 	virtual String to_string() const = 0;
+
+	/**
+	 *	\~english
+	 *	\brief Converts the object into a JSON element
+	 *	
+	 *	The virtual method that creates a JSON element with the information about the object.
+	 *	\return The JSON element.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует объект в элемент JSON
+	 *	
+	 *	Виртуальный метод, который создаёт элемент JSON с информацией о данном объекте.
+	 *	\return Элемент JSON.
+	 */
+	virtual std::shared_ptr<json::Element> to_json() const = 0;
 
 	/**
 	 *	\~english

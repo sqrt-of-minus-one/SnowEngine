@@ -233,7 +233,7 @@ public:
 	 *	Converts the string to the JSON element.
 	 *	\param string The string with JSON.
 	 *	\return The shared pointer to the created element.
-	 *	\throw std::runtime_error The string is not valid JSON.
+	 *	\throw std::invalid_argument The string is not valid JSON.
 	 *	\sa
 	 *	- `to_string()`
 	 *	
@@ -243,7 +243,7 @@ public:
 	 *	Конвертирует строку в элемент JSON.
 	 *	\param string Строка с JSON.
 	 *	\return Указатель на созданный элемент.
-	 *	\throw std::runtime_error Строка не является корректным JSON.
+	 *	\throw std::invalid_argument Строка не является корректным JSON.
 	 *	\sa
 	 *	- `to_string()`
 	 */
@@ -256,8 +256,8 @@ public:
 	 *	Loads the file content and creates the JSON element based on it.
 	 *	\param filename The path to the file with JSON.
 	 *	\return The shared pointer to the created element.
-	 *	\throw std::runtime_error The file does not exist, cannot be accessed or doesn't contain a
-	 *	valid JSON.
+	 *	\throw std::runtime_error The file does not exist or cannot be accessed.
+	 *	\throw std::invalid_argument The file doesn't contain a valid JSON.
 	 *	\sa
 	 *	- `save()`
 	 *	
@@ -267,8 +267,8 @@ public:
 	 *	Загружает содержимое файла и создаёт на его основе элемент JSON.
 	 *	\param filename Путь к файлу с JSON.
 	 *	\return Указатель на созданный элемент.
-	 *	\throw std::runtime_error Файл не существует, к нему не удаётся получить доступ или он не
-	 *	содержит корректный JSON.
+	 *	\throw std::runtime_error Файл не существует или к нему не удаётся получить доступ.
+	 *	\throw std::invalid_argument Файл не содержит корректный JSON.
 	 *	\sa
 	 *	- `save()`
 	 */
@@ -281,7 +281,7 @@ public:
 	 *	Reads the stream and converts its content to the JSON element.
 	 *	\param stream The stream with JSON.
 	 *	\return The shared pointer to the created element.
-	 *	\throw std::runtime_error The stream doesn't contain a valid JSON.
+	 *	\throw std::invalid_argument The stream doesn't contain a valid JSON.
 	 *	\sa
 	 *	- `to_stream()`
 	 *	
@@ -291,7 +291,7 @@ public:
 	 *	Конвертирует строку в элемент JSON.
 	 *	\param stream Поток с JSON.
 	 *	\return Указатель на созданный элемент.
-	 *	\throw std::runtime_error Поток не содержит корректный JSON.
+	 *	\throw std::invalid_argument Поток не содержит корректный JSON.
 	 *	\sa
 	 *	- `to_stream()`
 	 */

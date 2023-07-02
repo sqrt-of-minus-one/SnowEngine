@@ -122,7 +122,7 @@ std::shared_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 		{
 			if (!read_lit_(stream, L"true"_s))
 			{
-				throw std::runtime_error("Invalid JSON");
+				throw std::invalid_argument("Invalid JSON");
 			}
 			return std::make_shared<BoolValue>(true);
 		}
@@ -132,7 +132,7 @@ std::shared_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 		{
 			if (!read_lit_(stream, L"false"_s))
 			{
-				throw std::runtime_error("Invalid JSON");
+				throw std::invalid_argument("Invalid JSON");
 			}
 			return std::make_shared<BoolValue>(false);
 		}
@@ -142,7 +142,7 @@ std::shared_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 		{
 			if (!read_lit_(stream, L"null"_s))
 			{
-				throw std::runtime_error("Invalid JSON");
+				throw std::invalid_argument("Invalid JSON");
 			}
 			return std::make_shared<NullValue>();
 		}
@@ -155,11 +155,11 @@ std::shared_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 		// JSON cannot have anything else => throw the exception
 		default:
 		{
-			throw std::runtime_error("Invalid JSON");
+			throw std::invalid_argument("Invalid JSON");
 		}
 		}
 	}
-	throw std::runtime_error("Invalid JSON");
+	throw std::invalid_argument("Invalid JSON");
 }
 
 std::shared_ptr<json::JsonObject> json::Element::read_object_(std::wistream& stream)
@@ -184,14 +184,14 @@ std::shared_ptr<json::JsonObject> json::Element::read_object_(std::wistream& str
 		}
 		else
 		{
-			throw("Invalid JSON: invalid object, a key was expected");
+			throw std::invalid_argument("Invalid JSON: invalid object, a key was expected");
 		}
 		
 		c = stream.peek();
 		pass_(stream, c);
 		if (c != L':')
 		{
-			throw("Invalid JSON: invalid object, ':' was expected after the key");
+			throw std::invalid_argument("Invalid JSON: invalid object, ':' was expected after the key");
 		}
 		stream.get(c);
 		c = stream.peek();
@@ -211,7 +211,7 @@ std::shared_ptr<json::JsonObject> json::Element::read_object_(std::wistream& str
 			stream.get(c);
 			continue;
 		}
-		throw std::runtime_error("Invalid JSON: invalid object");
+		throw std::invalid_argument("Invalid JSON: invalid object");
 	}
 }
 
@@ -242,7 +242,7 @@ std::shared_ptr<json::Array> json::Element::read_array_(std::wistream& stream)
 			stream.get(c);
 			continue;
 		}
-		throw std::runtime_error("Invalid JSON: invalid array");
+		throw std::invalid_argument("Invalid JSON: invalid array");
 	}
 }
 
@@ -270,7 +270,7 @@ String json::Element::read_string_(std::wistream& stream, wchar_t first)
 		}
 		str += c;
 	}
-	throw std::runtime_error("Invalid JSON: the string is not closed");
+	throw std::invalid_argument("Invalid JSON: the string is not closed");
 }
 			
 
@@ -359,11 +359,11 @@ std::shared_ptr<json::Element> json::Element::read_number_(std::wistream& stream
 			return std::make_shared<IntValue>(result.to_int<16>(false));
 		}
 		}
-		throw std::runtime_error("Invalid JSON");
+		throw std::invalid_argument("Invalid JSON");
 	}
 	catch (std::invalid_argument e)
 	{
-		throw std::runtime_error("Invalid JSON");
+		throw std::invalid_argument("Invalid JSON");
 	}
 }
 
@@ -404,9 +404,9 @@ void json::Element::read_comment_(std::wistream& stream)
 				return;
 			}
 		}
-		throw std::runtime_error("Invalid JSON: the multi-line comment is not closed");
+		throw std::invalid_argument("Invalid JSON: the multi-line comment is not closed");
 	}
-	throw std::runtime_error("Invalid JSON");
+	throw std::invalid_argument("Invalid JSON");
 }
 
 void json::Element::pass_(std::wistream& stream, wchar_t& c)
@@ -415,7 +415,7 @@ void json::Element::pass_(std::wistream& stream, wchar_t& c)
 	{
 		if (c == std::wistream::traits_type::eof())
 		{
-			throw std::runtime_error("Invalid JSON: unexpected end of JSON");
+			throw std::invalid_argument("Invalid JSON: unexpected end of JSON");
 		}
 		if (c == L'//')
 		{

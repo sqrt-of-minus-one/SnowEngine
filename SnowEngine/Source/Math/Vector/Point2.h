@@ -89,40 +89,58 @@ public:
 	 */
 	Point2(int x, int y);
 
+	/**
+	 *	\~english
+	 *	\brief Creates a new point from the JSON element
+	 *
+	 *	Creates a point using values contained in the passed JSON element. It must be an array with
+	 *	two integer values.
+	 *	\param json The JSON element with the value of a new point.
+	 *	\throw std::invalid_argument The passed JSON is not an array with two integer values.
+	 *
+	 *	\~russian
+	 *	\breif Создаёт новую точку из элемента JSON
+	 *
+	 *	Создаёт точку, используя значения, содержащиеся в переданном элементе JSON. Это должен быть
+	 *	массив с двумя целочисленными значениями.
+	 *	\param json Элемент JSON со значением новой точки.
+	 *	\throw std::invalid_argument Переданный JSON не является массивом с двумя целочисленными
+	 *	значениями.
+	 */
+	Point2(const std::shared_ptr<json::Element> json);
+
 			/* METHODS FROM Object */
 
 	/**
 	 *	\~english
 	 *	\brief Converts the point into a string
 	 *
-	 *	Creates a string with format `{<x>, <y>}`, where `<x>` and `<y>` are coordinates of the
+	 *	Creates a string with format `[<x>, <y>]`, where `<x>` and `<y>` are coordinates of the
 	 *	point.
 	 *	\return The string with the point value.
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует точку в строку
 	 *	
-	 *	Создаёт строку в формате `{<x>, <y>}`, где `<x>` и `<y>` — координаты точки.
+	 *	Создаёт строку в формате `[<x>, <y>]`, где `<x>` и `<y>` — координаты точки.
 	 *	\return Строка с координатами точки.
 	 */
 	virtual String to_string() const override;
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the point
+	 *	\brief Converts the point into a JSON element
 	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of a zero point is zero.
-	 *	\return Hash code of the object.
+	 *	Creates a JSON array. The elements of the array are the point coordinates.
+	 *	\return The JSON array with the point coordinates.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код точки
+	 *	\brief Конвертирует точку в элемент JSON
 	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код нулевой точки — ноль.
-	 *	\return Хеш-код объекта.
+	 *	Создаёт массив JSON. Элементами массива являются координаты точки.
+	 *	\return Массив JSON с координтами точки.
 	 */
-	int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 	
 			/* METHODS */
 	

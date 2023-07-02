@@ -78,20 +78,18 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the array
+	 *	\brief Returns itself
 	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of an empty array is zero.
-	 *	\return Hash code of the object.
+	 *	Returns a copy of itself
+	 *	\return The JSON element.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код массива
+	 *	\brief Возвращает себя
 	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустого массива — ноль.
-	 *	\return Хеш-код объекта.
+	 *	Возвращает копию себя.
+	 *	\return Элемент JSON.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<Element> to_json() const override;
 
 			/* METHODS FROM Element */
 	

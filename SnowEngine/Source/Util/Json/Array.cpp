@@ -28,16 +28,9 @@ json::Array::Array(Array&& array) :
 	content_(std::move(array.content_))
 {}
 
-int json::Array::hash_code() const noexcept
+std::shared_ptr<json::Element> json::Array::to_json() const
 {
-	int result = 0;
-	int one = 1;
-	for (const auto& i : content_)
-	{
-		result += one * i->hash_code();
-		one = -one;
-	}
-	return result;
+	return std::make_shared<json::Array>(*this);
 }
 
 json::EType json::Array::get_type() const

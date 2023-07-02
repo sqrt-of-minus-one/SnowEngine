@@ -11,6 +11,8 @@
 #include "Math.h"
 #include "../Util/Util.h"
 #include "../Util/Types/String.h"
+#include "../Util/Json/JsonObject.h"
+#include "../Util/Json/Value.h"
 
 using namespace snow;
 
@@ -28,14 +30,91 @@ Angle::Angle(double degrees) :
 	value_deg_(degrees)
 {}
 
+Angle::Angle(const std::shared_ptr<json::Element> json) :
+	value_deg_()
+{
+	if (!json)
+	{
+		throw std::invalid_argument("Couldn't create an angle: the JSON cannot be nullptr");
+	}
+
+	// The JSON can be either double or integer value or JSON object
+	switch (json->get_type())
+	{
+	case json::EType::DOUBLE_VALUE:
+	{
+		value_deg_ = std::dynamic_pointer_cast<json::DoubleValue>(json)->get();
+		break;
+	}
+	case json::EType::INT_VALUE:
+	{
+		value_deg_ = static_cast<double>(std::dynamic_pointer_cast<json::IntValue>(json)->get());
+		break;
+	}
+	case json::EType::OBJECT:
+	{
+		auto& map = std::dynamic_pointer_cast<json::JsonObject>(json)->get_content();
+		if (map.size() != 1)
+		{
+			throw std::invalid_argument("Couldn't create an angle: the JSON object must have 1 field");
+		}
+
+		const std::pair<String, std::shared_ptr<json::Element>>& element = *map.begin();
+		if (!element.second)
+		{
+			throw std::invalid_argument("Couldn't create an angle: the element of the object cannot be nullptr");
+		}
+		double value;
+		switch (element.second->get_type())
+		{
+		case json::EType::DOUBLE_VALUE:
+		{
+			value = std::dynamic_pointer_cast<json::DoubleValue>(element.second)->get();
+		}
+		case json::EType::INT_VALUE:
+		{
+			value = static_cast<double>(std::dynamic_pointer_cast<json::IntValue>(element.second)->get());
+		}
+		default:
+		{
+			throw std::invalid_argument("Couldn't create an angle: the element of the JSON object must be a double or integer value");
+		}
+		}
+
+		if (element.first == L"deg")
+		{
+			set_degrees(value);
+		}
+		else if (element.first == L"rad")
+		{
+			set_radians(value);
+		}
+		else if (element.first == L"grad")
+		{
+			set_gradians(value);
+		}
+		else
+		{
+			throw std::invalid_argument("Couldn't create an angle: the key of the JSON object must be \"deg\", \"rad\" or \"grad\"");
+		}
+	}
+	default:
+	{
+		throw std::invalid_argument("Couldn't create an angle: the JSON must be either a double or integer value or a JSON object");
+	}
+	}
+}
+
 String Angle::to_string() const
 {
 	return util::to_string(value_deg_) + L"_deg";
 }
 
-int Angle::hash_code() const noexcept
+std::shared_ptr<json::Element> Angle::to_json() const
 {
-	return util::hash_code(value_deg_);
+	std::shared_ptr<json::JsonObject> angle = std::make_shared<json::JsonObject>();
+	angle->get_content().insert({ L"deg", util::to_json(value_deg_) });
+	return angle;
 }
 
 double Angle::get_degrees() const noexcept

@@ -189,22 +189,7 @@ public:
 	 */
 	virtual String to_string() const override;
 
-	/**
-	 *	\~english
-	 *	\brief Hash code of the string
-	 *	
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *	
-	 *	\~russian
-	 *	\brief Хеш-код строки
-	 *	
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
-	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 

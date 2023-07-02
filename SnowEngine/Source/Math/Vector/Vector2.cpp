@@ -10,6 +10,8 @@
 #include "../Angle.h"
 #include "../Math.h"
 #include "../../Util/Types/String.h"
+#include "../../Util/Json/Array.h"
+#include "../../Util/Json/Value.h"
 #include "../../Util/Util.h"
 
 using namespace snow;
@@ -31,14 +33,60 @@ Vector2::Vector2(double x, double y) :
 	y_(y)
 {}
 
-String Vector2::to_string() const
+Vector2::Vector2(const std::shared_ptr<json::Element> json) :
+	x_(),
+	y_()
 {
-	return L"{"_s + util::to_string(x_) + L", "_s + util::to_string(y_) + L"}"_s;
+	if (!json)
+	{
+		throw std::invalid_argument("Couldn't create a vector: the JSON cannot be nullptr");
+	}
+
+	std::shared_ptr<json::Array> array = std::dynamic_pointer_cast<json::Array>(json);
+	if (!array) // The JSON must be an array
+	{
+		throw std::invalid_argument("Couldn't create a vector: the JSON is not an array");
+	}
+	if (array->get_content().size() != 2) // The array must have 2 values
+	{
+		throw std::invalid_argument("Couldn't create a vector: the JSON array must have 2 elements");
+	}
+	double c[2];
+	for (int i = 0; i < 2; i++) // For every coordinate
+	{
+		switch (array->get_content()[i]->get_type())
+		{
+		case json::EType::DOUBLE_VALUE:
+		{
+			c[i] = std::dynamic_pointer_cast<json::DoubleValue>(array->get_content()[i])->get();
+			break;
+		}
+		case json::EType::INT_VALUE:
+		{
+			c[i] = static_cast<double>(std::dynamic_pointer_cast<json::IntValue>(array->get_content()[i])->get());
+			break;
+		}
+		default:
+		{
+			throw std::invalid_argument("Couldn't create a vector: both elements of the JSON must be double or integer values");
+		}
+		}
+	}
+	x_ = c[0];
+	y_ = c[1];
 }
 
-int Vector2::hash_code() const noexcept
+String Vector2::to_string() const
 {
-	return static_cast<int>(x_ + y_);
+	return L"["_s + util::to_string(x_) + L", " + util::to_string(y_) + L"]";
+}
+
+std::shared_ptr<json::Element> Vector2::to_json() const
+{
+	std::shared_ptr<json::Array> vector = std::make_shared<json::Array>();
+	vector->get_content().push_back(util::to_json(x_));
+	vector->get_content().push_back(util::to_json(y_));
+	return vector;
 }
 
 double Vector2::get_x() const noexcept

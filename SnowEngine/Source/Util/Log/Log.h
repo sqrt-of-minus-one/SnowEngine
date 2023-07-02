@@ -125,20 +125,18 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the looger
+	 *	\brief Converts the logger into a JSON element
 	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
+	 *	Creates a JSON string with the log category name.
+	 *	\return The JSON string with the category name.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код логгера
+	 *	\brief Конвертирует логгер в элемент JSON
 	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
+	 *	Создаёт строку JSON с названием категории лога.
+	 *	\return Строка JSON с названием категории.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 

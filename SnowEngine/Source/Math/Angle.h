@@ -119,39 +119,75 @@ public:
 	 */
 	Angle(double degrees);
 
+	/**
+	 *	\~english
+	 *	\brief Creates a new angle from the JSON element
+	 *
+	 *	Creates an angle using a value contained in the passed JSON element. It must be either a
+	 *	double or integer value (the angle in degrees) or the object containing a single field. Its
+	 *	key must be `deg`, `rad` or `grad`, its value must be a double or integer value
+	 *	representing the angle value in degrees, radians or gradians respectively.
+	 *	\code
+	 *		Angle first(json::Element::from_string(L"45"_s)); // 45°
+	 *		Angle second(json::Element::from_string(L"{ \"deg\": 30 }"_s)); // 30°
+	 *		Angle third(json::Element::from_string(L"{ \"rad\": 3.1415 }"_s)); // 360°
+	 *		Angle fourth(json::Element::from_string(L"{ \"grad\": 100 }"_s)); // 90°
+	 *	\endcode
+	 *	\param json The JSON element with the value of a new angle.
+	 *	\throw std::invalid_argument The passed JSON is not correct.
+	 *
+	 *	\~russian
+	 *	\breif Создаёт новый угол из элемента JSON
+	 *
+	 *	Создаёт угол, используя значение, содержащееся в переданном элементе JSON. Этот элемент
+	 *	должен быть либо вещественным или целочисленным значением (угол в градусах), либо объектом,
+	 *	содержащим единственное поле. Его ключом должно быть `deg`, `rad` или `grad`, а значением —
+	 *	вещественное или целочисленное значение, представляющее собой значение угла в градусах,
+	 *	радианах или градианах соответственно.
+	 *	\code
+	 *		Angle first(json::Element::from_string(L"45"_s)); // 45°
+	 *		Angle second(json::Element::from_string(L"{ \"deg\": 30 }"_s)); // 30°
+	 *		Angle third(json::Element::from_string(L"{ \"rad\": 3.1415 }"_s)); // 360°
+	 *		Angle fourth(json::Element::from_string(L"{ \"grad\": 100 }"_s)); // 90°
+	 *	\endcode
+	 *	\param json Элемент JSON со значением нового угла.
+	 *	\throw std::invalid_argument Переданный JSON неправильный.
+	 */
+	Angle(const std::shared_ptr<json::Element> json);
+
 			/* METHODS FROM Object */
 
 	/**
 	 *	\~english
 	 *	\brief Converts the angle into a string
 	 *
-	 *	Creates a string with format `<val>_deg`, where `<val>` is the angle value in degrees.
+	 *	Creates a string with the angle value in degrees.
 	 *	\return A string with the angle value.
 	 *
 	 *	\~russian
 	 *	\brief Конвертирует угол в строку
 	 *
-	 *	Создаёт строку в формате `<x>_deg`, где `<x>` — величина угла в градусах.
+	 *	Создаёт строку с величиной угла в градусах.
 	 *	\return Строка, содержащая величину угла.
 	 */
 	virtual String to_string() const override;
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the angle
+	 *	\brief Converts the angle into a JSON element
 	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of a zero angle is zero.
-	 *	\return Hash code of the object.
+	 *	Creates a JSON object with a single field. Its key is `deg`, its value is the angle value
+	 *	in degrees.
+	 *	\return The JSON object with the angle value.
 	 *
 	 *	\~russian
-	 *	\brief Хеш-код угла
+	 *	\brief Конвертирует угол в элемент JSON
 	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код нулевого угла — ноль.
-	 *	\return Хеш-код объекта.
+	 *	Создаёт объект JSON с единственным полем. Его ключ — `deg`, а значение — значение угла в
+	 *	градусах.
+	 *	\return Объект JSON со значением угла.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 

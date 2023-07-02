@@ -29,14 +29,9 @@ json::JsonObject::JsonObject(JsonObject&& object) :
 	content_(std::move(object.content_))
 {}
 
-int json::JsonObject::hash_code() const noexcept
+std::shared_ptr<json::Element> json::JsonObject::to_json() const
 {
-	int result = 0;
-	for (const auto& [i, j] : content_)
-	{
-		result += i.hash_code() - util::hash_code(j);
-	}
-	return result;
+	return std::make_shared<json::JsonObject>(*this);
 }
 
 json::EType json::JsonObject::get_type() const
