@@ -153,7 +153,7 @@ public:
 	 *	\param json Элемент JSON со значением нового угла.
 	 *	\throw std::invalid_argument Переданный JSON неправильный.
 	 */
-	Angle(const std::shared_ptr<json::Element> json);
+	Angle(std::shared_ptr<const json::Element> json);
 
 			/* METHODS FROM Object */
 

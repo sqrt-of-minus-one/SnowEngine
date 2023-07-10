@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `EventBinder` class
- *
- *	This file contains the definition of the `EventBinder` class.
- *
- *	\~russian
- *	\brief Файл с классом `EventBinder`
- *
- *	Этот файл содержит определение класса `EventBinder`.
- */
-
 #include "Event.h"
 
 namespace snow
@@ -92,33 +79,34 @@ public:
 	 *	\brief Converts the binder to string
 	 *
 	 *	Returns the string containing the number of bound functions.
-	 *	\return `"Event, bound function: <n>"`, where `<n>` is the number of bound functions.
+	 *	\return `"Event, bound function: <n>"`, where `<n>` is the number of bound functions. `"No
+	 *	event"` if the event was destroyed.
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует «привязыватель» в строку
 	 *
 	 *	Возвращает строку, содержащую количество привязанных функций.
-	 *	\return `"Event, bound functions: <n>"`, где `<n>` — число привязанных функций.
+	 *	\return `"Event, bound functions: <n>"`, где `<n>` — число привязанных функций. `"No
+	 *	event"`, если событие было уничтожено.
 	 */
 	virtual String to_string() const override;
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the binder
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	zero.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Creates a JSON element with the event data
+	 *	
+	 *	Creates a JSON array describing the event (see the documentation of `Event::to_json()`). If
+	 *	event was destroyed, returns a null JSON value.
+	 *	\return The JSON array or a null value.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код binder
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
+	 *	\brief Создаёт элемент JSON с данными о событии
+	 *	
+	 *	Создаёт массив JSON, описывающий событие (см. документацию `Event::to_json()`). Если
+	 *	событие было уничтожено, возвращает нулевое значение JSON.
+	 *	\return Массив JSON или нулевое значение.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 
@@ -267,16 +255,17 @@ String EventBinder<T_Args...>::to_string() const
 	{
 		return event_.to_string();
 	}
-	else
-	{
-		return L"Event, bound function: 0"_s;
-	}
+	return L"No event"_s;
 }
 
 template<typename... T_Args>
-int EventBinder<T_Args...>::hash_code() const noexcept
+std::shared_ptr<json::Element> EventBinder<T_Args...>::to_json() const
 {
-	return reinterpret_cast<int>(&event_);
+	if (Object::is_valid(&event_))
+	{
+		return event_.to_json();
+	}
+	return json::NullValue::make();
 }
 
 template<typename... T_Args>

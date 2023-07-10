@@ -13,19 +13,6 @@
 //   /     \     ***   *   *   ***    *   *   *       *   *** *  *  *   ****   |*    system    *|//
 
 #pragma once
-
-/**
- *	\file
- *	\~english
- *	\brief The file with `Text` class
- *
- *	This file contains the definition of the `Text` class of the SnowFlake System.
- *
- *	\~russian
- *	\brief Файл с классом `Text`
- *
- *	Этот файл содержит определение класса `Text` системы SnowFlake.
- */
  
 #include "../../Object.h"
 
@@ -127,6 +114,31 @@ public:
 	 */
 	Text(String&& key);
 
+	/**
+	 *	\~english
+	 *	\brief Creates a new text with the specified key
+	 *	
+	 *	Creates a new text using the passed JSON. It must be either a JSON string or a JSON object:
+	 *	- if the passed JSON is a string, it is used as a translation key of a new text;
+	 *	- if the passed JSON is a object, it must only have one element. The key of the element
+	 *	will be used as a translation key, the value of the element will be ignored.
+	 *	\param json The JSON element with the translation key.
+	 *	\throw std::invalid_argument The passed JSON is not correct.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт новый текст с заданным ключом
+	 *	
+	 *	Создаёт новый текст, используя переданный JSON. Это должна быть либо строка JSON, либо
+	 *	объект JSON:
+	 *	- если переданный JSON является строкой, то она будет использована как ключ перевода нового
+	 *	текста;
+	 *	- если переданный JSON является объектом, то он должен иметь только один элемент. Ключ
+	 *	этого элемента будет использован как ключ перевода, а значение будет игнорироваться.
+	 *	\param json Элемент JSON с ключом перевода.
+	 *	\throw std::invalid_argument Переданный JSON неправильный.
+	 */
+	Text(std::shared_ptr<const json::Element> json);
+
 			/* METHODS FROM Object */
 
 	/**
@@ -146,20 +158,20 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the text
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of a text with empty key is zero.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Converts the text to JSON
+	 *	
+	 *	Creates a JSON object with one element. Its key is the translation key, its value is the
+	 *	localized string.
+	 *	\return The JSON object.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код текста
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код текста с пустым ключом — ноль.
-	 *	\return Хеш-код объекта.
+	 *	\brief Конвертирует текст в JSON
+	 *	
+	 *	Создаёт объект JSON с одним элементом. Его ключом является ключ перевода, а значением —
+	 *	локализованная строка.
+	 *	\return Объект JSON.
 	 */
-	virtual int hash_code() const noexcept override;
+	std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 

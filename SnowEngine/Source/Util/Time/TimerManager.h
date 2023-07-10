@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `TimerManager` class
- *
- *	This file contains the definition of the `TimerManager` class.
- *
- *	\~russian
- *	\brief Файл с классом `TimerManager`
- *
- *	Этот файл содержит определение класса `TimerManager`.
- */
-
 #include "../../Object.h"
 
 #include <list>
@@ -45,7 +32,7 @@ class Delegate;
  *	Он является одиночкой: может существовать только один диспетчер таймеров. Вы можете получить
  *	его, используя статический метод `get_instance`.
  */
-class TimerManager : public Object
+class TimerManager
 {
 	friend class Game;
 
@@ -66,41 +53,6 @@ public:
 	 *	\return Диспетчер таймеров.
 	 */
 	static TimerManager& get_instance();
-
-			/* METHODS FROM Object */
-
-	/**
-	 *	\~english
-	 *	\brief Converts the timer manager to string
-	 *	
-	 *	Returns the string `"There are <n> timer(s)"`, where `<n>` is the number of existing
-	 *	timers.
-	 *	\return The string with the number of timers.
-	 *	
-	 *	\~russian
-	 *	\brief Конвертирует диспетчер таймеров в строку
-	 *	
-	 *	Возвращает строку `"There are <n> timer(s)"`, где `<n>` — количество существующих таймеров.
-	 *	\return Строка с количеством таймеров.
-	 */
-	virtual String to_string() const override;
-
-	/**
-	 *	\~english
-	 *	\brief Hash code of the timer
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *
-	 *	\~russian
-	 *	\brief Хеш-код делегата
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
-	 */
-	virtual int hash_code() const noexcept override;
 
 			/* METHODS */
 

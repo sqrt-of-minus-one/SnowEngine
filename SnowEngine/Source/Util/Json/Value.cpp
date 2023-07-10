@@ -65,3 +65,8 @@ void json::snow_::Value_<std::nullptr_t>::to_stream(std::wostream& stream, int n
 {
 	stream << L"null";
 }
+
+std::shared_ptr<json::snow_::Value_<std::nullptr_t>> json::snow_::Value_<std::nullptr_t>::make()
+{
+	return std::make_shared<NullValue>();
+}

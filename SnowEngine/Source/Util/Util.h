@@ -6,9 +6,18 @@
 
 #pragma once
 
+#include <forward_list>
+#include <deque>
+#include <list>
+#include <set>
+#include <map>
+
 #include "../Object.h"
 #include "Types/String.h"
 #include "../Math/Math.h"
+#include "Json/JsonObject.h"
+#include "Json/Array.h"
+#include "Json/Value.h"
 
 namespace snow
 {
@@ -134,6 +143,8 @@ String to_string(wchar_t var);
  */
 String to_string(bool var);
 
+String to_string(const std::wstring& var);
+
 /**
  *	\~english
  *	\brief Converts a pointer to string
@@ -152,7 +163,7 @@ String to_string(bool var);
  *	шестнадцатеричной записи.
  */
 template<typename T>
-String to_string(T* var);
+String to_string(const T* var);
 
 /**
  *	\~english
@@ -175,7 +186,7 @@ String to_string(T* var);
  *	в указателе.
  */
 template<typename T>
-String to_string(const std::unique_ptr<T>& var);
+String to_string(const std::unique_ptr<const T>& var);
 
 /**
  *	\~english
@@ -198,7 +209,7 @@ String to_string(const std::unique_ptr<T>& var);
  *	в указателе.
  */
 template<typename T>
-String to_string(const std::shared_ptr<T>& var);
+String to_string(const std::shared_ptr<const T>& var);
 
 /**
  *	\~english
@@ -221,7 +232,7 @@ String to_string(const std::shared_ptr<T>& var);
  *	в указателе.
  */
 template<typename T>
-String to_string(const std::weak_ptr<T>& var);
+String to_string(const std::weak_ptr<const T>& var);
 
 /**
  *	\~english
@@ -243,10 +254,176 @@ String to_string(const std::weak_ptr<T>& var);
 template<typename T>
 String to_string(const T& var);
 
+template<typename T1, typename T2>
+String to_string(const std::pair<T1, T2>& var);
+
+template<typename T, int N>
+String to_string(const std::array<T, N>& var);
+
+template<typename T>
+String to_string(const std::vector<T>& var);
+
+template<typename T>
+String to_string(const std::deque<T>& var);
+
+template<typename T>
+String to_string(const std::forward_list<T>& var);
+
+template<typename T>
+String to_string(const std::list<T>& var);
+
+template<typename T>
+String to_string(const std::set<T>& var);
+
+template<typename T_Key, typename T_Value>
+String to_string(const std::map<T_Key, T_Value>& var);
+
+template<typename T>
+String to_string(const std::multiset<T>& var);
+
+template<typename T_Key, typename T_Value>
+String to_string(const std::multimap<T_Key, T_Value>& var);
+
+template<typename T>
+String to_string(const std::unordered_set<T>& var);
+
+template<typename T_Key, typename T_Value>
+String to_string(const std::unordered_map<T_Key, T_Value>& var);
+
+template<typename T>
+String to_string(const std::unordered_multiset<T>& var);
+
+template<typename T_Key, typename T_Value>
+String to_string(const std::unordered_multimap<T_Key, T_Value>& var);
+
+std::shared_ptr<json::Element> to_json(int var);
+
+std::shared_ptr<json::Element> to_json(double var);
+
+std::shared_ptr<json::Element> to_json(wchar_t var);
+
+std::shared_ptr<json::Element> to_json(bool var);
+
+std::shared_ptr<json::Element> to_json(const std::wstring& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const T* var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::unique_ptr<const T>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::shared_ptr<const T>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::shared_ptr<const T>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const T& var);
+
+template<typename T1, typename T2>
+std::shared_ptr<json::Element> to_json(const std::pair<T1, T2>& var);
+
+template<typename T, int N>
+std::shared_ptr<json::Element> to_json(const std::array<T, N>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::vector<T>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::deque<T>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::forward_list<T>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::list<T>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::set<T>& var);
+
+template<typename T_Key, typename T_Value>
+std::shared_ptr<json::Element> to_json(const std::map<T_Key, T_Value>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::multiset<T>& var);
+
+template<typename T_Key, typename T_Value>
+std::shared_ptr<json::Element> to_json(const std::multimap<T_Key, T_Value>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::unordered_set<T>& var);
+
+template<typename T_Key, typename T_Value>
+std::shared_ptr<json::Element> to_json(const std::unordered_map<T_Key, T_Value>& var);
+
+template<typename T>
+std::shared_ptr<json::Element> to_json(const std::unordered_multiset<T>& var);
+
+template<typename T_Key, typename T_Value>
+std::shared_ptr<json::Element> to_json(const std::unordered_multimap<T_Key, T_Value>& var);
+
+int json_to_int(std::shared_ptr<const json::Element> json);
+double json_to_double(std::shared_ptr<const json::Element> json, bool allow_int = true);
+wchar_t json_to_char(std::shared_ptr<const json::Element> json);
+bool json_to_bool(std::shared_ptr<const json::Element> json);
+String json_to_string(std::shared_ptr<const json::Element> json);
+
 }
 
 
 		/* DEFINITIONS */
+
+#define ARRAY_TO_STRING_				\
+	String result = L"[ ";				\
+	for (const T& i : var)				\
+	{									\
+		result += to_string(i);			\
+		result += L", ";				\
+	}									\
+	result[result.size() - 2] = L' ';	\
+	result[result.size() - 1] = L']';	\
+	return result
+
+#define MAP_TO_STRING_							\
+	String result = L"{ ";						\
+	for (const auto& i : var)					\
+	{											\
+		result += to_string(i.first) + L": "	\
+			+ to_string(i.second) + L", ";		\
+	}											\
+	result[result.size() - 2] = L' ';			\
+	result[result.size() - 1] = L'}';			\
+	return result
+
+#define ARRAY_TO_JSON_									\
+	std::shared_ptr<json::Array> result =				\
+		std::make_shared<json::Array>();				\
+	for (const T& i : var)								\
+	{													\
+		result->get_content().push_back(to_json(i));	\
+	}													\
+	return result
+
+#define MAP_TO_JSON_										\
+	if (std::is_same_v<T_Key, String> ||					\
+		std::is_same_v<T_Key, std::wstring> ||				\
+		std::is_same_v<T_Key, wchar_t>)						\
+	{														\
+		std::shared_ptr<json::JsonObject> result =			\
+			std::make_shared<json::JsonObject>();			\
+		for (const auto& i : var)							\
+		{													\
+			result->get_content().insert(					\
+				{ to_string(i.first), to_json(i.second) });	\
+		}													\
+		return result;										\
+	}														\
+	else													\
+	{														\
+		ARRAY_TO_JSON_;										\
+	}
+
 
 template<int base>
 String util::to_string(long long var)
@@ -287,40 +464,44 @@ String util::to_string(int var)
 }
 
 template<typename T>
-String util::to_string(T* var)
-{
-	return L"Ptr: 0x"_s + to_string<16>(reinterpret_cast<int>(var));
-}
-
-template<typename T>
-String util::to_string(const std::unique_ptr<T>& var)
+String util::to_string(const T* var)
 {
 	if (var)
 	{
-		return L"UniquePtr: "_s + to_string(*var);
+		return to_string(*var);
 	}
-	return L"UniquePtr: NULL"_s;
+	return L"null"_s;
 }
 
 template<typename T>
-String util::to_string(const std::shared_ptr<T>& var)
+String util::to_string(const std::unique_ptr<const T>& var)
 {
 	if (var)
 	{
-		return L"SharedPtr: "_s + to_string(*var);
+		return to_string(*var);
 	}
-	return L"SharedPtr: NULL"_s;
+	return L"null"_s;
 }
 
 template<typename T>
-String util::to_string(const std::weak_ptr<T>& var)
+String util::to_string(const std::shared_ptr<const T>& var)
 {
-	std::shared_ptr<T> sp = var.lock();
+	if (var)
+	{
+		return to_string(*var);
+	}
+	return L"null"_s;
+}
+
+template<typename T>
+String util::to_string(const std::weak_ptr<const T>& var)
+{
+	std::shared_ptr<const T> sp = var.lock();
 	if (sp)
 	{
-		return L"WeakPtr: "_s + to_string(*var);
+		return to_string(*var);
 	}
-	return L"WeakPtr: NULL"_s;
+	return L"null"_s;
 }
 
 template<typename T>
@@ -328,5 +509,222 @@ String util::to_string(const T& var)
 {
 	return var.to_string();
 }
+
+template<typename T1, typename T2>
+String util::to_string(const std::pair<T1, T2>& var)
+{
+	return L"[ "_s + to_string(pair.first) + L", " + to_string(pair.second) + L" ]";
+}
+
+template<typename T, int N>
+String util::to_string(const std::array<T, N>& var)
+{
+	ARRAY_TO_STRING_;
+}
+
+template<typename T>
+String util::to_string(const std::vector<T>& var)
+{
+	ARRAY_TO_STRING_;
+}
+
+template<typename T>
+String util::to_string(const std::deque<T>& var)
+{
+	ARRAY_TO_STRING_;
+}
+
+template<typename T>
+String util::to_string(const std::forward_list<T>& var)
+{
+	ARRAY_TO_STRING_;
+}
+
+template<typename T>
+String util::to_string(const std::list<T>& var)
+{
+	ARRAY_TO_STRING_;
+}
+
+template<typename T>
+String util::to_string(const std::set<T>& var)
+{
+	ARRAY_TO_STRING_;
+}
+
+template<typename T_Key, typename T_Value>
+String util::to_string(const std::map<T_Key, T_Value>& var)
+{
+	MAP_TO_STRING_;
+}
+
+template<typename T>
+String util::to_string(const std::multiset<T>& var)
+{
+	ARRAY_TO_STRING_;
+}
+
+template<typename T_Key, typename T_Value>
+String util::to_string(const std::multimap<T_Key, T_Value>& var)
+{
+	MAP_TO_STRING_;
+}
+
+template<typename T>
+String util::to_string(const std::unordered_set<T>& var)
+{
+	ARRAY_TO_STRING_;
+}
+
+template<typename T_Key, typename T_Value>
+String util::to_string(const std::unordered_map<T_Key, T_Value>& var)
+{
+	MAP_TO_STRING_;
+}
+
+template<typename T>
+String util::to_string(const std::unordered_multiset<T>& var)
+{
+	ARRAY_TO_STRING_;
+}
+
+template<typename T_Key, typename T_Value>
+String util::to_string(const std::unordered_multimap<T_Key, T_Value>& var)
+{
+	MAP_TO_STRING_;
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const T* var)
+{
+	if (var)
+	{
+		return to_json(*var);
+	}
+	return std::make_shared<json::NullValue>();
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::unique_ptr<const T>& var)
+{
+	if (var)
+	{
+		return to_json(*var);
+	}
+	return std::make_shared<json::NullValue>();
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::shared_ptr<const T>& var)
+{
+	if (var)
+	{
+		return to_json(*var);
+	}
+	return std::make_shared<json::NullValue>();
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::weak_ptr<const T>& var)
+{
+	std::shared_ptr<const T> sp = var.lock();
+	if (sp)
+	{
+		return to_json(*sp);
+	}
+	return std::make_shared<json::NullValue>();
+}
+
+template<typename T1, typename T2>
+std::shared_ptr<json::Element> util::to_json(const std::pair<T1, T2>& var)
+{
+	std::shared_ptr<json::Array> result = std::make_shared<json::Array>();
+	result->get_content().push_back(to_json(var.first));
+	result->get_content().push_back(to_json(var.second));
+	return result;
+}
+
+template<typename T, int N>
+std::shared_ptr<json::Element> util::to_json(const std::array<T, N>& var)
+{
+	ARRAY_TO_JSON_;
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::vector<T>& var)
+{
+	ARRAY_TO_JSON_;
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::deque<T>& var)
+{
+	ARRAY_TO_JSON_;
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::forward_list<T>& var)
+{
+	ARRAY_TO_JSON_;
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::list<T>& var)
+{
+	ARRAY_TO_JSON_;
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::set<T>& var)
+{
+	ARRAY_TO_JSON_;
+}
+
+template<typename T_Key, typename T_Value>
+std::shared_ptr<json::Element> util::to_json(const std::map<T_Key, T_Value>& var)
+{
+	MAP_TO_JSON_;
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::multiset<T>& var)
+{
+	ARRAY_TO_JSON_;
+}
+
+template<typename T_Key, typename T_Value>
+std::shared_ptr<json::Element> util::to_json(const std::multimap<T_Key, T_Value>& var)
+{
+	MAP_TO_JSON_;
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::unordered_set<T>& var)
+{
+	ARRAY_TO_JSON_;
+}
+
+template<typename T_Key, typename T_Value>
+std::shared_ptr<json::Element> util::to_json(const std::unordered_map<T_Key, T_Value>& var)
+{
+	MAP_TO_JSON_;
+}
+
+template<typename T>
+std::shared_ptr<json::Element> util::to_json(const std::unordered_multiset<T>& var)
+{
+	ARRAY_TO_JSON_;
+}
+
+template<typename T_Key, typename T_Value>
+std::shared_ptr<json::Element> util::to_json(const std::unordered_multimap<T_Key, T_Value>& var)
+{
+	MAP_TO_JSON_;
+}
+
+#undef ARRAY_TO_STRING_
+#undef MAP_TO_STRING_
+#undef ARRAY_TO_JSON_
+#undef MAP_TO_JSON_
 
 }

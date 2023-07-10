@@ -6,29 +6,18 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Delegate` class
- *
- *	This file contains the definition of the `Delegate` class.
- *
- *	\~russian
- *	\brief Файл с классом `Delegate`
- *
- *	Этот файл содержит определение класса `Delegate`.
- */
-
 #include "../../Object.h"
 
 #include <functional>
 
 #include "../Types/String.h"
+#include "../Json/JsonObject.h"
+#include "../Json/Value.h"
 
 namespace snow
 {
 
-namespace
+namespace snow_
 {
 
 // Do not use this interface directly
@@ -199,20 +188,22 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the delegate
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of an empty delegate is zero.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Creates a JSON object with the delegate data
+	 *	
+	 *	Creates a JSON object with a single element, whose key is `"is_method"`. If no function is
+	 *	bound to the delegate, the value of the element is null. The value is true if the bound
+	 *	function is a method, and false otherwise.
+	 *	\return The JSON object.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код делегата
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код путого делегата — ноль.
-	 *	\return Хеш-код объекта.
+	 *	\brief Создаёт объект JSON с информацией о делегате
+	 *	
+	 *	Создаёт объект JSON с единственным элементом с ключом `"is_method"`. Если к делегату не
+	 *	привязана никакая функция, то элемент имеет нулевое значение. Значение является истиной,
+	 *	если привязанная функция является методом; иначе — ложью.
+	 *	\return Объект JSON.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 
@@ -232,6 +223,25 @@ public:
 	 *	\return `true`, если делегат действителен, иначе `false`.
 	 */
 	bool is_valid() const;
+
+	/**
+	 *	\~english
+	 *	\brief Checks whether the bound function is a method
+	 *	
+	 *	The function that is bound to the delegate can either be a method of a class or not. This
+	 *	method allows you to check this.
+	 *	\return `true` if the bound function is a method, `false` otherwise or if no function is
+	 *	bound.
+	 *	
+	 *	\~russian
+	 *	\brief Проверяет, является ли привязанная функция методом
+	 *	
+	 *	Функция, привязанная к делегату, может либо быть методом некоторого класса, либо нет. Этот
+	 *	метод позволяет вам проверить это.
+	 *	\return `true`, если привязанная функция является методом; иначе, а также если к делегату
+	 *	не привязана никакая функция, `false`.
+	 */
+	bool is_method() const;
 
 	/**
 	 *	\~english
@@ -514,22 +524,23 @@ String Delegate<T_Ret, T_Args...>::to_string() const
 }
 
 template<typename T_Ret, typename... T_Args>
-int Delegate<T_Ret, T_Args...>::hash_code() const noexcept
+std::shared_ptr<json::Element> Delegate<T_Ret, T_Args...>::to_json() const noexcept
 {
-	if (is_valid())
-	{
-		return func_->hash();
-	}
-	else
-	{
-		return 0;
-	}
+	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
+	object->get_content().insert({ L"is_method"_s, is_valid() ? util::to_json(is_method_) : json::NullValue::make() });
+	return object;
 }
 
 template<typename T_Ret, typename... T_Args>
 bool Delegate<T_Ret, T_Args...>::is_valid() const
 {
 	return func_ && func_->is_valid();
+}
+
+template<typename T_Ret, typename... T_Args>
+bool Delegate<T_Ret, T_Args...>::is_method() const
+{
+	return is_method_;
 }
 
 template<typename T_Ret, typename... T_Args>
@@ -565,6 +576,7 @@ template<typename T_Ret, typename... T_Args>
 void Delegate<T_Ret, T_Args...>::unbind() noexcept
 {
 	func_.reset();
+	is_method_ = false;
 }
 
 template<typename T_Ret, typename... T_Args>

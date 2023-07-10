@@ -15,7 +15,7 @@
 #include "SaveLoad.h"
 
 #include "String.h"
-#include "../../Game/Config.h"
+#include "../../Game/ConfigManager.h"
 #include "../../Game/Game.h"
 
 #include <filesystem>
@@ -25,10 +25,17 @@ using namespace snow;
 
 		/* SaveLoad: public */
 
+SaveLoad& SaveLoad::get_instance()
+{
+	static SaveLoad save_load;
+	return save_load;
+}
+
 std::list<String> SaveLoad::get_saves()
 {
+	String path = ConfigManager::get_instance().get_current().saves_path;
 	std::list<String> ret;
-	for (const auto& i : std::filesystem::recursive_directory_iterator(Game::config.saves_path.to_std_string()))
+	for (const auto& i : std::filesystem::recursive_directory_iterator(path.to_std_string()))
 	{
 		String path = i.path().wstring();
 		int s = path.size();
@@ -36,7 +43,7 @@ std::list<String> SaveLoad::get_saves()
 		if (path[s - 4] == L'.' && path[s - 3] == L's' && path[s - 2] == L'a' && path[s - 1] == L'v')
 		{
 			path.remove(s - 4, s);
-			path.remove(0, Game::config.saves_path.size() + 1);
+			path.remove(0, path.size() + 1);
 			ret.emplace_back(path);
 		}
 	}
@@ -45,7 +52,7 @@ std::list<String> SaveLoad::get_saves()
 
 bool SaveLoad::remove_save(const String& name, bool do_backup)
 {
-	std::wstring path = (Game::config.saves_path + L"\\" + name).to_std_string();
+	std::wstring path = (ConfigManager::get_instance().get_current().saves_path + L"\\" + name).to_std_string();
 	if (std::filesystem::exists(path + L".sav"))
 	{
 		if (do_backup)
@@ -65,12 +72,12 @@ bool SaveLoad::remove_save(const String& name, bool do_backup)
 
 bool SaveLoad::exist(const String& name)
 {
-	return std::filesystem::exists((Game::config.saves_path + L"\\" + name + L".sav").to_std_string());
+	return std::filesystem::exists((ConfigManager::get_instance().get_current().saves_path + L"\\" + name + L".sav").to_std_string());
 }
 
 bool SaveLoad::save(const String& save_name, const std::map<String, String>& data, bool do_backup)
 {
-	std::wstring path = (Game::config.saves_path + L"\\" + save_name).to_std_string();
+	std::wstring path = (ConfigManager::get_instance().get_current().saves_path + L"\\" + save_name).to_std_string();
 	if (std::filesystem::exists(path + L".sav") && do_backup)
 	{
 		std::filesystem::rename(path + L".sav", path + L".tmp");
@@ -120,7 +127,7 @@ bool SaveLoad::save(const String& save_name, const std::map<String, String>& dat
 std::map<String, String> SaveLoad::load(const String& save_name)
 {
 	std::map<String, String> res;
-	std::wifstream file((Game::config.saves_path + L"\\" + save_name + L".sav").to_std_string());
+	std::wifstream file((ConfigManager::get_instance().get_current().saves_path + L"\\" + save_name + L".sav").to_std_string());
 	if (file.is_open())
 	{
 		std::wstring line;

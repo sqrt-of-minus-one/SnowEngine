@@ -43,7 +43,7 @@ IntRect::IntRect(const Point2& position, const Point2& size) :
 	}
 }
 
-IntRect::IntRect(const std::shared_ptr<json::Element> json) :
+IntRect::IntRect(std::shared_ptr<const json::Element> json) :
 	position_(),
 	size_()
 {
@@ -52,7 +52,7 @@ IntRect::IntRect(const std::shared_ptr<json::Element> json) :
 		throw std::invalid_argument("Couldn't create a rectangle: the JSON cannot be nullptr");
 	}
 
-	std::shared_ptr<json::Array> array = std::dynamic_pointer_cast<json::Array>(json);
+	std::shared_ptr<const json::Array> array = std::dynamic_pointer_cast<const json::Array>(json);
 	if (!array) // The JSON must be an array
 	{
 		throw std::invalid_argument("Couldn't create a rectangle: the JSON is not an array");

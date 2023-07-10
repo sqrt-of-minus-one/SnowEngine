@@ -107,7 +107,7 @@ public:
 	 *	\param json Элемент JSON со значениями нового прямоугольника.
 	 *	\throw std::invalid_argument Переданный JSON не является корректным массивом.
 	 */
-	IntRect(const std::shared_ptr<json::Element> json);
+	IntRect(std::shared_ptr<const json::Element> json);
 
 			/* METHODS FROM Object */
 

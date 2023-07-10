@@ -146,7 +146,7 @@ public:
 	 *	\throw std::invalid_argument Переданный JSON не является массивом с тремя целочисленными
 	 *	значениями.
 	 */
-	Point3(const std::shared_ptr<json::Element> json);
+	Point3(std::shared_ptr<const json::Element> json);
 
 			/* METHODS FROM Object */
 

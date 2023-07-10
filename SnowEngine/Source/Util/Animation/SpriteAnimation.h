@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `ISpriteAnimation` interface
- *	
- *	This file contains the definition of the `ISpriteAnimation` interface.
- *	
- *	\~russian
- *	\brief Файл с интерфейсом `ISpriteAnimation`
- *	
- *	Этот файл содержит определение интерфейса `ISpriteAnimation`.
- */
-
 #include "../Function/EventBinder.h"
 
 namespace snow

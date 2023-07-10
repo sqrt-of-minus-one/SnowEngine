@@ -14,19 +14,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Lang` class
- *
- *	This file contains the definition of the `Lang` class of the SnowFlake system.
- *
- *	\~russian
- *	\brief Файл с классом `Lang`
- *
- *	Этот файл содержит определение класса `Lang` системы SnowFlake.
- */
-
 #include "../../Object.h"
 
 #include <unordered_map>
@@ -58,7 +45,7 @@ namespace snow
  *	`get_instance`. Используйте файл `config.ini`, чтобы установить язык по умолчанию, а также
  *	директорию для файлов локализации.
  */
-class Lang : public Object
+class Lang
 {
 public:
 			/* SINGLETON */
@@ -77,40 +64,6 @@ public:
 	 *	\return Диспетчер языков.
 	 */
 	static Lang& get_instance();
-
-			/* METHODS FROM Object */
-
-	/**
-	 *	\~english
-	 *	\brief Converts the language manager to string
-	 *	
-	 *	Converts the language manager to string.
-	 *	\return The code of the current language.
-	 *
-	 *	\~russian
-	 *	\brief Конвертирует диспетчер языков в строку
-	 *	
-	 *	Конвертирует диспетчер языков в строку.
-	 *	\return Код текущего языка.
-	 */
-	virtual String to_string() const override;
-	
-	/**
-	 *	\~english
-	 *	\brief Hash code of the language manager
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *
-	 *	\~russian
-	 *	\brief Хеш-код диспетчера языков
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
-	 */
-	virtual int hash_code() const noexcept override;
 
 			/* METHODS */
 

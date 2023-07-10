@@ -28,12 +28,14 @@ namespace snow
  *	\~english
  *	\brief SnowCat, the SnowEngine logging system
  *	
- *	SnowCat is a simple tool allowing to keep a log.
+ *	SnowCat is a simple tool allowing to keep a log. See the documentation of the `Log` class for
+ *	more details.
  *	
  *	\~english
  *	\brief SnowCat, система ведения лога SnowEngine
  *	
- *	SnowCat — это простой инструмент, позволяющий вести лог.
+ *	SnowCat — это простой инструмент, позволяющий вести лог. Более подробную информацию см. в
+ *	документации класса `Log`.
  */
 
 /**
@@ -53,9 +55,10 @@ namespace snow
  *	`w()`  | Warning.
  *	`e()`  | Error.
  *	`d()`  | Debug message (is ignored unless debug mode is active).
- *	The debug mode is disabled by default unless project configuration is Debug. The log is output
- *	to the console and saved in the file. The directory where log files are saved is specified by
- *	`config.ini`.
+ *	The debug mode is disabled by default unless project configuration is Debug. You can switch the
+ *	debug mode manually using `enable_debug_mode()` and `disable_debug_mode()` methods. The log is
+ *	output to the console and saved in the file. The directory where log files are saved is
+ *	specified by `config.ini`.
  *	
  *	\~russian
  *	\brief Класс лога SnowCat
@@ -69,9 +72,10 @@ namespace snow
  *	`w()`  | Предупреждение.
  *	`e()`  | Ошибка.
  *	`d()`  | Сообщение для отладки (игнорируется, если режим отладки выключён).
- *	Режим отладки по умолчанию активирован, если проект собирается в конфигурации Degub. Лог
- *	выводится в консоль и сохраняется в файле. Директория, где сохраняются файлы лога, определяется
- *	в `config.ini`.
+ *	Режим отладки по умолчанию активирован, если проект собирается в конфигурации Degub. Вы можете
+ *	переключать режим отладки вручную с помощью методов `enable_debug_mode()` и
+ *	`disable_debug_mode()`. Лог выводится в консоль и сохраняется в файле. Директория, где
+ *	сохраняются файлы лога, определяется в `config.ini`.
  */
 class Log : public Object
 {
@@ -92,6 +96,25 @@ public:
 	 *	\param category_name Название категории лога.
 	 */
 	Log(const String& category_name);
+
+	/**
+	 *	\~english
+	 *	\brief The constructor of the logger
+	 *	
+	 *	Creates a new logger. The log category is defined by the passed JSON. It must be a JSON
+	 *	string with the category name.
+	 *	\param json The JSON string defining the log category.
+	 *	\throw std::invalid_argument The passed JSON is not correct.
+	 *	
+	 *	\~russian
+	 *	\brief Конструктор объекта логгера
+	 *	
+	 *	Создаёт новый логгер. Категория лога определяется переданным JSON. Это должна быть строка
+	 *	JSON с названием категории.
+	 *	\param json Строка JSON, определяющая категорию лога.
+	 *	\throw std::invalid_argument Переданный JSON неправильный.
+	 */
+	Log(const std::shared_ptr<json::Element> json);
 
 	/**
 	 *	\~english
@@ -243,13 +266,14 @@ public:
 	 */
 	void e(const String& message);
 private:
-	const String name_;
+	String name_;
 	
 	/* lazy */ static bool& debug_mode_() noexcept;
 	/* lazy */ static std::mutex& log_file_mtx_() noexcept;
 	/* lazy */ static std::wofstream& log_file_();
 
 	void log_(const String& type, const String& message);
+	void open_();
 
 	static int object_counter_;
 };

@@ -67,3 +67,97 @@ String util::to_string(bool var)
 {
 	return var ? L"true"_s : L"false"_s;
 }
+
+String util::to_string(const std::wstring& var)
+{
+	return String(var);
+}
+
+std::shared_ptr<json::Element> util::to_json(int var)
+{
+	return std::make_shared<json::IntValue>(var);
+}
+
+std::shared_ptr<json::Element> util::to_json(double var)
+{
+	return std::make_shared<json::DoubleValue>(var);
+}
+
+std::shared_ptr<json::Element> util::to_json(wchar_t var)
+{
+	return std::make_shared<json::StringValue>(String(var));
+}
+
+std::shared_ptr<json::Element> util::to_json(bool var)
+{
+	return std::make_shared<json::BoolValue>(var);
+}
+
+std::shared_ptr<json::Element> util::to_json(const std::wstring& var)
+{
+	return std::make_shared<json::StringValue>(String(var));
+}
+
+int util::json_to_int(std::shared_ptr<const json::Element> json)
+{
+	std::shared_ptr<const json::IntValue> value = std::dynamic_pointer_cast<const json::IntValue>(json);
+	if (!value)
+	{
+		throw std::invalid_argument("Couldn't create an integer: the JSON must be an integer value");
+	}
+	return value->get();
+}
+
+double util::json_to_double(std::shared_ptr<const json::Element> json, bool allow_int)
+{
+	std::shared_ptr<const json::DoubleValue> d_value = std::dynamic_pointer_cast<const json::DoubleValue>(json);
+	if (!d_value)
+	{
+		if (!allow_int)
+		{
+			throw std::invalid_argument("Couldn't create a double: the JSON must be a double value");
+		}
+		std::shared_ptr<const json::IntValue> i_value = std::dynamic_pointer_cast<const json::IntValue>(json);
+		if (!i_value)
+		{
+			throw std::invalid_argument("Couldn't create a double: the JSON must be either a double or an integer value");
+		}
+		return static_cast<double>(i_value->get());
+	}
+	return d_value->get();
+}
+
+wchar_t util::json_to_char(std::shared_ptr<const json::Element> json)
+{
+	std::shared_ptr<const json::StringValue> value = std::dynamic_pointer_cast<const json::StringValue>(json);
+	if (!value)
+	{
+		throw std::invalid_argument("Couldn't create a character: the JSON must be a string value");
+	}
+	const String& str = value->get();
+	if (str.size() != 1)
+	{
+		throw std::invalid_argument("Couldn't create a character: the JSON string must only have 1 character");
+	}
+	return str[0];
+}
+
+bool util::json_to_bool(std::shared_ptr<const json::Element> json)
+{
+	std::shared_ptr<const json::BoolValue> value = std::dynamic_pointer_cast<const json::BoolValue>(json);
+	if (!value)
+	{
+		throw std::invalid_argument("Couldn't create a boolean: the JSON must be a boolean value");
+	}
+	return value->get();
+}
+
+String util::json_to_string(std::shared_ptr<const json::Element> json)
+{
+	std::shared_ptr<const json::StringValue> value = std::dynamic_pointer_cast<const json::StringValue>(json);
+	if (!value)
+	{
+		throw std::invalid_argument("Couldn't create a string: the JSON must be a string value");
+	}
+	return value->get();
+}

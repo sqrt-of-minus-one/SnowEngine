@@ -31,9 +31,13 @@ String Actor::to_string() const
 	return L"Actor #"_s + util::to_string(number_);
 }
 
-int Actor::hash_code() const noexcept
+std::shared_ptr<json::Element> Actor::to_json() const
 {
-	return number_;
+	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
+	object->get_content().insert({ L"id"_s, util::to_json(number_) });
+	object->get_content().insert({ L"transform"_s, transform_.to_json() });
+	object->get_content().insert({ L"root_component"_s, root_component_ ? root_component_->to_json() : json::NullValue::make() });
+	return object;
 }
 
 const Vector2& Actor::get_position() const noexcept

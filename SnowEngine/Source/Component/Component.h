@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Component` class
- *
- *	This file contains the definition of the `Component` class.
- *
- *	\~russian
- *	\brief Файл с классом `Component`
- *
- *	Этот файл содержит определение класса `Component`.
- */
-
 #include "../Object.h"
 
 #include <list>
@@ -92,23 +79,29 @@ public:
 	 *	\return Созданная строка.
 	 */
 	virtual String to_string() const override;
-
+	
 	/**
 	 *	\~english
-	 *	\brief Hash code of the component
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Creates a JSON with the component data
+	 *	
+	 *	Creates a JSON object containing the following fields:
+	 *	- `"id"`: the ID of the component (integer value);
+	 *	- `"transform"`: the transform of the component relative to the parent (object, see the
+	 *	documentation of `Transform::to_json()`);
+	 *	- `"components"`: the array of objects describing the attached components.
+	 *	\return The JSON object describing the component.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код компонента
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
+	 *	\brief Создаёт JSON с информацией об компоненте
+	 *	
+	 *	Создаёт объект JSON, содержащий следующие поля:
+	 *	- `"id"`: ID компонента (целочисленное значение);
+	 *	- `"transform"`: преобразование компонента относительно родителя (объект, см. документацию
+	 *	`Transform::to_json()`);
+	 *	- `"components"`: массив объектов, описывающих прикреплённые компоненты.
+	 *	\return Объект JSON, описывающий компонент.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 

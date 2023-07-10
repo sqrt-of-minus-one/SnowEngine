@@ -31,9 +31,19 @@ String Component::to_string() const
 	return L"Component #"_s + util::to_string(number_);
 }
 
-int Component::hash_code() const noexcept
+std::shared_ptr<json::Element> Component::to_json() const
 {
-	return number_;
+	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
+	std::shared_ptr<json::Array> components = std::make_shared<json::Array>();
+	for (std::shared_ptr<Component> i : components_)
+	{
+		components->get_content().push_back(i->to_json());
+	}
+
+	object->get_content().insert({ L"id"_s, util::to_json(number_) });
+	object->get_content().insert({ L"transform"_s, transform_.to_json() });
+	object->get_content().insert({ L"components"_s, components });
+	return object;
 }
 
 const Vector2& Component::get_position() const noexcept

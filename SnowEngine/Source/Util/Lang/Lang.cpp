@@ -32,16 +32,6 @@ Lang& Lang::get_instance()
 	return lang;
 }
 
-String Lang::to_string() const
-{
-	return current_lang_;
-}
-
-int Lang::hash_code() const noexcept
-{
-	return current_lang_.hash_code();
-}
-
 const String& Lang::get_current_lang() noexcept
 {
 	return current_lang_;

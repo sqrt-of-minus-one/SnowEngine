@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `AdvancedSpriteAnimation` class
- *
- *	This file contains the definition of the `AdvancedSpriteAnimation` class.
- *
- *	\~russian
- *	\brief Файл с классом `AdvancedSpriteAnimation`
- *
- *	Этот файл содержит определение класса `AdvancedSpriteAnimation`.
- */
-
 #include "SpriteAnimation.h"
 #include "../../Object.h"
 
@@ -28,48 +15,6 @@ namespace snow
 {
 
 class Timer;
-
-/**
- *	\~english
- *	\brief The frame of an advanced sprite animation
- *	
- *	This structure contains the information about the frame of an advanced sprite animation.
- *	
- *	\~russian
- *	\brief Кадр продвинутой спрайтовой анимации
- *	
- *	Эта структура содержит информацию о кадре продвинутой спрайтовой анимации.
- */
-struct Frame
-{
-	/**
-	 *	\~english
-	 *	\brief The sprite rectangle
-	 *	
-	 *	This value defines which part of a texture should be displayed.
-	 *	
-	 *	\~russian
-	 *	\brief Прямоугольник спрайта
-	 *	
-	 *	Это значение определяет, какая часть текстуры должна быть отображена.
-	 */
-	IntRect sprite_rect;
-	
-	/**
-	 *	\~english
-	 *	\brief The length of the frame
-	 *	
-	 *	The time during which the frame is displayed in seconds. When this time is pass, the next
-	 *	frame will be displayed.
-	 *	
-	 *	\~russian
-	 *	\brief Длительность кадра
-	 *	
-	 *	Время, в течение которого кадр отображается, в секундах. Когда это время истечёт, будет
-	 *	отображён следующий кадр.
-	 */
-	double time_sec;
-};
 
 /**
  *	\~english
@@ -87,6 +32,50 @@ struct Frame
 class AdvancedSpriteAnimation : public Object, public ISpriteAnimation
 {
 public:
+			/* TYPES */
+
+	/**
+	 *	\~english
+	 *	\brief The frame of an advanced sprite animation
+	 *	
+	 *	This structure contains the information about the frame of an advanced sprite animation.
+	 *	
+	 *	\~russian
+	 *	\brief Кадр продвинутой спрайтовой анимации
+	 *	
+	 *	Эта структура содержит информацию о кадре продвинутой спрайтовой анимации.
+	 */
+	struct Frame
+	{
+		/**
+		 *	\~english
+		 *	\brief The sprite rectangle
+		 *	
+		 *	This value defines which part of a texture should be displayed.
+		 *	
+		 *	\~russian
+		 *	\brief Прямоугольник спрайта
+		 *	
+		 *	Это значение определяет, какая часть текстуры должна быть отображена.
+		 */
+		IntRect sprite_rect;
+		
+		/**
+		 *	\~english
+		 *	\brief The length of the frame
+		 *	
+		 *	The time during which the frame is displayed in seconds. When this time is pass, the next
+		 *	frame will be displayed.
+		 *	
+		 *	\~russian
+		 *	\brief Длительность кадра
+		 *	
+		 *	Время, в течение которого кадр отображается, в секундах. Когда это время истечёт, будет
+		 *	отображён следующий кадр.
+		 */
+		double time_sec;
+	};
+
 			/* CONSTRUCTORS */
 
 	/**
@@ -155,6 +144,43 @@ public:
 
 	/**
 	 *	\~english
+	 *	\brief Creates an animation according to the passed JSON
+	 *	
+	 *	Creates a new animation using the passed JSON. It must be either an object or an array. The
+	 *	array must contain object describing the animation frames and containing the following
+	 *	fields:
+	 *	- `"sprite_rect"`: the sprite rectangle (an array, see the documentation of
+	 *	`IntRect::IntRect(std::shared_ptr<const json::Element>)`);
+	 *	- `"time_sec"`: the length of the frame in seconds (a double or integer value).
+	 *	.
+	 *	If the passed JSON is an object it must have `"frames"` field with the array of frames (as
+	 *	described above). It is also allowed to have `"current_position"` and `"time_left_sec"`
+	 *	fields, which are ignored.
+	 *	\param json The JSON element.
+	 *	\throw std::invalid_argument The passed JSON is not correct.
+	 *	\throw std::logic_error The array of frames is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт анимацию в соответствии с переданным JSON
+	 *	
+	 *	Создаёт новую анимацию с помощью переданного JSON. Это должен быть либо объект, либо
+	 *	массив. Массив должен содержать объекты, описывающие кадры анимации и содержащие следующие
+	 *	поля:
+	 *	- `"sprite_rect"`: спрайтовый прямоугольник (массив, см. документацию
+	 *	`IntRect::IntRect(std::shared_ptr<const json::Element>)`);
+	 *	- `"time_sec"`: длительность кадра в секундах (вещественное или целочисленное значение).
+	 *	.
+	 *	Если переданный JSON является объектом, то он должен иметь поле `"frames"` с массивом
+	 *	кадров (как описано выше). Он также может иметь поля `"current_position"` и
+	 *	`"time_left_sec"`, значения которых игнорируются.
+	 *	\param json Элемент JSON.
+	 *	\throw std::invalid_argument Переданный JSON неправильный.
+	 *	\throw std::logic_error Массив кадров пуст.
+	 */
+	AdvancedSpriteAnimation(std::shared_ptr<const json::Element> json);
+
+	/**
+	 *	\~english
 	 *	\brief The destructor
 	 *
 	 *	Destructs the object.
@@ -185,20 +211,32 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the advanced sprite animation
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Creates a JSON object with the animation data
+	 *	
+	 *	Creates a JSON object describing the animation. It contains the following fields:
+	 *	- `"frames"`: the array, containing the information about animation frames. Each element of
+	 *	the array is an object with the following fields:
+	 *		- `"sprite_rect"`: the sprite rectangle (an array, see the documentation of
+	 *		`IntRect::to_json()`);
+	 *		- `"time_sec"`: the length of the frame in seconds (a double value);
+	 *	- `"current_position"`: the number of the current frame (a integer value, starting with 0);
+	 *	- `"time_left_sec"`: the time before the next frame change (a double value).
+	 *	\return The JSON object.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код продвинутой спрайтовой анимации
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
+	 *	\brief Создаёт объект JSON с информацией об анимации
+	 *	
+	 *	Создаёт объект JSON, описывающий анимацию. Он содержит следующие поля:
+	 *	- `"frames"`: массив, содержащий информацию о кадрах анимации. Каждый элемент массива
+	 *	является объектом со следующими полями:
+	 *		- `"sprite_rect"`: спрайтовый прямоугольник (массив, см. документацию
+	 *		`IntRect::to_json()`);
+	 *		- `"time_sec"`: длительность кадра в секундах (вещественное значение);
+	 *	- `"current_position"`: номер текущего кадра (целочисленное значение, начиная с 0);
+	 *	- `"time_left_sec"`: время до следующего переключения кадра (вещественное значение).
+	 *	\return Объект JSON.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS FROM ISpriteAnimation */
 
@@ -225,6 +263,8 @@ private:
 
 	int current_position_;
 	std::list<Frame>::const_iterator current_frame_;
+
+	void init_();
 
 	void next_frame_();
 };

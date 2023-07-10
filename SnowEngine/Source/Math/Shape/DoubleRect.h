@@ -116,7 +116,7 @@ public:
 	 *	\param json Элемент JSON со значениями нового прямоугольника.
 	 *	\throw std::invalid_argument Переданный JSON не является корректным массивом.
 	 */
-	DoubleRect(const std::shared_ptr<json::Element> json);
+	DoubleRect(std::shared_ptr<const json::Element> json);
 
 			/* METHODS FROM Object */
 

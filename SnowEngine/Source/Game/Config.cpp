@@ -166,10 +166,13 @@ Config::Config(Config&& config) :
 {}
 
 Config::Config(const String& name) :
+	Config(json::Element::load(ConfigManager::get_instance().get_path() + L'\\' + name + L".json")))
+{}
+
+Config::Config(std::shared_ptr<const json::Element> json) :
 	Config()
 {
-	std::shared_ptr<json::JsonObject> config_json =
-		std::dynamic_pointer_cast<json::JsonObject>(json::Element::load(ConfigManager::get_instance().get_path() + L"\\" + name + L".json"));
+	std::shared_ptr<json::JsonObject> config_json = std::dynamic_pointer_cast<json::JsonObject>(json));
 	if (!config_json)
 	{
 		// Log
@@ -222,41 +225,7 @@ String Config::to_string() const
 	return make_json_()->to_string();
 }
 
-void Config::save(const String& name, bool allow_override)
-{
-	make_json_()->save(ConfigManager::get_instance().get_path() + L"\\" + name + L".json", allow_override);
-}
-
-const Config Config::DEFAULT;
-
-		/* Config: private */
-
-Config::Config() :
-	window_resolution(800, 600),
-	window_fullscreen(false),
-	window_resize(true),
-	window_titlebar(true),
-	window_titlebar_buttons(true),
-	window_title(L"The Game (powered by SnowEngine)"),
-
-	res_check_period_sec(300.),
-	res_textures_path(L"Resources\\Textures"),
-	res_fonts_path(L"Resources\\Fonts"),
-	res_sounds_path(L"Resources\\Sounds"),
-	res_music_path(L"Resources\\Music"),
-
-	chunks_collision_size(1500, 1500),
-	chunks_clickable_size(500, 500),
-
-	lang_path(L"Localization"),
-	lang_default_lang(L"en_UK"),
-	lang_default_table(L"default"),
-
-	log_path(L"Logs"),
-	saves_path(L"Saves")
-{}
-
-std::shared_ptr<json::JsonObject> Config::make_json_() const
+std::shared_ptr<json::Element> Config::to_json() const
 {
 	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
 
@@ -298,3 +267,37 @@ std::shared_ptr<json::JsonObject> Config::make_json_() const
 
 	return result;
 }
+
+void Config::save(const String& name, bool allow_override)
+{
+	make_json_()->save(ConfigManager::get_instance().get_path() + L"\\" + name + L".json", allow_override);
+}
+
+const Config Config::DEFAULT;
+
+		/* Config: private */
+
+Config::Config() :
+	window_resolution(800, 600),
+	window_fullscreen(false),
+	window_resize(true),
+	window_titlebar(true),
+	window_titlebar_buttons(true),
+	window_title(L"The Game (powered by SnowEngine)"),
+
+	res_check_period_sec(300.),
+	res_textures_path(L"Resources\\Textures"),
+	res_fonts_path(L"Resources\\Fonts"),
+	res_sounds_path(L"Resources\\Sounds"),
+	res_music_path(L"Resources\\Music"),
+
+	chunks_collision_size(1500, 1500),
+	chunks_clickable_size(500, 500),
+
+	lang_path(L"Localization"),
+	lang_default_lang(L"en_UK"),
+	lang_default_table(L"default"),
+
+	log_path(L"Logs"),
+	saves_path(L"Saves")
+{}

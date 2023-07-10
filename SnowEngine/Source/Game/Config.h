@@ -24,13 +24,16 @@ class Config : public Object
 public:
 			/* CONSTRUCTORS */
 
+	Config();
 	Config(const Config& config);
 	Config(Config&& config);
 	Config(const String& name);
+	Config(std::shared_ptr<const json::Element> json);
 	
 			/* METHODS FROM Object */
 
 	virtual String to_string() const override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 	
@@ -87,8 +90,6 @@ public:
 	static const Config DEFAULT;
 
 private:
-	Config();
-
 	std::shared_ptr<json::JsonObject> make_json_() const;
 };
 

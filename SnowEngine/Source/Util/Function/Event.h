@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Event` class
- *
- *	This file contains the definition of the `Event` class.
- *
- *	\~russian
- *	\brief Файл с классом `Event`
- *
- *	Этот файл содержит определение класса `Event`.
- */
-
 #include "../../Object.h"
 
 #include <unordered_map>
@@ -114,20 +101,27 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the event
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of an empty event is zero.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Creates a JSON array with the event data
+	 *	
+	 *	Creates a JSON array containing objects. Each object describes a bound function. It
+	 *	contains the following fields:
+	 *	- `"id"`: the ID of the function (integer value);
+	 *	- `"is_method"`: whether the function is a method (boolean value); null value if the
+	 *	function is not valid;
+	 *	- `"one_shot"`: whether the function is one-shot (boolean value).
+	 *	\return The JSON array.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код события
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код пустого события — ноль.
-	 *	\return Хеш-код объекта.
+	 *	\brief Создаёт массив JSON с данными о событии
+	 *	
+	 *	Создаёт массив JSON, содержащий объекты. Каждый объект описывает привязанную функцию.
+	 *	Он содержит следующие поля:
+	 *	- `"id"`: ID функции (целочисленное значение);
+	 *	- `"is_method"`: является ли функция методом (булево значение); нулевое значение, если функция недействительна.
+	 *	- `"one_shot"`: является ли функция одноразовой (булево значение).
+	 *	\return Массив JSON.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 
@@ -332,16 +326,19 @@ String Event<T_Args...>::to_string() const
 }
 
 template<typename... T_Args>
-int Event<T_Args...>::hash_code() const noexcept
+std::shared_ptr<json::Element> Event<T_Args...>::to_json() const
 {
-	int hash = 0;
-	int sign = 1;
+	std::shared_ptr<json::Array> array = std::make_shared<json::Array>();
 	for (const auto& i : functions_)
 	{
-		hash += sign * i.second.first->hash_code();
-		sign = -sign;
+		std::shared_ptr<json::JsonObject> function = std::make_shared<json::JsonObject>();
+		function->get_content().insert({ L"id", util::to_json(i->first) });
+		function->get_content().insert({ L"is_method",
+			i->second.first && i->second.first->is_valid() ? util::to_json(i->second.first->is_method()) : json::NullValue::make() });
+		function->get_content().insert({ L"one_shot", util::to_json(i->second.second) });
+		array->get_content().push_back(function);
 	}
-	return sign;
+	return array;
 }
 
 template<typename... T_Args>

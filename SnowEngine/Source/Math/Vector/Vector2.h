@@ -107,7 +107,7 @@ public:
 	 *	\throw std::invalid_argument Переданный JSON не является массивом с двумя вещественными или
 	 *	целочисленными значениями.
 	 */
-	Vector2(const std::shared_ptr<json::Element> json);
+	Vector2(std::shared_ptr<const json::Element> json);
 
 			/* METHODS FROM Object */
 

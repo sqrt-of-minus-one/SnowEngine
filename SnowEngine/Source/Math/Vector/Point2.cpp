@@ -31,7 +31,7 @@ Point2::Point2(int x, int y)  :
 	y_(y)
 {}
 
-Point2::Point2(const std::shared_ptr<json::Element> json) :
+Point2::Point2(std::shared_ptr<const json::Element> json) :
 	x_(),
 	y_()
 {
@@ -40,7 +40,7 @@ Point2::Point2(const std::shared_ptr<json::Element> json) :
 		throw std::invalid_argument("Couldn't create a point: the JSON cannot be nullptr");
 	}
 
-	std::shared_ptr<json::Array> array = std::dynamic_pointer_cast<json::Array>(json);
+	std::shared_ptr<const json::Array> array = std::dynamic_pointer_cast<const json::Array>(json);
 	if (!array) // The JSON must be an array
 	{
 		throw std::invalid_argument("Couldn't create a point: the JSON is not an array");
@@ -52,7 +52,7 @@ Point2::Point2(const std::shared_ptr<json::Element> json) :
 	int c[2];
 	for (int i = 0; i < 2; i++) // For every coordinate
 	{
-		std::shared_ptr<json::IntValue> value = std::dynamic_pointer_cast<json::IntValue>(array->get_content()[i]);
+		std::shared_ptr<const json::IntValue> value = std::dynamic_pointer_cast<const json::IntValue>(array->get_content()[i]);
 		if (value)
 		{
 			c[i] = value->get();

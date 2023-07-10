@@ -30,7 +30,7 @@ Angle::Angle(double degrees) :
 	value_deg_(degrees)
 {}
 
-Angle::Angle(const std::shared_ptr<json::Element> json) :
+Angle::Angle(std::shared_ptr<const json::Element> json) :
 	value_deg_()
 {
 	if (!json)
@@ -43,17 +43,17 @@ Angle::Angle(const std::shared_ptr<json::Element> json) :
 	{
 	case json::EType::DOUBLE_VALUE:
 	{
-		value_deg_ = std::dynamic_pointer_cast<json::DoubleValue>(json)->get();
+		value_deg_ = std::dynamic_pointer_cast<const json::DoubleValue>(json)->get();
 		break;
 	}
 	case json::EType::INT_VALUE:
 	{
-		value_deg_ = static_cast<double>(std::dynamic_pointer_cast<json::IntValue>(json)->get());
+		value_deg_ = static_cast<double>(std::dynamic_pointer_cast<const json::IntValue>(json)->get());
 		break;
 	}
 	case json::EType::OBJECT:
 	{
-		auto& map = std::dynamic_pointer_cast<json::JsonObject>(json)->get_content();
+		auto& map = std::dynamic_pointer_cast<const json::JsonObject>(json)->get_content();
 		if (map.size() != 1)
 		{
 			throw std::invalid_argument("Couldn't create an angle: the JSON object must have 1 field");
@@ -69,11 +69,11 @@ Angle::Angle(const std::shared_ptr<json::Element> json) :
 		{
 		case json::EType::DOUBLE_VALUE:
 		{
-			value = std::dynamic_pointer_cast<json::DoubleValue>(element.second)->get();
+			value = std::dynamic_pointer_cast<const json::DoubleValue>(element.second)->get();
 		}
 		case json::EType::INT_VALUE:
 		{
-			value = static_cast<double>(std::dynamic_pointer_cast<json::IntValue>(element.second)->get());
+			value = static_cast<double>(std::dynamic_pointer_cast<const json::IntValue>(element.second)->get());
 		}
 		default:
 		{

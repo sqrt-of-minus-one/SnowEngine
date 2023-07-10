@@ -63,7 +63,7 @@ namespace snow
  *	\warning Этот класс предназначен для внутреннего использования. Не используйте его
  *	непосредственно в своём проекте.
  */
-class ResourceManager : public Object
+class ResourceManager
 {
 public:
 			/* SINGLETON */
@@ -82,42 +82,6 @@ public:
 	 *	\return Диспетчер ресурсов.
 	 */
 	static ResourceManager& get_instance();
-
-			/* METHODS FROM Object */
-
-	/**
-	 *	\~english
-	 *	\brief Converts the resource manager to string
-	 *
-	 *	Returns the string `{ textures: <n>, fonts: <n>, sounds: <n> }`, where `<n>` is the number
-	 *	of resources being loaded at the moment.
-	 *	\return The resultant string.
-	 *
-	 *	\~russian
-	 *	\brief Конвертирует диспетчер ресурсов в строку
-	 *
-	 *	Возвращает строку `{ textures: <n>, fonts: <n>, sounds: <n> }`, где `<n>` — количество
-	 *	ресурсов, загруженных в данный момент.
-	 *	\return Полученная строка.
-	 */
-	virtual String to_string() const override;
-
-	/**
-	 *	\~english
-	 *	\brief Hash code of the resource manager
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *
-	 *	\~russian
-	 *	\brief Хеш-код диспетчера ресурсов
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
-	 */
-	virtual int hash_code() const noexcept override;
 
 			/* METHODS */
 

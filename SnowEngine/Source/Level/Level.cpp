@@ -26,12 +26,20 @@ Level::Level() :
 
 String Level::to_string() const
 {
-	return L"Level #%d (actors: %d)"_s.format(util::to_string(number_), actors_.size());
+	return L"Level #%d (actors: %d)"_s.format(number_, actors_.size());
 }
 
-int Level::hash_code() const noexcept
+std::shared_ptr<json::Element> Level::to_json() const
 {
-	return number_;
+	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
+	std::shared_ptr<json::Array> array = std::make_shared<json::Array>();
+	for (std::shared_ptr<Actor> i : actors_)
+	{
+		array->get_content().push_back(i->to_json());
+	}
+	object->get_content().insert({ L"id"_s, util::to_json(number_) });
+	object->get_content().insert({ L"actors"_s, array });
+	return object;
 }
 
 void Level::destroy()

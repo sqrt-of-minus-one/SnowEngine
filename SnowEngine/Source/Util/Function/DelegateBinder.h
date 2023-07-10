@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `DelegateBinder` class
- *
- *	This file contains the definition of the `DelegateBinder` class.
- *
- *	\~russian
- *	\brief Файл с классом `DelegateBinder`
- *
- *	Этот файл содержит определение класса `DelegateBinder`.
- */
-
 #include "Delegate.h"
 
 namespace snow
@@ -93,10 +80,11 @@ public:
 	 *	\~english
 	 *	\brief Converts the binder to string
 	 *	
-	 *	Returns one of three strings:
+	 *	Returns one of four strings:
 	 *	- `"Empty delegate"`;
 	 *	- `"Delegate (method)"`;
-	 *	- `"Delegate (function)"`.
+	 *	- `"Delegate (function)"`;
+	 *	- `"No delegate"` (if the delegate was destroyed).
 	 *	\return The resultant string.
 	 *	
 	 *	\~russian
@@ -105,28 +93,32 @@ public:
 	 *	Возвращает одну из трёх строк:
 	 *	- `"Empty delegate"`;
 	 *	- `"Delegate (method)"`;
-	 *	- `"Delegate (function)"`.
+	 *	- `"Delegate (function)"`;
+	 *	- `"No delegate"` (если делегат был уничтожен).
 	 *	\return Полученная строка.
 	 */
 	virtual String to_string() const override;
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the binder
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	zero.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Creates a JSON element with the delegate data
+	 *	
+	 *	Creates a JSON object with a single element, whose key is `"is_method"`. If no function is
+	 *	bound to the delegate, the value of the element is null. The value is true if the bound
+	 *	function is a method, and false otherwise. If the delegate was destroyed, this method
+	 *	returns a null value instead of the object.
+	 *	\return The JSON object or JSON null value.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код binder
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
+	 *	\brief Создаёт элемент JSON с информацией о делегате
+	 *	
+	 *	Создаёт объект JSON с единственным элементом с ключом `"is_method"`. Если к делегату не
+	 *	привязана никакая функция, то элемент имеет нулевое значение. Значение является истиной,
+	 *	если привязанная функция является методом; иначе — ложью. Если делегат был уничтожен, то
+	 *	вместо объекта этот метод возвращает нулевое значение.
+	 *	\return Объект JSON или нулевое значение JSON.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 
@@ -257,16 +249,17 @@ String DelegateBinder<T_Ret, T_Args...>::to_string() const
 	{
 		return delegate_.to_string();
 	}
-	else
-	{
-		return L"Empty delegate"_s;
-	}
+	return L"No delegate"_s;
 }
 
 template<typename T_Ret, typename... T_Args>
-int DelegateBinder<T_Ret, T_Args...>::hash_code() const noexcept
+std::shared_ptr<json::Element> DelegateBinder<T_Ret, T_Args...>::to_json() const
 {
-	return reinterpret_cast<int>(&delegate_);
+	if (Object::is_valid(&delegate_))
+	{
+		return delegate_.to_json();
+	}
+	return json::NullValue::make();
 }
 
 template<typename T_Ret, typename... T_Args>

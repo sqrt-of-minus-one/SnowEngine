@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Level` class
- *
- *	This file contains the definition of the `Level` class.
- *
- *	\~russian
- *	\brief Файл с классом `Level`
- *
- *	Этот файл содержит определение класса `Level`.
- */
-
 #include "../Object.h"
 
 #include <list>
@@ -68,11 +55,12 @@ public:
 	 */
 	Level();
 
+
 			/* METHODS FROM Object */
 
 	/**
 	 *	\~english
-	 *	\brief Convert the level to string
+	 *	\brief Converts the level to string
 	 *	
 	 *	Creates the string `Level #<n> (actors: <a>)`, where `<n>` is a unique number of the level,
 	 *	`<a>` is the number of actors on the level.
@@ -86,23 +74,31 @@ public:
 	 *	\return Созданная строка.
 	 */
 	virtual String to_string() const override;
-
+	
 	/**
 	 *	\~english
-	 *	\brief Hash code of the level
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Creates a JSON with the level data
+	 *	
+	 *	Creates a JSON object containing the following fields:
+	 *	- `"id"`: the ID of the level (integer value).
+	 *	- `"actors"`: the array of actors on the level, each element is an object created by
+	 *	`Actor::to_json()`.
+	 *	\return The JSON object describing the level.
+	 *	\warning This method produces the JSON which describes every component of every actor on
+	 *	the level. Sometimes it's a lot.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код уровня
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
+	 *	\brief Создаёт JSON с информацией об уровне
+	 *	
+	 *	Создаёт объект JSON, содержащий следующие поля:
+	 *	- `"id"`: ID уровня (целочисленное значение);
+	 *	- `"actors"`: массив актёров на уровне, каждый элемент является объектом, создаваемым
+	 *	методом `Actor::to_json()`.
+	 *	\return Объект JSON, описывающий уровень.
+	 *	\warning Этот метод производит JSON, который описывает каждый компонент каждого актёра на
+	 *	уровне. Иногда это много.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 

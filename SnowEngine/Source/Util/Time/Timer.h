@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Timer` class
- *
- *	This file contains the definition of the `Timer` class.
- *
- *	\~russian
- *	\brief Файл с классом `Timer`
- *
- *	Этот файл содержит определение класса `Timer`.
- */
-
 #include "../../Object.h"
 
 #include "../Function/Delegate.h"
@@ -67,24 +54,27 @@ public:
 	 *	\return Строка с информацией о таймере.
 	 */
 	virtual String to_string() const override;
-
+	
 	/**
 	 *	\~english
-	 *	\brief Hash code of the timer
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes. Hash code of a timer with empty function is
-	 *	zero.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Converts the timer to JSON object
+	 *	
+	 *	Creates a JSON object with the following elements:
+	 *	- `"period_sec"`: the timer period in seconds (double value);
+	 *	- `"left_sec"`: the time before function call in seconds (double value);
+	 *	- `"is_paused"`: whether the timer is paused (boolean value).
+	 *	\return The JSON object.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код делегата
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды. Хеш-код таймера с пустой функцией — ноль.
-	 *	\return Хеш-код объекта.
+	 *	\brief Конвертирует таймер в объект JSON
+	 *	
+	 *	Создаёт объект JSON со следующими элементами:
+	 *	- `"period_sec"`: период таймера в секундах (вещественное значение);
+	 *	- `"left_sec"`: время до вызова функции в секундах (вещественное значение);
+	 *	- `"is_paused"`: приостановлен ли таймер (булево значение).
+	 *	\return Объект JSON.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 
@@ -136,6 +126,21 @@ public:
 	 *	\param period_sec Новый период таймера в секундах.
 	 */
 	void set_period_sec(double period_sec);
+
+	/**
+	 *	\~english
+	 *	\brief Time before function call
+	 *	
+	 *	Allows to get the time left before the next function call.
+	 *	\return The time before the function call in seconds.
+	 *	
+	 *	\~russian
+	 *	\brief Время до вызова функции
+	 *	
+	 *	Позволяет получить время, оставшееся до следующего вызова функции.
+	 *	\return Время до вызова функции в секундах.
+	 */
+	double get_left_sec() const;
 
 	/**
 	 *	\~english

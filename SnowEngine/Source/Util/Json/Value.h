@@ -314,6 +314,10 @@ public:
 	 *	\param nesting Ни на что не влияет.
 	 */
 	virtual void to_stream(std::wostream& stream, int nesting = 0) const override;
+
+			/* METHODS */
+
+	static std::shared_ptr<Value_<std::nullptr_t>> make();
 };
 
 /**

@@ -46,14 +46,30 @@ String::String(std::wstring&& string) :
 	string_(std::move(string))
 {}
 
+String::String(std::shared_ptr<const json::Element> json) :
+	string_()
+{
+	if (!json)
+	{
+		throw std::invalid_argument("Couldn't create a string: the JSON cannot be nullptr");
+	}
+
+	std::shared_ptr<const json::StringValue> string = std::dynamic_pointer_cast<const json::StringValue>(json);
+	if (!string)
+	{
+		throw std::invalid_argument("Couldn't create a string: the JSON must be a string value");
+	}
+	string_ = string->get().string_;
+}
+
 String String::to_string() const
 {
 	return *this;
 }
 
-int String::hash_code() const noexcept
+std::shared_ptr<json::Element> String::to_json() const
 {
-	return static_cast<int>(std::hash<std::wstring>().operator()(string_));
+	return std::make_shared<json::StringValue>(*this);
 }
 
 const std::wstring& String::to_std_string() const noexcept

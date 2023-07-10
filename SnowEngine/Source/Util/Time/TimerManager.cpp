@@ -19,23 +19,6 @@ TimerManager& TimerManager::get_instance()
 	return timer_manager;
 }
 
-String TimerManager::to_string() const
-{
-	return L"There are "_s + util::to_string(static_cast<int>(timers_.size())) + L" timer(s)";
-}
-
-int TimerManager::hash_code() const noexcept
-{
-	int hash = 0;
-	int sign = 1;
-	for (const auto& i : timers_)
-	{
-		hash += sign * i->hash_code();
-		sign = -sign;
-	}
-	return sign;
-}
-
 std::shared_ptr<Timer> TimerManager::create_timer(const Delegate<void>& function, double delay_sec, double period_sec)
 {
 	std::shared_ptr<Timer> p(new Timer(function, delay_sec, period_sec));

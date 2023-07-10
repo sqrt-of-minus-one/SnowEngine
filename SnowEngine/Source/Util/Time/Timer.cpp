@@ -6,6 +6,9 @@
 
 #include "Timer.h"
 
+#include "../Json/JsonObject.h"
+#include "../Util.h"
+
 using namespace snow;
 
 		/* Timer: public */
@@ -16,9 +19,13 @@ String Timer::to_string() const
 		(is_paused_ ? L"; paused)" : L")");
 }
 
-int Timer::hash_code() const noexcept
+std::shared_ptr<json::Element> Timer::to_json() const
 {
-	return function_.hash_code();
+	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
+	result->get_content().insert({ L"period_sec"_s, util::to_json(period_sec_) });
+	result->get_content().insert({ L"left_sec"_s, util::to_json(left_sec_) });
+	result->get_content().insert({ L"is_paused"_s, util::to_json(is_paused_) });
+	return result;
 }
 
 void Timer::set_function(const Delegate<void>& function)
@@ -35,6 +42,11 @@ void Timer::set_period_sec(double period_sec)
 {
 	period_sec_ = period_sec;
 	left_sec_ = period_sec_;
+}
+
+double Timer::get_left_sec() const
+{
+	return left_sec_;
 }
 
 bool Timer::is_paused() const

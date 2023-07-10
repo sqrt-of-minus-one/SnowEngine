@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Actor` class
- *
- *	This file contains the definition of the `Actor` class.
- *
- *	\~russian
- *	\brief Файл с классом `Actor`
- *
- *	Этот файл содержит определение класса `Actor`.
- */
-
 #include "../Object.h"
 
 #include "../Util/Types/Transform.h"
@@ -88,23 +75,31 @@ public:
 	 *	\return Созданная строка.
 	 */
 	virtual String to_string() const override;
-
+	
 	/**
 	 *	\~english
-	 *	\brief Hash code of the actor
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Creates a JSON with the actor data
+	 *	
+	 *	Creates a JSON object containing the following fields:
+	 *	- `"id"`: the ID of the actor (integer value);
+	 *	- `"transform"`: the transform of the actor (object, see the documentation of
+	 *	`Transform::to_json()`);
+	 *	- `"root_component"`: the object describing the root component of the actor (see the
+	 *	documentation of `Component::to_json()`) or a null value if the actor doesn't have a root
+	 *	component.
+	 *	\return The JSON object describing the actor.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код актёра
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
+	 *	\brief Создаёт JSON с информацией об актёре
+	 *	
+	 *	Создаёт объект JSON, содержащий следующие поля:
+	 *	- `"id"`: ID актёра (целочисленное значение);
+	 *	- `"transform"`: преобразование актёра (объект, см. документацию `Transform::to_json()`);
+	 *	- `"root_component"`: объект, описывающий корневой компонент актёра (см. документацию
+	 *	`Component::to_json()`) или нулевое значение, если актёр не имеет корневого компонента.
+	 *	\return Объект JSON, описывающий актёр.
 	 */
-	virtual int hash_code() const noexcept override;
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 

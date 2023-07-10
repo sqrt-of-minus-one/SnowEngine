@@ -172,6 +172,25 @@ public:
 	 */
 	String(std::wstring&& string);
 
+	/**
+	 *	\~english
+	 *	\brief Creates a string
+	 *	
+	 *	Creates a new string using the passed JSON. It must be a string value. This value will be
+	 *	applied to the new string.
+	 *	\param json The JSON string with the new string value.
+	 *	\throw std::invalid_argument The passed JSON is not correct.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт строку
+	 *	
+	 *	Создаёт строку, используя переданный JSON. Это должно быть строковое значение. Это значение
+	 *	будет применено к новой строке.
+	 *	\param json Строка JSON со значением новой строки.
+	 *	\throw std::invalid_argument Переданный JSON неправильный.
+	 */
+	String(std::shared_ptr<const json::Element> json);
+
 			/* METHODS FROM Object*/
 
 	/**
@@ -189,6 +208,19 @@ public:
 	 */
 	virtual String to_string() const override;
 
+	/**
+	 *	\~english
+	 *	\brief Creates a JSON string
+	 *	
+	 *	Creates a JSON string value which is equal to this string.
+	 *	\return The JSON string value.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт строку JSON
+	 *	
+	 *	Создаёт строковое значение JSON, которое равно этой строке.
+	 *	\return Строковое значение JSON.
+	 */
 	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */

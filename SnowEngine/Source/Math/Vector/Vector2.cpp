@@ -33,7 +33,7 @@ Vector2::Vector2(double x, double y) :
 	y_(y)
 {}
 
-Vector2::Vector2(const std::shared_ptr<json::Element> json) :
+Vector2::Vector2(std::shared_ptr<const json::Element> json) :
 	x_(),
 	y_()
 {
@@ -42,7 +42,7 @@ Vector2::Vector2(const std::shared_ptr<json::Element> json) :
 		throw std::invalid_argument("Couldn't create a vector: the JSON cannot be nullptr");
 	}
 
-	std::shared_ptr<json::Array> array = std::dynamic_pointer_cast<json::Array>(json);
+	std::shared_ptr<const json::Array> array = std::dynamic_pointer_cast<const json::Array>(json);
 	if (!array) // The JSON must be an array
 	{
 		throw std::invalid_argument("Couldn't create a vector: the JSON is not an array");
@@ -58,12 +58,12 @@ Vector2::Vector2(const std::shared_ptr<json::Element> json) :
 		{
 		case json::EType::DOUBLE_VALUE:
 		{
-			c[i] = std::dynamic_pointer_cast<json::DoubleValue>(array->get_content()[i])->get();
+			c[i] = std::dynamic_pointer_cast<const json::DoubleValue>(array->get_content()[i])->get();
 			break;
 		}
 		case json::EType::INT_VALUE:
 		{
-			c[i] = static_cast<double>(std::dynamic_pointer_cast<json::IntValue>(array->get_content()[i])->get());
+			c[i] = static_cast<double>(std::dynamic_pointer_cast<const json::IntValue>(array->get_content()[i])->get());
 			break;
 		}
 		default:

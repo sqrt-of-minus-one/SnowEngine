@@ -87,6 +87,32 @@ public:
 	 */
 	Transform(const Vector2& position, const Angle& rotation, const Vector2& scale);
 
+	/**
+	 *	\~english
+	 *	\brief Creates a new transform with the specified value
+	 *	
+	 *	Creates a new transform using the passed JSON. It must be an object with three elements:
+	 *	- `"position"` and `"scale"` must represent a 2D-vector (see the documentation of
+	 *	`Vector2::Vector2(std::shared_ptr<const json::Element>)`);
+	 *	- `"rotation"` must represent an angle (see the documentation of
+	 *	`Angle::Angle(std::shared_ptr<const json::Element>)`).
+	 *	\param json The JSON object with the transform value.
+	 *	\throw std::invalid_argument The passed JSON is not correct.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт новое преобразование с заданным значением
+	 *	
+	 *	Создаёт новое преобразование, используя переданный JSON. Это должен быть объект с тремя
+	 *	элементами:
+	 *	- `"position"` (положение) и `"scale"` (масштаб) должны представлять 2D-вектор (см.
+	 *	документацию `Vector2::Vector2(std::shared_ptr<const json::Element>)`);
+	 *	- `"rotation"` (поворот) должен представлять угол (см. документацию
+	 *	`Angle::Angle(std::shared_ptr<const json::Element>)`).
+	 *	\param json Объект JSON со значением преобразования.
+	 *	\throw std::invalid_argument Переданный JSON неправильный.
+	 */
+	Transform(std::shared_ptr<const json::Element> json);
+
 			/* METHODS FROM Object */
 	
 	/**
@@ -108,20 +134,24 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Hash code of the transform
-	 *
-	 *	Hash code is an integer number. Hash codes of two equal object are equal, but two different
-	 *	objects can also have the same hash codes.
-	 *	\return Hash code of the object.
-	 *
+	 *	\brief Converts the transform to JSON object
+	 *	
+	 *	Creates a JSON object containing three elements: `"position"`, `"rotation"`, and `"scale"`.
+	 *	values of the `"position"` and `"scale"` are arrays (see the documentation of
+	 *	`Vector2::to_json()`), value of the `"rotation"` is an object (see the documentation of
+	 *	`Angle::to_json()`).
+	 *	\return The JSON object with the transform value.
+	 *	
 	 *	\~russian
-	 *	\brief Хеш-код преобразования
-	 *
-	 *	Хеш-код — это целое число. Хеш-коды двух равных объектов равны, но два различных объекта
-	 *	также могут иметь одинаковые хеш-коды.
-	 *	\return Хеш-код объекта.
+	 *	\brief Конвертирует преобразование в объект JSON
+	 *	
+	 *	Создаёт объект JSON, содержащий три элемента: `"position"` (положение), `"rotation"`
+	 *	(поворот) и `"scale"` (масштаб). Значения `"position"` и `"scale"` являются массивами
+	 *	(см. документацию `Vector2::to_json()`), а `"rotation"` — объектом (см. документацию
+	 *	`Angle::to_json()`).
+	 *	\return Объект JSON со значением преобразования.
 	 */
-	virtual int hash_code() const noexcept override;
+	std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 

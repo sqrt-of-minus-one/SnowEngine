@@ -65,36 +65,6 @@ ResourceManager& ResourceManager::get_instance()
 	return resource_manager;
 }
 
-String ResourceManager::to_string() const
-{
-	std::lock_guard<std::mutex> res_grd(res_mtx_());
-	return String::format(L"{ textures: %d, fonts: %d, sounds: %d }"_s,
-			textures_.size(), fonts_.size(), sounds_.size());
-}
-
-int ResourceManager::hash_code() const noexcept
-{
-	int ret = 0;
-	int sign = 1;
-	std::lock_guard<std::mutex> res_grd(res_mtx_());
-	for (const auto& i : textures_)
-	{
-		ret += sign * reinterpret_cast<int>(i.second.lock().get());
-		sign = -sign;
-	}
-	for (const auto& i : fonts_)
-	{
-		ret += sign * reinterpret_cast<int>(i.second.lock().get());
-		sign = -sign;
-	}
-	for (const auto& i : sounds_)
-	{
-		ret += sign * reinterpret_cast<int>(i.second.lock().get());
-		sign = -sign;
-	}
-	return ret;
-}
-
 std::shared_ptr<sf::Texture> ResourceManager::get_texture(const String& name)
 {
 	GET_RES(textures_, name);
