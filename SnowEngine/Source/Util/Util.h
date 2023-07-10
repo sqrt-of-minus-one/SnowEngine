@@ -143,24 +143,41 @@ String to_string(wchar_t var);
  */
 String to_string(bool var);
 
+/**
+ *	\~english
+ *	\brief Converts a standard `wstring` to SnowEngine string
+ *	
+ *	Converts the passed standard `wstring` to SnowEngine string.
+ *	\param var The standard string.
+ *	\return The SnowEngine string.
+ *	
+ *	\~russian
+ *	\brief Конвертирует стандартную строку `wstring` в строку SnowEngine
+ *	
+ *	Конвертирует переданную стандартную строку `wstring` в строку SnowEngine.
+ *	\param var Стандартная строка.
+ *	\return Строка SnowEngine.
+ */
 String to_string(const std::wstring& var);
 
 /**
  *	\~english
  *	\brief Converts a pointer to string
  *	
- *	Converts the address contained by the passed pointer to string.
+ *	Converts the variable that is pointed by the passed pointer to string using
+ *	`util::to_string()`.
  *	\param var The pointer that will be converted to string.
- *	\return `"Ptr: 0x<address>"`, where `<address>` is the address contained by pointer in
- *	hexadecimal notation.
+ *	\return The string representing the variable pointed by the pointer; `"null"` if the pointer is
+ *	null.
  *	
  *	\~russian
  *	\brief Конвертирует указатель в строку
  *	
- *	Конвертирует адрес, хранящийся в переданном указателе, в строку.
+ *	Конвертирует переменную, на которую указывает указатель, в строку с помощью
+ *	`util::to_string()`.
  *	\param var Указатель, который будет сконвертирован в строку.
- *	\return `"Ptr: 0x<address>"`, где `<address>` — адрес, хранящийся в указателе, в
- *	шестнадцатеричной записи.
+ *	\return Строка, представляющая переменную, на которую указывает указатель; `"null"`, если
+ *	указатель нулевой.
  */
 template<typename T>
 String to_string(const T* var);
@@ -172,8 +189,8 @@ String to_string(const T* var);
  *	If the passed pointer is valid, converts the variable that it points to to string using
  *	`util::to_string` function.
  *	\param var The pointer to the value that will be converted to string.
- *	\return `"UniquePtr: NULL"` if the pointer is not valid, `"UniquePtr: <value>" otherwise, where
- *	`<value>` is the string representing the variable whose address is contained by the pointer.
+ *	\return The string representing the variable pointed by the pointer; `"null"` if the pointer is
+ *	null.
  *
  *	\~russian
  *	\brief Конвертирует `unique_ptr` в стоку
@@ -181,9 +198,8 @@ String to_string(const T* var);
  *	Если переданный указатель указывает на существующую переменную, конвертирует эту переменную в
  *	строку с помощью функции `util::to_string`.
  *	\param var Указатель на значение, которое будет сконвертировано в строку.
- *	\return `"UniquePtr: NULL"`, если указатель не указывает на существующую переменную; иначе
- *	`"UniquePtr: <value>"`, где `<value>` — строка, представляющая переменную, чей адрес содержится
- *	в указателе.
+ *	\return Строка, представляющая переменную, на которую указывает указатель; `"null"`, если
+ *	указатель нулевой.
  */
 template<typename T>
 String to_string(const std::unique_ptr<const T>& var);
@@ -195,8 +211,8 @@ String to_string(const std::unique_ptr<const T>& var);
  *	If the passed pointer is valid, converts the variable that it points to to string using
  *	`util::to_string` function.
  *	\param var The pointer to the value that will be converted to string.
- *	\return `"SharedPtr: NULL"` if the pointer is not valid, `"SharedPtr: <value>" otherwise, where
- *	`<value>` is the string representing the variable whose address is contained by the pointer.
+ *	\return The string representing the variable pointed by the pointer; `"null"` if the pointer is
+ *	null.
  *
  *	\~russian
  *	\brief Конвертирует `shared_ptr` в стоку
@@ -204,9 +220,8 @@ String to_string(const std::unique_ptr<const T>& var);
  *	Если переданный указатель указывает на существующую переменную, конвертирует эту переменную в
  *	строку с помощью функции `util::to_string`.
  *	\param var Указатель на значение, которое будет сконвертировано в строку.
- *	\return `"SharedPtr: NULL"`, если указатель не указывает на существующую переменную; иначе
- *	`"SharedPtr: <value>"`, где `<value>` — строка, представляющая переменную, чей адрес содержится
- *	в указателе.
+ *	\return Строка, представляющая переменную, на которую указывает указатель; `"null"`, если
+ *	указатель нулевой.
  */
 template<typename T>
 String to_string(const std::shared_ptr<const T>& var);
@@ -218,8 +233,8 @@ String to_string(const std::shared_ptr<const T>& var);
  *	If the passed pointer is valid, converts the variable that it points to to string using
  *	`util::to_string` function.
  *	\param var The pointer to the value that will be converted to string.
- *	\return `"WeakPtr: NULL"` if the pointer is not valid, `"WeakPtr: <value>" otherwise, where
- *	`<value>` is the string representing the variable whose address is contained by the pointer.
+ *	\return The string representing the variable pointed by the pointer; `"null"` if the pointer is
+ *	null.
  *
  *	\~russian
  *	\brief Конвертирует `weak_ptr` в стоку
@@ -227,16 +242,15 @@ String to_string(const std::shared_ptr<const T>& var);
  *	Если переданный указатель указывает на существующую переменную, конвертирует эту переменную в
  *	строку с помощью функции `util::to_string`.
  *	\param var Указатель на значение, которое будет сконвертировано в строку.
- *	\return `"WeakPtr: NULL"`, если указатель не указывает на существующую переменную; иначе
- *	`"WeakPtr: <value>"`, где `<value>` — строка, представляющая переменную, чей адрес содержится
- *	в указателе.
+ *	\return Строка, представляющая переменную, на которую указывает указатель; `"null"`, если
+ *	указатель нулевой.
  */
 template<typename T>
 String to_string(const std::weak_ptr<const T>& var);
 
 /**
  *	\~english
- *	\brief Converts object to string
+ *	\brief Converts an object to string
  *
  *	Converts the passed object to string. The object must have `to_string()` method (any
  *	`snow::Object` has it).
@@ -254,112 +268,836 @@ String to_string(const std::weak_ptr<const T>& var);
 template<typename T>
 String to_string(const T& var);
 
+/**
+ *	\~english
+ *	\brief Converts a pair to string
+ *	
+ *	Converts the passed pair to string. Uses `util::to_string()` for each element.
+ *	\tparam T1 The type of the first pair element.
+ *	\tparam T2 The type of the second pair element.
+ *	\param var The pair that will be converted to string.
+ *	\return `"[ <1>, <2> ]", where `<1>` and `<2>` are strings representing the first and the
+ *	second pair elements respectively.
+ *	
+ *	\~russian
+ *	\brief Конвертирует пару в строку
+ *	
+ *	Конвертирует пару в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T1 Тип первого элемента пары.
+ *	\tparam T2 Тип второго элемента пары.
+ *	\param var Пара, которая будет сконвертирована в строку.
+ *	\return `"[ <1>, <2> ]", где `<1>` и `<2>` — строки, представляющие первый и второй элементы
+ *	пары соответственно.
+ */
 template<typename T1, typename T2>
 String to_string(const std::pair<T1, T2>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an array to string
+ *	
+ *	Converts the passed array to string. Uses `util::to_string()` for each element.
+ *	\tparam T The type of the array elements.
+ *	\tparam N The size of the array.
+ *	\param var The array that will be converted to string.
+ *	\return `"[ <1>, <2>, …, <N> ]", where `<1>`, `<2>`, …, `<N>` are strings representing the array
+ *	elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует массив в строку
+ *	
+ *	Конвертирует массив в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T Тип элементов массива.
+ *	\tparam N Размер массива.
+ *	\param var Массив, который будет сконвертирован в строку.
+ *	\return `"[ <1>, <2>, …, <N> ]", где `<1>`, `<2>`, …, `<N>` — строки, представляющие элементы
+ *	массива.
+ */
 template<typename T, int N>
 String to_string(const std::array<T, N>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a vector to string
+ *	
+ *	Converts the passed vector to string. Uses `util::to_string()` for each element.
+ *	\tparam T The type of the vector elements.
+ *	\param var The vector that will be converted to string.
+ *	\return `"[ <1>, <2>, …, <N> ]", where `<1>`, `<2>`, …, `<N>` are strings representing the vector
+ *	elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует вектор в строку
+ *	
+ *	Конвертирует вектор в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T Тип элементов вектора.
+ *	\param var Вектор, который будет сконвертирован в строку.
+ *	\return `"[ <1>, <2>, …, <N> ]", где `<1>`, `<2>`, …, `<N>` — строки, представляющие элементы
+ *	вектора.
+ */
 template<typename T>
 String to_string(const std::vector<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a deque to string
+ *	
+ *	Converts the passed deque to string. Uses `util::to_string()` for each element.
+ *	\tparam T The type of the deque elements.
+ *	\param var The deque that will be converted to string.
+ *	\return `"[ <1>, <2>, …, <N> ]", where `<1>`, `<2>`, …, `<N>` are strings representing the deque
+ *	elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::deque` в строку
+ *	
+ *	Конвертирует `deque` в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T Тип элементов `deque`.
+ *	\param var `deque`, который будет сконвертирован в строку.
+ *	\return `"[ <1>, <2>, …, <N> ]", где `<1>`, `<2>`, …, `<N>` — строки, представляющие элементы
+ *	`deque`.
+ */
 template<typename T>
 String to_string(const std::deque<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a forward list to string
+ *	
+ *	Converts the passed forward list to string. Uses `util::to_string()` for each element.
+ *	\tparam T The type of the list elements.
+ *	\param var The list that will be converted to string.
+ *	\return `"[ <1>, <2>, …, <N> ]", where `<1>`, `<2>`, …, `<N>` are strings representing the list
+ *	elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует односвязный список в строку
+ *	
+ *	Конвертирует односвязный список в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T Тип элементов списка.
+ *	\param var Список, который будет сконвертирован в строку.
+ *	\return `"[ <1>, <2>, …, <N> ]", где `<1>`, `<2>`, …, `<N>` — строки, представляющие элементы
+ *	списка.
+ */
 template<typename T>
 String to_string(const std::forward_list<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a list to string
+ *	
+ *	Converts the passed list to string. Uses `util::to_string()` for each element.
+ *	\tparam T The type of the list elements.
+ *	\param var The list that will be converted to string.
+ *	\return `"[ <1>, <2>, …, <N> ]", where `<1>`, `<2>`, …, `<N>` are strings representing the list
+ *	elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует список в строку
+ *	
+ *	Конвертирует список в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T Тип элементов списка.
+ *	\param var Список, который будет сконвертирован в строку.
+ *	\return `"[ <1>, <2>, …, <N> ]", где `<1>`, `<2>`, …, `<N>` — строки, представляющие элементы
+ *	списка.
+ */
 template<typename T>
 String to_string(const std::list<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a set to string
+ *	
+ *	Converts the passed set to string. Uses `util::to_string()` for each element.
+ *	\tparam T The type of the set elements.
+ *	\param var The set that will be converted to string.
+ *	\return `"[ <1>, <2>, …, <N> ]", where `<1>`, `<2>`, …, `<N>` are strings representing the set
+ *	elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::set` в строку
+ *	
+ *	Конвертирует `set` в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T Тип элементов `set`.
+ *	\param var `set`, который будет сконвертирован в строку.
+ *	\return `"[ <1>, <2>, …, <N> ]", где `<1>`, `<2>`, …, `<N>` — строки, представляющие элементы
+ *	`set`.
+ */
 template<typename T>
 String to_string(const std::set<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a map to string
+ *	
+ *	Converts the passed map to string. Uses `util::to_string()` for each element.
+ *	\tparam T_Key The type of the map keys.
+ *	\tparam T_Value The type of the map values.
+ *	\param var The map that will be converted to string.
+ *	\return `"{ <K1>: <V1>, <K2>: <V2>, …, <KN>: <VN> ]", where `<K1>`, `<K2>`, …, `<KN>` are
+ *	strings representing the map keys; `<V1>`, `<V2>`, …, `<VN>` are string representing the map
+ *	values.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::map` в строку
+ *	
+ *	Конвертирует `map` в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T_Key Тип ключей `map`.
+ *	\tparam T_Value Тип значений `map`.
+ *	\param var `map`, который будет сконвертирован в строку.
+ *	\return `"{ <K1>: <V1>, <K2>: <V2>, …, <KN>: <VN> ]", где `<K1>`, `<K2>`, …, `<KN>` — строки,
+ *	представляющие ключи, а `<V1>`, `<V2>`, …, `<VN>` — значения `map`.
+ */
 template<typename T_Key, typename T_Value>
 String to_string(const std::map<T_Key, T_Value>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a multiset to string
+ *	
+ *	Converts the passed multiset to string. Uses `util::to_string()` for each element.
+ *	\tparam T The type of the set elements.
+ *	\param var The set that will be converted to string.
+ *	\return `"[ <1>, <2>, …, <N> ]", where `<1>`, `<2>`, …, `<N>` are strings representing the set
+ *	elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::multiset` в строку
+ *	
+ *	Конвертирует `multiset` в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T Тип элементов `multiset`.
+ *	\param var `multiset`, который будет сконвертирован в строку.
+ *	\return `"[ <1>, <2>, …, <N> ]", где `<1>`, `<2>`, …, `<N>` — строки, представляющие элементы
+ *	`multiset`.
+ */
 template<typename T>
 String to_string(const std::multiset<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a multimap to string
+ *	
+ *	Converts the passed multimap to string. Uses `util::to_string()` for each element.
+ *	\tparam T_Key The type of the map keys.
+ *	\tparam T_Value The type of the map values.
+ *	\param var The map that will be converted to string.
+ *	\return `"{ <K1>: <V1>, <K2>: <V2>, …, <KN>: <VN> ]", where `<K1>`, `<K2>`, …, `<KN>` are
+ *	strings representing the map keys; `<V1>`, `<V2>`, …, `<VN>` are string representing the map
+ *	values.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::multimap` в строку
+ *	
+ *	Конвертирует `multimap` в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T_Key Тип ключей `map`.
+ *	\tparam T_Value Тип значений `map`.
+ *	\param var `multimap`, который будет сконвертирован в строку.
+ *	\return `"{ <K1>: <V1>, <K2>: <V2>, …, <KN>: <VN> ]", где `<K1>`, `<K2>`, …, `<KN>` — строки,
+ *	представляющие ключи, а `<V1>`, `<V2>`, …, `<VN>` — значения `multimap`.
+ */
 template<typename T_Key, typename T_Value>
 String to_string(const std::multimap<T_Key, T_Value>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an unordered set to string
+ *	
+ *	Converts the passed unordered set to string. Uses `util::to_string()` for each element.
+ *	\tparam T The type of the set elements.
+ *	\param var The set that will be converted to string.
+ *	\return `"[ <1>, <2>, …, <N> ]", where `<1>`, `<2>`, …, `<N>` are strings representing the set
+ *	elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::unordered_set` в строку
+ *	
+ *	Конвертирует `unordered_set` в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T Тип элементов `unordered_set`.
+ *	\param var `unordered_set`, который будет сконвертирован в строку.
+ *	\return `"[ <1>, <2>, …, <N> ]", где `<1>`, `<2>`, …, `<N>` — строки, представляющие элементы
+ *	`unordered_set`.
+ */
 template<typename T>
 String to_string(const std::unordered_set<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an unordered map to string
+ *	
+ *	Converts the passed unordered map to string. Uses `util::to_string()` for each element.
+ *	\tparam T_Key The type of the map keys.
+ *	\tparam T_Value The type of the map values.
+ *	\param var The map that will be converted to string.
+ *	\return `"{ <K1>: <V1>, <K2>: <V2>, …, <KN>: <VN> ]", where `<K1>`, `<K2>`, …, `<KN>` are
+ *	strings representing the map keys; `<V1>`, `<V2>`, …, `<VN>` are string representing the map
+ *	values.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::unordered_map` в строку
+ *	
+ *	Конвертирует `unordered_map` в строку. Использует `util::to_string()` для каждого элемента.
+ *	\tparam T_Key Тип ключей `map`.
+ *	\tparam T_Value Тип значений `map`.
+ *	\param var `unordered_map`, который будет сконвертирован в строку.
+ *	\return `"{ <K1>: <V1>, <K2>: <V2>, …, <KN>: <VN> ]", где `<K1>`, `<K2>`, …, `<KN>` — строки,
+ *	представляющие ключи, а `<V1>`, `<V2>`, …, `<VN>` — значения `unordered_map`.
+ */
 template<typename T_Key, typename T_Value>
 String to_string(const std::unordered_map<T_Key, T_Value>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an unordered multiset to string
+ *	
+ *	Converts the passed unordered multiset to string. Uses `util::to_string()` for each element.
+ *	\tparam T The type of the set elements.
+ *	\param var The set that will be converted to string.
+ *	\return `"[ <1>, <2>, …, <N> ]", where `<1>`, `<2>`, …, `<N>` are strings representing the set
+ *	elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::unordered_multiset` в строку
+ *	
+ *	Конвертирует `unordered_multiset` в строку. Использует `util::to_string()` для каждого
+ *	элемента.
+ *	\tparam T Тип элементов `unordered_multiset`.
+ *	\param var `unordered_multiset`, который будет сконвертирован в строку.
+ *	\return `"[ <1>, <2>, …, <N> ]", где `<1>`, `<2>`, …, `<N>` — строки, представляющие элементы
+ *	`unordered_multiset`.
+ */
 template<typename T>
 String to_string(const std::unordered_multiset<T>& var);
 
+
+/**
+ *	\~english
+ *	\brief Converts an unordered multimap to string
+ *	
+ *	Converts the passed unordered multimap to string. Uses `util::to_string()` for each element.
+ *	\tparam T_Key The type of the map keys.
+ *	\tparam T_Value The type of the map values.
+ *	\param var The map that will be converted to string.
+ *	\return `"{ <K1>: <V1>, <K2>: <V2>, …, <KN>: <VN> ]", where `<K1>`, `<K2>`, …, `<KN>` are
+ *	strings representing the map keys; `<V1>`, `<V2>`, …, `<VN>` are string representing the map
+ *	values.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::unordered_multimap` в строку
+ *	
+ *	Конвертирует `unordered_multimap` в строку. Использует `util::to_string()` для каждого
+ *	элемента.
+ *	\tparam T_Key Тип ключей `map`.
+ *	\tparam T_Value Тип значений `map`.
+ *	\param var `unordered_multimap`, который будет сконвертирован в строку.
+ *	\return `"{ <K1>: <V1>, <K2>: <V2>, …, <KN>: <VN> ]", где `<K1>`, `<K2>`, …, `<KN>` — строки,
+ *	представляющие ключи, а `<V1>`, `<V2>`, …, `<VN>` — значения `unordered_multimap`.
+ */
 template<typename T_Key, typename T_Value>
 String to_string(const std::unordered_multimap<T_Key, T_Value>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an integer to JSON
+ *	
+ *	Converts the passed integer to JSON value.
+ *	\param var The integer that will be converted to JSON.
+ *	\return A JSON integer value (`json::IntValue`).
+ *	
+ *	\~russian
+ *	\brief Конвертирует целое число в JSON
+ *	
+ *	Конвертирует переданное целое число в значение JSON.
+ *	\param var Целое число, которое будет сконвертировано в JSON.
+ *	\return Целочисленное значение JSON (`json::IntValue`).
+*/
 std::shared_ptr<json::Element> to_json(int var);
 
+/**
+ *	\~english
+ *	\brief Converts a double to JSON
+ *	
+ *	Converts the passed double to JSON value.
+ *	\param var The double that will be converted to JSON.
+ *	\return A JSON double value (`json::IntValue`).
+ *	
+ *	\~russian
+ *	\brief Конвертирует вещественное число в JSON
+ *	
+ *	Конвертирует переданное вещественное число в значение JSON.
+ *	\param var Вещественное число, которое будет сконвертировано в JSON.
+ *	\return Вещественное значение JSON (`json::IntValue`).
+*/
 std::shared_ptr<json::Element> to_json(double var);
 
+/**
+ *	\~english
+ *	\brief Converts a character to JSON
+ *	
+ *	Converts the passed character to JSON value.
+ *	\param var The character that will be converted to JSON.
+ *	\return A JSON string (`json::StringValue`) with a single character.
+ *	
+ *	\~russian
+ *	\brief Конвертирует символ в JSON
+ *	
+ *	Конвертирует переданный символ в значение JSON.
+ *	\param var Символ, который будет сконвертирован в JSON.
+ *	\return Строка JSON (`json::StringValue`) с единственным символом.
+*/
 std::shared_ptr<json::Element> to_json(wchar_t var);
 
+/**
+ *	\~english
+ *	\brief Converts a boolean to JSON
+ *	
+ *	Converts the passed boolean to JSON value.
+ *	\param var The boolean that will be converted to JSON.
+ *	\return A JSON boolean value (`json::BoolValue`).
+ *	
+ *	\~russian
+ *	\brief Конвертирует булево значение в JSON
+ *	
+ *	Конвертирует переданное булево значение в значение JSON.
+ *	\param var Булево значение, которое будет сконвертировано в JSON.
+ *	\return Булево значение JSON (`json::BoolValue`).
+*/
 std::shared_ptr<json::Element> to_json(bool var);
 
+/**
+ *	\~english
+ *	\brief Converts a standard `std::wstring` to JSON
+ *	
+ *	Converts the passed standard string to JSON value.
+ *	\param var The string that will be converted to JSON.
+ *	\return A JSON string value (`json::StringValue`).
+ *	
+ *	\~russian
+ *	\brief Конвертирует стандартную строку `std::wstring` в JSON
+ *	
+ *	Конвертирует переданную стандартную строку в значение JSON.
+ *	\param var Строка, которая будет сконвертирована в JSON.
+ *	\return Строковое значение JSON (`json::StringValue`).
+*/
 std::shared_ptr<json::Element> to_json(const std::wstring& var);
 
+/**
+ *	\~english
+ *	\brief Converts a pointer to JSON
+ *	
+ *	Converts the variable that is pointed by the passed pointer to JSON using `util::to_json()`.
+ *	\param var The pointer that will be converted to JSON.
+ *	\return A JSON representing the variable pointed by the pointer; a null JSON value
+ *	(`json::NullValue`) if the pointer is null.
+ *	
+ *	\~russian
+ *	\brief Конвертирует указатель в JSON
+ *	
+ *	Конвертирует переменную, на которую указывает переданный указатель, в JSON с помощью
+ *	`util::to_json()`.
+ *	\param var Указатель, который будет сконвертирован в JSON.
+ *	\return JSON, представляющий переменную, на которую указывает указатель; Нулевое значение JSON
+ *	(`json::IntValue`), если указатель нулевой.
+*/
 template<typename T>
 std::shared_ptr<json::Element> to_json(const T* var);
 
+/**
+ *	\~english
+ *	\brief Converts a unique pointer to JSON
+ *	
+ *	Converts the variable that is pointed by the passed pointer to JSON using `util::to_json()`.
+ *	\param var The pointer that will be converted to JSON.
+ *	\return A JSON representing the variable pointed by the pointer; a null JSON value
+ *	(`json::NullValue`) if the pointer is null.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `unique_ptr` в JSON
+ *	
+ *	Конвертирует переменную, на которую указывает переданный указатель, в JSON с помощью
+ *	`util::to_json()`.
+ *	\param var Указатель, который будет сконвертирован в JSON.
+ *	\return JSON, представляющий переменную, на которую указывает указатель; Нулевое значение JSON
+ *	(`json::IntValue`), если указатель нулевой.
+*/
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::unique_ptr<const T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a shared pointer to JSON
+ *	
+ *	Converts the variable that is pointed by the passed pointer to JSON using `util::to_json()`.
+ *	\param var The pointer that will be converted to JSON.
+ *	\return A JSON representing the variable pointed by the pointer; a null JSON value
+ *	(`json::NullValue`) if the pointer is null.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `shared_ptr` в JSON
+ *	
+ *	Конвертирует переменную, на которую указывает переданный указатель, в JSON с помощью
+ *	`util::to_json()`.
+ *	\param var Указатель, который будет сконвертирован в JSON.
+ *	\return JSON, представляющий переменную, на которую указывает указатель; Нулевое значение JSON
+ *	(`json::IntValue`), если указатель нулевой.
+*/
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::shared_ptr<const T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a weak pointer to JSON
+ *	
+ *	Converts the variable that is pointed by the passed pointer to JSON using `util::to_json()`.
+ *	\param var The pointer that will be converted to JSON.
+ *	\return A JSON representing the variable pointed by the pointer; a null JSON value
+ *	(`json::NullValue`) if the pointer is null.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `weak_ptr` в JSON
+ *	
+ *	Конвертирует переменную, на которую указывает переданный указатель, в JSON с помощью
+ *	`util::to_json()`.
+ *	\param var Указатель, который будет сконвертирован в JSON.
+ *	\return JSON, представляющий переменную, на которую указывает указатель; Нулевое значение JSON
+ *	(`json::IntValue`), если указатель нулевой.
+*/
 template<typename T>
-std::shared_ptr<json::Element> to_json(const std::shared_ptr<const T>& var);
+std::shared_ptr<json::Element> to_json(const std::weak_ptr<const T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an object to JSON
+ *
+ *	Converts the passed object to JSON. The object must have `to_json()` method (any
+ *	`snow::Object` has it).
+ *	\param var The object that will be converted to JSON.
+ *	\return Result of `to_json()` method of the object.
+ *
+ *	\~russian
+ *	\brief Конвертирует объект в JSON
+ *
+ *	Конверирует переданный объект в JSON. Объект должен иметь метод `to_json()` (у любого
+ *	`snow::Object` он есть).
+ *	\param var Объект, который будет сконвертирован в JSON.
+ *	\return Результат выполнения метода `to_json()` объекта.
+ */
 template<typename T>
 std::shared_ptr<json::Element> to_json(const T& var);
 
+/**
+ *	\~english
+ *	\brief Converts a pair to JSON
+ *	
+ *	Converts the passed pair to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T1 The type of the first pair element.
+ *	\tparam T2 The type of the second pair element.
+ *	\param var The pair that will be converted to JSON.
+ *	\return The JSON array with two elements representing the pair elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует пару в JSON
+ *	
+ *	Конвертирует пару в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T1 Тип первого элемента пары.
+ *	\tparam T2 Тип второго элемента пары.
+ *	\param var Пара, которая будет сконвертирована в JSON.
+ *	\return Массив JSON с двумя элементами, представляющими элементы пары.
+ */
 template<typename T1, typename T2>
 std::shared_ptr<json::Element> to_json(const std::pair<T1, T2>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an array to JSON
+ *	
+ *	Converts the passed array to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T The type of the array elements.
+ *	\tparam N The size of the array.
+ *	\param var The array that will be converted to JSON.
+ *	\return The JSON array with elements representing the array elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует массив в JSON
+ *	
+ *	Конвертирует массив в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T Тип элементов массива.
+ *	\tparam N Размер массива.
+ *	\param var Массив, который будет сконвертирован в JSON.
+ *	\return Массив JSON с элементами, представляющими элементы массива.
+ */
 template<typename T, int N>
 std::shared_ptr<json::Element> to_json(const std::array<T, N>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a vector to JSON
+ *	
+ *	Converts the passed vector to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T The type of the vector elements.
+ *	\param var The vector that will be converted to JSON.
+ *	\return The JSON array with elements representing the vector elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует вектор в JSON
+ *	
+ *	Конвертирует вектор в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T Тип элементов вектора.
+ *	\param var Вектор, который будет сконвертирован в JSON.
+ *	\return Массив JSON с элементами, представляющими элементы вектора.
+ */
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::vector<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a deque to JSON
+ *	
+ *	Converts the passed deque to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T The type of the deque elements.
+ *	\param var The deque that will be converted to JSON.
+ *	\return The JSON array with elements representing the deque elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::deque` в JSON
+ *	
+ *	Конвертирует `deque` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T Тип элементов `deque`.
+ *	\param var `deque`, который будет сконвертирован в JSON.
+ *	\return Массив JSON с элементами, представляющими элементы `deque`.
+ */
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::deque<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a forward list to JSON
+ *	
+ *	Converts the passed forward list to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T The type of the list elements.
+ *	\param var The list that will be converted to JSON.
+ *	\return The JSON array with elements representing the list elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::forward_list` в JSON
+ *	
+ *	Конвертирует `forward_list` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T Тип элементов `forward_list`.
+ *	\param var `forward_list`, который будет сконвертирован в JSON.
+ *	\return Массив JSON с элементами, представляющими элементы `forward_list`.
+ */
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::forward_list<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a list to JSON
+ *	
+ *	Converts the passed list to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T The type of the list elements.
+ *	\param var The list that will be converted to JSON.
+ *	\return The JSON array with elements representing the list elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::list` в JSON
+ *	
+ *	Конвертирует `list` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T Тип элементов `list`.
+ *	\param var `list`, который будет сконвертирован в JSON.
+ *	\return Массив JSON с элементами, представляющими элементы `list`.
+ */
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::list<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a set to JSON
+ *	
+ *	Converts the passed set to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T The type of the set elements.
+ *	\param var The set that will be converted to JSON.
+ *	\return The JSON array with elements representing the set elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::set` в JSON
+ *	
+ *	Конвертирует `set` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T Тип элементов `set`.
+ *	\param var `set`, который будет сконвертирован в JSON.
+ *	\return Массив JSON с элементами, представляющими элементы `set`.
+ */
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::set<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a map to JSON
+ *	
+ *	Converts the passed map to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T_Key The type of the map keys.
+ *	\tparam T_Value The type of the map values.
+ *	\param var The map that will be converted to JSON.
+ *	\return The JSON array or object with elements representing the map elements. If `T_Key` is
+ *	`snow::String`, `std::wstring` or `wchar_t` the method returns the JSON object. Otherwise the
+ *	JSON array of key-value pairs (which are also arrays) is returned.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::map` в JSON
+ *	
+ *	Конвертирует `map` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T_Key Тип ключей `map`.
+ *	\tparam T_Value Тип значений `map`.
+ *	\param var `map`, который будет сконвертирован в JSON.
+ *	\return Массив или объект JSON с элементами, представляющими элементы `map`. Если `T_Key` —
+ *	`snow::String`, `std::wstring` или `wchar_t`, метод возвращает объект JSON. Иначе возвращается
+ *	массив JSON, содержащий пары ключ — значение (которые тоже являются массивами).
+ */
 template<typename T_Key, typename T_Value>
 std::shared_ptr<json::Element> to_json(const std::map<T_Key, T_Value>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a multiset to JSON
+ *	
+ *	Converts the passed multiset to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T The type of the set elements.
+ *	\param var The set that will be converted to JSON.
+ *	\return The JSON array with elements representing the set elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::multiset` в JSON
+ *	
+ *	Конвертирует `multiset` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T Тип элементов `multiset`.
+ *	\param var `multiset`, который будет сконвертирован в JSON.
+ *	\return Массив JSON с элементами, представляющими элементы `multiset`.
+ */
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::multiset<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a multimap to JSON
+ *	
+ *	Converts the passed multimap to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T_Key The type of the map keys.
+ *	\tparam T_Value The type of the map values.
+ *	\param var The map that will be converted to JSON.
+ *	\return The JSON array or object with elements representing the map elements. If `T_Key` is
+ *	`snow::String`, `std::wstring` or `wchar_t` the method returns the JSON object. Otherwise the
+ *	JSON array of key-value pairs (which are also arrays) is returned.
+ *	\warning JSON object cannot contain two or more elements with the same key, some elements may
+ *	be lost during the convertion.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::multimap` в JSON
+ *	
+ *	Конвертирует `multimap` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T_Key Тип ключей `multimap`.
+ *	\tparam T_Value Тип значений `multimap`.
+ *	\param var `multimap`, который будет сконвертирован в JSON.
+ *	\return Массив или объект JSON с элементами, представляющими элементы `multimap`. Если
+ *	`T_Key` — `snow::String`, `std::wstring` или `wchar_t`, метод возвращает объект JSON. Иначе
+ *	возвращается массив JSON, содержащий пары ключ — значение (которые тоже являются массивами).
+ *	\warning Объекты JSON не могут иметь два и более элементов с одинаковым ключом, поэтому
+ *	некоторые элементы могут быть утеряны.
+ */
 template<typename T_Key, typename T_Value>
 std::shared_ptr<json::Element> to_json(const std::multimap<T_Key, T_Value>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an unordered set to JSON
+ *	
+ *	Converts the passed unordered set to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T The type of the set elements.
+ *	\param var The set that will be converted to JSON.
+ *	\return The JSON array with elements representing the set elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::unordered_set` в JSON
+ *	
+ *	Конвертирует `unordered_set` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T Тип элементов `unordered_set`.
+ *	\param var `unordered_set`, который будет сконвертирован в JSON.
+ *	\return Массив JSON с элементами, представляющими элементы `unordered_set`.
+ */
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::unordered_set<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an unordered map to JSON
+ *	
+ *	Converts the passed unoredered map to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T_Key The type of the map keys.
+ *	\tparam T_Value The type of the map values.
+ *	\param var The map that will be converted to JSON.
+ *	\return The JSON array or object with elements representing the map elements. If `T_Key` is
+ *	`snow::String`, `std::wstring` or `wchar_t` the method returns the JSON object. Otherwise the
+ *	JSON array of key-value pairs (which are also arrays) is returned.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::unordered_map` в JSON
+ *	
+ *	Конвертирует `unordered_map` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T_Key Тип ключей `unordered_map`.
+ *	\tparam T_Value Тип значений `unordered_map`.
+ *	\param var `unordered_map`, который будет сконвертирован в JSON.
+ *	\return Массив или объект JSON с элементами, представляющими элементы `unordered_map`. Если
+ *	`T_Key` — `snow::String`, `std::wstring` или `wchar_t`, метод возвращает объект JSON. Иначе
+ *	возвращается массив JSON, содержащий пары ключ — значение (которые тоже являются массивами).
+ */
 template<typename T_Key, typename T_Value>
 std::shared_ptr<json::Element> to_json(const std::unordered_map<T_Key, T_Value>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an unordered multiset to JSON
+ *	
+ *	Converts the passed unordered multiset to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T The type of the set elements.
+ *	\param var The set that will be converted to JSON.
+ *	\return The JSON array with elements representing the set elements.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::unordered_multiset` в JSON
+ *	
+ *	Конвертирует `unordered_multiset` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T Тип элементов `unordered_multiset`.
+ *	\param var `unordered_multiset`, который будет сконвертирован в JSON.
+ *	\return Массив JSON с элементами, представляющими элементы `unordered_multiset`.
+ */
 template<typename T>
 std::shared_ptr<json::Element> to_json(const std::unordered_multiset<T>& var);
 
+/**
+ *	\~english
+ *	\brief Converts an unordered multimap to JSON
+ *	
+ *	Converts the passed unordered multimap to JSON. Uses `util::to_json()` for each element.
+ *	\tparam T_Key The type of the map keys.
+ *	\tparam T_Value The type of the map values.
+ *	\param var The map that will be converted to JSON.
+ *	\return The JSON array or object with elements representing the map elements. If `T_Key` is
+ *	`snow::String`, `std::wstring` or `wchar_t` the method returns the JSON object. Otherwise the
+ *	JSON array of key-value pairs (which are also arrays) is returned.
+ *	\warning JSON object cannot contain two or more elements with the same key, some elements may
+ *	be lost during the convertion.
+ *	
+ *	\~russian
+ *	\brief Конвертирует `std::unordered_multimap` в JSON
+ *	
+ *	Конвертирует `multimap` в JSON. Использует `util::to_json()` для каждого элемента.
+ *	\tparam T_Key Тип ключей `unordered_multimap`.
+ *	\tparam T_Value Тип значений `unordered_multimap`.
+ *	\param var `unordered_multimap`, который будет сконвертирован в JSON.
+ *	\return Массив или объект JSON с элементами, представляющими элементы `unordered_multimap`.
+ *	Если `T_Key` — `snow::String`, `std::wstring` или `wchar_t`, метод возвращает объект JSON.
+ *	Иначе возвращается массив JSON, содержащий пары ключ — значение (которые тоже являются
+ *	массивами).
+ *	\warning Объекты JSON не могут иметь два и более элементов с одинаковым ключом, поэтому
+ *	некоторые элементы могут быть утеряны.
+ */
 template<typename T_Key, typename T_Value>
 std::shared_ptr<json::Element> to_json(const std::unordered_multimap<T_Key, T_Value>& var);
 
