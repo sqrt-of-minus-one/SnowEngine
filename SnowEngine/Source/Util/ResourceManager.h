@@ -14,19 +14,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `ResourceManager` class
- *
- *	This file contains the definition of the `ResourceManager` class.
- *
- *	\~russian
- *	\brief Файл с классом `ResourceManager`
- *
- *	Этот файл содержит определение класса `ResourceManager`.
- */
-
 #include "../Object.h"
 
 #include <unordered_map>
@@ -49,8 +36,8 @@ namespace snow
  *	\brief The class of the SnowMan resource manager
  *
  *	This class is used to manage resourced such as textures, fonts and sounds. It is singleton,
- *	only one resource manager may exist. You can get it using `get_instance` static method. Use
- *	`config.ini` file to set directories of resource files.
+ *	only one resource manager may exist. You can get it using `get_instance` static method. The
+ *	directories of resource files are defined by the current configuration (see `Config`).
  *	\warning This class is designed for internal use. Do not use it in your project directly.
  *
  *	\~russian
@@ -58,8 +45,8 @@ namespace snow
  *
  *	Этот класс используется для управления ресурсами: текстурами, шрифтами и звуками. Он является
  *	одиночкой: может существовать только один диспетчер ресурсов. Вы можете получить его, используя
- *	статический метод `get_instance`. Используйте файл `config.ini`, чтобы установить директории
- *	файлов ресурсов.
+ *	статический метод `get_instance`. Директории файлов ресурсов определяются текущей конфигурацией
+ *	(см. `Config`).
  *	\warning Этот класс предназначен для внутреннего использования. Не используйте его
  *	непосредственно в своём проекте.
  */
@@ -90,7 +77,7 @@ public:
 	 *	\brief Get the texture
 	 *	
 	 *	Allows to get the texture. Loads it if necessary. The directory with texture files is
-	 *	defined by config.ini file.
+	 *	defined by the current configuration.
 	 *	\param name The name of the texture (the path to the file relative to textures directory).
 	 *	\return The pointer to the SFML texture.
 	 *	
@@ -98,7 +85,7 @@ public:
 	 *	\brief Получить текстуру
 	 *	
 	 *	Позволяет получить текстуру. Загружает её при необходимости. Директория с файлами текстур
-	 *	определяется файлом config.ini.
+	 *	определяется текущей конфигурацией.
 	 *	\param name Имя текстуры (путь к файлу относительно директории текстур).
 	 *	\return Указатель на текстуру SFML.
 	 */
@@ -109,7 +96,7 @@ public:
 	 *	\brief Get the font
 	 *
 	 *	Allows to get the font. Loads it if necessary. The directory with font files is defined by
-	 *	config.ini file.
+	 *	the current configuration.
 	 *	\param name The name of the font (the path to the file relative to fonts directory).
 	 *	\return The pointer to the SFML font.
 	 *
@@ -117,7 +104,7 @@ public:
 	 *	\brief Получить шрифт
 	 *
 	 *	Позволяет получить шрифт. Загружает его при необходимости. Директория с файлами шрифтов
-	 *	определяется файлом config.ini.
+	 *	определяется текущей конфигурацией.
 	 *	\param name Имя шрифта (путь к файлу относительно директории шрифтов).
 	 *	\return Указатель на шрифт SFML.
 	 */
@@ -128,7 +115,7 @@ public:
 	 *	\brief Get the sound
 	 *
 	 *	Allows to get the sound. Loads it if necessary. The directory with sound files is defined
-	 *	by config.ini file.
+	 *	by the current configuration.
 	 *	\param name The name of the sound (the path to the file relative to sounds directory).
 	 *	\return The pointer to the SFML sound.
 	 *
@@ -136,7 +123,7 @@ public:
 	 *	\brief Получить звук
 	 *
 	 *	Позволяет получить звук. Загружает его при необходимости. Директория с файлами звуков
-	 *	определяется файлом config.ini.
+	 *	определяется текущей конфигурацией.
 	 *	\param name Имя звука (путь к файлу относительно директории звуков).
 	 *	\return Указатель на звук SFML.
 	 */
@@ -146,14 +133,17 @@ private:
 	ResourceManager();
 
 	void check_resources_();
+	void update_check_timer_(const Config& new_config);
+	void update_res_path_(const Config& new_config);
 
 	std::unordered_map<std::wstring, std::weak_ptr<sf::Texture>> textures_;
 	std::unordered_map<std::wstring, std::weak_ptr<sf::Font>> fonts_;
 	std::unordered_map<std::wstring, std::weak_ptr<sf::SoundBuffer>> sounds_;
 	// Music is loaded from file directly, without resource manager
 
-	/* lazy */ static std::mutex& res_mtx_() noexcept;
+	std::shared_ptr<Timer> check_timer_;
 
+	/* lazy */ static std::mutex& res_mtx_() noexcept;
 	Log res_log_;
 };
 

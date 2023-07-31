@@ -48,8 +48,6 @@ class Level;
  */
 class Game
 {
-	friend class ConfigManager;
-
 public:
 			/* SINGLETON */
 

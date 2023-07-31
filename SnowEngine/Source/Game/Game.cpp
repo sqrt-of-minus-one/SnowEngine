@@ -191,6 +191,8 @@ void Game::create_window_()
 	window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(c.window_resolution.get_x(), c.window_resolution.get_y()), c.window_title.to_std_string(),
 		sf::Style::Titlebar * c.window_titlebar | sf::Style::Resize * c.window_resize |
 		sf::Style::Close * c.window_titlebar_buttons | sf::Style::Fullscreen * c.window_fullscreen);
+	
+	ConfigManager::get_instance().on_changed_window.bind<Game>(*this, &Game::create_window_);
 }
 
 void Game::remove_level_(Level& level)

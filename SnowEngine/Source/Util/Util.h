@@ -1101,10 +1101,113 @@ std::shared_ptr<json::Element> to_json(const std::unordered_multiset<T>& var);
 template<typename T_Key, typename T_Value>
 std::shared_ptr<json::Element> to_json(const std::unordered_multimap<T_Key, T_Value>& var);
 
+/**
+ *	\~english
+ *	\brief Converts a JSON to integer
+ *	
+ *	If the passed JSON element is an integer value (`json::IntValue`), returns this value.
+ *	\param json The JSON element.
+ *	\return The integer value.
+ *	\throw std::invalid_argument The passed JSON is not correct (is not integer value).
+ *	
+ *	\~russian
+ *	\brief Конвертирует JSON в целое число
+ *	
+ *	Если переданный элемент JSON является целочисленным значением (`json::IntValue`), возвращает
+ *	это значение.
+ *	\param json Элемент JSON.
+ *	\return Целочисленное значение.
+ *	\throw std::invalid_argument Переданный JSON неправильный (не является целочисленным
+ *	значением).
+ */
 int json_to_int(std::shared_ptr<const json::Element> json);
+
+/**
+ *	\~english
+ *	\brief Converts a JSON to double
+ *	
+ *	If the passed JSON element is a double value (`json::DoubleValue`), returns this value.
+ *	\param json The JSON element.
+ *	\param allow_int If `true`, the passed JSON is also allowed to be an integer value
+ *	(`json::IntValue`).
+ *	\return The double value.
+ *	\throw std::invalid_argument The passed JSON is not correct (is not integer nor double value).
+ *	
+ *	\~russian
+ *	\brief Конвертирует JSON в вещественное число
+ *	
+ *	Если переданный элемент JSON является вещественным значением (`json::DoubleValue`), возвращает
+ *	это значение.
+ *	\param json Элемент JSON.
+ *	\param allow_int Если `true`, то переданный JSON также может быть целочисленным значением
+ *	(`json::IntValue`).
+ *	\return Вещественное значение.
+ *	\throw std::invalid_argument Переданный JSON неправильный (не является ни целочисленным, ни
+ *	вещественным значением).
+ */
 double json_to_double(std::shared_ptr<const json::Element> json, bool allow_int = true);
+
+/**
+ *	\~english
+ *	\brief Converts a JSON to character
+ *	
+ *	If the passed JSON element is a string value (`json::StringValue`) having a single character,
+ *	returns this character.
+ *	\param json The JSON element.
+ *	\return The character.
+ *	\throw std::invalid_argument The passed JSON is not correct (is not string value or is a string
+ *	whose length is not 1).
+ *	
+ *	\~russian
+ *	\brief Конвертирует JSON в символ
+ *	
+ *	Если переданный элемент JSON является строковым значением (`json::StringValue`), содержащим
+ *	только один символ, возвращает этот символ.
+ *	\param json Элемент JSON.
+ *	\return Символ.
+ *	\throw std::invalid_argument Переданный JSON неправильный (не является строковым значением или
+ *	является строкой, чья длина отлична от 1).
+ */
 wchar_t json_to_char(std::shared_ptr<const json::Element> json);
+
+/**
+ *	\~english
+ *	\brief Converts a JSON to boolean
+ *	
+ *	If the passed JSON element is a boolean value (`json::BoolValue`), returns this value.
+ *	\param json The JSON element.
+ *	\return The boolean value.
+ *	\throw std::invalid_argument The passed JSON is not correct (is not boolean value).
+ *	
+ *	\~russian
+ *	\brief Конвертирует JSON в булево значение
+ *	
+ *	Если переданный элемент JSON является булевым значением (`json::BoolValue`), возвращает
+ *	это значение.
+ *	\param json Элемент JSON.
+ *	\return Булево значение.
+ *	\throw std::invalid_argument Переданный JSON неправильный (не является булевым значением).
+ */
 bool json_to_bool(std::shared_ptr<const json::Element> json);
+
+/**
+ *	\~english
+ *	\brief Converts a JSON to string
+ *	
+ *	If the passed JSON element is a string value (`json::StringValue`), returns this value.
+ *	\param json The JSON element.
+ *	\return The string.
+ *	\throw std::invalid_argument The passed JSON is not correct (is not string value).
+ *	
+ *	\~russian
+ *	\brief Конвертирует JSON в строку
+ *	
+ *	Если переданный элемент JSON является строковым значением (`json::StringValue`), возвращает это
+ *	значение.
+ *	\param json Элемент JSON.
+ *	\return Строка.
+ *	\throw std::invalid_argument Переданный JSON неправильный (не является строковым значением).
+ */
 String json_to_string(std::shared_ptr<const json::Element> json);
 
 }
