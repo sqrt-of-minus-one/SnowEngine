@@ -105,6 +105,10 @@ Config& ConfigManager::load_current(const String& name)
 	return current_;
 }
 
+const String ConfigManager::INIT_FILE = L"config_init.json";
+const String ConfigManager::DEFAULT_PATH = L"Config";
+const String ConfigManager::DEFAULT_CONFIG = L"default";
+
 		/* ConfigManager: private */
 
 ConfigManager::ConfigManager() :
@@ -154,7 +158,3 @@ ConfigManager::ConfigManager() :
 		// Todo
 	}
 }
-
-const String ConfigManager::INIT_FILE_ = L"config_init.json";
-
-const String ConfigManager::DEFAULT_PATH_ = L"Config";

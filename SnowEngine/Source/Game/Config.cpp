@@ -166,13 +166,13 @@ Config::Config(Config&& config) :
 {}
 
 Config::Config(const String& name) :
-	Config(json::Element::load(ConfigManager::get_instance().get_path() + L'\\' + name + L".json")))
+	Config(json::Element::load(ConfigManager::get_instance().get_path() + L'\\' + name + L".json"))
 {}
 
 Config::Config(std::shared_ptr<const json::Element> json) :
 	Config()
 {
-	std::shared_ptr<json::JsonObject> config_json = std::dynamic_pointer_cast<json::JsonObject>(json));
+	std::shared_ptr<json::JsonObject> config_json = std::dynamic_pointer_cast<json::JsonObject>(json);
 	if (!config_json)
 	{
 		// Log

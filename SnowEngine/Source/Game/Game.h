@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `Game` class
- *
- *	This file contains the definition of the `Game` class.
- *
- *	\~russian
- *	\brief Файл с классом `Game`
- *
- *	Этот файл содержит определение класса `Game`.
- */
-
 #include <memory>
 #include <list>
 
@@ -34,23 +21,41 @@ class Log;
 class Level;
 
 /**
+ *	\addtogroup Config
+ *	\{
+ */
+
+/**
  *	\~english
  *	\brief The class that contains global game properties
  *
- *	This static class class controls the game process and contains static field with game
- *	properties. Unlike other SnowEngine classes, it isn't inherited from the `Object`.
+ *	This class controls the game process and contains the game properties. Is is a singleton, only
+ *	one its instance can exist.
  *
  *	\~russian
  *	\brief Класс, содержащий глобальные игровые свойства
  *
- *	Этот статический класс контролирует процесс игры и содержит статические поля с игровыми
- *	свойствами. В отличие от остальных классов SnowEngine, он не является наследником `Object`.
+ *	Этот класс контролирует процесс игры и содержит игровые свойства. Он является одиночкой: может
+ *	существовать только один его экземпляр.
  */
 class Game
 {
 public:
 			/* SINGLETON */
 
+	/**
+	 *	\~english
+	 *	\brief The only instance of the class
+	 *	
+	 *	Allows to get the instance of the `Game` class.
+	 *	\return The instance of the class.
+	 *	
+	 *	\~russian
+	 *	\brief Единственный экземпляр класса
+	 *	
+	 *	Позволяет получить экземпляр класса `Game`.
+	 *	\return Экземпляр класса.
+	*/
 	static Game& get_instance();
 
 			/* METHODS */
@@ -61,12 +66,14 @@ public:
 	 *	
 	 *	This methods launches the game. It can only be called once, subsequent calls will be
 	 *	ignored. The game starts in a new thread.
+	 *	\sa `is_started()`: checks if the game is started.
 	 *	
 	 *	\~russian
 	 *	\brief Начинает игру
 	 *	
 	 *	Этот метод запускает игру. Он может быть вызван только один раз, последующие вызовы будут
 	 *	проигнорированы. Игра начинается в новом потоке.
+	 *	\sa `is_started()`: проверяет, начата ли игра.
 	 */
 	void start();
 
@@ -74,14 +81,16 @@ public:
 	 *	\~english
 	 *	\brief Checks whether the game is started
 	 *	
-	 *	Checks if the game is started by `start` method.
+	 *	Checks if the game has been started by the `start()` method.
 	 *	\return `true` if the game is started, `false` otherwise.
+	 *	\sa `start()`: launches the game.
 	 *	
 	 *	\~russian
 	 *	\brief Проверяет, начата ли игра
 	 *	
-	 *	Проверяет, была ли игра начата методом `start`.
+	 *	Проверяет, была ли игра начата методом `start()`.
 	 *	\return `true`, если игра начата; иначе `false`.
+	 *	\sa `start()`: запускает игру.
 	 */
 	bool is_started() noexcept;
 
@@ -112,6 +121,14 @@ public:
 	 *	level.
 	 *	\tparam T_Level The class of the level that will be created.
 	 *	\return The pointer to the created level.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт новый уровень
+	 *	
+	 *	Позволяет создать новый уровень. Этот метод следует использовать вместо конструктора
+	 *	уровня.
+	 *	\tparam T_Level Класс уровня, который будет создан.
+	 *	\return Указатель на созданный уровень.
 	 */
 	template<typename T_Level>
 	std::shared_ptr<T_Level> create_level();
