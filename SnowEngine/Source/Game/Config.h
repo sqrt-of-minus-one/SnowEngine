@@ -19,6 +19,8 @@ namespace json
 class JsonObject;
 }
 
+class Log;
+
 /**
  *	\defgroup Config Config
  *	\~english
@@ -661,6 +663,9 @@ public:
 	 *	Профиль конфигураций со значениями по умолчанию.
 	*/
 	static const Config DEFAULT;
+
+private:
+	/*lazy*/ static Log& config_log_();
 };
 
 /**

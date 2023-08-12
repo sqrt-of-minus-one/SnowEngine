@@ -127,8 +127,11 @@ ConfigManager::ConfigManager() :
 	on_changed_lang_path_(),
 	on_changed_lang_path(on_changed_lang_path_),
 	on_changed_log_path_(),
-	on_changed_log_path(on_changed_log_path_)
+	on_changed_log_path(on_changed_log_path_),
+	config_log_(new Log(L"Config"_s))
 {
+	LogManager::get_instance(); // We just need to create a log manager
+
 	std::shared_ptr<json::JsonObject> init_json =
 		std::dynamic_pointer_cast<json::JsonObject>(json::Element::load(INIT_FILE_));
 	if (!init_json)

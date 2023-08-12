@@ -478,6 +478,8 @@ private:
 	Event<const Config& /*new_config*/> on_changed_chunks_clickable_size_;
 	Event<const Config& /*new_config*/> on_changed_lang_path_;
 	Event<const Config& /*new_config*/> on_changed_log_path_;
+
+	std::unique_ptr<Log> config_log_;
 };
 
 /**

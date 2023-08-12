@@ -43,6 +43,10 @@ void Game::start()
 		}
 		is_started_ = true;
 	}
+	else
+	{
+		main_log_->i(L"Attempt to start the game. Ignored: the game has already been started"_s);
+	}
 }
 
 bool Game::is_started() noexcept

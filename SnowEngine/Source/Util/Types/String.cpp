@@ -144,6 +144,16 @@ String& String::remove(int from, int to)
 	return *this;
 }
 
+wchar_t String::get_first() const
+{
+	return string_.empty() ? L'\0' : string_.front();
+}
+
+wchar_t String::get_last() const
+{
+	return string_.empty() ? L'\0' : string_.back();
+}
+
 double String::to_double() const
 {
 	return to_number_<double, 10>(string_, true);

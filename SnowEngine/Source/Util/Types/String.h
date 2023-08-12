@@ -413,6 +413,36 @@ public:
 
 	/**
 	 *	\~english
+	 *	\brief The first character of the string
+	 *	
+	 *	Allows to get the first character of the string.
+	 *	\return The first character of the string. The null character if the string is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Первый символ строки
+	 *	
+	 *	Позволяет получить первый символ строки.
+	 *	\return Первый символ строки. Нулевой символ, если строка пуста.
+	 */
+	wchar_t get_first() const;
+
+	/**
+	 *	\~english
+	 *	\brief The last character of the string
+	 *	
+	 *	Allows to get the last character of the string.
+	 *	\return The last character of the string. The null character if the string is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Последний символ строки
+	 *	
+	 *	Позволяет получить последний символ строки.
+	 *	\return Последний символ строки. Нулевой символ, если строка пуста.
+	 */
+	wchar_t get_last() const;
+
+	/**
+	 *	\~english
 	 *	\brief Converts the string to `long long`
 	 *	
 	 *	Converts the string to an integer.

@@ -101,7 +101,7 @@ public:
 	 *	Allows to get the SFML window where the game is running.
 	 *	\warning This method is designed for internal use. You shouldn't use it directly.
 	 *	\return The pointer to the current game window. Null pointer if the game hasn't been
-	 *	started.
+	 *	started or the window hasn't been created yet.
 	 *	
 	 *	\~russian
 	 *	\brief Окно SFML
@@ -109,7 +109,8 @@ public:
 	 *	Позволяет получить окно SFML, где запущена игра.
 	 *	\warning Этот метод предназначен для внутреннего использования. Вы не должны вызывать его
 	 *	напрямую.
-	 *	\return Указатель на текущее игровое окно. Нулевой указатель, если игра не была начата.
+	 *	\return Указатель на текущее игровое окно. Нулевой указатель, если игра не была начата или
+	 *	окно ещё не было создано.
 	 */
 	std::weak_ptr<sf::RenderWindow> get_window() noexcept;
 
@@ -138,11 +139,11 @@ private:
 	
 	void loop_();
 
-	void create_window_();
+	void create_window_(); // Create or recreate the game window
 
 	void remove_level_(Level& level);
 
-	std::shared_ptr<sf::RenderWindow> window_;
+	std::shared_ptr<sf::RenderWindow> window_; // The game window (if it has been created)
 	std::list<std::shared_ptr<Level>> levels_;
 
 	bool is_started_;

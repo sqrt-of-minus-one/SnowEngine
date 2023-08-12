@@ -7,6 +7,7 @@
 #include "Config.h"
 
 #include "ConfigManager.h"
+#include "../Util/Log/Log.h"
 #include "../Util/Json/JsonObject.h"
 #include "../Util/Json/Array.h"
 #include "../Util/Json/Value.h"
@@ -15,7 +16,7 @@ using namespace snow;
 
 void format_path_(String& path)
 {
-	while (path[path.size() - 1] == L'/' || path[path.size() - 1] == L'\\')
+	while (path.get_last() == L'/' || path.get_last() == L'\\')
 	{
 		path.remove(path.size() - 1);
 	}
@@ -301,3 +302,11 @@ Config::Config() :
 	log_path(L"Logs"),
 	saves_path(L"Saves")
 {}
+
+		/* Config: private */
+
+Log& Config::config_log_()
+{
+	static Log config_log(L"Config");
+	return config_log;
+}
