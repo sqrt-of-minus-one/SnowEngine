@@ -413,6 +413,36 @@ public:
 
 	/**
 	 *	\~english
+	 *	\brief Removes the last character
+	 *	
+	 *	Removes the last character from the string. Does nothing if the string is empty.
+	 *	\return The reference to itself.
+	 *	
+	 *	\~russian
+	 *	\brief Удаляет последний символ
+	 *	
+	 *	Удаляет из строки последний символ. Ничего не делает, если строка пуста.
+	 *	\return Ссылка на себя.
+	 */
+	String& remove_first();
+
+	/**
+	 *	\~english
+	 *	\brief Removes the first character
+	 *	
+	 *	Removes the first character from the string. Does nothing if the string is empty.
+	 *	\return The reference to itself.
+	 *	
+	 *	\~russian
+	 *	\brief Удаляет первый символ
+	 *	
+	 *	Удаляет из строки первый символ. Ничего не делает, если строка пуста.
+	 *	\return Ссылка на себя.
+	 */
+	String& remove_last();
+
+	/**
+	 *	\~english
 	 *	\brief The first character of the string
 	 *	
 	 *	Allows to get the first character of the string.

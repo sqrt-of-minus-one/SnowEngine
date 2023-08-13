@@ -45,14 +45,18 @@ namespace snow
  *	\~english
  *	\brief The log category 
  *	
- *	In order to log something, you need to create a log category using this method. Then use
- *	methods of the `LogManager` class.
+ *	In order to log something, you need to create a log category using this method. Then use the
+ *	`d()`, `i()`, `w()`, `e()` methods of this class or of the `LogManager` class.
+ *	\sa
+ *	- `LogManager`
  *	
  *	\~russian
  *	\brief Категория лога
  *	
  *	Чтобы записать что-нибудь в лог, вам нужно создать категорию лога, используя данный класс.
- *	Далее используйте методы класса `LogManager`.
+ *	Далее используйте методы `d()`, `i()`, `w()`, `e()` этого класса или класса `LogManager`.
+ *	\sa
+ *	- `LogManager`
  */
 class Log : public Object
 {
@@ -92,6 +96,83 @@ public:
 	 *	\throw std::invalid_argument Переданный JSON неправильный.
 	 */
 	Log(const std::shared_ptr<json::Element> json);
+
+	/**
+	 *	\~english
+	 *	\brief Debug message
+	 *	
+	 *	Creates a debug log entry. It will be ignored unless debug mode is enabled.
+	 *	\param message The log message.
+	 *	\sa
+	 *	`LogManager::d()`
+	 *	
+	 *	\~russian
+	 *	\brief Отладочное сообщение
+	 *	
+	 *	Создаёт запись лога с отладочным сообщением. Оно будет проигнорировано, если отладчоный
+	 *	режим отключен.
+	 *	\param message Сообщение лога.
+	 *	\sa
+	 *	`LogManager::d()`
+	 */
+	void d(const String& message);
+
+	/**
+	 *	\~english
+	 *	\brief Info message
+	 *
+	 *	Creates an info log entry.
+	 *	\param message The log message.
+	 *	\sa
+	 *	`LogManager::i()`
+	 *
+	 *	\~russian
+	 *	\brief Информационное сообщение
+	 *
+	 *	Создаёт запись лога с информационным сообщением.
+	 *	\param message Сообщение лога.
+	 *	\sa
+	 *	`LogManager::i()`
+	 */
+	void i(const String& message);
+
+	/**
+	 *	\~english
+	 *	\brief Warning message
+	 *
+	 *	Creates a warning log entry.
+	 *	\param message The log message.
+	 *	\sa
+	 *	`LogManager::w()`
+	 *
+	 *	\~russian
+	 *	\brief Сообщение с предупреждением
+	 *
+	 *	Создаёт запись лога с предупреждением.
+	 *	\param message Сообщение лога.
+	 *	\sa
+	 *	`LogManager::w()`
+	 */
+	void w(const String& message);
+
+	/**
+	 *	\~english
+	 *	\brief Error message
+	 *
+	 *	Creates an error log entry.
+	 *	\param message The log message.
+	 *	\sa
+	 *	`LogManager::e()`
+	 *
+	 *	\~russian
+	 *	\brief Сообщение об ошибке
+	 *
+	 *	Создаёт запись лога об ошибке.
+	 *	\param message Сообщение лога.
+	 *	\sa
+	 *	`LogManager::e()`
+	 */
+	void e(const String& message);
 
 			/* METHODS FROM Object */
 

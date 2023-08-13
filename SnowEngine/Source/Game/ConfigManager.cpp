@@ -6,7 +6,10 @@
 
 #include "ConfigManager.h"
 
+#include <filesystem>
+
 #include "../Util/Json/JsonObject.h"
+#include "../Util/Log/Log.h"
 #include "../Util/Json/Value.h"
 #include "../Util/ResourceManager.h"
 #include "Game.h"
@@ -28,7 +31,13 @@ const String& ConfigManager::get_path() const
 
 void ConfigManager::set_path(const String& path)
 {
+	std::lock_guard<std::mutex> config_grd(config_mtx_);
 	path_ = path;
+	while (path_.get_last() == L'/' || path_.get_last() == L'\\')
+	{
+		path_.remove_last();
+	}
+	std::filesystem::create_directories(path_.to_std_string());
 }
 
 const Config& ConfigManager::get_current() const
@@ -39,9 +48,11 @@ const Config& ConfigManager::get_current() const
 void ConfigManager::set_current(const Config& config, bool reload)
 {
 	Config old = current_;
-	current_ = config;
 
-	// log
+	std::lock_guard<std::mutex> config_grd(config_mtx_);
+
+	current_ = config;
+	config_log_->i(L"A new configuration profile is being applied");
 
 	// log category is the most important because it may be used by others	
 	if (reload || config.log_path != old.log_path)
@@ -128,36 +139,79 @@ ConfigManager::ConfigManager() :
 	on_changed_lang_path(on_changed_lang_path_),
 	on_changed_log_path_(),
 	on_changed_log_path(on_changed_log_path_),
-	config_log_(new Log(L"Config"_s))
+	config_mtx_(),
+	config_log_(new Log(L"ConfigManager"_s))
 {
 	LogManager::get_instance(); // We just need to create a log manager
 
-	std::shared_ptr<json::JsonObject> init_json =
-		std::dynamic_pointer_cast<json::JsonObject>(json::Element::load(INIT_FILE_));
-	if (!init_json)
+	std::shared_ptr<json::JsonObject> init_json;
+	String path = DEFAULT_PATH, default_config = DEFAULT_CONFIG;
+	bool recreate_file_flag = false;
+	
+	try
 	{
-		// Error
+		init_json = std::dynamic_pointer_cast<json::JsonObject>(json::Element::load(INIT_FILE));
+	}
+	catch (const std::runtime_error& e)
+	{
+		config_log_->e(L"Couldn't open the initial configuration file. The file will be created with default values"_s);
+		recreate_file_flag = true;
+	}
+	catch (const std::invalid_argument& e)
+	{
+		config_log_->e(L"The initial configuration file does not contain a valid JSON. The file will be recreated with default values"_s);
+		recreate_file_flag = true;
 	}
 
-	std::shared_ptr<json::StringValue> path_json =
-		std::dynamic_pointer_cast<json::StringValue>(init_json->get_content().at(L"path"_s));
-	if (path_json)
+	if (init_json)
 	{
-		path_ = path_json->get();
-	}
-	else
-	{
-		// Todo
+		try
+		{
+			path = util::json_to_string(init_json->get_content().at(L"path"_s));
+		}
+		catch (const std::out_of_range& e)
+		{
+			config_log_->e(L"The initial configuration file does not contain a \"path\" field. The file will be recreated with the default path value"_s);
+			recreate_file_flag = true;
+		}
+		catch (const std::invalid_argument& e)
+		{
+			config_log_->e(L"The \"path\" field in the initial configuration file is not a string. The file will be recreated with the default path value"_s);
+			recreate_file_flag = true;
+		}
+
+		try
+		{
+			default_config = util::json_to_string(init_json->get_content().at(L"default"_s));
+		}
+		catch (const std::out_of_range& e)
+		{
+			config_log_->e(L"The initial configuration file does not contain a \"default\" field. The file will be recreated with the default value"_s);
+			recreate_file_flag = true;
+		}
+		catch (const std::invalid_argument& e)
+		{
+			config_log_->e(L"The \"default\" field in the initial configuration file is not a string. The file will be recreated with the default value"_s);
+			recreate_file_flag = true;
+		}
 	}
 
-	std::shared_ptr<json::StringValue> default_json =
-		std::dynamic_pointer_cast<json::StringValue>(init_json->get_content().at(L"default"_s));
-	if (default_json)
+	set_path(path);
+	set_current(Config(default_config));
+
+	if (recreate_file_flag)
 	{
-		set_current(Config(default_json->get()), true);
-	}
-	else
-	{
-		// Todo
+		init_json = std::make_shared<json::JsonObject>();
+		init_json->get_content().insert({ L"path"_s, std::make_shared<json::StringValue>(get_path()) });
+		init_json->get_content().insert({ L"default"_s, std::make_shared<json::StringValue>(default_config) });
+		try
+		{
+			init_json->save(INIT_FILE);
+			config_log_->i(L"The initial configuration has been created or recreated"_s);
+		}
+		catch (const std::runtime_error& e)
+		{
+			config_log_->e(L"Couldn't create or recreate the initial configuration file"_s);
+		}
 	}
 }

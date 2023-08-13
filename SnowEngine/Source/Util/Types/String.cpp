@@ -144,6 +144,24 @@ String& String::remove(int from, int to)
 	return *this;
 }
 
+String& String::remove_first()
+{
+	if (!string_.empty())
+	{
+		string_.pop_back();
+	}
+	return *this;
+}
+
+String& String::remove_first()
+{
+	if (!string_.empty())
+	{
+		string_.erase(string_.begin());
+	}
+	return *this;
+}
+
 wchar_t String::get_first() const
 {
 	return string_.empty() ? L'\0' : string_.front();

@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <mutex>
+
 #include "Config.h"
 #include "../Util/Function/EventBinder.h"
 
@@ -95,7 +97,8 @@ public:
 	 *	
 	 *	Allows to change the directory where profiles are stored. It's better to specify the path
 	 *	in the `config_init.json` file. The method does not move profiles from the old directory to
-	 *	the new one and does not affect the profiles which are already loaded.
+	 *	the new one and does not affect the profiles which are already loaded. If the passed path
+	 *	does not exist, the method creates it.
 	 *	\param path The new path to the directory where profiles are stored.
 	 *	\sa
 	 *	- `get_path()`: returns the path
@@ -105,7 +108,8 @@ public:
 	 *	
 	 *	Позволяет изменить директорию, где хранятся профили. Лучше всего определять этот путь в
 	 *	файле `config_init.json`. Метод не перемещает профили из старой директории в новую и никак
-	 *	не влияет на уже загруженные профили.
+	 *	не влияет на уже загруженные профили. Если переданный путь не существует, метод создаёт
+	 *	его.
 	 *	\param path Новый путь к директории, где хранятся профили.
 	 *	\sa
 	 *	- `get_path()`: возвращает путь
@@ -479,6 +483,7 @@ private:
 	Event<const Config& /*new_config*/> on_changed_lang_path_;
 	Event<const Config& /*new_config*/> on_changed_log_path_;
 
+	std::mutex config_mtx_;
 	std::unique_ptr<Log> config_log_;
 };
 

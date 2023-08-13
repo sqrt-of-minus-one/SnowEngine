@@ -59,7 +59,7 @@ class Log;
  *	`ConfigManager::set_current()` method to apply the profile. This class allows to save
  *	(`Config::save()`) the profile to file and load (`Config::Config(const String&)`) it from file.
  *	The directory where the profiles are stored is defined by the `ConfigManager` class, see its
- *	documentation for more details. The path to the saved profile is `<config_path>\\<name>.json`,
+ *	documentation for more details. The path to the saved profile is `<config_path>/<name>.json`,
  *	where `<name>` is the name of the profile. It can contain `/` characters (then the file will
  *	be stored in the subdirectory). The file of the profile is a text file with JSON object, which
  *	contains JSON objects of configuration categories. Categories and their fields are listed in
@@ -75,10 +75,10 @@ class Log;
  *	| `window` | `titlebar_buttons` | Boolean               | Does the game window have a buttons on its titlebar         | `true`                               | `Config::window_titlebar_buttons` |
  *	| `window` | `title`            | String                | The title of the game window                                | `"The game (powered by SnowEngine)"` | `Config::window_title`            |
  *	| `res`    | `check_period_sec` | Double                | How often the resource manager will remove unused resources | 300.0                                | `Config::res_check_period_sec`    |
- *	| `res`    | `textures_path`    | String                | The path to the directory with textures                     | `"Resources\\Textures"`              | `Config::res_textures_path`       |
- *	| `res`    | `fonts_path`       | String                | The path to the directory with fonts                        | `"Resources\\Fonts"`                 | `Config::res_fonts_path`          |
- *	| `res`    | `sounds_path`      | String                | The path to the directory with sounds                       | `"Resources\\Sounds"`                | `Config::res_sounds_path`         |
- *	| `res`    | `music_path`       | String                | The path to the directory with music                        | `"Resources\\Music"`                 | `Config::res_music_path`          |
+ *	| `res`    | `textures_path`    | String                | The path to the directory with textures                     | `"Resources/Textures"`               | `Config::res_textures_path`       |
+ *	| `res`    | `fonts_path`       | String                | The path to the directory with fonts                        | `"Resources/Fonts"`                  | `Config::res_fonts_path`          |
+ *	| `res`    | `sounds_path`      | String                | The path to the directory with sounds                       | `"Resources/Sounds"`                 | `Config::res_sounds_path`         |
+ *	| `res`    | `music_path`       | String                | The path to the directory with music                        | `"Resources/Music"`                  | `Config::res_music_path`          |
  *	| `chunks` | `collision_size`   | `Point2` (JSON array) | The size of a collision chunk                               | [1500, 1500]                         | `Config::chunks_collision_size`   |
  *	| `chunks` | `clickable_size`   | `Point2` (JSON array) | The size of a clickable chunk                               | [500, 500]                           | `Config::chunks_clickable_size`   |
  *	| `lang`   | `path`             | String                | The path to the directory with localization files           | `"Localization"`                     | `Config::lang_path`               |
@@ -96,7 +96,7 @@ class Log;
  *	метод `ConfigManager::set_current()`. Этот класс позволяет сохранять (`Config::save()`) профиль
  *	в файл и загружать (`Config::Config(const String&)`) его из файла. Директория, где хранятся
  *	профили, определяется классом `ConfigManager`, подробности можно найти в его документации. Путь
- *	к сохранённому профилю: `<config_path>\\<name>.json`, где `<name>` — название профиля. Оно
+ *	к сохранённому профилю: `<config_path>/<name>.json`, где `<name>` — название профиля. Оно
  *	может содержать символы `/` (тогда файл будет сохранён в подпапке). Файл профиля — это
  *	текстовый файл с объектом JSON, содержащим JSON-объекты категорий конфигураций. В таблице ниже
  *	перечислены категории и содержащиеся в них поля. Более детальные описания можно найти в
@@ -111,10 +111,10 @@ class Log;
  *	| `window`  | `titlebar_buttons` | Булев                  | Имеются ли у окна игры кнопки на строке с заголовком              | `true`                               | `Config::window_titlebar_buttons` |
  *	| `window`  | `title`            | Строка                 | Заголовок окна игры                                               | `"The game (powered by SnowEngine)"` | `Config::window_title`            |
  *	| `res`     | `check_period_sec` | Вещественный           | Как часто диспетчер ресурсов будет удалять неиспользуемые ресурсы | 300.0                                | `Config::res_check_period_sec`    |
- *	| `res`     | `textures_path`    | Строка                 | Путь к директории с текстурами                                    | `"Resources\\Textures"`              | `Config::res_textures_path`       |
- *	| `res`     | `fonts_path`       | Строка                 | Путь к директории со шрифтами                                     | `"Resources\\Fonts"`                 | `Config::res_fonts_path`          |
- *	| `res`     | `sounds_path`      | Строка                 | Путь к директории со звуками                                      | `"Resources\\Sounds"`                | `Config::res_sounds_path`         |
- *	| `res`     | `music_path`       | String                 | Путь к директории с музыкой                                       | `"Resources\\Music"`                 | `Config::res_music_path`          |
+ *	| `res`     | `textures_path`    | Строка                 | Путь к директории с текстурами                                    | `"Resources/Textures"`               | `Config::res_textures_path`       |
+ *	| `res`     | `fonts_path`       | Строка                 | Путь к директории со шрифтами                                     | `"Resources/Fonts"`                  | `Config::res_fonts_path`          |
+ *	| `res`     | `sounds_path`      | Строка                 | Путь к директории со звуками                                      | `"Resources/Sounds"`                 | `Config::res_sounds_path`         |
+ *	| `res`     | `music_path`       | String                 | Путь к директории с музыкой                                       | `"Resources/Music"`                  | `Config::res_music_path`          |
  *	| `chunks`  | `collision_size`   | `Point2` (массив JSON) | Размер чанка коллизии                                             | [1500, 1500]                         | `Config::chunks_collision_size`   |
  *	| `chunks`  | `clickable_size`   | `Point2` (массив JSON) | Размер чанка кликабельных компонентов                             | [500, 500]                           | `Config::chunks_clickable_size`   |
  *	| `lang`    | `path`             | Строка                 | Путь к директории с файлами локализации                           | `"Localization"`                     | `Config::lang_path`               |
@@ -410,13 +410,13 @@ public:
 	 *	\brief The path to the directory with textures
 	 *	
 	 *	The relative path to the directory where textures are stored. The default value is
-	 *	`"Resources\\Textures"`.
+	 *	`"Resources/Textures"`.
 	 *	
 	 *	\~russian
 	 *	\brief Путь к директории с текстурами
 	 *	
 	 *	Относительный путь к директории, где хранятся текстуры. Значение по умолчанию —
-	 *	`"Resources\\Textures"`.
+	 *	`"Resources/Textures"`.
 	 */
 	String res_textures_path;
 
@@ -425,13 +425,13 @@ public:
 	 *	\brief The path to the directory with fonts
 	 *	
 	 *	The relative path to the directory where fonts are stored. The default value is
-	 *	`"Resources\\Fonts"`.
+	 *	`"Resources/Fonts"`.
 	 *	
 	 *	\~russian
 	 *	\brief Путь к директории со шрифтами
 	 *	
 	 *	Относительный путь к директории, где хранятся шрифты. Значение по умолчанию —
-	 *	`"Resources\\Fonts"`.
+	 *	`"Resources/Fonts"`.
 	 */
 	String res_fonts_path;
 
@@ -440,13 +440,13 @@ public:
 	 *	\brief The path to the directory with sounds
 	 *	
 	 *	The relative path to the directory where sounds are stored. The default value is
-	 *	`"Resources\\Sounds"`.
+	 *	`"Resources/Sounds"`.
 	 *	
 	 *	\~russian
 	 *	\brief Путь к директории со звуками
 	 *	
 	 *	Относительный путь к директории, где хранятся звуки. Значение по умолчанию —
-	 *	`"Resources\\Sounds"`.
+	 *	`"Resources/Sounds"`.
 	 */
 	String res_sounds_path;
 
@@ -455,13 +455,13 @@ public:
 	 *	\brief The path to the directory with music
 	 *	
 	 *	The relative path to the directory where music is stored. The default value is
-	 *	`"Resources\\Music"`.
+	 *	`"Resources/Music"`.
 	 *	
 	 *	\~russian
 	 *	\brief Путь к директории с музыкой
 	 *	
 	 *	Относительный путь к директории, где хранится музыка. Значение по умолчанию —
-	 *	`"Resources\\Music"`.
+	 *	`"Resources/Music"`.
 	 */
 	String res_music_path;
 
@@ -665,6 +665,7 @@ public:
 	static const Config DEFAULT;
 
 private:
+	std::mutex config_mtx_;
 	/*lazy*/ static Log& config_log_();
 };
 

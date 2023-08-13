@@ -16,14 +16,7 @@
 
 #include "Log.h"
 
-#include <fstream>
-#include <iostream>
-#include <ctime>
-#include <filesystem>
-
-#include "../../Game/Game.h"
-#include "../../Game/ConfigManager.h"
-#include "../Time/Time.h"
+#include "LogManager.h"
 #include "../Json/Value.h"
 
 using namespace snow;
@@ -46,4 +39,24 @@ String Log::to_string() const
 std::shared_ptr<json::Element> Log::to_json() const
 {
 	return name_.to_json();
+}
+
+void Log::d(const String& message)
+{
+	LogManager::get_instance().d(*this, message);
+}
+
+void Log::i(const String& message)
+{
+	LogManager::get_instance().i(*this, message);
+}
+
+void Log::w(const String& message)
+{
+	LogManager::get_instance().w(*this, message);
+}
+
+void Log::e(const String& message)
+{
+	LogManager::get_instance().e(*this, message);
 }
