@@ -12,14 +12,21 @@ namespace snow
 {
 
 /**
+ *	\addtogroup Function
+ *	\{
+ */
+
+/**
  *	\~english
  *	\brief The binder of an event can be used to bind functions to it
  *
  *	The binder keeps the reference to an event. The binder can bind function to the event and
  *	unbind them, but it cannot execute the event. You can use this class if you want to
- *	encapsulate the event: you can declare the event as private or protected, and make its binder
- *	public. In this case other classes will be able to bind functions to the event, but won't be
- *	able to execute it.
+ *	encapsulate the event: you can declare the event as `private` or `protected`, and make its
+ *	binder `public`. In this case other classes will be able to bind functions to the event, but
+ *	won't be able to execute it. Every function and method bound to the event has its ID. You can
+ *	access functions (e. g. unbind them) using their IDs.
+ *	\tparam T_Args The list of types of arguments of the function.
  *
  *	If the event has been deleted, the methods of the binder do nothing.
  *	\tparam T_Args The list of types of arguments of the function.
@@ -29,9 +36,10 @@ namespace snow
  *
  *	«Привязыватель» хранит ссылку на событие. «Привязыватель» может привязывать функции к событию
  *	и отвязывать их, но не может вызывать событие. Вы можете использовать этот класс, если хотите
- *	инкапсулировать событие: вы можете объявить событие private или protected, а его
- *	«привязыватель» — public. В этом случае сторонние классы смогут привязывать функции к событию,
- *	но не смогут его вызывать.
+ *	инкапсулировать событие: вы можете объявить событие с квалификатором `private` или `protected`,
+ *	а его «привязыватель» — `public`. В этом случае сторонние классы смогут привязывать функции к
+ *	событию, но не смогут его вызывать. Все функции и методы, привязанные к событию, имеют свой ID.
+ *	Вы можете получать доступ к функциям (например, отвязывать их), используя их ID.
  *
  *	Если событие было удалено, методы «привязывателя» ничего не делают.
  *	\tparam T_Args Список типов аргументов функции.
@@ -112,16 +120,22 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Clears the event
-	 *
-	 *	Unbinds all of the functions that were bound to the event.
-	 *
+	 *	\brief Checks whether the event contains the function
+	 *	
+	 *	Checks whether the event contains the function with the passed ID.
+	 *	\param id The ID of the function.
+	 *	\return `true` if the event contains the function, `false` otherwise and if the event has
+	 *	been destroyed.
+	 *	
 	 *	\~russian
-	 *	\brief Очищает событие
-	 *
-	 *	Отсоединяет все функции, которые были присоединены к событию.
+	 *	\brief Проверяет, содержит ли событие функцию
+	 *	
+	 *	Проверяет, содержит ли событие функцию с переданным ID.
+	 *	\param id ID функции.
+	 *	\return `true`, если событие содержит функцию; иначе, а также если событие уничтожено,
+	 *	`false`.
 	 */
-	void clear() noexcept;
+	bool contains(int id) const;
 
 	/**
 	 *	\~english
@@ -187,11 +201,52 @@ public:
 	 *	\brief Отсоединяет функцию с переданным ID
 	 *
 	 *	Удаляет функцию с переданным ID из списка функций, вызываемых методом `execute`.
-	 *	\param key ID члена события.
+	 *	\param id ID члена события.
 	 *	\return `true`, если функция была успешно отсоединена, иначе `false` (например, если
 	 *	функция с переданным ID не содержится в событии).
 	 */
-	bool unbind(int key);
+	bool unbind(int id);
+
+	/**
+	 *	\~english
+	 *	\brief Checks if the function is one-shot
+	 *	
+	 *	Checks whether the function with the passed ID is one-shot.
+	 *	\param id The ID of the function.
+	 *	\return `true` if the function is one-shot, `false` otherwise or if the event has been
+	 *	destroyed.
+	 *	\throw std::out_of_range The event doesn't contain a function with the passed ID.
+	 *	
+	 *	\~russian
+	 *	\brief Проверяет, является ли функция одноразовой
+	 *	
+	 *	Проверяет, является ли функция с переданным ID одноразовой.
+	 *	\param id ID функции.
+	 *	\return `true`, если функция одноразовая; иначе, а также если событие уничтожено, `false`.
+	 *	\throw std::out_of_range Событие не содержит функции с переданным ID.
+	 */
+	bool is_one_shot(int id) const;
+
+	/**
+	 *	\~english
+	 *	\brief Sets if the function is one-shot
+	 *	
+	 *	Allows to set if the function with the passed ID should be one-shot. If the function is
+	 *	one-shot, it will be unbound from the event after execution.
+	 *	\param id The ID of the function.
+	 *	\param one_shot Should the function be one-shot.
+	 *	\throw std::out_of_range The event doesn't contain a function with the passed ID.
+	 *	
+	 *	\~russian
+	 *	\brief Устанавливает, является ли функция одноразовой
+	 *	
+	 *	Позволяет установить, должна ли функция с переданным ID быть одноразовой. Если функция
+	 *	одноразовая, то она будет отвязана от события после выполнения.
+	 *	\param id ID функции.
+	 *	\param one_shot Должна ли функция быть одноразовой.
+	 *	\throw std::out_of_range Событие не содержит функции с переданным ID.
+	 */
+	void set_one_shot(int id, bool one_shot);
 
 			/* OPERATORS */
 	
@@ -233,6 +288,10 @@ private:
 	Event<T_Args...>& event_;
 };
 
+/**
+ *	\}
+ */
+
 
 		/* DEFINITIONS */
 
@@ -269,9 +328,13 @@ std::shared_ptr<json::Element> EventBinder<T_Args...>::to_json() const
 }
 
 template<typename... T_Args>
-void EventBinder<T_Args...>::clear() noexcept
+bool EventBinder<T_Args...>::contains(int id) const
 {
-	event_.clear();
+	if (Object::is_valid(&event_))
+	{
+		return event_.contains(id);
+	}
+	return false;
 }
 
 template<typename... T_Args>
@@ -302,7 +365,7 @@ int EventBinder<T_Args...>::bind(T_Class& object, const std::function<void(T_Cla
 }
 
 template<typename... T_Args>
-bool EventBinder<T_Args...>::unbind(int key)
+bool EventBinder<T_Args...>::unbind(int id)
 {
 	if (Object::is_valid(&event_))
 	{
@@ -311,6 +374,25 @@ bool EventBinder<T_Args...>::unbind(int key)
 	else
 	{
 		return false;
+	}
+}
+
+template<typename... T_Args>
+bool EventBinder<T_Args...>::is_one_shot(int id) const
+{
+	if (Object::is_valid(&event_))
+	{
+		return event_.is_one_shot(id);
+	}
+	return false;
+}
+
+template<typename... T_Args>
+void EventBinder<T_Args...>::set_one_shot(int id, bool one_shot)
+{
+	if (Object::is_valid(&event_))
+	{
+		event_.set_one_shot(id, one_shot);
 	}
 }
 

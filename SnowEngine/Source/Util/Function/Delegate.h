@@ -28,7 +28,6 @@ public:
 	virtual bool is_valid() const = 0;
 	virtual T_Ret execute(T_Args... args) = 0;
 	virtual std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> copy() const = 0;
-	virtual int hash() const noexcept = 0;
 };
 
 // Do not use this structure directly
@@ -36,14 +35,13 @@ template<typename T_Ret, typename... T_Args>
 struct FunctionContainer_ : public IFunctionContainer_<T_Ret, T_Args...>
 {
 public:
-	FunctionContainer_(const std::function<T_Ret(T_Args...)> func);
+	FunctionContainer_(const std::function<T_Ret(T_Args...)>& func);
 
 	std::function<T_Ret(T_Args...)> function;
 
 	virtual bool is_valid() const noexcept override;
 	virtual T_Ret execute(T_Args... args) override;
 	virtual std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> copy() const override;
-	virtual int hash() const noexcept override;
 };
 
 // Do not use this structure directly
@@ -51,7 +49,7 @@ template<typename T_Class, typename T_Ret, typename... T_Args>
 struct MethodContainer_ : public IFunctionContainer_<T_Ret, T_Args...>
 {
 public:
-	MethodContainer_(T_Class* object, const std::function<T_Ret(T_Class&, T_Args...)> func);
+	MethodContainer_(T_Class* object, const std::function<T_Ret(T_Class&, T_Args...)>& func);
 
 	T_Class* object;
 	std::function<T_Ret(T_Class&, T_Args...)> function;
@@ -59,14 +57,47 @@ public:
 	virtual bool is_valid() const override;
 	virtual T_Ret execute(T_Args... args) override;
 	virtual std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> copy() const override;
-	virtual int hash() const noexcept override;
 };
 
 }
 
 /**
+ *	\defgroup Function Delegates & Events
  *	\~english
- *	\brief The delegate keeping pointer to function or method
+ *	\brief Classes pointing to functions and methods
+ *	
+ *	Delegates (`Delegate` class) are objects which keep a pointer to a function or a method.
+ *	Delegates allow to execute the function without knowing what function it is. You can bind a
+ *	function or a method to a delegate using `Delegate::bind()` method and execute it using
+ *	`Delegate::execute()` method. Events (`Event` class) are similar to delegates but allow to bind
+ *	multiple functions to them. When an event is executed (`Event::execute()` method) all bound
+ *	functions and method are called. Binders (`DelegateBinder` and `EventBinder` classes) are
+ *	objects allowing to bind functions and methods to the delegate or the event, but they don't
+ *	allow to execute them. Note that you cannot bind a method of a class which is not derived from
+ *	the `Object`.
+ *	
+ *	\~russian
+ *	\brief Классы, указывающие на функции и методы
+ *	
+ *	Делегаты (класс `Delegate`) — это объекты, которые хранят указатель на функцию или метод.
+ *	Делегаты позволяют выполнить функцию, не зная при этом, что это за функция. Вы можете привязать
+ *	функцию или метод к делегату с помощью метода `Delegate::bind()` и выполнить её с помощью
+ *	метода `Delegate::execute()`. События (класс `Event`) похожи на делегаты, но позволяют
+ *	привязывать к себе несколько функций. Когда событие выполняется (метод `Event::execute()`), все
+ *	привязанные к нему функции и методы вызываются. «Привязыватели» (классы `DelegateBinder` и
+ *	`EventBinder`) — объекты, позволяющие привязывать функции и методы к делегату или событию, но
+ *	они не позволяют вызывать их. Учтите, что вы не можете привязать метод класса, не являющегося
+ *	наследником `Object`.
+ */
+
+/**
+ *	\addtogroup Function
+ *	\{
+ */
+
+/**
+ *	\~english
+ *	\brief The delegate keeps pointer to function or method
  *	
  *	This class can keep pointer to function or method with the specified signature. The delegate
  *	can only point to methods of classes based on `snow::Object`.
@@ -87,9 +118,12 @@ public:
  *	\endcode
  *	\tparam T_Ret Return type of the function.
  *	\tparam T_Args The list of types of arguments of the function.
+ *	\sa
+ *	- `DelegateBinder`: allows to bind functions to the delegate, but not execute it
+ *	- `Event`: allows to bind multiple functions
  *	
  *	\~russian
- *	\brief Делегат, содержащий указатель на функцию или метод
+ *	\brief Делегат содержит указатель на функцию или метод
  *	
  *	Этот класс может хранить указатель на функцию или метод с заданной сигнатурой. Делегат может
  *	указывать на методы только классов, отнаследованных от `snow::Object`.
@@ -110,6 +144,9 @@ public:
  *	\endcode
  *	\tparam T_Ret Возвращаемое значение функции.
  *	\tparam T_Args Список типов аргументов функции.
+ *	\sa
+ *	- `DelegateBinder`: позволяет привязывать функции к делегату, но не вызывать его
+ *	- `Event`: позволяет привязывать несколько функций
  */
 template<typename T_Ret, typename... T_Args>
 class Delegate : public Object
@@ -147,19 +184,23 @@ public:
 
 	/**
 	 *	\~english
-	 *	\brief Creates a delegate with the passed function
+	 *	\brief Creates a delegate pointing to the passed function
 	 *
 	 *	Creates a new delegate and binds the passed function to it. From now on, the `execute`
 	 *	method will call this function.
 	 *	\param func The reference to the function, `std::function` pointing to it or lambda-
 	 *	function.
+	 *	\sa
+	 *	- `bind()`
 	 *
 	 *	\~russian
-	 *	\brief Создаёт делегат с переданной функцией
+	 *	\brief Создаёт делегат, указывающий на переданную функцию
 	 *
 	 *	Создаёт новый делегат и привязывает к нему переданную функцию. Отныне метод `execute` будет
 	 *	вызывать эту функцию.
-	 *	\param func Ссылка на функцию, указывающий на ней `std::function` или лямбда-функция.
+	 *	\param func Ссылка на функцию, указывающий на неё `std::function` или лямбда-функция.
+	 *	\sa
+	 *	- `bind()`
 	 */
 	Delegate(const std::function<T_Ret(T_Args...)>& func);
 	
@@ -241,7 +282,7 @@ public:
 	 *	\return `true`, если привязанная функция является методом; иначе, а также если к делегату
 	 *	не привязана никакая функция, `false`.
 	 */
-	bool is_method() const;
+	bool is_method() const noexcept;
 
 	/**
 	 *	\~english
@@ -396,84 +437,78 @@ private:
 	bool is_method_;
 };
 
+/**
+ *	\}
+ */
+
 
 		/* DEFINITIONS */
 
 		/* FunctionContainer_: public */
 
 template<typename T_Ret, typename... T_Args>
-FunctionContainer_<T_Ret, T_Args...>::FunctionContainer_(const std::function<T_Ret(T_Args...)> func) :
+snow_::FunctionContainer_<T_Ret, T_Args...>::FunctionContainer_(const std::function<T_Ret(T_Args...)>& func) :
 	function(func)
 {}
 
 template<typename T_Ret, typename... T_Args>
-bool FunctionContainer_<T_Ret, T_Args...>::is_valid() const noexcept
+bool snow_::FunctionContainer_<T_Ret, T_Args...>::is_valid() const noexcept
 {
 	return static_cast<bool>(function);
 }
 
 template<typename T_Ret, typename... T_Args>
-T_Ret FunctionContainer_<T_Ret, T_Args...>::execute(T_Args ...args)
+T_Ret snow_::FunctionContainer_<T_Ret, T_Args...>::execute(T_Args ...args)
 {
 	if (is_valid())
 	{
 		return function(args...);
 	}
-	else if (!std::is_same<T_Ret, void>::value) // No exception if return type is void
+	else if (!std::is_same_v<T_Ret, void>) // No exception if return type is void
 	{
-		throw std::logic_error("Attempt to call an empty delegate");
+		throw std::logic_error("Attempt to call an invalid delegate");
 	}
 }
 
 template<typename T_Ret, typename... T_Args>
-std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> FunctionContainer_<T_Ret, T_Args...>::copy() const
+std::unique_ptr<snow_::IFunctionContainer_<T_Ret, T_Args...>> snow_::FunctionContainer_<T_Ret, T_Args...>::copy() const
 {
-	return std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>>(new FunctionContainer_<T_Ret, T_Args...>(function));
-}
-
-template<typename T_Ret, typename... T_Args>
-int FunctionContainer_<T_Ret, T_Args...>::hash() const noexcept
-{
-	return reinterpret_cast<int>(&function);
+	return std::make_unique<FunctionContainer_<T_Ret, T_Args...>>(function);
 }
 
 		/* MethodContainer_: public */
 
 template<typename T_Class, typename T_Ret, typename... T_Args>
-MethodContainer_<T_Class, T_Ret, T_Args...>::MethodContainer_(T_Class* object, const std::function<T_Ret(T_Class&, T_Args...)> func) :
+snow_::MethodContainer_<T_Class, T_Ret, T_Args...>::MethodContainer_(T_Class* object, const std::function<T_Ret(T_Class&, T_Args...)>& func) :
 	object(object),
 	function(func)
-{}
+{
+	static_assert(std::is_base_of_v<Object, T_Class>, "The class whose method the delegate is pointing to must be derived from Object");
+}
 
 template<typename T_Class, typename T_Ret, typename... T_Args>
-bool MethodContainer_<T_Class, T_Ret, T_Args...>::is_valid() const
+bool snow_::MethodContainer_<T_Class, T_Ret, T_Args...>::is_valid() const
 {
 	return static_cast<bool>(function) && Object::is_valid(object);
 }
 
 template<typename T_Class, typename T_Ret, typename... T_Args>
-T_Ret MethodContainer_<T_Class, T_Ret, T_Args...>::execute(T_Args ...args)
+T_Ret snow_::MethodContainer_<T_Class, T_Ret, T_Args...>::execute(T_Args ...args)
 {
 	if (is_valid())
 	{
 		return function(*object, args...);
 	}
-	else if (!std::is_same<T_Ret, void>::value) // No exception if return type is void
+	else if (!std::is_same_v<T_Ret, void>) // No exception if return type is void
 	{
-		throw std::logic_error("Attempt to call an empty delegate");
+		throw std::logic_error("Attempt to call an invalid delegate");
 	}
 }
 
 template<typename T_Class, typename T_Ret, typename... T_Args>
-std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>> MethodContainer_<T_Class, T_Ret, T_Args...>::copy() const
+std::unique_ptr<snow_::IFunctionContainer_<T_Ret, T_Args...>> snow_::MethodContainer_<T_Class, T_Ret, T_Args...>::copy() const
 {
-	return std::unique_ptr<IFunctionContainer_<T_Ret, T_Args...>>(new MethodContainer_<T_Class, T_Ret, T_Args...>(object, function));
-}
-
-template<typename T_Class, typename T_Ret, typename... T_Args>
-int MethodContainer_<T_Class, T_Ret, T_Args...>::hash() const noexcept
-{
-	return reinterpret_cast<int>(&function) - reinterpret_cast<int>(object);
+	return std::make_unique<MethodContainer_<T_Class, T_Ret, T_Args...>>(object, function);
 }
 
 		/* Delegate: public */
@@ -538,7 +573,7 @@ bool Delegate<T_Ret, T_Args...>::is_valid() const
 }
 
 template<typename T_Ret, typename... T_Args>
-bool Delegate<T_Ret, T_Args...>::is_method() const
+bool Delegate<T_Ret, T_Args...>::is_method() const noexcept
 {
 	return is_method_;
 }
@@ -586,7 +621,7 @@ T_Ret Delegate<T_Ret, T_Args...>::execute(T_Args ...args) const
 	{
 		return func_->execute(args...);
 	}
-	else if (!std::is_same<T_Ret, void>::value) // No exception if return type is void
+	else if (!std::is_same_v<T_Ret, void>) // No exception if return type is void
 	{
 		throw std::logic_error("Attempt to call an empty delegate");
 	}

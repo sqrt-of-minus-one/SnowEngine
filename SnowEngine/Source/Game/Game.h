@@ -66,14 +66,16 @@ public:
 	 *	
 	 *	This methods launches the game. It can only be called once, subsequent calls will be
 	 *	ignored. The game starts in a new thread.
-	 *	\sa `is_started()`: checks if the game is started.
+	 *	\sa
+	 *	- `is_started()`: checks if the game is started.
 	 *	
 	 *	\~russian
 	 *	\brief Начинает игру
 	 *	
 	 *	Этот метод запускает игру. Он может быть вызван только один раз, последующие вызовы будут
 	 *	проигнорированы. Игра начинается в новом потоке.
-	 *	\sa `is_started()`: проверяет, начата ли игра.
+	 *	\sa
+	 *	- `is_started()`: проверяет, начата ли игра.
 	 */
 	void start();
 
@@ -83,14 +85,16 @@ public:
 	 *	
 	 *	Checks if the game has been started by the `start()` method.
 	 *	\return `true` if the game is started, `false` otherwise.
-	 *	\sa `start()`: launches the game.
+	 *	\sa
+	 *	- `start()`: launches the game.
 	 *	
 	 *	\~russian
 	 *	\brief Проверяет, начата ли игра
 	 *	
 	 *	Проверяет, была ли игра начата методом `start()`.
 	 *	\return `true`, если игра начата; иначе `false`.
-	 *	\sa `start()`: запускает игру.
+	 *	\sa
+	 *	- `start()`: запускает игру.
 	 */
 	bool is_started() noexcept;
 

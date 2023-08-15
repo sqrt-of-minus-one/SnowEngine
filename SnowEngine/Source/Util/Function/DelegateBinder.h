@@ -12,6 +12,11 @@ namespace snow
 {
 
 /**
+ *	\addtogroup Function
+ *	\{
+ */
+
+/**
  *	\~english
  *	\brief The binder of a delegate can be used to bind functions to it
  *
@@ -24,19 +29,23 @@ namespace snow
  *	If the delegate has been deleted, the methods of the binder do nothing.
  *	\tparam T_Ret Return type of the function.
  *	\tparam T_Args The list of types of arguments of the function.
+ *	\sa
+ *	- `Delegate`
  *
  *	\~russian
  *	\brief «Привязыватель» делегата может быть использован для привязывания к нему функций
  *
  *	«Привязыватель» хранит ссылку на делегат. «Привязыватель» может привязывать функции к делегату
  *	и отвязывать их, но не может вызывать делегат. Вы можете использовать этот класс, если хотите
- *	инкапсулировать делегат: вы можете объявить делегат private или protected, а его
+ *	инкапсулировать делегат: делегат можно объявить с квалификатором private или protected, а его
  *	«привязыватель» — public. В этом случае сторонние классы смогут привязывать функции к делегату,
  *	но не смогут его вызывать.
  *	
  *	Если делегат был удалён, методы «привязывателя» ничего не делают.
  *	\tparam T_Ret Возвращаемое значение функции.
  *	\tparam T_Args Список типов аргументов функции.
+ *	\sa
+ *	- `Delegate`
  */
 template<typename T_Ret, typename... T_Args>
 class DelegateBinder : public Object
@@ -226,6 +235,10 @@ public:
 private:
 	Delegate<T_Ret, T_Args...>& delegate_;
 };
+
+/**
+ *	\}
+ */
 
 
 		/* DEFINITIONS */
