@@ -54,6 +54,11 @@ bool Game::is_started() noexcept
 	return is_started_;
 }
 
+const time::std_time_point& Game::now() const noexcept
+{
+	return is_started_ ? tick_time_point_ : std::chrono::steady_clock::now();
+}
+
 std::weak_ptr<sf::RenderWindow> Game::get_window() noexcept
 {
 	return window_;
@@ -64,6 +69,7 @@ std::weak_ptr<sf::RenderWindow> Game::get_window() noexcept
 Game::Game() :
 	window_(),
 	levels_(),
+	tick_time_point_()
 	is_started_(false),
 	main_log_(new Log(L"Main"_s))
 {}
@@ -72,8 +78,8 @@ void Game::loop_()
 {
 	create_window_();
 
-	auto f_time = std::chrono::steady_clock::now();
-	auto s_time = f_time;
+	tick_time_point_ = std::chrono::steady_clock::now();
+	time::std_time_point prev_time = tick_time_point_;
 	while (window_->isOpen())
 	{
 		sf::Event event;
@@ -171,9 +177,9 @@ void Game::loop_()
 			}
 		}
 
-		f_time = std::move(s_time);
-		s_time = std::chrono::steady_clock::now();
-		double delta_sec = std::chrono::duration_cast<std::chrono::microseconds>(s_time - f_time).count() / 1'000'000.;
+		prev_time = std::move(tick_time_point_);
+		tick_time_point_ = std::chrono::steady_clock::now();
+		double delta_sec = time::std_to_sec(tick_time_point_ - prev_time);
 
 		TimerManager::get_instance().tick_(delta_sec);
 

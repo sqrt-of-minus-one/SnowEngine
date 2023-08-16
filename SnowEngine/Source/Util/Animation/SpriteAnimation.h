@@ -87,6 +87,26 @@ public:
 	EventBinder<const IntRect& /*sprite_rect*/> on_next_frame;
 
 protected:
+
+	/**
+	 *	\~english
+	 *	\brief It's time to change the sprite
+	 *	
+	 *	The implementation must call this event when the `AnimationComponent` should change a
+	 *	displayed sprite.
+	 *	
+	 *	Event parameters:
+	 *	- `const IntRect& sprite_rect`: the new sprite rectangle.
+	 *	
+	 *	\~russian
+	 *	\brief Время сменить спрайт
+	 *	
+	 *	Реализация должна вызывать это событие, когда `AnimationComponent` должен сменить
+	 *	отображаемый спрайт.
+	 *	
+	 *	Параметры события:
+	 *	- `const IntRect& sprite_rect`: новый прямоугольник спрайта.
+	 */
 	Event<const IntRect& /*sprite_rect*/> on_next_frame_;
 };
 

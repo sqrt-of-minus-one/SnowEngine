@@ -12,6 +12,7 @@
 
 #include "../Types/String.h"
 #include "../Util.h"
+#include "../../Game/Game.h"
 
 using namespace snow;
 
@@ -81,7 +82,22 @@ String weekday_to_str_(time::EWeekDay week_day)
 	}
 }
 
-time::STime time::to_stime(std::chrono::time_point<std::chrono::steady_clock> point)
+double time::std_to_sec(const std_duration& duration)
+{
+	return duration.count() / std_in_sec;
+}
+
+time::std_duration time::sec_to_std(double sec)
+{
+	return std_duration(static_cast<std_duration::rep>(sec * std_in_sec));
+}
+
+const time::std_time_point& time::now()
+{
+	return Game::get_instance().now();
+}
+
+time::STime time::to_stime(std_time_point point)
 {
 	std::chrono::time_point<std::chrono::system_clock> system(
 		std::chrono::duration_cast<std::chrono::duration<std::chrono::system_clock::rep, std::chrono::system_clock::period>>(
@@ -379,18 +395,7 @@ String time::to_string(time::STime point, const String& format)
 	return result;
 }
 
-String time::to_string(std::chrono::time_point<std::chrono::steady_clock> point, const String& format)
-{
-	return to_string(to_stime(point), format);
-}
-
-String time::to_string(std::tm point, const String& format)
-{
-	return to_string(to_stime(point), format);
-}
-
-String time::to_string(std::chrono::duration<std::chrono::steady_clock::rep, std::chrono::steady_clock::period> duration,
-	const String& format)
+String time::to_string(std_duration duration, const String& format)
 {
 	String result;
 
@@ -558,7 +563,7 @@ String time::to_string(std::chrono::duration<std::chrono::steady_clock::rep, std
 	return result;
 }
 
-std::chrono::time_point<std::chrono::steady_clock> time::to_std_point(time::STime point)
+std_time_point time::to_std_point(time::STime point)
 {
 	std::tm tm;
 	tm.tm_year = point.year - 1900;

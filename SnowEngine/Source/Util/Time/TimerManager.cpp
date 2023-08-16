@@ -21,7 +21,7 @@ TimerManager& TimerManager::get_instance()
 
 std::shared_ptr<Timer> TimerManager::create_timer(const Delegate<void>& function, double delay_sec, double period_sec)
 {
-	std::shared_ptr<Timer> p(new Timer(function, delay_sec, period_sec));
+	std::shared_ptr<Timer> p = std::make_shared<Timer>(function, delay_sec, period_sec);
 	timers_.push_back(p);
 	return p;
 }

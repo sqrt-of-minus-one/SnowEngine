@@ -9,6 +9,8 @@
 #include <memory>
 #include <list>
 
+#include "../Util/Time/Time.h"
+
 namespace sf
 {
 class RenderWindow;
@@ -100,6 +102,22 @@ public:
 
 	/**
 	 *	\~english
+	 *	\brief The time point when the current tick has begun
+	 *	
+	 *	Allows to get the time point when the current tick has begin.
+	 *	\return The time point of the current tick. The current time if the game has not been
+	 *	started.
+	 *	
+	 *	\~russian
+	 *	\brief Временная точка, когда начался текущий тик
+	 *	
+	 *	Позволяет получить временную точку, когда начался текущий тик.
+	 *	\return Временная точка текущего тика. Текущее время, если игра не была начата.
+	*/
+	const time::std_time_point& now() const noexcept;
+
+	/**
+	 *	\~english
 	 *	\brief The SFML window
 	 *	
 	 *	Allows to get the SFML window where the game is running.
@@ -150,6 +168,7 @@ private:
 	std::shared_ptr<sf::RenderWindow> window_; // The game window (if it has been created)
 	std::list<std::shared_ptr<Level>> levels_;
 
+	time::std_time_point tick_time_point_;
 	bool is_started_;
 	std::unique_ptr<Log> main_log_;
 };

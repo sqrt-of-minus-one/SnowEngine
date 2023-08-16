@@ -15,15 +15,17 @@ using namespace snow;
 
 String Timer::to_string() const
 {
-	return String::format(L"Timer (period %fs; %fs left"_s, period_sec_, left_sec_) +
+	return String::format(L"Timer (period %fs; %fs left"_s,
+		time::std_to_sec(period_),
+		get_left_sec()) +
 		(is_paused_ ? L"; paused)" : L")");
 }
 
 std::shared_ptr<json::Element> Timer::to_json() const
 {
 	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
-	result->get_content().insert({ L"period_sec"_s, util::to_json(period_sec_) });
-	result->get_content().insert({ L"left_sec"_s, util::to_json(left_sec_) });
+	result->get_content().insert({ L"period_sec"_s, util::to_json(time::std_to_sec(period_)) });
+	result->get_content().insert({ L"left_sec"_s, util::to_json(get_left_sec()) });
 	result->get_content().insert({ L"is_paused"_s, util::to_json(is_paused_) });
 	return result;
 }
@@ -35,18 +37,29 @@ void Timer::set_function(const Delegate<void>& function)
 
 double Timer::get_period_sec() const
 {
-	return period_sec_;
+	return time::std_to_sec(period_);
 }
 
 void Timer::set_period_sec(double period_sec)
 {
-	period_sec_ = period_sec;
-	left_sec_ = period_sec_;
+	if (period_sec > 0.)
+	{
+		period_ = time::sec_to_std(period_sec);
+		expires_ = time::now() + period_;
+		if (is_paused_)
+		{
+			paused_ = time::now();
+		}
+	}
+	else
+	{
+		period_ = time::sec_to_std(0.);
+	}
 }
 
 double Timer::get_left_sec() const
 {
-	return left_sec_;
+	return time::std_to_sec(expires_ - (is_paused_ ? paused_ : time::now()));
 }
 
 bool Timer::is_paused() const
@@ -56,14 +69,19 @@ bool Timer::is_paused() const
 
 void Timer::pause()
 {
-	is_paused_ = true;
+	if (!is_paused_)
+	{
+		paused_ = time::now();
+		is_paused_ = true;
+	}
 }
 
 void Timer::unpause()
 {
-	if (is_active_)
+	if (is_active_ && is_paused_)
 	{
-		is_paused_ = false;
+		expires_ += time::now() - paused_;
+		is_paused_ = true;
 	}
 }
 
@@ -74,45 +92,34 @@ bool Timer::is_active() const
 
 void Timer::remove()
 {
-	is_paused_ = true;
 	is_active_ = false;
+	is_paused_ = true;
 }
 
 		/* Timer: private */
 
 Timer::Timer(const Delegate<void>& function, double delay_sec, double period_sec) :
 	function_(function),
-	period_sec_(period_sec),
-	left_sec_(delay_sec),
+	period_(time::sec_to_std(period_sec > 0. ? period_sec : 0.)),
+	expires_(time::now() + time::sec_to_std(delay_sec)),
+	paused_(),
 	is_paused_(false),
 	is_active_(true)
 {}
 
 void Timer::tick_(double delta_sec)
 {
-	if (!is_paused_)//&& (left_sec_ -= delta_sec) <= 0.)
+	const time::std_time_point& now = time::now();
+	if (!is_paused_ && now >= expires_)
 	{
-		static double err = 0.;
-		
-		// Kahan summation algorithm to reduce error
-		double tmp1 = -delta_sec - err;
-		double tmp2 = left_sec_ + tmp1;
-		err = (tmp2 - left_sec_) - tmp1;
-		left_sec_ = tmp2;
-
-		if (left_sec_ <= 0.)
+		function_.execute();
+		if (period_.count() > 0)
 		{
-			function_.execute();
-			if (period_sec_ > 0.)
-			{
-				left_sec_ += period_sec_;
-			}
-			else
-			{
-				left_sec_ = 0.;
-				is_paused_ = true;
-				is_active_ = false;
-			}
+			expires_ += period_;
+		}
+		else
+		{
+			remove();
 		}
 	}
 }

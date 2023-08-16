@@ -19,18 +19,24 @@ template<typename T_Ret, typename... T_Args>
 class Delegate;
 
 /**
+ *	\addtogroup Time
+ *	\{
+ */
+
+/**
  *	\~english
  *	\brief The timer manager controls all of the timers
  *	
- *	Contains the list of all created timers and manages them. Allows to create new timers. It is
- *	singleton, only one timer manager may exist. You can get it using `get_instance` static method.
+ *	Contains the list of all created timers and manages them. Allows to create new timers. The
+ *	timer manager is singleton, only one its instance can exist. You can access it using the
+ *	`get_instance()` method.
  *	
  *	\~russian
  *	\brief Диспетчер таймеров контролирует все таймеры
  *	
  *	Содержит список всех созданных таймеров и управляет ими. Позволяет создавать новые таймеры.
- *	Он является одиночкой: может существовать только один диспетчер таймеров. Вы можете получить
- *	его, используя статический метод `get_instance`.
+ *	Диспетчер таймеров является одиночкой: может существовать только один его экземпляр. Вы можете
+ *	получить к нему доступ, используя метод `get_instance()`.
  */
 class TimerManager
 {
@@ -43,13 +49,13 @@ public:
 	 *	\~english
 	 *	\brief The only instance of the timer manager
 	 *	
-	 *	Allows to get the only instance of the timer manager.
+	 *	Allows to get the instance of the timer manager.
 	 *	\return The timer manager.
 	 *	
 	 *	\~russian
 	 *	\brief Единственный экземпляр диспетчера таймеров
 	 *	
-	 *	Позволяет получить единственный экземпляр диспетчера таймеров.
+	 *	Позволяет получить экземпляр диспетчера таймеров.
 	 *	\return Диспетчер таймеров.
 	 */
 	static TimerManager& get_instance();
@@ -87,5 +93,9 @@ private:
 
 	void tick_(double delta_sec);
 };
+
+/**
+ *	\}
+ */
 
 }
