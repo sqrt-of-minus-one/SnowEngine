@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `RectCollisionComponent` class
- *
- *	This file contains the definition of the `RectCollisionComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `RectCollisionComponent`
- *
- *	Этот файл содержит определение класса `RectCollisionComponent`.
- */
-
 #include "CollisionComponent.h"
 
 namespace snow

@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `DoubleRect` class
- *
- *	This file contains the definition of the `DoubleRect` class.
- *
- *	\~russian
- *	\brief Файл с классом `DoubleRect`
- *
- *	Этот файл содержит определение класса `DoubleRect`.
- */
-
 #include "../../Object.h"
 
 #include "../Vector/Vector2.h"

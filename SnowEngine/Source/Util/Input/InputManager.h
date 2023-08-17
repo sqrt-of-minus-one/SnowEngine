@@ -1,7 +1,7 @@
 ﻿    ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
- //  File: Input.h                     //
+ //  File: InputManager.h              //
 ////////////////////////////////////////
 
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//SnowBall\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\///
@@ -13,19 +13,6 @@
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\///
 
 #pragma once
-
-/**
- *	\file
- *	\~english
- *	\brief The file with `Input` class
- *
- *	This file contains the definition of the `Input` class of the SnowBall system.
- *
- *	\~russian
- *	\brief Файл с классом `Input`
- *
- *	Этот файл содержит определение класса `Input` системы SnowBall.
- */
 
 #include "../../Object.h"
 
@@ -47,19 +34,44 @@ class Vector2;
 class CameraComponent;
 
 /**
+ *	\defgroup SnowBall SnowBall
  *	\~english
- *	\brief The class of the SnowBall input manager
+ *	\brief SnowBall, the SnowEngine input system
+ *	
+ *	The SnowBall system allows you to handle the input. Use the `InputManager` class for this.
+ *	
+ *	\~russian
+ *	\brief SnowBall, система ввода SnowEngine
+ *	
+ *	Система SnowBall позволяет вам обрабатывать ввод. Для этого используйте класс `InputManager`.
+*/
+
+/**
+ *	\addtogroup SnowBall
+ *	\{
+ */
+
+/**
+ *	\~english
+ *	\brief The input manager
  *
- *	This class is used to handle input. It is singleton, only one input manager may exist. You can
- *	get it using `get_instance` static method.
+ *	This class is used to handle input. The input manager is singleton, only one its instance may
+ *	exist. You can get it using the `get_instance()` method. The `on_pressed()`, `on_released()`,
+ *	`on_mouse_pressed()`, and `on_mouse_released()` methods return the events which are invoked
+ *	when a key or a mouse button is pressed or released. Use them to track the input. You can also
+ *	find out whether a key is pressed using the `is_key_pressed()` method.
  *
  *	\~russian
- *	\brief Класс диспетчера ввода SnowBall
+ *	\brief Диспетчер ввода
  *
- *	Этот класс используется для обработки ввода. Он является одиночкой: может существовать только
- *	один диспетчер ввода. Вы можете получить его, используя статический метод `get_instance`.
+ *	Этот класс используется для обработки ввода. Диспетчер ввода является одиночкой: может
+ *	существовать только один его экземпляр. Вы можете получить его, используя метод
+ *	`get_instance()`. Методы `on_pressed()`, `on_released()`, `on_mouse_pressed()` и
+ *	`on_mouse_released()` возвращают события, которые вызываются, когда клавиша или кнопка мыши
+ *	нажимается или отпускается. Используйте их, чтобы отслеживать ввод. Вы также можете узнать,
+ *	нажата ли клавиша, с помощью метода `is_key_pressed()`.
  */
-class Input
+class InputManager : public Object
 {
 	friend class Game;
 
@@ -70,16 +82,48 @@ public:
 	 *	\~english
 	 *	\brief The only instance of the input manager
 	 *	
-	 *	Allows to get the only instance of the input manager.
+	 *	Allows to get the instance of the input manager.
 	 *	\return The input manager.
 	 *	
 	 *	\~russian
 	 *	\brief Единственный экземпляр диспетчера ввода
 	 *	
-	 *	Позволяет получить единственный экземпляр диспетчера ввода.
+	 *	Позволяет получить экземпляр диспетчера ввода.
 	 *	\return Диспетчер ввода.
 	 */
-	static Input& get_instance();
+	static InputManager& get_instance();
+
+			/* METHODS FROM Object */
+
+	/**
+	 *	\~english
+	 *	\brief Converts the input manager to string
+	 *	
+	 *	Returns the string `"InputManager"`. Yep, that's it.
+	 *	\return The string.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует диспетчер ввода в строку
+	 *	
+	 *	Возвращает строку `"InputManager"`. Ага, вот так вот.
+	 *	\return Строка.
+	 */
+	virtual String to_string() const override;
+
+	/**
+	 *	\~english
+	 *	\brief Creates a JSON string
+	 *	
+	 *	Creates a JSON string value `"InputManager"`.
+	 *	\return The JSON string.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт строку JSON
+	 *	
+	 *	Создаёт строковое значение JSON `"InputManager"`.
+	 *	\return Строка JSON.
+	*/
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 
@@ -87,7 +131,7 @@ public:
 	 *	\~english
 	 *	\brief Checks whether the key is pressed
 	 *	
-	 *	Checks whether the passed keyboard key is now pressed.
+	 *	Checks whether the passed keyboard key is being pressed now.
 	 *	\param key The key to check.
 	 *	\return `true` if the key is pressed, `false` otherwise.
 	 *	
@@ -104,13 +148,13 @@ public:
 	 *	\~english
 	 *	\brief Which system keys are pressed
 	 *	
-	 *	Detects system keys which are pressed at the moment.
+	 *	Checks which system keys are pressed at the moment.
 	 *	\return The information about pressed system keys.
 	 *	
 	 *	\~russian
 	 *	\brief Какие системные клавиши нажаты
 	 *	
-	 *	Определяет системные клавиши, которые нажаты в данный момент.
+	 *	Проверяет, какие системные клавиши нажаты в данный момент.
 	 *	\return Информация о нажатых системных клавишах.
 	 */
 	SystemKeys get_system_keys();
@@ -300,7 +344,7 @@ public:
 	EventBinder<>& on_mouse_released(EButton button);
 
 private:
-	Input();
+	InputManager();
 
 	std::map<EKey, Event<SystemKeys /*pressed_system*/>> on_pressed_;
 	std::map<EKey, Event<SystemKeys /*pressed_system*/>> on_released_;
@@ -313,5 +357,9 @@ private:
 	std::map<EButton, EventBinder<>> on_mouse_released_binder_;
 
 };
+
+/**
+ * 	\}
+ */
 
 }

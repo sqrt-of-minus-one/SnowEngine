@@ -1,7 +1,7 @@
     ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
- //  File: Input.cpp                   //
+ //  File: InputManager.cpp            //
 ////////////////////////////////////////
 
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//SnowBall\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\///
@@ -23,20 +23,30 @@
 
 using namespace snow;
 
-		/* Input: public */
+		/* InputManager: public */
 
-Input& Input::get_instance()
+InputManager& InputManager::get_instance()
 {
-	static Input input;
+	static InputManager input;
 	return input;
 }
 
-bool Input::is_key_pressed(EKey key)
+String InputManager::to_string() const
+{
+	return L"InputManager"_s;
+}
+
+std::shared_ptr<json::Element> InputManager::to_json() const
+{
+	return util::to_json(L"InputManager"_s);
+}
+
+bool InputManager::is_key_pressed(EKey key)
 {
 	return sf::Keyboard::isKeyPressed(key_snow_to_sfml(key));
 }
 
-SystemKeys Input::get_system_keys()
+SystemKeys InputManager::get_system_keys()
 {
 	SystemKeys ret;
 	ret.LeftShift = is_key_pressed(EKey::L_SHIFT);
@@ -49,13 +59,13 @@ SystemKeys Input::get_system_keys()
 	return ret;
 }
 
-Point2 Input::get_screen_mouse_position()
+Point2 InputManager::get_screen_mouse_position()
 {
 	sf::Vector2i position = sf::Mouse::getPosition();
 	return Point2(position.x, position.y);
 }
 
-Point2 Input::get_window_mouse_position()
+Point2 InputManager::get_window_mouse_position()
 {
 	auto window = Game::get_window().lock();
 	if (window)
@@ -69,7 +79,7 @@ Point2 Input::get_window_mouse_position()
 	}
 }
 
-Vector2 Input::get_level_mouse_position(const CameraComponent& relative_to)
+Vector2 InputManager::get_level_mouse_position(const CameraComponent& relative_to)
 {
 	auto window = Game::get_window().lock();
 	if (window)
@@ -83,12 +93,12 @@ Vector2 Input::get_level_mouse_position(const CameraComponent& relative_to)
 	}
 }
 
-void Input::set_screen_mouse_position(const Point2& position)
+void InputManager::set_screen_mouse_position(const Point2& position)
 {
 	sf::Mouse::setPosition(sf::Vector2i(position.get_x(), position.get_y()));
 }
 
-void Input::set_window_mouse_position(const Point2& position)
+void InputManager::set_window_mouse_position(const Point2& position)
 {
 	auto window = Game::get_window().lock();
 	if (window)
@@ -97,7 +107,7 @@ void Input::set_window_mouse_position(const Point2& position)
 	}
 }
 
-void Input::set_level_mouse_position(const Vector2& position, const CameraComponent& relative_to)
+void InputManager::set_level_mouse_position(const Vector2& position, const CameraComponent& relative_to)
 {
 	auto window = Game::get_window().lock();
 	if (window)
@@ -106,12 +116,12 @@ void Input::set_level_mouse_position(const Vector2& position, const CameraCompon
 	}
 }
 
-EventBinder<SystemKeys>& Input::on_pressed(EKey key)
+EventBinder<SystemKeys>& InputManager::on_pressed(EKey key)
 {
 	auto iter = on_pressed_binder_.find(key);
 	if (iter == on_pressed_binder_.end())
 	{
-		return on_pressed_binder_.insert(std::make_pair(key, EventBinder<SystemKeys>(on_pressed_[key]))).first->second;
+		return on_pressed_binder_.insert({ key, EventBinder<SystemKeys>(on_pressed_[key]) }).first->second;
 	}
 	else
 	{
@@ -119,12 +129,12 @@ EventBinder<SystemKeys>& Input::on_pressed(EKey key)
 	}
 }
 
-EventBinder<SystemKeys>& Input::on_released(EKey key)
+EventBinder<SystemKeys>& InputManager::on_released(EKey key)
 {
 	auto iter = on_released_binder_.find(key);
 	if (iter == on_released_binder_.end())
 	{
-		return on_released_binder_.insert(std::make_pair(key, EventBinder<SystemKeys>(on_released_[key]))).first->second;
+		return on_released_binder_.insert({ key, EventBinder<SystemKeys>(on_released_[key]) }).first->second;
 	}
 	else
 	{
@@ -132,12 +142,12 @@ EventBinder<SystemKeys>& Input::on_released(EKey key)
 	}
 }
 
-EventBinder<>& Input::on_mouse_pressed(EButton button)
+EventBinder<>& InputManager::on_mouse_pressed(EButton button)
 {
 	auto iter = on_mouse_pressed_binder_.find(button);
 	if (iter == on_mouse_pressed_binder_.end())
 	{
-		return on_mouse_pressed_binder_.insert(std::make_pair(button, EventBinder<>(on_mouse_pressed_[button]))).first->second;
+		return on_mouse_pressed_binder_.insert({ button, EventBinder<>(on_mouse_pressed_[button]) }).first->second;
 	}
 	else
 	{
@@ -145,12 +155,12 @@ EventBinder<>& Input::on_mouse_pressed(EButton button)
 	}
 }
 
-EventBinder<>& Input::on_mouse_released(EButton button)
+EventBinder<>& InputManager::on_mouse_released(EButton button)
 {
 	auto iter = on_mouse_released_binder_.find(button);
 	if (iter == on_mouse_released_binder_.end())
 	{
-		return on_mouse_released_binder_.insert(std::make_pair(button, EventBinder<>(on_mouse_released_[button]))).first->second;
+		return on_mouse_released_binder_.insert({ button, EventBinder<>(on_mouse_released_[button]) }).first->second;
 	}
 	else
 	{
@@ -158,7 +168,7 @@ EventBinder<>& Input::on_mouse_released(EButton button)
 	}
 }
 
-		/* Input: private */
+		/* InputManager: private */
 
-Input::Input()
+InputManager::InputManager()
 {}

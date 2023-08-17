@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `SpriteComponent` class
- *
- *	This file contains the definition of the `SpriteComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `SpriteComponent`
- *
- *	Этот файл содержит определение класса `SpriteComponent`.
- */
-
 #include "VisibleComponent.h"
 
 #include <SFML/Graphics/Sprite.hpp>

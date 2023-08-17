@@ -21,6 +21,11 @@ namespace snow
 {
 
 /**
+ *	\addtogroup SnowBall
+ *	\{
+ */
+
+/**
  *	\~english
  *	\brief Keyboard keys
  *	
@@ -142,7 +147,7 @@ enum class EKey
  *	\~russian
  *	\brief Системные клавиши
  *	
- *	Структура с информацией о том, какие системы клавиши нажаты.
+ *	Структура с информацией о том, какие системные клавиши нажаты.
  */
 struct SystemKeys
 {
@@ -179,5 +184,9 @@ sf::Keyboard::Key key_snow_to_sfml(EKey key) noexcept;
 EKey key_sfml_to_snow(sf::Keyboard::Key key) noexcept;
 sf::Mouse::Button button_snow_to_sfml(EButton button) noexcept;
 EButton button_sfml_to_snow(sf::Mouse::Button button) noexcept;
+
+/**
+ *	\}
+ */
 
 }

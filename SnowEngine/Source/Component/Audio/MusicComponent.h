@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `MusicComponent` class
- *
- *	This file contains the definition of the `MusicComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `MusicComponent`
- *
- *	Этот файл содержит определение класса `MusicComponent`.
- */
-
 #include "../Component.h"
 
 #include <SFML/Audio/Music.hpp>

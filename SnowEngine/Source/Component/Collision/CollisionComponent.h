@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `CollisionComponent` class
- *
- *	This file contains the definition of the `CollisionComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `CollisionComponent`
- *
- *	Этот файл содержит определение класса `CollisionComponent`.
- */
-
 #include "../Component.h"
 
 #include <vector>

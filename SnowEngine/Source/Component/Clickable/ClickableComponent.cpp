@@ -49,7 +49,7 @@ bool ClickableComponent::is_mouse_over() const
 		const auto& cameras = iter->second;
 		for (const CameraComponent* i : cameras)
 		{
-			if (is_inside(Input::get_instance().get_level_mouse_position(*i)))
+			if (is_inside(InputManager::get_instance().get_level_mouse_position(*i)))
 			{
 				return true;
 			}

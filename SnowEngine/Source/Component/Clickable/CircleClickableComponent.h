@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `CircleClickableComponent` class
- *
- *	This file contains the definition of the `CircleClickableComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `CircleClickableComponent`
- *
- *	Этот файл содержит определение класса `CircleClickableComponent`.
- */
-
 #include "ClickableComponent.h"
 
 namespace snow

@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `ClickableComponent` class
- *
- *	This file contains the definition of the `ClickableComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `ClickableComponent`
- *
- *	Этот файл содержит определение класса `ClickableComponent`.
- */
-
 #include "../Component.h"
 
 #include <vector>
@@ -48,7 +35,7 @@ class Actor;
  */
 class ClickableComponent : public Component
 {
-	friend class Input;
+	friend class InputManager;
 	friend class Game;
 
 public:

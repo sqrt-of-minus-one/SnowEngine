@@ -98,6 +98,21 @@ ResourceManager& ResourceManager::get_instance()
 	return resource_manager;
 }
 
+String ResourceManager::to_string() const
+{
+	return String::format(L"ResourceManager, loaded textures: %d, fonts: %d, sounds: %d"_s,
+		textures_.size(), fonts_.size(), sounds_.size());
+}
+
+std::shared_ptr<json::Element> ResourceManager::to_json() const
+{
+	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
+	object->get_content().insert({ L"textures"_s, util::to_json(textures_.size()) });
+	object->get_content().insert({ L"fonts"_s, util::to_json(fonts_.size()) });
+	object->get_content().insert({ L"sounds"_s, util::to_json(sounds_.size()) });
+	return object;
+}
+
 std::shared_ptr<sf::Texture> ResourceManager::get_texture(const String& name)
 {
 	GET_RES_(textures_, name);

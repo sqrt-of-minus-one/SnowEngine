@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `CircleCollisionComponent` class
- *
- *	This file contains the definition of the `CircleCollisionComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `CircleCollisionComponent`
- *
- *	Этот файл содержит определение класса `CircleCollisionComponent`.
- */
-
 #include "CollisionComponent.h"
 
 namespace snow

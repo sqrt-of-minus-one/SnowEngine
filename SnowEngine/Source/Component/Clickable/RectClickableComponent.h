@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `RectClickableComponent` class
- *
- *	This file contains the definition of the `RectClickableComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `RectClickableComponent`
- *
- *	Этот файл содержит определение класса `RectClickableComponent`.
- */
-
 #include "ClickableComponent.h"
 
 namespace snow

@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `TextComponent` class
- *
- *	This file contains the definition of the `TextComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `TextComponent`
- *
- *	Этот файл содержит определение класса `TextComponent`.
- */
-
 #include "VisibleComponent.h"
 
 #include <SFML/Graphics/Text.hpp>

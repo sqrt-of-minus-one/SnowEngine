@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `SoundComponent` class
- *
- *	This file contains the definition of the `SoundComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `SoundComponent`
- *
- *	Этот файл содержит определение класса `SoundComponent`.
- */
-
 #include "../Component.h"
 
 #include <SFML/Audio/Sound.hpp>

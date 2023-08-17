@@ -77,58 +77,6 @@ constexpr double std_in_sec = static_cast<double>(time::std_duration::period::de
 
 /**
  *	\~english
- *	\brief Converts the standard duration to seconds
- *	
- *	Allows to get amount of seconds in the standard duration object.
- *	\param duration The standard duration object.
- *	\return Amount of seconds.
- *	
- *	\~russian
- *	\brief Конвертирует стандартную длительность в секунды
- *	
- *	Позволяет получить число секунд в объекте стандартного типа длительности.
- *	\param duration Объект стандартного типа длительности.
- *	\return Количество секунд.
- */
-double std_to_sec(const std_duration& duration);
-
-/**
- *	\~english
- *	\brief Creates a duration with the specified amount of seconds
- *	
- *	Creates a standard duration object with the passed amount of seconds.
- *	\param sec Amount of seconds.
- *	\return The duration.
- *	
- *	\~russian
- *	\brief Создаёт длительность с заданным количеством секунд
- *	
- *	Создаёт объект стандартного типа длительности с переданным количеством секунд.
- *	\param sec Количество секунд.
- *	\return Длительность.
- */
-std_duration sec_to_std(double sec);
-
-/**
- *	\~english
- *	\brief The time of the beginning of the current tick
- *	
- *	Is equivalent of `Game::now()`. This methods does not return the current time, instead it
- *	returns the time when the current tick has started.
- *	\return The time when the current tick has started. The current time if the game has not been
- *	started.
- *	
- *	\~russian
- *	\brief Время начала текущего тика
- *	
- *	Эквивалент `Game::now()`. Этот метод возвращает не текущее время, а время, когда начался
- *	текущий тик.
- *	\return Время, когда начался текущий тик. Текущее время, если игра ещё не была начата.
- */
-const std_time_point& now();
-
-/**
- *	\~english
  *	\brief The months enumeration
  *	
  *	This enumeration contains the months.
@@ -216,6 +164,58 @@ struct STime
 	int minute;			///< \~english Minutes, [0, 59] \~russian Минуты, [0, 59]
 	int second;			///< \~english Seconds, [0, 60] (including leap second) \~russian Секунды, [0, 60] (включая секунду координации)
 };
+
+/**
+ *	\~english
+ *	\brief Converts the standard duration to seconds
+ *	
+ *	Allows to get amount of seconds in the standard duration object.
+ *	\param duration The standard duration object.
+ *	\return Amount of seconds.
+ *	
+ *	\~russian
+ *	\brief Конвертирует стандартную длительность в секунды
+ *	
+ *	Позволяет получить число секунд в объекте стандартного типа длительности.
+ *	\param duration Объект стандартного типа длительности.
+ *	\return Количество секунд.
+ */
+double std_to_sec(const std_duration& duration);
+
+/**
+ *	\~english
+ *	\brief Creates a duration with the specified amount of seconds
+ *	
+ *	Creates a standard duration object with the passed amount of seconds.
+ *	\param sec Amount of seconds.
+ *	\return The duration.
+ *	
+ *	\~russian
+ *	\brief Создаёт длительность с заданным количеством секунд
+ *	
+ *	Создаёт объект стандартного типа длительности с переданным количеством секунд.
+ *	\param sec Количество секунд.
+ *	\return Длительность.
+ */
+std_duration sec_to_std(double sec);
+
+/**
+ *	\~english
+ *	\brief The time of the beginning of the current tick
+ *	
+ *	Is equivalent of `Game::now()`. This methods does not return the current time, instead it
+ *	returns the time when the current tick has started.
+ *	\return The time when the current tick has started. The current time if the game has not been
+ *	started.
+ *	
+ *	\~russian
+ *	\brief Время начала текущего тика
+ *	
+ *	Эквивалент `Game::now()`. Этот метод возвращает не текущее время, а время, когда начался
+ *	текущий тик.
+ *	\return Время, когда начался текущий тик. Текущее время, если игра ещё не была начата.
+ */
+const std_time_point& now();
 
 /**
  *	\~english

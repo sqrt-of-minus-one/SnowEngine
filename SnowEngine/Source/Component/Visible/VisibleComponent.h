@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `VisibleComponent` class
- *
- *	This file contains the definition of the `VisibleComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `VisibleComponent`
- *
- *	Этот файл содержит определение класса `VisibleComponent`.
- */
-
 #include "../Component.h"
 
 #include <map>

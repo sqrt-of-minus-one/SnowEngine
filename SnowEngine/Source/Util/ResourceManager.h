@@ -50,7 +50,7 @@ namespace snow
  *	\warning Этот класс предназначен для внутреннего использования. Не используйте его
  *	непосредственно в своём проекте.
  */
-class ResourceManager
+class ResourceManager : public Object
 {
 public:
 			/* SINGLETON */
@@ -69,6 +69,48 @@ public:
 	 *	\return Диспетчер ресурсов.
 	 */
 	static ResourceManager& get_instance();
+
+			/* METHODS FROM Object */
+
+	/**
+	 *	\~english
+	 *	\brief Converts the resource manager to string
+	 *	
+	 *	Returns the string `"ResourceManager, loaded textures: <t>, fonts: <f>, sounds: <s>"`,
+	 *	where `<t>`, `<f>`, and `<s>` is the amount of texture, font, and sound resources
+	 *	respectively which are currently loaded (why on Earth would anyone need this?).
+	 *	\return The string with the information about the resource manager.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует диспетчер ресурсов в строку
+	 *	
+	 *	Возвращает строку `"ResourceManager, loaded textures: <t>, fonts: <f>, sounds: <s>"`, где
+	 *	`<t>`, `<f>` и `<s>` — соответственно количество текстур, шрифтов и звуков, загруженных в
+	 *	данный момент (кому вообще это может понадобиться?).
+	 *	\return Строка с информацией о диспетчере ресурсов.
+	 */
+	virtual String to_string() const override;
+
+	/**
+	 *	\~english
+	 *	\brief Creates a JSON object with the resouce manager data
+	 *	
+	 *	Creates a JSON object containing three integer values:
+	 *	- `textures`: the amount of currently loaded texture resources;
+	 *	- `fonts`: the amount of currently loaded font resources;
+	 *	- `sounds`: the anount of currently loaded sound resources.
+	 *	\return The JSON object.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт объект JSON с информацией о диспетчере ресурсов
+	 *	
+	 *	Создаёт объект JSON, содержащий три целочисленных значения:
+	 *	- `textures`: количество загруженных в данный момент текстур;
+	 *	- `fonts`: количество загруженных в данный момент шрифтов;
+	 *	- `sounds`: количество загруженных в данный момент звуков.
+	 *	\return Объект JSON.
+	*/
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 

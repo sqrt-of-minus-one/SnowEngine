@@ -94,7 +94,7 @@ void Game::loop_()
 			}
 			case sf::Event::EventType::KeyPressed:
 			{
-				auto& input = Input::get_instance();
+				auto& input = InputManager::get_instance();
 				auto iter = input.on_pressed_.find(key_sfml_to_snow(event.key.code));
 				if (iter != input.on_pressed_.end())
 				{
@@ -104,7 +104,7 @@ void Game::loop_()
 			}
 			case sf::Event::EventType::KeyReleased:
 			{
-				auto& input = Input::get_instance();
+				auto& input = InputManager::get_instance();
 				auto iter = input.on_released_.find(key_sfml_to_snow(event.key.code));
 				if (iter != input.on_released_.end())
 				{
@@ -115,7 +115,7 @@ void Game::loop_()
 			case sf::Event::EventType::MouseButtonPressed:
 			{
 				EButton button = button_sfml_to_snow(event.mouseButton.button);
-				auto& input = Input::get_instance();
+				auto& input = InputManager::get_instance();
 				auto iter = input.on_mouse_pressed_.find(button);
 				if (iter != input.on_mouse_pressed_.end())
 				{
@@ -131,7 +131,7 @@ void Game::loop_()
 						for (CameraComponent* j : cameras)
 						{
 							// Todo: check if the mouse is over the camera view
-							Vector2 position = Input::get_instance().get_level_mouse_position(*j);
+							Vector2 position = InputManager::get_instance().get_level_mouse_position(*j);
 							std::vector<ClickableComponent*> clicked = ClickableComponent::get_clicked(*i, position);
 							for (ClickableComponent* k : clicked)
 							{
@@ -146,7 +146,7 @@ void Game::loop_()
 			case sf::Event::EventType::MouseButtonReleased:
 			{
 				EButton button = button_sfml_to_snow(event.mouseButton.button);
-				auto& input = Input::get_instance();
+				auto& input = InputManager::get_instance();
 				auto iter = input.on_mouse_released_.find(button);
 				if (iter != input.on_mouse_released_.end())
 				{
@@ -162,7 +162,7 @@ void Game::loop_()
 						for (CameraComponent* j : cameras)
 						{
 							// Todo: check if the mouse is over the camera view
-							Vector2 position = Input::get_instance().get_level_mouse_position(*j);
+							Vector2 position = InputManager::get_instance().get_level_mouse_position(*j);
 							std::vector<ClickableComponent*> clicked = ClickableComponent::get_clicked(*i, position);
 							for (ClickableComponent* k : clicked)
 							{

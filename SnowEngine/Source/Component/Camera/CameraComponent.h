@@ -6,19 +6,6 @@
 
 #pragma once
 
-/**
- *	\file
- *	\~english
- *	\brief The file with `CameraComponent` class
- *
- *	This file contains the definition of the `CameraComponent` class.
- *
- *	\~russian
- *	\brief Файл с классом `CameraComponent`
- *
- *	Этот файл содержит определение класса `CameraComponent`.
- */
-
 #include "../Component.h"
 
 #include <map>
@@ -45,7 +32,7 @@ class Actor;
  */
 class CameraComponent : public Component
 {
-	friend class Input;
+	friend class InputManager;
 
 public:
 			/* CONSTRUCTORS */
