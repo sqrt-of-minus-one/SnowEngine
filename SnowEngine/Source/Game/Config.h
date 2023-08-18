@@ -526,7 +526,7 @@ public:
 	 *	The relative path to the directory where localization files are stored. The default value
 	 *	is `"Localization"`.
 	 *	\sa
-	 *	- `Lang`
+	 *	- `LangManager`
 	 *	
 	 *	\~russian
 	 *	\brief Путь к директории с файлами локализации
@@ -534,7 +534,7 @@ public:
 	 *	Относительный путь к директории, где хранятся файлы локализации. Значение по умолчанию —
 	 *	`"Localization"`.
 	 *	\sa
-	 *	- `Lang`
+	 *	- `LangManager`
 	 */
 	String lang_path;
 
@@ -545,7 +545,7 @@ public:
 	 *	The code of the language that should be loaded when the game is launched. The default value
 	 *	is `"en_UK"`.
 	 *	\sa
-	 *	- `Lang`
+	 *	- `LangManager`
 	 *	
 	 *	\~russian
 	 *	\brief Код языка по умолчанию
@@ -553,7 +553,7 @@ public:
 	 *	Код языка, который должен быть загружен при запуске игры. Значение по умолчанию —
 	 *	`"en_UK"`.
 	 *	\sa
-	 *	- `Lang`
+	 *	- `LangManager`
 	 */
 	String lang_default_lang;
 
@@ -564,7 +564,7 @@ public:
 	 *	The name of the localization table that will be used as default. E. g. the default table is
 	 *	used when no table is specified. The default value is `"default"`.
 	 *	\sa
-	 *	- `Lang`
+	 *	- `LangManager`
 	 *	
 	 *	\~russian
 	 *	\brief Название таблицы локализации по умолчанию
@@ -573,7 +573,7 @@ public:
 	 *	по умолчанию используется, когда не указана никакая таблица. Значени по умолчанию —
 	 *	`"default"`.
 	 *	\sa
-	 *	- `Lang`
+	 *	- `LangManager`
 	 */
 	String lang_default_table;
 

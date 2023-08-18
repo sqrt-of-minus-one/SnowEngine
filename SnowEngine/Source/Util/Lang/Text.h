@@ -22,19 +22,28 @@ namespace snow
 {
 
 /**
+ *	\addtogroup SnowFlake
+ *	\{
+ */
+
+/**
  *	\~english
  *	\brief The localizable text
  *	
- *	This class keeps the code of a localizable string. You can use `to_string` method to get the
- *	string in the current language. The text object keeps the key of a string, which consists of
- *	the name of the localization table and the key of the string in the table: `<table>.<key>`.
+ *	This class keeps the key of a localizable string, which consists of the name of the
+ *	localization table and the id separated by dot. You can use `to_string()` method to get the
+ *	string in the current language.
+ *	\sa
+ *	- `LangManager`
  *	
  *	\~russian
  *	\brief Локализуемый текст
  *	
- *	Этот класс содержит код локализуемой строки. Вы можете использовать метод `to_string`, чтобы
- *	получить строку на соответствуеющем языке. Объект текста хранит ключ строки, состоящий из
- *	названия таблицы локализации и ключа строки в таблице: `<table>.<key>`.
+ *	Этот класс содержит ключ локализуемой строки, состоящий из названия таблицы локализации и
+ *	идентификатора. Вы можете использовать метод `to_string()`, чтобы получить строку на текущем
+ *	языке.
+ *	\sa
+ *	- `LangManager`
  */
 class Text : public Object
 {
@@ -89,13 +98,15 @@ public:
 	 *	\brief Creates a new text with the passed key
 	 *
 	 *	Creates a new text with the passed key.
-	 *	\param key The key.
+	 *	\param key The key of the string: `<table>.<id>`. For the default localization table it's
+	 *	allowed to use the string `.<id>` or just `<id>`.
 	 *	
 	 *	\~russian
 	 *	\brief Создаёт новый текст с переданным ключом
 	 *	
 	 *	Создаёт новый текст с переданным ключом.
-	 *	\param key Ключ.
+	 *	\param key Ключ строки: `<таблица>.<id>`. Для таблицы локализации по умолчанию допускается
+	 *	использовать строку `.<id>` или просто `<id>`.
 	 */
 	Text(const String& key);
 
@@ -104,15 +115,19 @@ public:
 	 *	\brief Creates a new text with the passed key
 	 *
 	 *	Creates a new text with the passed key.
-	 *	\param key The key.
-	 *
+	 *	\param table The localization table. If the string is empty, the default table will be
+	 *	used.
+	 *	\param id The id of the string.
+	 *	
 	 *	\~russian
 	 *	\brief Создаёт новый текст с переданным ключом
-	 *
+	 *	
 	 *	Создаёт новый текст с переданным ключом.
-	 *	\param key Ключ.
+	 *	\param table Таблица локализации. Если строка пуста, будет использоваться таблица по
+	 *	умолчанию.
+	 *	\param id Идентификатор строки.
 	 */
-	Text(String&& key);
+	Text(const String& table, const String& id);
 
 	/**
 	 *	\~english
@@ -145,14 +160,17 @@ public:
 	 *	\~english
 	 *	\brief The localized string
 	 *	
-	 *	Allows to get the localized string in the current language.
-	 *	\return The localized string.
+	 *	Allows to get the localized string in the current language. If the required string contains
+	 *	in the localization table which hasn't been loaded, the method tries to load it.
+	 *	\return The localized string. The key of the string if the localization couldn't been
+	 *	found.
 	 *	
 	 *	\~russian
 	 *	\brief Локализованный текст
 	 *	
-	 *	Позволяет получить локализованный текст на текущем языке.
-	 *	\return Локализованный текст.
+	 *	Позволяет получить локализованный текст на текущем языке. Если требуемая строка содержится
+	 *	в таблице локализации, которая не была загружена, метод пытается её загрузить.
+	 *	\return Локализованный текст. Ключ строки, если локализацию найти не удалось.
 	 */
 	virtual String to_string() const override;
 
@@ -161,14 +179,16 @@ public:
 	 *	\brief Converts the text to JSON
 	 *	
 	 *	Creates a JSON object with one element. Its key is the translation key, its value is the
-	 *	localized string.
+	 *	localized string. If the required string contains in the localization table which hasn't
+	 *	been loaded, the method tries to load it.
 	 *	\return The JSON object.
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует текст в JSON
 	 *	
 	 *	Создаёт объект JSON с одним элементом. Его ключом является ключ перевода, а значением —
-	 *	локализованная строка.
+	 *	локализованная строка. Если требуемая строка содержится в таблице локализации, которая не
+	 *	была загружена, метод пытается её загрузить.
 	 *	\return Объект JSON.
 	 */
 	std::shared_ptr<json::Element> to_json() const override;
@@ -180,15 +200,47 @@ public:
 	 *	\brief The key
 	 *	
 	 *	Allows to get the key of the text.
-	 *	\return The key.
+	 *	\return The string `<table>.<id>`, where `<table>` is the name of the localization table,
+	 *	`<id>` is the key of the text in the table. The empty string if the text is empty.
 	 *	
 	 *	\~russian
 	 *	\brief Ключ
 	 *	
 	 *	Позволяет получить ключ текста.
-	 *	\return Ключ.
+	 *	\return Строка `<таблица>.<id>`, где `<таблица>` — название таблицы локализации, `<id>` —
+	 *	ключ текста в таблице. Пустая строка, если текст пустой.
 	 */
-	const String& get_key() const;
+	String get_key() const;
+
+	/**
+	 *	~english
+	 *	\brief The localization table
+	 *	
+	 *	Allows to get the name of the localization table.
+	 *	\return The localization table. The empty string if the text is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Таблица локализации
+	 *	
+	 *	Позволяет получить название таблицы локализации.
+	 *	\return Таблица локализации. Пустая строка, если текст пустой.
+	 */
+	const String& get_table() const;
+
+	/**
+	 *	~english
+	 *	\brief The id in the localization table
+	 *	
+	 *	Allows to get the id of the text in the localization table.
+	 *	\return The id of the text. The empty string if the text is empty.
+	 *	
+	 *	\~russian
+	 *	\brief Идентификатор в таблице локализации
+	 *	
+	 *	Позволяет получить идентификатор текста в таблице локализации.
+	 *	\return Идентификатор текста. Пустая строка, если текст пустой.
+	 */
+	const String& get_id() const;
 	
 	/**
 	 *	\~english
@@ -247,34 +299,19 @@ public:
 	 *	\brief Sets the key
 	 *
 	 *	Replaces the current key with the passed one.
-	 *	\param key The new key.
+	 *	\param key The new key: `<table>.<id>`. For the default localization table it's allowed to
+	 *	use the string `.<id>` or just `<id>`.
 	 *	\return A reference to itself.
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает ключ
 	 *
 	 *	Заменяет текущий ключ на переданный.
-	 *	\param key Новый ключ.
+	 *	\param key Новый ключ: `<таблица>.<id>`. Для таблицы локализации по умолчанию допускается
+	 *	использовать строку `.<id>` или `<id>`.
 	 *	\return Ссылка на себя.
 	 */
 	Text& operator=(const String& key);
-
-	/**
-	 *	\~english
-	 *	\brief Sets the key
-	 *
-	 *	Replaces the current key with the passed one.
-	 *	\param key The new key.
-	 *	\return A reference to itself.
-	 *
-	 *	\~russian
-	 *	\brief Устанавливает ключ
-	 *
-	 *	Заменяет текущий ключ на переданный.
-	 *	\param key Новый ключ.
-	 *	\return Ссылка на себя.
-	 */
-	Text& operator=(String&& key);
 
 	/**
 	 *	\~english
@@ -345,8 +382,13 @@ public:
 	bool operator!=(const String& key) const noexcept;
 
 private:
-	String key_;
+	String table_;
+	String id_;
 
 };
+
+/**
+ *	\}
+ */
 
 }

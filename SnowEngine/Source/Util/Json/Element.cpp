@@ -433,3 +433,8 @@ void json::Element::pass_(std::wistream& stream, wchar_t& c)
 		break;
 	}
 }
+
+std::shared_ptr<json::Element> json::operator""_json(const wchar_t* str, std::size_t size)
+{
+	return Element::from_string(String(str));
+}

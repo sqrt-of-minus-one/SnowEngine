@@ -14,8 +14,8 @@
 
 #include "Text.h"
 
-#include "../../Game/Game.h"
-#include "../Lang/Lang.h"
+#include "../../Game/ConfigManager.h"
+#include "../Lang/LangManager.h"
 #include "../Json/JsonObject.h"
 #include "../Json/Value.h"
 
@@ -24,27 +24,46 @@ using namespace snow;
 		/* Text: public */
 
 Text::Text() :
-	key_()
+	table_(),
+	id_()
 {}
 
 Text::Text(const Text& text) :
-	key_(text.key_)
+	table_(text.table_),
+	id_(text.id_)
 {}
 
 Text::Text(Text&& text) :
-	key_(std::move(text.key_))
+	table_(std::move(text.table_)),
+	id_(std::move(text.id_))
 {}
 
 Text::Text(const String& key) :
-	key_(key)
-{}
+	table_(),
+	id_()
+{
+	std::pair<String, String> pair = LangManager::key_to_table_and_id(key);
+	table_ = std::move(pair.first);
+	id_ = std::move(pair.second);
+}
 
-Text::Text(String&& key) :
-	key_(std::move(key))
-{}
+Text::Text(const String& table, const String& key) :
+	table_(table),
+	id_(key)
+{
+	if (key.is_empty())
+	{
+		table.clear();
+	}
+	else if (table.is_empty())
+	{
+		table = CURRENT_CONFIG.lang_default_table;
+	}
+}
 
 Text::Text(std::shared_ptr<const json::Element> json) :
-	key_()
+	table_(),
+	id_()
 {
 	if (!json)
 	{
@@ -55,7 +74,7 @@ Text::Text(std::shared_ptr<const json::Element> json) :
 	{
 	case json::EType::STRING_VALUE:
 	{
-		key_ = std::dynamic_pointer_cast<const json::StringValue>(json)->get();
+		id_ = util::json_to_string(json);
 		break;
 	}
 	case json::EType::OBJECT:
@@ -65,38 +84,55 @@ Text::Text(std::shared_ptr<const json::Element> json) :
 		{
 			throw std::invalid_argument("Couldn't create a text: the JSON object must only have one element");
 		}
-		key_ = object->get_content().begin()->first;
+		id_ = object->get_content().begin()->first;
 		break;
 	}
 	default:
 	{
-		throw std::invalid_argument("Couldn't create a text: the JSON must be either a string or a object");
+		throw std::invalid_argument("Couldn't create a text: the JSON must be either a string or an object");
 	}
 	}
 }
 
 String Text::to_string() const
 {
-	return Lang::get_instance().get_string(key_);
+	return LangManager::get_instance().get_string(table_, id_);
 }
 
 std::shared_ptr<json::Element> Text::to_json() const
 {
 	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
-	result->get_content().insert({ key_, to_string().to_json() });
+	result->get_content().insert({ get_key(), to_string().to_json() });
 	return result;
 }
 
-const String& Text::get_key() const
+String Text::get_key() const
 {
-	return key_;
+	if (!id_.is_empty() && !table_.is_empty())
+	{
+		table_ + L'.' + id_;
+	}
+	else
+	{
+		return L""_s;
+	}
+}
+
+const String& Text::get_table() const
+{
+	return table_;
+}
+
+const String& Text::get_id() const
+{
+	return id_;
 }
 
 bool Text::is_valid() const noexcept
 {
 	try
 	{
-		return Lang::get_instance().is_valid(key_);
+		return LangManager::get_instance().is_valid(get_key());
 	}
 	catch (...)
 	{
@@ -106,44 +142,41 @@ bool Text::is_valid() const noexcept
 
 Text& Text::operator=(const Text& text)
 {
-	key_ = text.key_;
+	table_ = text.table_;
+	id_ = text.id_;
 	return *this;
 }
 
 Text& Text::operator=(Text&& text)
 {
-	key_ = std::move(text.key_);
+	id_ = std::move(text.id_);
 	return *this;
 }
 
 Text& Text::operator=(const String& key)
 {
-	key_ = key;
-	return *this;
-}
-
-Text& Text::operator=(String&& key)
-{
-	key_ = std::move(key);
+	std::pair<String, String> pair = LangManager::key_to_table_and_id(key);
+	table_ = std::move(pair.first);
+	id_ = std::move(pair.second);
 	return *this;
 }
 
 bool Text::operator==(const Text& text) const noexcept
 {
-	return key_ == text.key_;
+	return table_ == text.table_ && id_ == text.id_;
 }
 
 bool Text::operator==(const String& key) const noexcept
 {
-	return key_ == key;
+	return *this == Text(key);
 }
 
 bool Text::operator!=(const Text& text) const noexcept
 {
-	return key_ != text.key_;
+	return !(*this == text);
 }
 
 bool Text::operator!=(const String& key) const noexcept
 {
-	return key_ != key;
+	return !(*this == key);
 }

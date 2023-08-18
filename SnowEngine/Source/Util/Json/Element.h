@@ -308,9 +308,38 @@ private:
 };
 
 /**
+ *	\~english
+ *	\brief A JSON literal
+ *	
+ *	Allows to create a JSON elements using literals:
+ *	\code
+ *		L"{ \"name\": \"The Game\", \"engine\": \"SnowEngine\", \"year\": 2062, \"is_cool\": true }"_json;
+ *	\endcode
+ *	\param str The string.
+ *	\param size The length of the string.
+ *	\return The pointer to the JSON element.
+ *	\throw std::invalid_argument The string is not a valid JSON.
+ *	
+ *	\~russian
+ *	\brief Литерал JSON
+ *	
+ *	Позволяет создавать элементы JSON, используя литералы:
+ *	\code
+ *		L"{ \"name\": \"The Game\", \"engine\": \"SnowEngine\", \"year\": 2062, \"is_cool\": true }"_json;
+ *	\endcode
+ *	\param str Строка.
+ *	\param size Длина строки.
+ *	\return Указатель на элемент JSON.
+ *	\throw std::invalid_argument Строока не является корректным JSON.
+*/
+std::shared_ptr<Element> operator""_json(const wchar_t* str, std::size_t size);
+
+/**
  *	\}
  */
 
 }
 
 }
+
+using snow::json::operator""_json;
