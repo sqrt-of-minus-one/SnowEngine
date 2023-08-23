@@ -48,43 +48,26 @@ void LangManager::set_lang(const String& lang)
 		return;
 	}
 
-	load_table_(CURRENT_CONFIG.lang_default_table, lang);
+	load_table_(CURRENT_CONFIG.lang_default_table, lang, CURRENT_CONFIG.lang_path);
 	
 	current_lang_ = lang;
-	int error_counter = 0;
-	std::set<String> tables = get_loaded_tables();
-	unload_all_tables();
-	for (const String& i : tables)
-	{
-		if (i != CURRENT_CONFIG.lang_default_table)
-		{
-			try
-			{
-				load_table_(i, current_lang_);
-			}
-			catch (...)
-			{
-				error_counter++;
-				LOG_D(LANG_LOG_, L"Couldn't load the localization table \""_s + i + L"\" for " + lang + L" while changing the language");
-			}
-		}
-	}
+	int errors = reload_(CURRENT_CONFIG.lang_path);
 	LOG_I(LANG_LOG_, L"The language has been changed to "_s + lang);
-	if (error_counter > 0)
+	if (errors > 0)
 	{
-		LOG_E(LANG_LOG_, L"Couldn't load some localization tables ("_s + error_counter + L") while changing the language");
+		LOG_E(LANG_LOG_, L"Couldn't load some localization tables ("_s + errors + L") while changing the language");
 	}
 }
 
 void LangManager::load_table(const String& table, bool reload)
 {
-	if (strings_.find(table.to_std_string()) != strings_.end() && !reload)
+	if (is_table_loaded(table) && !reload)
 	{
-		LOG_I(LANG_LOG_, L"Attempt to load the localization table \""_s + table + L"\" for " + current_lang_ + L", which is already loaded");
+		LOG_I(LANG_LOG_, L"Attempt to load the localization table \""_s + table + L"\" for " + current_lang_ + L", which has already been loaded");
 		return;
 	}
 
-	load_table_(table, current_lang_);
+	load_table_(table, current_lang_, CURRENT_CONFIG.lang_path);
 	LOG_I(LANG_LOG_, L"The localization table \""_s + table + L"\" for " + current_lang_ + L" has been loaded");
 }
 
@@ -210,12 +193,14 @@ LangManager::LangManager() :
 	strings_()
 {
 	set_lang(CURRENT_CONFIG.lang_default_lang);
+	ConfigManager::get_instance().on_changed_lang_path.bind<LangManager>(*this, &LangManager::change_path_);
+	ConfigManager::get_instance().on_changed_lang_default_table.bind<LangManager>(*this, &LangManager::change_default_table_);
 }
 
-void LangManager::load_table_(const String& table, const String& lang)
+void LangManager::load_table_(const String& table, const String& lang, const String& path)
 {
 	std::shared_ptr<json::JsonObject> json = std::dynamic_pointer_cast<json::JsonObject>(
-		json::Element::load(CURRENT_CONFIG.lang_path + L'/' + lang + L'/' + table + L".json"));
+		json::Element::load(path + L'/' + lang + L'/' + table + L".json"));
 	if (!json)
 	{
 		throw std::invalid_argument("Couldn't load a localization table: the JSON in the file must be an object");
@@ -228,6 +213,49 @@ void LangManager::load_table_(const String& table, const String& lang)
 	}
 	strings_.erase(table.to_std_string());
 	strings_.insert({ table.to_std_string(), std::move(t) });
+}
+
+int LangManager::reload_(const String& path)
+{
+	int error_counter = 0;
+	std::set<String> tables = get_loaded_tables();
+	unload_all_tables();
+	for (const String& i : tables)
+	{
+		if (i != CURRENT_CONFIG.lang_default_table)
+		{
+			try
+			{
+				load_table_(i, current_lang_, path);
+			}
+			catch (...)
+			{
+				error_counter++;
+				LOG_D(LANG_LOG_, L"Couldn't load the localization table \""_s + i + L"\" for " + current_lang_);
+			}
+		}
+	}
+	return error_counter;
+}
+
+void LangManager::change_path_(const Config& new_config)
+{
+	load_table_(new_config.lang_default_table, current_lang_, new_config.lang_path);
+
+	int errors = reload_(new_config.lang_path);
+	LOG_I(LANG_LOG_, L"The path of the localization directory has been changed"_s);
+	if (errors > 0)
+	{
+		LOG_E(LANG_LOG_, L"Couldn't load some localization tables ("_s + errors + L") while changing the path");
+	}
+}
+
+void LangManager::change_default_table_(const Config& new_config)
+{
+	if (!is_table_loaded(new_config.lang_default_table))
+	{
+		load_table_(new_config.lang_default_table, current_lang_, new_config.lang_path);
+	}
 }
 
 const String LangManager::LANG_LOG_ = L"SnowFlake";

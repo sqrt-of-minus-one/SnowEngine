@@ -14,11 +14,12 @@
 #include "ConfigManager.h"
 #include "../Component/Camera/CameraComponent.h"
 #include "../Component/Clickable/ClickableComponent.h"
-#include "../Util/Lang/Lang.h"
+#include "../Util/Lang/LangManager.h"
 #include "../Util/Time/TimerManager.h"
 #include "../Level/Level.h"
-#include "../Util/Input/Input.h"
+#include "../Util/Input/InputManager.h"
 #include "../Util/Function/EventBinder.h"
+#include "../Util/Log/LogManager.h"
 
 using namespace snow;
 
@@ -36,16 +37,16 @@ void Game::start()
 	{
 		std::thread loop_thread(&Game::loop_, this);
 		loop_thread.detach();
-		main_log_->i(L"The game has been started"_s);
+		LOG_I(GAME_LOG_, L"The game has been started"_s);
 		if (1 != 1)
 		{
-			main_log_->e(L"You are in the wrong universe. Please choose the universe where 1 equals 1 and try again"_s);
+			LOG_E(GAME_LOG_, L"You are in the wrong universe. Please choose the universe where 1 equals 1 and try again"_s);
 		}
 		is_started_ = true;
 	}
 	else
 	{
-		main_log_->i(L"Attempt to start the game. Ignored: the game has already been started"_s);
+		LOG_I(GAME_LOG_, L"Attempt to start the game. Ignored: the game has already been started"_s);
 	}
 }
 
@@ -70,8 +71,7 @@ Game::Game() :
 	window_(),
 	levels_(),
 	tick_time_point_()
-	is_started_(false),
-	main_log_(new Log(L"Main"_s))
+	is_started_(false)
 {}
 
 void Game::loop_()
@@ -216,3 +216,5 @@ void Game::remove_level_(Level& level)
 		}
 	}
 }
+
+const String Game::GAME_LOG_ = L"Main";

@@ -407,6 +407,27 @@ public:
 	
 	/**
 	 *	\~english
+	 *	\brief The name of the default localization table is changed
+	 *	
+	 *	This event is called when the `Config::lang_default_table` is changed by `set_current()` or
+	 *	`load_current()`.
+	 *	
+	 *	Event parameters:
+	 *	- `const Config& new_config`: the new configuration profile.
+	 *	
+	 *	\~russian
+	 *	\brief Название таблицы локализации по умолчанию изменено
+	 *	
+	 *	Это событие вызывается, когда `Config::lang_default_table` изменено методом `set_current()`
+	 *	или `load_current()`.
+	 *	
+	 *	Параметры события:
+	 *	- `const Config& new_config`: новый профиль конфигураций.
+	 */
+	EventBinder<const Config& /*new_config*/> on_changed_lang_default_table;
+	
+	/**
+	 *	\~english
 	 *	\brief The path to the directory with log files is changed
 	 *	
 	 *	This event is called when the `Config::log_path` is changed by `set_current()` or
@@ -481,10 +502,11 @@ private:
 	Event<const Config& /*new_config*/> on_changed_chunks_collision_size_;
 	Event<const Config& /*new_config*/> on_changed_chunks_clickable_size_;
 	Event<const Config& /*new_config*/> on_changed_lang_path_;
+	Event<const Config& /*new_config*/> on_changed_lang_default_table_;
 	Event<const Config& /*new_config*/> on_changed_log_path_;
 
 	std::mutex config_mtx_;
-	std::unique_ptr<Log> config_log_;
+	static const String CONFIG_LOG_;
 };
 
 /**

@@ -17,8 +17,7 @@
 #include "../Object.h"
 
 #include <unordered_map>
-
-#include "Log/Log.h"
+#include <mutex>
 
 namespace sf
 {
@@ -185,8 +184,8 @@ private:
 
 	std::shared_ptr<Timer> check_timer_;
 
-	/* lazy */ static std::mutex& res_mtx_() noexcept;
-	Log res_log_;
+	std::mutex res_mtx_;
+	static const String RESOURCE_LOG_;
 };
 
 }

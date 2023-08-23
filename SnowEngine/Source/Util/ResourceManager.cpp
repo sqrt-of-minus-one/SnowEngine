@@ -21,6 +21,7 @@
 
 #include <algorithm>
 
+#include "Log/LogManager.h"
 #include "Types/String.h"
 #include "Util.h"
 #include "../Game/ConfigManager.h"
@@ -33,7 +34,7 @@ using namespace snow;
 // If res_map contains non-null resource with the specified name, returns it. If the resource is
 // null, erases it.
 #define GET_RES_(res_map, name)								\
-	std::lock_guard<std::mutex> res_grd(res_mtx_());		\
+	std::lock_guard<std::mutex> res_grd(res_mtx_);		\
 	auto iter = (res_map).find((name).to_std_string());		\
 	if (iter != (res_map).end())							\
 	{														\
@@ -51,11 +52,11 @@ using namespace snow;
 	std::shared_ptr<t> res = std::make_shared<t>();														\
 	if (res->loadFromFile(sf::String(((res_path) + L'\\' + (name)).to_std_string()).toAnsiString()))	\
 	{																									\
-		res_log_.d(L"Resource "_s + name + L" has been loaded");										\
+		LOG_D(RESOURCE_LOG_, L"Resource "_s + name + L" has been loaded");										\
 		(res_map).insert(std::make_pair((name).to_std_string(), res));									\
 		return res;																						\
 	}																									\
-	res_log_.w(L"Couldn't load resource "_s + name);													\
+	LOG_W(RESOURCE_LOG_, L"Couldn't load resource "_s + name);													\
 	return nullptr;
 
 // Checks the map and removes unused resources
@@ -138,9 +139,9 @@ ResourceManager::ResourceManager() :
 	fonts_(),
 	sounds_(),
 	check_timer_(),
-	res_log_(L"SnowMan"_s)
+	res_mtx_()
 {
-	res_log_.i(L"The resource manager is created"_s);
+	LOG_I(RESOURCE_LOG_, L"The resource manager is created"_s);
 
 	ConfigManager::get_instance().on_changed_res_check_period_sec.bind<ResourceManager>(*this, &ResourceManager::update_check_timer_);
 	ConfigManager::get_instance().on_changed_res_path<ResourceManager>(*this, &ResourceManager::update_res_path_);
@@ -160,12 +161,12 @@ void ResourceManager::update_res_path_(const Config& new_config)
 {
 	int resources_erased = 0, resources_reloaded = 0;
 
-	std::lock_guard<std::mutex> res_grd(res_mtx_());
+	std::lock_guard<std::mutex> res_grd(res_mtx_);
 	RELOAD_RES_(textures_, new_config.res_textures_path);
 	RELOAD_RES_(fonts_, new_config.res_fonts_path);
 	RELOAD_RES_(sounds_, new_config.res_sounds_path);
 
-	res_log_.d(L"Resources were reloaded ("_s + util::to_string(resources_reloaded) + L" reloaded, " + util::to_string(resourced_erased) + L" erased)");
+	LOG_D(RESOURCE_LOG_, L"Resources were reloaded ("_s + util::to_string(resources_reloaded) + L" reloaded, " + util::to_string(resourced_erased) + L" erased)");
 }
 
 void ResourceManager::check_resources_()
@@ -181,19 +182,15 @@ void ResourceManager::check_resources_()
 	// 
 	// But in C++17 instead of three lines we need a lot of them:
 
-	std::lock_guard<std::mutex> res_grd(res_mtx_());
+	std::lock_guard<std::mutex> res_grd(res_mtx_);
 	CHECK_RES_(textures_);
 	CHECK_RES_(fonts_);
 	CHECK_RES_(sounds_);
 
 	if (resources_erased > 0)
 	{
-		res_log_.d(util::to_string(resources_erased) + L" unloaded resource(s) have been erased");
+		LOG_D(RESOURCE_LOG_, util::to_string(resources_erased) + L" unloaded resource(s) have been erased");
 	}
 }
 
-std::mutex& ResourceManager::res_mtx_() noexcept
-{
-	static std::mutex res_mtx;
-	return res_mtx;
-}
+const String ResourceManager::RESOURCE_LOG_ = L"SnowMan";

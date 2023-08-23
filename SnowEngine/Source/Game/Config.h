@@ -666,7 +666,7 @@ public:
 
 private:
 	std::mutex config_mtx_;
-	/*lazy*/ static Log& config_log_();
+	static const String CONFIG_LOG_;
 };
 
 /**

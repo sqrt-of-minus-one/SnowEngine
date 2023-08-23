@@ -8,10 +8,9 @@
 
 #include <filesystem>
 
+#include "../Util/Log/LogManager.h"
 #include "../Util/Json/JsonObject.h"
-#include "../Util/Log/Log.h"
 #include "../Util/Json/Value.h"
-#include "../Util/ResourceManager.h"
 #include "Game.h"
 
 using namespace snow;
@@ -52,7 +51,7 @@ void ConfigManager::set_current(const Config& config, bool reload)
 	std::lock_guard<std::mutex> config_grd(config_mtx_);
 
 	current_ = config;
-	config_log_->i(L"A new configuration profile is being applied");
+	LOG_I(CONFIG_LOG_, L"A new configuration profile is being applied");
 
 	// log category is the most important because it may be used by others	
 	if (reload || config.log_path != old.log_path)
@@ -103,6 +102,10 @@ void ConfigManager::set_current(const Config& config, bool reload)
 	{
 		on_changed_lang_path_.execute(config);
 	}
+	if (reload || config.lang_default_table != old.lang_default_table)
+	{
+		on_changed_lang_default_table_.execute(config);
+	}
 }
 
 void ConfigManager::save_current(const String& name, bool allow_override)
@@ -123,7 +126,7 @@ const String ConfigManager::DEFAULT_CONFIG = L"default";
 		/* ConfigManager: private */
 
 ConfigManager::ConfigManager() :
-	path_(DEFAULT_PATH_),
+	path_(DEFAULT_PATH),
 	current_(Config::DEFAULT),
 	on_changed_window_(),
 	on_changed_window(on_changed_window_),
@@ -137,10 +140,11 @@ ConfigManager::ConfigManager() :
 	on_changed_chunks_clickable_size(on_changed_chunks_clickable_size_),
 	on_changed_lang_path_(),
 	on_changed_lang_path(on_changed_lang_path_),
+	on_changed_lang_default_table_(),
+	on_changed_lang_default_table(on_changed_lang_default_table_),
 	on_changed_log_path_(),
 	on_changed_log_path(on_changed_log_path_),
-	config_mtx_(),
-	config_log_(new Log(L"ConfigManager"_s))
+	config_mtx_()
 {
 	LogManager::get_instance(); // We just need to create a log manager
 
@@ -154,12 +158,12 @@ ConfigManager::ConfigManager() :
 	}
 	catch (const std::runtime_error& e)
 	{
-		config_log_->e(L"Couldn't open the initial configuration file. The file will be created with default values"_s);
+		LOG_E(CONFIG_LOG_, L"Couldn't open the initial configuration file. The file will be created with default values"_s);
 		recreate_file_flag = true;
 	}
 	catch (const std::invalid_argument& e)
 	{
-		config_log_->e(L"The initial configuration file does not contain a valid JSON. The file will be recreated with default values"_s);
+		LOG_E(CONFIG_LOG_, L"The initial configuration file does not contain a valid JSON. The file will be recreated with default values"_s);
 		recreate_file_flag = true;
 	}
 
@@ -171,12 +175,12 @@ ConfigManager::ConfigManager() :
 		}
 		catch (const std::out_of_range& e)
 		{
-			config_log_->e(L"The initial configuration file does not contain a \"path\" field. The file will be recreated with the default path value"_s);
+			LOG_E(CONFIG_LOG_, L"The initial configuration file does not contain a \"path\" field. The file will be recreated with the default path value"_s);
 			recreate_file_flag = true;
 		}
 		catch (const std::invalid_argument& e)
 		{
-			config_log_->e(L"The \"path\" field in the initial configuration file is not a string. The file will be recreated with the default path value"_s);
+			LOG_E(CONFIG_LOG_, L"The \"path\" field in the initial configuration file is not a string. The file will be recreated with the default path value"_s);
 			recreate_file_flag = true;
 		}
 
@@ -186,12 +190,12 @@ ConfigManager::ConfigManager() :
 		}
 		catch (const std::out_of_range& e)
 		{
-			config_log_->e(L"The initial configuration file does not contain a \"default\" field. The file will be recreated with the default value"_s);
+			LOG_E(CONFIG_LOG_, L"The initial configuration file does not contain a \"default\" field. The file will be recreated with the default value"_s);
 			recreate_file_flag = true;
 		}
 		catch (const std::invalid_argument& e)
 		{
-			config_log_->e(L"The \"default\" field in the initial configuration file is not a string. The file will be recreated with the default value"_s);
+			LOG_E(CONFIG_LOG_, L"The \"default\" field in the initial configuration file is not a string. The file will be recreated with the default value"_s);
 			recreate_file_flag = true;
 		}
 	}
@@ -207,11 +211,13 @@ ConfigManager::ConfigManager() :
 		try
 		{
 			init_json->save(INIT_FILE);
-			config_log_->i(L"The initial configuration has been created or recreated"_s);
+			LOG_I(CONFIG_LOG_, L"The initial configuration has been created or recreated"_s);
 		}
 		catch (const std::runtime_error& e)
 		{
-			config_log_->e(L"Couldn't create or recreate the initial configuration file"_s);
+			LOG_E(CONFIG_LOG_, L"Couldn't create or recreate the initial configuration file"_s);
 		}
 	}
 }
+
+const String ConfigManager::CONFIG_LOG_ = L"Config";

@@ -19,7 +19,6 @@ class RenderWindow;
 namespace snow
 {
 
-class Log;
 class Level;
 
 /**
@@ -170,7 +169,7 @@ private:
 
 	time::std_time_point tick_time_point_;
 	bool is_started_;
-	std::unique_ptr<Log> main_log_;
+	static const String GAME_LOG_;
 };
 
 

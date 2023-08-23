@@ -246,8 +246,4 @@ Config::Config() :
 
 		/* Config: private */
 
-Log& Config::config_log_()
-{
-	static Log config_log(L"Config");
-	return config_log;
-}
+const String Config::CONFIG_LOG_ = L"Config";

@@ -169,8 +169,6 @@ public:
 	 *	\param table Название таблицы.
 	 *	\param reload Определяет, должен ли метод загрузить таблицу заново, если она уже была
 	 *	загружена.
-	 *	\return `false`, если произошла ошибка (и таблица локализации не была загружена), иначе
-	 *	`true`.
 	 *	\throw std::runtime_error Файл таблицы локализации не существует или к нему не удаётся
 	 *	получить доступ.
 	 *	\throw std::invalid_argument JSON, содержащийся в файле таблицы локализации, неверный.
@@ -370,7 +368,11 @@ private:
 
 	LangManager();
 
-	void load_table_(const String& table, const String& lang);
+	void load_table_(const String& table, const String& lang, const String& path);
+	int reload_(const String& path);
+
+	void change_path_(const Config& new_config);
+	void change_default_table_(const Config& new_config);
 
 	String current_lang_;
 	std::unordered_map<std::wstring, Table_> strings_;
