@@ -50,7 +50,7 @@ namespace snow
  *	\sa
  *	- `Config`: профиль конфигураций
  */
-class ConfigManager
+class ConfigManager : public Object
 {
 public:
 			/* SINGLETON */
@@ -69,6 +69,43 @@ public:
 	 *	\return Диспетчер.
 	 */
 	static ConfigManager& get_instance();
+
+			/* METHODS FROM Object */
+	
+	/**
+	 *	\~english
+	 *	\brief Converts the configuration manager to string
+	 *	
+	 *	Returns the string representing the current configuration profile.
+	 *	\return The same as `get_current().to_string()`.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует диспетчер конфигураций в строку
+	 *	
+	 *	Возвращает строку, представляющую текущий профиль конфигурации.
+	 *	\return То же, что и `get_current().to_string()`.
+	 */
+	virtual String to_string() const override;
+
+	/**
+	 *	\~english
+	 *	\brief Creates a JSON object describing the configuration manager
+	 *	
+	 *	Creates a JSON object with two elements:
+	 *	- `path`: the string with the path to the configuration profile files;
+	 *	- `current`: the JSON object describing the current profile (see `Config::to_json()`).
+	 *	\return The JSON object.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт объект JSON, описывающий диспетчер конфигураций
+	 *	
+	 *	Создаёт объект JSON с двумя элементами:
+	 *	- `path`: строка с путём к файлам профилей конфигураций;
+	 *	- `current`: объект JSON, описывающий текущий профиль конфигураций (см.
+	 *	`Config::to_json()`).
+	 *	\return Объект JSON.
+	 */
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 
@@ -217,7 +254,7 @@ public:
 	 *	- `get_current()`: возвращает текущий профиль
 	 *	- `load_current()`: загружает профиль из файла и применяет его
 	 */
-	void save_current(const String& name, bool allow_override = false);
+	void save_current(const String& name, bool allow_override = false) const;
 
 	/**
 	 *	\~english
@@ -277,6 +314,9 @@ public:
 	 *	Event parameters:
 	 *	- `const Config& new_config`: the new configuration profile.
 	 *	
+	 *	\warning In order to avoid deadlocks, bound functions must not use `get_current()` and
+	 *	other methods of the `ConfigManager`.
+	 *	
 	 *	\~russian
 	 *	\brief Свойства окна изменены
 	 *	
@@ -291,6 +331,9 @@ public:
 	 *	
 	 *	Параметры события:
 	 *	- `const Config& new_config`: новый профиль конфигураций.
+	 *	
+	 *	\warning Во избежание взаимных блокировок (deadlocks) привязанные функции не должны
+	 *	использовать `get_current()` и другие методы класса `ConfigManager`.
 	 */
 	EventBinder<const Config& /*new_config*/> on_changed_window;
 	
@@ -304,6 +347,9 @@ public:
 	 *	Event parameters:
 	 *	- `const Config& new_config`: the new configuration profile.
 	 *	
+	 *	\warning In order to avoid deadlocks, bound functions must not use `get_current()` and
+	 *	other methods of the `ConfigManager`.
+	 *	
 	 *	\~russian
 	 *	\brief Период проверки ресурсов изменён
 	 *	
@@ -312,6 +358,9 @@ public:
 	 *	
 	 *	Параметры события:
 	 *	- `const Config& new_config`: новый профиль конфигураций.
+	 *	
+	 *	\warning Во избежание взаимных блокировок (deadlocks) привязанные функции не должны
+	 *	использовать `get_current()` и другие методы класса `ConfigManager`.
 	 */
 	EventBinder<const Config& /*new_config*/> on_changed_res_check_period_sec;
 
@@ -328,6 +377,9 @@ public:
 	 *	Event parameters:
 	 *	- `const Config& new_config`: the new configuration profile.
 	 *	
+	 *	\warning In order to avoid deadlocks, bound functions must not use `get_current()` and
+	 *	other methods of the `ConfigManager`.
+	 *	
 	 *	\~russian
 	 *	\brief Пути к директориям ресурсов изменены
 	 *	
@@ -339,6 +391,9 @@ public:
 	 *	
 	 *	Параметры события:
 	 *	- `const Config& new_config`: новый профиль конфигураций.
+	 *	
+	 *	\warning Во избежание взаимных блокировок (deadlocks) привязанные функции не должны
+	 *	использовать `get_current()` и другие методы класса `ConfigManager`.
 	 */
 	EventBinder<const Config& /*new_config*/> on_changed_res_path;
 	
@@ -352,6 +407,9 @@ public:
 	 *	Event parameters:
 	 *	- `const Config& new_config`: the new configuration profile.
 	 *	
+	 *	\warning In order to avoid deadlocks, bound functions must not use `get_current()` and
+	 *	other methods of the `ConfigManager`.
+	 *	
 	 *	\~russian
 	 *	\brief Размер чанков коллизии изменён
 	 *	
@@ -360,6 +418,9 @@ public:
 	 *	
 	 *	Параметры события:
 	 *	- `const Config& new_config`: новый профиль конфигураций.
+	 *	
+	 *	\warning Во избежание взаимных блокировок (deadlocks) привязанные функции не должны
+	 *	использовать `get_current()` и другие методы класса `ConfigManager`.
 	 */
 	EventBinder<const Config& /*new_config*/> on_changed_chunks_collision_size;
 	
@@ -373,6 +434,9 @@ public:
 	 *	Event parameters:
 	 *	- `const Config& new_config`: the new configuration profile.
 	 *	
+	 *	\warning In order to avoid deadlocks, bound functions must not use `get_current()` and
+	 *	other methods of the `ConfigManager`.
+	 *	
 	 *	\~russian
 	 *	\brief Размер чанков кликабельных компонентов изменён
 	 *	
@@ -381,6 +445,9 @@ public:
 	 *	
 	 *	Параметры события:
 	 *	- `const Config& new_config`: новый профиль конфигураций.
+	 *	
+	 *	\warning Во избежание взаимных блокировок (deadlocks) привязанные функции не должны
+	 *	использовать `get_current()` и другие методы класса `ConfigManager`.
 	 */
 	EventBinder<const Config& /*new_config*/> on_changed_chunks_clickable_size;
 	
@@ -394,6 +461,9 @@ public:
 	 *	Event parameters:
 	 *	- `const Config& new_config`: the new configuration profile.
 	 *	
+	 *	\warning In order to avoid deadlocks, bound functions must not use `get_current()` and
+	 *	other methods of the `ConfigManager`.
+	 *	
 	 *	\~russian
 	 *	\brief Путь к директории с файлами локализации изменён
 	 *	
@@ -402,6 +472,9 @@ public:
 	 *	
 	 *	Параметры события:
 	 *	- `const Config& new_config`: новый профиль конфигураций.
+	 *	
+	 *	\warning Во избежание взаимных блокировок (deadlocks) привязанные функции не должны
+	 *	использовать `get_current()` и другие методы класса `ConfigManager`.
 	 */
 	EventBinder<const Config& /*new_config*/> on_changed_lang_path;
 	
@@ -415,6 +488,9 @@ public:
 	 *	Event parameters:
 	 *	- `const Config& new_config`: the new configuration profile.
 	 *	
+	 *	\warning In order to avoid deadlocks, bound functions must not use `get_current()` and
+	 *	other methods of the `ConfigManager`.
+	 *	
 	 *	\~russian
 	 *	\brief Название таблицы локализации по умолчанию изменено
 	 *	
@@ -423,6 +499,9 @@ public:
 	 *	
 	 *	Параметры события:
 	 *	- `const Config& new_config`: новый профиль конфигураций.
+	 *	
+	 *	\warning Во избежание взаимных блокировок (deadlocks) привязанные функции не должны
+	 *	использовать `get_current()` и другие методы класса `ConfigManager`.
 	 */
 	EventBinder<const Config& /*new_config*/> on_changed_lang_default_table;
 	
@@ -436,6 +515,9 @@ public:
 	 *	Event parameters:
 	 *	- `const Config& new_config`: the new configuration profile.
 	 *	
+	 *	\warning In order to avoid deadlocks, bound functions must not use `get_current()` and
+	 *	other methods of the `ConfigManager`.
+	 *	
 	 *	\~russian
 	 *	\brief Путь к директории с файлами лога изменён
 	 *	
@@ -444,6 +526,9 @@ public:
 	 *	
 	 *	Параметры события:
 	 *	- `const Config& new_config`: новый профиль конфигураций.
+	 *	
+	 *	\warning Во избежание взаимных блокировок (deadlocks) привязанные функции не должны
+	 *	использовать `get_current()` и другие методы класса `ConfigManager`.
 	 */
 	EventBinder<const Config& /*new_config*/> on_changed_log_path;
 
@@ -505,7 +590,8 @@ private:
 	Event<const Config& /*new_config*/> on_changed_lang_default_table_;
 	Event<const Config& /*new_config*/> on_changed_log_path_;
 
-	std::mutex config_mtx_;
+	mutable std::mutex path_mtx_;
+	mutable std::mutex current_mtx_;
 	static const String CONFIG_LOG_;
 };
 

@@ -31,6 +31,29 @@ Game& Game::get_instance()
 	return game;
 }
 
+String Game::to_string() const
+{
+	if (is_started_)
+	{
+		std::lock_guard<std::mutex> levels_grd(levels_mtx_);
+		return L"The game is started, there are "_s + util::to_string(levels_.size()) + L" levels";
+	}
+	return L"The game is not started"_s;
+}
+
+std::shared_ptr<json::Element> Game::to_json() const
+{
+	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
+	std::shared_ptr<json::Array> levels = std::make_shared<json::Array>();
+	std::lock_guard<std::mutex> levels_grd(levels_mtx_);
+	for (auto& i : levels_)
+	{
+		levels->get_content().insert(i->to_json());
+	}
+	result->get_content().insert({ L"levels"_s, levels });
+	return result;
+}
+
 void Game::start()
 {
 	if (!is_started_)
@@ -62,6 +85,7 @@ const time::std_time_point& Game::now() const noexcept
 
 std::weak_ptr<sf::RenderWindow> Game::get_window() noexcept
 {
+	std::lock_guard<std::mutex> window_grd(window_mtx_);
 	return window_;
 }
 
@@ -70,8 +94,10 @@ std::weak_ptr<sf::RenderWindow> Game::get_window() noexcept
 Game::Game() :
 	window_(),
 	levels_(),
-	tick_time_point_()
-	is_started_(false)
+	tick_time_point_(),
+	is_started_(false),
+	window_mtx_(),
+	levels_mtx_()
 {}
 
 void Game::loop_()
@@ -185,6 +211,7 @@ void Game::loop_()
 
 		window_->clear();
 
+		std::lock_guard<std::mutex> levels_grd(levels_mtx_);
 		for (auto& i : levels_)
 		{
 			i->tick(delta_sec);
@@ -198,6 +225,7 @@ void Game::loop_()
 void Game::create_window_()
 {
 	const Config& c = ConfigManager::get_instance().get_current();
+	std::lock_guard<std::mutex> window_grd(window_mtx_);
 	window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(c.window_resolution.get_x(), c.window_resolution.get_y()), c.window_title.to_std_string(),
 		sf::Style::Titlebar * c.window_titlebar | sf::Style::Resize * c.window_resize |
 		sf::Style::Close * c.window_titlebar_buttons | sf::Style::Fullscreen * c.window_fullscreen);
@@ -207,6 +235,7 @@ void Game::create_window_()
 
 void Game::remove_level_(Level& level)
 {
+	std::lock_guard<std::mutex> levels_grd(levels_mtx_);
 	for (auto i = levels_.begin(); i != levels_.end(); i++)
 	{
 		if (i->get() == &level)

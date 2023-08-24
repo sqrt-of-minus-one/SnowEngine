@@ -210,7 +210,7 @@ std::shared_ptr<json::Element> Config::to_json() const
 	return result;
 }
 
-void Config::save(const String& name, bool allow_override)
+void Config::save(const String& name, bool allow_override) const
 {
 	to_json()->save(ConfigManager::get_instance().get_path() + L"/" + name + L".json", allow_override);
 }

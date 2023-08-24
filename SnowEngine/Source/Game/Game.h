@@ -39,7 +39,7 @@ class Level;
  *	Этот класс контролирует процесс игры и содержит игровые свойства. Он является одиночкой: может
  *	существовать только один его экземпляр.
  */
-class Game
+class Game : public Object
 {
 public:
 			/* SINGLETON */
@@ -58,6 +58,47 @@ public:
 	 *	\return Экземпляр класса.
 	*/
 	static Game& get_instance();
+
+			/* METHODS FROM Object */
+	
+	/**
+	 *	\~english
+	 *	\brief Converts the game object to string
+	 *	
+	 *	If the game is not started, creates a string `"The game is not started"`. If the game is
+	 *	started, creates a string `"The game is started, there are <l> levels"`, where `<l>` is the
+	 *	number of levels.
+	 *	\return The string describing the game object.
+	 *	
+	 *	\~russian
+	 *	\brief Конвертирует объект `Game` в строку
+	 *	
+	 *	Если игра не начата, создаёт строку `"The game is not started"`. Если игра начата, создаёт
+	 *	строку `"The game is started, there are <l> levels"`, где `<l>` — количество уровней.
+	 *	\return Строка, описывающая объект `Game`.
+	 */
+	virtual String to_string() const override;
+
+	/**
+	 *	\~english
+	 *	\brief Creates a JSON object describing the game object
+	 *	
+	 *	Creates a JSON object. Its only element (`levels`) is an array with JSON objects describing
+	 *	all levels (see `Level::to_json()`).
+	 *	\return The JSON object. A null JSON value if the game has not been started.
+	 *	\warning This method produces the JSON which describes every component of every actor on
+	 *	the level. Sometimes it's a lot.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт объект JSON, описывающий объект `Game`
+	 *	
+	 *	Создаёт объект JSON. Его единственный элемент (`levels`) представляет собой массив с
+	 *	объектами JSON, описывающими все уровни (см. `Level::to_json()`).
+	 *	\return Объект JSON. Нулевое значение JSON, если игра не была начата.
+	 *	\warning Этот метод производит JSON, который описывает каждый компонент каждого актёра на
+	 *	уровне. Иногда это много.
+	 */
+	virtual std::shared_ptr<json::Element> to_json() const override;
 
 			/* METHODS */
 
@@ -169,6 +210,10 @@ private:
 
 	time::std_time_point tick_time_point_;
 	bool is_started_;
+
+	std::mutex window_mtx_;
+	std::mutex levels_mtx_;
+
 	static const String GAME_LOG_;
 };
 
@@ -185,6 +230,7 @@ std::shared_ptr<T_Level> Game::create_level()
 	std::shared_ptr<T_Level> level(new T_Level);
 	level->on_destroyed.bind(&Game::remove_level_, true);
 
+	std::lock_guard<std::mutex> levels_grd(levels_mtx_);
 	levels_.push_back(level);
 	return level;
 }

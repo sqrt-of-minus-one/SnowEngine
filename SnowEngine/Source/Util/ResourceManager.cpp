@@ -34,7 +34,7 @@ using namespace snow;
 // If res_map contains non-null resource with the specified name, returns it. If the resource is
 // null, erases it.
 #define GET_RES_(res_map, name)								\
-	std::lock_guard<std::mutex> res_grd(res_mtx_);		\
+	std::lock_guard<std::mutex> res_grd(res_mtx_);			\
 	auto iter = (res_map).find((name).to_std_string());		\
 	if (iter != (res_map).end())							\
 	{														\
@@ -52,11 +52,11 @@ using namespace snow;
 	std::shared_ptr<t> res = std::make_shared<t>();														\
 	if (res->loadFromFile(sf::String(((res_path) + L'\\' + (name)).to_std_string()).toAnsiString()))	\
 	{																									\
-		LOG_D(RESOURCE_LOG_, L"Resource "_s + name + L" has been loaded");										\
+		LOG_D(RESOURCE_LOG_, L"Resource "_s + name + L" has been loaded");								\
 		(res_map).insert(std::make_pair((name).to_std_string(), res));									\
 		return res;																						\
 	}																									\
-	LOG_W(RESOURCE_LOG_, L"Couldn't load resource "_s + name);													\
+	LOG_W(RESOURCE_LOG_, L"Couldn't load resource "_s + name);											\
 	return nullptr;
 
 // Checks the map and removes unused resources

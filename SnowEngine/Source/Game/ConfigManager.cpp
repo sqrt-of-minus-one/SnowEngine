@@ -23,14 +23,31 @@ ConfigManager& ConfigManager::get_instance()
 	return config_manager;
 }
 
+String ConfigManager::to_string() const
+{
+	std::lock_guard<std::mutex> current_grd(current_mtx_);
+	return current_.to_string();
+}
+
+std::shared_ptr<json::Element> ConfigManager::to_json() const
+{
+	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
+	std::lock_guard<std::mutex> path_grd(path_mtx_);
+	result->get_content().insert({ L"path"_s, path_.to_json() });
+	std::lock_guard<std::mutex> current_grd(current_mtx_);
+	result->get_content().insert({ L"current"_s, current_.to_json() });
+	return result;
+}
+
 const String& ConfigManager::get_path() const
 {
+	std::lock_guard<std::mutex> path_grd(path_mtx_);
 	return path_;
 }
 
 void ConfigManager::set_path(const String& path)
 {
-	std::lock_guard<std::mutex> config_grd(config_mtx_);
+	std::lock_guard<std::mutex> path_grd(path_mtx_);
 	path_ = path;
 	while (path_.get_last() == L'/' || path_.get_last() == L'\\')
 	{
@@ -41,6 +58,7 @@ void ConfigManager::set_path(const String& path)
 
 const Config& ConfigManager::get_current() const
 {
+	std::lock_guard<std::mutex> current_grd(current_mtx_);
 	return current_;
 }
 
@@ -48,7 +66,7 @@ void ConfigManager::set_current(const Config& config, bool reload)
 {
 	Config old = current_;
 
-	std::lock_guard<std::mutex> config_grd(config_mtx_);
+	std::lock_guard<std::mutex> current_grd(current_mtx_);
 
 	current_ = config;
 	LOG_I(CONFIG_LOG_, L"A new configuration profile is being applied");
@@ -108,13 +126,15 @@ void ConfigManager::set_current(const Config& config, bool reload)
 	}
 }
 
-void ConfigManager::save_current(const String& name, bool allow_override)
+void ConfigManager::save_current(const String& name, bool allow_override) const
 {
+	std::lock_guard<std::mutex> current_grd(current_mtx_);
 	current_.save(name, allow_override);
 }
 
 Config& ConfigManager::load_current(const String& name)
 {
+	std::lock_guard<std::mutex> current_grd(current_mtx_);
 	set_current(Config(name));
 	return current_;
 }
@@ -144,7 +164,8 @@ ConfigManager::ConfigManager() :
 	on_changed_lang_default_table(on_changed_lang_default_table_),
 	on_changed_log_path_(),
 	on_changed_log_path(on_changed_log_path_),
-	config_mtx_()
+	path_mtx_(),
+	current_mtx_()
 {
 	LogManager::get_instance(); // We just need to create a log manager
 

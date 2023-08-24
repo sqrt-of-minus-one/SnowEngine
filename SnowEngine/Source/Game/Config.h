@@ -290,7 +290,7 @@ public:
 	 *	\sa
 	 *	- `Config(const String&)`: загружает профиль из файла
 	 */
-	void save(const String& name, bool allow_override = false);
+	void save(const String& name, bool allow_override = false) const;
 
 			/* FIELDS
 				SECTION: window */
