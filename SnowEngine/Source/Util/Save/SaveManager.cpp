@@ -16,6 +16,7 @@
 
 #include "String.h"
 #include "../../Game/ConfigManager.h"
+#include "../Log/LogManager.h"
 #include "../../Game/Game.h"
 
 #include <fstream>
@@ -72,6 +73,7 @@ bool SaveManager::remove_save(const String& name, bool do_backup)
 	Path path = CURRENT_CONFIG.saves_path;
 	if (!std::filesystem::exists(path / (name + L".json").to_std_string()))
 	{
+		LOG_I(SAVE_LOG, L"Attempt to remove the \""_s + name + L"\" save, which does not exist");
 		return false;
 	}
 
@@ -80,10 +82,12 @@ bool SaveManager::remove_save(const String& name, bool do_backup)
 		std::filesystem::rename(
 			path / (name + L".json").to_std_string(),
 			path / (L'~' + name + L".json").to_std_string());
+		LOG_I(SAVE_LOG, L"The \""_s + name + L"\" save has been removed (a backup has been created)");
 	}
 	else
 	{
 		std::filesystem::remove(path / (name + L".json").to_std_string());
+		LOG_I(SAVE_LOG, L"The \""_s + name + L"\" save has been removed");
 	}
 	return true;
 }
@@ -106,12 +110,17 @@ bool SaveManager::save(const String& name, std::shared_ptr<const json::Element> 
 		std::filesystem::rename(
 			path / (name + L".json").to_std_string(),
 			path / (L'~' + name + L".json").to_std_string());
+		LOG_I(SAVE_LOG, L"The \""_s + name + L"\" save is going to be created. The old save with the save name has been backed up");
 	}
 	data->save(path / (name + L".json").to_std_string(), true);
+	LOG_I(SAVE_LOG, L"The \""_s + name + L"\" save has been created");
 	return true;
 }
 
 std::shared_ptr<json::Element> SaveManager::load(const String& name)
 {
+	LOG_D(SAVE_LOG, L"The \""_s + name + L"\" save is going to be loaded");
 	return json::Element::load(CURRENT_CONFIG.saves_path / (name + L".json").to_std_string());
 }
+
+const String SaveManager::SAVE_LOG = L"SnowFall";

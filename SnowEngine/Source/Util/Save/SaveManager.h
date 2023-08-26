@@ -217,6 +217,8 @@ public:
 	 */
 	std::shared_ptr<json::Element> load(const String& name);
 
+	static const String SAVE_LOG;
+
 private:
 	SaveManager();
 };
