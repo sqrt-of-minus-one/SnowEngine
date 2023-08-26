@@ -265,10 +265,10 @@ private:
 	Timer(const Delegate<void>& function, double delay_sec, double period_sec);
 
 	Delegate<void> function_;
-	time::std_duration period_;
+	Duration period_;
 
-	time::std_time_point expires_;
-	time::std_time_point paused_;
+	TimePoint expires_;
+	TimePoint paused_;
 
 	bool is_paused_;
 	bool is_active_;

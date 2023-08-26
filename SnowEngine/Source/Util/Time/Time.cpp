@@ -82,22 +82,22 @@ String weekday_to_str_(time::EWeekDay week_day)
 	}
 }
 
-double time::std_to_sec(const std_duration& duration)
+double time::std_to_sec(const Duration& duration)
 {
 	return duration.count() / std_in_sec;
 }
 
-time::std_duration time::sec_to_std(double sec)
+Duration time::sec_to_std(double sec)
 {
-	return std_duration(static_cast<std_duration::rep>(sec * std_in_sec));
+	return Duration(static_cast<Duration::rep>(sec * std_in_sec));
 }
 
-const time::std_time_point& time::now()
+const TimePoint& time::now()
 {
 	return Game::get_instance().now();
 }
 
-time::STime time::to_stime(std_time_point point)
+time::STime time::to_stime(const TimePoint& point)
 {
 	std::chrono::time_point<std::chrono::system_clock> system(
 		std::chrono::duration_cast<std::chrono::duration<std::chrono::system_clock::rep, std::chrono::system_clock::period>>(
@@ -107,7 +107,7 @@ time::STime time::to_stime(std_time_point point)
 	return to_stime(*std::localtime(&time));
 }
 
-time::STime time::to_stime(std::tm point)
+time::STime time::to_stime(const std::tm& point)
 {
 	time::STime ret;
 	ret.year = point.tm_year + 1900;
@@ -121,7 +121,7 @@ time::STime time::to_stime(std::tm point)
 	return ret;
 }
 
-String time::to_string(time::STime point, const String& format)
+String time::to_string(const STime& point, const String& format)
 {
 	String result;
 	for (int i = 0; i < format.size(); i++)
@@ -395,7 +395,7 @@ String time::to_string(time::STime point, const String& format)
 	return result;
 }
 
-String time::to_string(std_duration duration, const String& format)
+String time::to_string(const Duration& duration, const String& format)
 {
 	String result;
 
@@ -563,7 +563,7 @@ String time::to_string(std_duration duration, const String& format)
 	return result;
 }
 
-std_time_point time::to_std_point(time::STime point)
+TimePoint time::to_std_point(STime point)
 {
 	std::tm tm;
 	tm.tm_year = point.year - 1900;

@@ -105,7 +105,7 @@ void Game::loop_()
 	create_window_();
 
 	tick_time_point_ = std::chrono::steady_clock::now();
-	time::std_time_point prev_time = tick_time_point_;
+	TimePoint prev_time = tick_time_point_;
 	while (window_->isOpen())
 	{
 		sf::Event event;

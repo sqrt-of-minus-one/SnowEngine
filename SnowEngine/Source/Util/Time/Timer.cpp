@@ -109,7 +109,7 @@ Timer::Timer(const Delegate<void>& function, double delay_sec, double period_sec
 
 void Timer::tick_(double delta_sec)
 {
-	const time::std_time_point& now = time::now();
+	const TimePoint& now = time::now();
 	if (!is_paused_ && now >= expires_)
 	{
 		function_.execute();

@@ -126,7 +126,7 @@ public:
 	 *	\sa
 	 *	- `set_path()`: устанавливает путь
 	 */
-	const String& get_path() const;
+	const Path& get_path() const;
 
 	/**
 	 *	\~english
@@ -151,7 +151,7 @@ public:
 	 *	\sa
 	 *	- `get_path()`: возвращает путь
 	 */
-	void set_path(const String& path);
+	void set_path(const Path& path);
 
 	/**
 	 *	\~english
@@ -543,7 +543,7 @@ public:
 	 *	
 	 *	Подробности можно найти в документации класса `ConfigManager`.
 	 */
-	const static String INIT_FILE;
+	const static Path INIT_FILE;
 
 	/**
 	 *	\~english
@@ -558,7 +558,7 @@ public:
 	 *	Если начальные настройки конфигураций не содержат пути к директории с профилями, будет
 	 *	использовано это значение.
 	 */
-	const static String DEFAULT_PATH;
+	const static Path DEFAULT_PATH;
 
 	/**
 	 *	\~english
@@ -578,7 +578,7 @@ public:
 private:
 	ConfigManager();
 
-	String path_;
+	Path path_;
 	Config current_;
 
 	Event<const Config& /*new_config*/> on_changed_window_;

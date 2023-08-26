@@ -50,7 +50,7 @@ using namespace snow;
 // Returns the loaded resource or nullptr if the resource wasn't loaded
 #define LOAD_RES_(t, res_path, res_map, name)															\
 	std::shared_ptr<t> res = std::make_shared<t>();														\
-	if (res->loadFromFile(sf::String(((res_path) + L'\\' + (name)).to_std_string()).toAnsiString()))	\
+	if (res->loadFromFile(sf::String(((res_path) / (name).to_std_string()).wstring()).toAnsiString()))	\
 	{																									\
 		LOG_D(RESOURCE_LOG_, L"Resource "_s + name + L" has been loaded");								\
 		(res_map).insert(std::make_pair((name).to_std_string(), res));									\
@@ -79,7 +79,7 @@ for (auto i = (res_map).begin(); i != (res_map).end(); )	\
 for (auto i = (res_map).begin(); i != (res_map).end(); )
 	{
 		auto p = i->second.lock();
-		if (p && p->loadFromFile(sf::String(((res_path) + L'\\' + i->first).to_std_string()).toAnsiString()))
+		if (p && p->loadFromFile(sf::String(((res_path) / i->first.to_std_string()).wstring()).toAnsiString()))
 		{
 			resources_reloaded++;
 			i++;

@@ -33,27 +33,23 @@ std::shared_ptr<json::Element> ConfigManager::to_json() const
 {
 	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
 	std::lock_guard<std::mutex> path_grd(path_mtx_);
-	result->get_content().insert({ L"path"_s, path_.to_json() });
+	result->get_content().insert({ L"path"_s, util::to_json(path_) });
 	std::lock_guard<std::mutex> current_grd(current_mtx_);
 	result->get_content().insert({ L"current"_s, current_.to_json() });
 	return result;
 }
 
-const String& ConfigManager::get_path() const
+const Path& ConfigManager::get_path() const
 {
 	std::lock_guard<std::mutex> path_grd(path_mtx_);
 	return path_;
 }
 
-void ConfigManager::set_path(const String& path)
+void ConfigManager::set_path(const Path& path)
 {
 	std::lock_guard<std::mutex> path_grd(path_mtx_);
 	path_ = path;
-	while (path_.get_last() == L'/' || path_.get_last() == L'\\')
-	{
-		path_.remove_last();
-	}
-	std::filesystem::create_directories(path_.to_std_string());
+	std::filesystem::create_directories(path_);
 }
 
 const Config& ConfigManager::get_current() const
@@ -72,7 +68,7 @@ void ConfigManager::set_current(const Config& config, bool reload)
 	LOG_I(CONFIG_LOG_, L"A new configuration profile is being applied");
 
 	// log category is the most important because it may be used by others	
-	if (reload || config.log_path != old.log_path)
+	if (reload || !std::filesystem::equivalent(config.log_path, old.log_path))
 	{
 		on_changed_log_path_.execute(config);
 	}
@@ -96,9 +92,9 @@ void ConfigManager::set_current(const Config& config, bool reload)
 	{
 		on_changed_res_check_period_sec_.execute(config);
 	}
-	if (reload || config.res_textures_path != old.res_textures_path ||
-		reload || config.res_fonts_path != old.res_fonts_path ||
-		reload || config.res_sounds_path != old.res_sounds_path)
+	if (reload || !std::filesystem::equivalent(config.res_textures_path, old.res_textures_path) ||
+		reload || !std::filesystem::equivalent(config.res_fonts_path, old.res_fonts_path) ||
+		reload || !std::filesystem::equivalent(config.res_sounds_path, old.res_sounds_path))
 	{
 		on_changed_res_path_.execute(config);
 	}
@@ -116,7 +112,7 @@ void ConfigManager::set_current(const Config& config, bool reload)
 
 	// lang
 
-	if (reload || config.lang_path != old.lang_path)
+	if (reload || !std::filesystem::equivalent(config.lang_path, old.lang_path))
 	{
 		on_changed_lang_path_.execute(config);
 	}
@@ -139,8 +135,8 @@ Config& ConfigManager::load_current(const String& name)
 	return current_;
 }
 
-const String ConfigManager::INIT_FILE = L"config_init.json";
-const String ConfigManager::DEFAULT_PATH = L"Config";
+const Path ConfigManager::INIT_FILE = L"config_init.json";
+const Path ConfigManager::DEFAULT_PATH = L"Config";
 const String ConfigManager::DEFAULT_CONFIG = L"default";
 
 		/* ConfigManager: private */
@@ -170,7 +166,8 @@ ConfigManager::ConfigManager() :
 	LogManager::get_instance(); // We just need to create a log manager
 
 	std::shared_ptr<json::JsonObject> init_json;
-	String path = DEFAULT_PATH, default_config = DEFAULT_CONFIG;
+	Path path = DEFAULT_PATH;
+	String default_config = DEFAULT_CONFIG;
 	bool recreate_file_flag = false;
 	
 	try
@@ -192,7 +189,7 @@ ConfigManager::ConfigManager() :
 	{
 		try
 		{
-			path = util::json_to_string(init_json->get_content().at(L"path"_s));
+			path = util::json_to_path(init_json->get_content().at(L"path"_s));
 		}
 		catch (const std::out_of_range& e)
 		{

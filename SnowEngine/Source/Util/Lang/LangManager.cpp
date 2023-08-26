@@ -197,10 +197,10 @@ LangManager::LangManager() :
 	ConfigManager::get_instance().on_changed_lang_default_table.bind<LangManager>(*this, &LangManager::change_default_table_);
 }
 
-void LangManager::load_table_(const String& table, const String& lang, const String& path)
+void LangManager::load_table_(const String& table, const String& lang, const Path& path)
 {
 	std::shared_ptr<json::JsonObject> json = std::dynamic_pointer_cast<json::JsonObject>(
-		json::Element::load(path + L'/' + lang + L'/' + table + L".json"));
+		json::Element::load(path / lang.to_std_string() / (table + L".json").to_std_string()));
 	if (!json)
 	{
 		throw std::invalid_argument("Couldn't load a localization table: the JSON in the file must be an object");
@@ -215,7 +215,7 @@ void LangManager::load_table_(const String& table, const String& lang, const Str
 	strings_.insert({ table.to_std_string(), std::move(t) });
 }
 
-int LangManager::reload_(const String& path)
+int LangManager::reload_(const Path& path)
 {
 	int error_counter = 0;
 	std::set<String> tables = get_loaded_tables();

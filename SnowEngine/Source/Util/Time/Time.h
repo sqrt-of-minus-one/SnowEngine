@@ -38,32 +38,6 @@ namespace time
 
 /**
  *	\~english
- *	\brief The standard time point type
- *	
- *	SnowEngine uses the time point type of the standard `std::chrono::steady_clock`.
- *	
- *	\~russian
- *	\brief Тип стандартной временной точки
- *	
- *	SnowEngine использует тип временной точки стандартного `std::chrono::steady_clock`.
-*/
-using std_time_point = std::chrono::steady_clock::time_point;
-
-/**
- *	\~english
- *	\brief The standard duration type
- *	
- *	SnowEngine uses the duration type of the standard `std::chrono::steady_clock`.
- *	
- *	\~russian
- *	\brief Тип стандартной длительности
- *	
- *	SnowEngine использует тип длительности стандартного `std::chrono::steady_clock`.
- */
-using std_duration = std::chrono::steady_clock::duration;
-
-/**
- *	\~english
  *	\brief How many periods of the standard duration type are in the second
  *	
  *	How many periods of the standard duration type are in the second.
@@ -73,7 +47,7 @@ using std_duration = std::chrono::steady_clock::duration;
  *	
  *	Сколько периодов стандартного типа длительности в одной секунде.
  */
-constexpr double std_in_sec = static_cast<double>(time::std_duration::period::den) / time::std_duration::period::num;
+constexpr double std_in_sec = static_cast<double>(Duration::period::den) / Duration::period::num;
 
 /**
  *	\~english
@@ -180,7 +154,7 @@ struct STime
  *	\param duration Объект стандартного типа длительности.
  *	\return Количество секунд.
  */
-double std_to_sec(const std_duration& duration);
+double std_to_sec(const Duration& duration);
 
 /**
  *	\~english
@@ -197,7 +171,7 @@ double std_to_sec(const std_duration& duration);
  *	\param sec Количество секунд.
  *	\return Длительность.
  */
-std_duration sec_to_std(double sec);
+Duration sec_to_std(double sec);
 
 /**
  *	\~english
@@ -215,7 +189,7 @@ std_duration sec_to_std(double sec);
  *	текущий тик.
  *	\return Время, когда начался текущий тик. Текущее время, если игра ещё не была начата.
  */
-const std_time_point& now();
+const TimePoint& now();
 
 /**
  *	\~english
@@ -232,7 +206,7 @@ const std_time_point& now();
  *	\param point Временная точка.
  *	\return Объект `STime`.
  */
-STime to_stime(std_time_point point);
+STime to_stime(const TimePoint& point);
 
 /**
  *	\~english
@@ -249,7 +223,7 @@ STime to_stime(std_time_point point);
  *	\param point Временная точка.
  *	\return Объект `STime`.
  */
-STime to_stime(std::tm point);
+STime to_stime(const std::tm& point);
 
 /**
  *	\~english
@@ -330,7 +304,7 @@ STime to_stime(std::tm point);
  *	\param format Строка формата.
  *	\return Строка.
  */
-String to_string(STime point, const String& format = L"yyyy.MM.dd-HH:mm:ss"_s);
+String to_string(const STime& point, const String& format = L"yyyy.MM.dd-HH:mm:ss"_s);
 
 /**
  *	\~english
@@ -391,7 +365,7 @@ String to_string(STime point, const String& format = L"yyyy.MM.dd-HH:mm:ss"_s);
  *	\param format Строка формата.
  *	\return Строка.
  */
-String to_string(std_duration duration, const String& format = L"hh:mm:ss.iii.uuu.nnn"_s);
+String to_string(const Duration& duration, const String& format = L"hh:mm:ss.iii.uuu.nnn"_s);
 
 /**
  *	\~english
@@ -408,7 +382,7 @@ String to_string(std_duration duration, const String& format = L"hh:mm:ss.iii.uu
  *	\param point Объект `STime`.
  *	\return Стандартный объект `time_point`.
  */
-std_time_point to_std_point(STime point);
+TimePoint to_std_point(const STime& point);
 
 }
 

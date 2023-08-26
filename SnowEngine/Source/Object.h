@@ -9,6 +9,8 @@
 #include <stdexcept>
 #include <memory>
 #include <unordered_set>
+#include <filesystem>
+#include <chrono>
 
 namespace snow
 {
@@ -19,6 +21,10 @@ namespace json
 {
 class Element;
 }
+
+using Path = std::filesystem::path;
+using TimePoint = std::chrono::steady_clock::time_point;
+using Duration = std::chrono::steady_clock::duration;
 
 /**
  *	\~english

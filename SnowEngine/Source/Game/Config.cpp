@@ -28,13 +28,6 @@ using namespace snow;
 		config_log_().e(L"The \""_s + (section_name) + L"\" section contains invalid \"" + (name) + L"\" value. The default value will be used");		\
 	}
 
-#define LOAD_VALUE_PATH_(var, from_json, section_name, name)		\
-	LOAD_VALUE_(var, from_json, section_name, name);				\
-	while ((var).get_last() == L'/' || (var).get_last() == L'\\')	\
-	{																\
-		(var).remove_last();										\
-	}
-
 bool load_section_(Log& log, std::shared_ptr<json::JsonObject> section, std::shared_ptr<json::JsonObject> json, const String& name)
 {
 	try
@@ -108,7 +101,7 @@ Config::Config(Config&& config) :
 {}
 
 Config::Config(const String& name) :
-	Config(json::Element::load(ConfigManager::get_instance().get_path() + L'/' + name + L".json"))
+	Config(json::Element::load(ConfigManager::get_instance().get_path() / (name + L".json")))
 {}
 
 Config::Config(std::shared_ptr<const json::Element> json) :
@@ -136,10 +129,10 @@ Config::Config(std::shared_ptr<const json::Element> json) :
 	if(load_section_(config_log_(), section, config_json, L"res"_s))
 	{
 		LOAD_VALUE_(res_check_period_sec,		util::json_to_double,	L"res"_s,		L"check_period_sec"_s);
-		LOAD_VALUE_PATH_(res_textures_path,		util::json_to_string,	L"res"_s,		L"textures_path"_s);
-		LOAD_VALUE_PATH_(res_fonts_path,		util::json_to_string,	L"res"_s,		L"fonts_path"_s);
-		LOAD_VALUE_PATH_(res_sounds_path,		util::json_to_string,	L"res"_s,		L"sounds_path"_s);
-		LOAD_VALUE_PATH_(res_music_path,		util::json_to_string,	L"res"_s,		L"music_path"_s);
+		LOAD_VALUE_(res_textures_path,			util::json_to_path,		L"res"_s,		L"textures_path"_s);
+		LOAD_VALUE_(res_fonts_path,				util::json_to_path,		L"res"_s,		L"fonts_path"_s);
+		LOAD_VALUE_(res_sounds_path,			util::json_to_path,		L"res"_s,		L"sounds_path"_s);
+		LOAD_VALUE_(res_music_path,				util::json_to_path,		L"res"_s,		L"music_path"_s);
 	}
 	if(load_section_(config_log_(), section, config_json, L"chunks"_s))
 	{
@@ -148,17 +141,17 @@ Config::Config(std::shared_ptr<const json::Element> json) :
 	}
 	if(load_section_(config_log_(), section, config_json, L"lang"_s))
 	{
-		LOAD_VALUE_PATH_(lang_path,				util::json_to_string,	L"lang"_s,		L"path"_s);
+		LOAD_VALUE_(lang_path,					util::json_to_path,		L"lang"_s,		L"path"_s);
 		LOAD_VALUE_(lang_default_lang,			util::json_to_string,	L"lang"_s,		L"default_lang"_s);
 		LOAD_VALUE_(lang_default_table,			util::json_to_string,	L"lang"_s,		L"default_table"_s);
 	}
 	if(load_section_(config_log_(), section, config_json, L"log"_s))
 	{
-		LOAD_VALUE_PATH_(log_path,				util::json_to_string,	L"log"_s,		L"path"_s);
+		LOAD_VALUE_(log_path,					util::json_to_path,		L"log"_s,		L"path"_s);
 	}
 	if(load_section_(config_log_(), section, config_json, L"saves"_s))
 	{
-		LOAD_VALUE_PATH_(saves_path,			util::json_to_string,	L"saves"_s,		L"path"_s);
+		LOAD_VALUE_(saves_path,					util::json_to_path,		L"saves"_s,		L"path"_s);
 	}
 }
 
@@ -212,7 +205,7 @@ std::shared_ptr<json::Element> Config::to_json() const
 
 void Config::save(const String& name, bool allow_override) const
 {
-	to_json()->save(ConfigManager::get_instance().get_path() + L"/" + name + L".json", allow_override);
+	to_json()->save(ConfigManager::get_instance().get_path() / (name + L".json"), allow_override);
 }
 
 const Config Config::DEFAULT;

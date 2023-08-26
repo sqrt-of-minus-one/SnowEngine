@@ -8,6 +8,8 @@
 
 #include "../Object.h"
 
+#include <filesystem>
+
 #include "../Math/Vector/Point2.h"
 #include "../Util/Types/String.h"
 
@@ -75,17 +77,17 @@ class Log;
  *	| `window` | `titlebar_buttons` | Boolean               | Does the game window have a buttons on its titlebar         | `true`                               | `Config::window_titlebar_buttons` |
  *	| `window` | `title`            | String                | The title of the game window                                | `"The game (powered by SnowEngine)"` | `Config::window_title`            |
  *	| `res`    | `check_period_sec` | Double                | How often the resource manager will remove unused resources | 300.0                                | `Config::res_check_period_sec`    |
- *	| `res`    | `textures_path`    | String                | The path to the directory with textures                     | `"Resources/Textures"`               | `Config::res_textures_path`       |
- *	| `res`    | `fonts_path`       | String                | The path to the directory with fonts                        | `"Resources/Fonts"`                  | `Config::res_fonts_path`          |
- *	| `res`    | `sounds_path`      | String                | The path to the directory with sounds                       | `"Resources/Sounds"`                 | `Config::res_sounds_path`         |
- *	| `res`    | `music_path`       | String                | The path to the directory with music                        | `"Resources/Music"`                  | `Config::res_music_path`          |
+ *	| `res`    | `textures_path`    | String (path)         | The path to the directory with textures                     | `"Resources/Textures"`               | `Config::res_textures_path`       |
+ *	| `res`    | `fonts_path`       | String (path)         | The path to the directory with fonts                        | `"Resources/Fonts"`                  | `Config::res_fonts_path`          |
+ *	| `res`    | `sounds_path`      | String (path)         | The path to the directory with sounds                       | `"Resources/Sounds"`                 | `Config::res_sounds_path`         |
+ *	| `res`    | `music_path`       | String (path)         | The path to the directory with music                        | `"Resources/Music"`                  | `Config::res_music_path`          |
  *	| `chunks` | `collision_size`   | `Point2` (JSON array) | The size of a collision chunk                               | [1500, 1500]                         | `Config::chunks_collision_size`   |
  *	| `chunks` | `clickable_size`   | `Point2` (JSON array) | The size of a clickable chunk                               | [500, 500]                           | `Config::chunks_clickable_size`   |
- *	| `lang`   | `path`             | String                | The path to the directory with localization files           | `"Localization"`                     | `Config::lang_path`               |
+ *	| `lang`   | `path`             | String (path)         | The path to the directory with localization files           | `"Localization"`                     | `Config::lang_path`               |
  *	| `lang`   | `default_lang`     | String                | The code of the default language                            | `"en_UK"`                            | `Config::lang_default_lang`       |
  *	| `lang`   | `default_table`    | String                | The name of the default localization table                  | `"default"`                          | `Config::lang_default_table`      |
- *	| `log`    | `path`             | String                | The path to the directory with log files                    | `"Logs"`                             | `Config::log_path`                |
- *	| `saves`  | `path`             | String                | The path to the directory with game saves                   | `"Saves"`                            | `Config::saves_path`              |
+ *	| `log`    | `path`             | String (path)         | The path to the directory with log files                    | `"Logs"`                             | `Config::log_path`                |
+ *	| `saves`  | `path`             | String (path)         | The path to the directory with game saves                   | `"Saves"`                            | `Config::saves_path`              |
  *	\sa
  *	- `ConfigManager`: allows to control and apply configuration profile
  *	
@@ -111,17 +113,17 @@ class Log;
  *	| `window`  | `titlebar_buttons` | Булев                  | Имеются ли у окна игры кнопки на строке с заголовком              | `true`                               | `Config::window_titlebar_buttons` |
  *	| `window`  | `title`            | Строка                 | Заголовок окна игры                                               | `"The game (powered by SnowEngine)"` | `Config::window_title`            |
  *	| `res`     | `check_period_sec` | Вещественный           | Как часто диспетчер ресурсов будет удалять неиспользуемые ресурсы | 300.0                                | `Config::res_check_period_sec`    |
- *	| `res`     | `textures_path`    | Строка                 | Путь к директории с текстурами                                    | `"Resources/Textures"`               | `Config::res_textures_path`       |
- *	| `res`     | `fonts_path`       | Строка                 | Путь к директории со шрифтами                                     | `"Resources/Fonts"`                  | `Config::res_fonts_path`          |
- *	| `res`     | `sounds_path`      | Строка                 | Путь к директории со звуками                                      | `"Resources/Sounds"`                 | `Config::res_sounds_path`         |
+ *	| `res`     | `textures_path`    | Строка (путь)          | Путь к директории с текстурами                                    | `"Resources/Textures"`               | `Config::res_textures_path`       |
+ *	| `res`     | `fonts_path`       | Строка (путь)          | Путь к директории со шрифтами                                     | `"Resources/Fonts"`                  | `Config::res_fonts_path`          |
+ *	| `res`     | `sounds_path`      | Строка (путь)          | Путь к директории со звуками                                      | `"Resources/Sounds"`                 | `Config::res_sounds_path`         |
  *	| `res`     | `music_path`       | String                 | Путь к директории с музыкой                                       | `"Resources/Music"`                  | `Config::res_music_path`          |
  *	| `chunks`  | `collision_size`   | `Point2` (массив JSON) | Размер чанка коллизии                                             | [1500, 1500]                         | `Config::chunks_collision_size`   |
  *	| `chunks`  | `clickable_size`   | `Point2` (массив JSON) | Размер чанка кликабельных компонентов                             | [500, 500]                           | `Config::chunks_clickable_size`   |
- *	| `lang`    | `path`             | Строка                 | Путь к директории с файлами локализации                           | `"Localization"`                     | `Config::lang_path`               |
+ *	| `lang`    | `path`             | Строка (путь)          | Путь к директории с файлами локализации                           | `"Localization"`                     | `Config::lang_path`               |
  *	| `lang`    | `default_lang`     | Строка                 | Код языка по умолчанию                                            | `"en_UK"`                            | `Config::lang_default_lang`       |
  *	| `lang`    | `default_table`    | Строка                 | Название таблицы локализации по умолчанию                         | `"default"`                          | `Config::lang_default_table`      |
- *	| `log`     | `path`             | Строка                 | Путь к директории с файлами лога                                  | `"Logs"`                             | `Config::log_path`                |
- *	| `saves`   | `path`             | Строка                 | Путь к директории с игровыми сохранениями                         | `"Saves"`                            | `Config::saves_path`              |
+ *	| `log`     | `path`             | Строка (путь)          | Путь к директории с файлами лога                                  | `"Logs"`                             | `Config::log_path`                |
+ *	| `saves`   | `path`             | Строка (путь)          | Путь к директории с игровыми сохранениями                         | `"Saves"`                            | `Config::saves_path`              |
  *	\sa
  *	- `ConfigManager`: позволяет управлять профилями конфигураций и применять их
  */
@@ -418,7 +420,7 @@ public:
 	 *	Относительный путь к директории, где хранятся текстуры. Значение по умолчанию —
 	 *	`"Resources/Textures"`.
 	 */
-	String res_textures_path;
+	Path res_textures_path;
 
 	/**
 	 *	\~english
@@ -433,7 +435,7 @@ public:
 	 *	Относительный путь к директории, где хранятся шрифты. Значение по умолчанию —
 	 *	`"Resources/Fonts"`.
 	 */
-	String res_fonts_path;
+	Path res_fonts_path;
 
 	/**
 	 *	\~english
@@ -448,7 +450,7 @@ public:
 	 *	Относительный путь к директории, где хранятся звуки. Значение по умолчанию —
 	 *	`"Resources/Sounds"`.
 	 */
-	String res_sounds_path;
+	Path res_sounds_path;
 
 	/**
 	 *	\~english
@@ -463,7 +465,7 @@ public:
 	 *	Относительный путь к директории, где хранится музыка. Значение по умолчанию —
 	 *	`"Resources/Music"`.
 	 */
-	String res_music_path;
+	Path res_music_path;
 
 			/* FIELDS
 				SECTION: chunks */
@@ -536,7 +538,7 @@ public:
 	 *	\sa
 	 *	- `LangManager`
 	 */
-	String lang_path;
+	Path lang_path;
 
 	/**
 	 *	\~english
@@ -596,7 +598,7 @@ public:
 	 *	\sa
 	 *	- `Log`
 	 */
-	String log_path;
+	Path log_path;
 
 			/* FIELDS
 				SECTION: saves */
@@ -615,7 +617,7 @@ public:
 	 *	Относительный путь к директории, где хранятся файлы игровых сохранений. Значение по
 	 *	умолчанию — `"Logs"`.
 	 */
-	String saves_path;
+	Path saves_path;
 	
 			/* OPERATORS */
 

@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <filesystem>
 #include <forward_list>
 #include <deque>
 #include <list>
@@ -159,6 +160,23 @@ String to_string(bool var);
  *	\return Строка SnowEngine.
  */
 String to_string(const std::wstring& var);
+
+/**
+ *	\~english
+ *	\brief Converts a standard `std::filesystem::path` to SnowEngine string
+ *	
+ *	Converts the passed path to SnowEngine string.
+ *	\param var The path.
+ *	\return The SnowEngine string.
+ *	
+ *	\~russian
+ *	\brief Конвертирует стандартный путь `std::filesystem::path` в строку SnowEngine
+ *	
+ *	Конвертирует переданный путь в строку SnowEngine.
+ *	\param var Путь.
+ *	\return Строка SnowEngine.
+ */
+String to_string(const Path& var);
 
 /**
  *	\~english
@@ -679,6 +697,23 @@ std::shared_ptr<json::Element> to_json(bool var);
  *	\return Строковое значение JSON (`json::StringValue`).
 */
 std::shared_ptr<json::Element> to_json(const std::wstring& var);
+
+/**
+ *	\~english
+ *	\brief Converts a standard `std::filesystem::path` to JSON
+ *	
+ *	Converts the passed path to JSON value.
+ *	\param var The path that will be converted to JSON.
+ *	\return A JSON string value (`json::StringValue`).
+ *	
+ *	\~russian
+ *	\brief Конвертирует стандартный путь `std::filesystem::path` в JSON
+ *	
+ *	Конвертирует переданный путь в значение JSON.
+ *	\param var Путь, который будет сконвертирован в JSON.
+ *	\return Строковое значение JSON (`json::StringValue`).
+*/
+std::shared_ptr<json::Element> to_json(const Path& var);
 
 /**
  *	\~english
@@ -1209,6 +1244,27 @@ bool json_to_bool(std::shared_ptr<const json::Element> json);
  *	\throw std::invalid_argument Переданный JSON неправильный (не является строковым значением).
  */
 String json_to_string(std::shared_ptr<const json::Element> json);
+
+/**
+ *	\~english
+ *	\brief Converts a JSON to path
+ *	
+ *	If the passed JSON element is a string value (`json::StringValue`) and contains a path, returns
+ *	the path.
+ *	\param json The JSON element.
+ *	\return The `std::filesystem::path` object.
+ *	\throw std::invalid_argument The passed JSON is not correct (is not string value).
+ *	
+ *	\~russian
+ *	\brief Конвертирует JSON в путь
+ *	
+ *	Если переданный элемент JSON является строковым значением (`json::StringValue`) и содержит
+ *	путь, возвращает путь.
+ *	\param json Элемент JSON.
+ *	\return Объект `std::filesystem::path`.
+ *	\throw std::invalid_argument Переданный JSON неправильный (не является строковым значением).
+ */
+Path json_to_path(std::shared_ptr<const json::Element> json);
 
 }
 

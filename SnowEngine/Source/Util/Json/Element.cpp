@@ -34,18 +34,18 @@ String json::Element::to_string() const
 	return stream.str();
 }
 
-void json::Element::save(const String& filename, bool allow_override) const
+void json::Element::save(const Path& filename, bool allow_override) const
 {
-	if (!std::filesystem::exists(filename.to_std_string()))
+	if (!std::filesystem::exists(filename))
 	{
-		std::filesystem::create_directories(filename.to_std_string());
+		std::filesystem::create_directories(filename);
 	}
 	else if (!allow_override)
 	{
 		throw std::runtime_error("The file with the same name already exists");
 	}
 
-	std::wofstream file(filename.to_std_string());
+	std::wofstream file(filename);
 	if (!file.is_open())
 	{
 		throw std::runtime_error("The file couldn't be created or accessed");
@@ -60,9 +60,9 @@ std::shared_ptr<json::Element> json::Element::from_string(const String& string)
 	return from_stream(stream);
 }
 
-std::shared_ptr<json::Element> json::Element::load(const String& filename)
+std::shared_ptr<json::Element> json::Element::load(const Path& filename)
 {
-	std::wifstream file(filename.to_std_string());
+	std::wifstream file(filename);
 	if (!file.is_open())
 	{
 		throw std::runtime_error("The file does not exist or cannot be accessed");

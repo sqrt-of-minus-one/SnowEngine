@@ -73,6 +73,11 @@ String util::to_string(const std::wstring& var)
 	return String(var);
 }
 
+String util::to_string(const Path& var)
+{
+	return String(var.wstring());
+}
+
 std::shared_ptr<json::Element> util::to_json(int var)
 {
 	return std::make_shared<json::IntValue>(var);
@@ -96,6 +101,11 @@ std::shared_ptr<json::Element> util::to_json(bool var)
 std::shared_ptr<json::Element> util::to_json(const std::wstring& var)
 {
 	return std::make_shared<json::StringValue>(String(var));
+}
+
+std::shared_ptr<json::Element> util::to_json(const Path& var)
+{
+	return std::make_shared<json::StringValue>(String(var.wstring()));
 }
 
 int util::json_to_int(std::shared_ptr<const json::Element> json)
@@ -160,4 +170,9 @@ String util::json_to_string(std::shared_ptr<const json::Element> json)
 		throw std::invalid_argument("Couldn't create a string: the JSON must be a string value");
 	}
 	return value->get();
+}
+
+Path util::json_to_path(std::shared_ptr<const json::Element> json)
+{
+	return Path(json_to_string(json).to_std_string());
 }

@@ -203,7 +203,7 @@ public:
 	 *	\sa
 	 *	- `load()`
 	 */
-	void save(const String& filename, bool allow_override = false) const;
+	void save(const Path& filename, bool allow_override = false) const;
 
 	/**
 	 *	\~english
@@ -272,7 +272,7 @@ public:
 	 *	\sa
 	 *	- `save()`
 	 */
-	static std::shared_ptr<Element> load(const String& filename);
+	static std::shared_ptr<Element> load(const Path& filename);
 	
 	/**
 	 *	\~english

@@ -368,8 +368,8 @@ private:
 
 	LangManager();
 
-	void load_table_(const String& table, const String& lang, const String& path);
-	int reload_(const String& path);
+	void load_table_(const String& table, const String& lang, const Path& path);
+	int reload_(const Path& path);
 
 	void change_path_(const Config& new_config);
 	void change_default_table_(const Config& new_config);
