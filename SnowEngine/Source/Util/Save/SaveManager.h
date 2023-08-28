@@ -36,6 +36,11 @@ namespace snow
  */
 
 /**
+ *	\addtogroup SnowFall
+ *	\{
+ */
+
+/**
  *	\~english
  *	\brief The class for saving and loading
  *	
@@ -222,5 +227,9 @@ public:
 private:
 	SaveManager();
 };
+
+/**
+ *	\}
+ */
 
 }

@@ -212,9 +212,12 @@ void Game::loop_()
 		window_->clear();
 
 		std::lock_guard<std::mutex> levels_grd(levels_mtx_);
-		for (auto& i : levels_)
+		for (std::shared_ptr<Level> i : tickable_levels_)
 		{
-			i->tick(delta_sec);
+			if (!i->is_destroyed())
+			{
+				i->tick();
+			}
 		}
 		
 		window_->display();
@@ -241,6 +244,14 @@ void Game::remove_level_(Level& level)
 		if (i->get() == &level)
 		{
 			levels_.erase(i);
+			break;
+		}
+	}
+	for (auto i = tickable_levels_.begin(); i != tickable_levels_.end(); i++)
+	{
+		if (i->get() == &level)
+		{
+			tickable_levels_.erase(i);
 			break;
 		}
 	}

@@ -8,7 +8,7 @@
 
 #include "../Object.h"
 
-#include <list>
+#include <set>
 
 #include "../Util/Types/Transform.h"
 #include "../Util/Function/EventBinder.h"
@@ -58,7 +58,7 @@ public:
 	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component` или методом
 	 *	`create_root_component` класса `Actor`.
 	 *	\param actor Актёр, к которому будет прикреплён компонент.
-	 *	\param parent Родительский компонент  или нулевой указатель, если компонент будет корневым.
+	 *	\param parent Родительский компонент или нулевой указатель, если компонент будет корневым.
 	 *	\param transform Преобразование компонента относительно актёра.
 	 */
 	Component(Actor& actor, Component* parent, const Transform& transform);
@@ -111,12 +111,20 @@ public:
 	 *	
 	 *	Allows to get the position of the component relative to the parent.
 	 *	\return The position of the component.
+	 *	\sa
+	 *	- `get_level_position()`
+	 *	- `get_transform()`
+	 *	- `set_position()`
 	 *	
 	 *	\~russian
 	 *	\brief Положение компонента относительно родителя
 	 *	
 	 *	Позволяет получить положение компонента относительно родителя.
 	 *	\return Положение компонента.
+	 *	\sa
+	 *	- `get_level_position()`
+	 *	- `get_transform()`
+	 *	- `set_position()`
 	 */
 	const Vector2& get_position() const noexcept;
 
@@ -126,12 +134,20 @@ public:
 	 *
 	 *	Allows to get the angle of rotation of the component relative to the parent.
 	 *	\return The angle of rotation of the component.
+	 *	\sa
+	 *	- `get_level_rotation()`
+	 *	- `get_transform()`
+	 *	- `set_rotation()`
 	 *
 	 *	\~russian
 	 *	\brief Поворот компонента относительно родителя
 	 *
 	 *	Позволяет получить угол поворота компонента относительно родителя.
 	 *	\return Угол поворота компонента.
+	 *	\sa
+	 *	- `get_level_rotation()`
+	 *	- `get_transform()`
+	 *	- `set_rotation()`
 	 */
 	const Angle& get_rotation() const noexcept;
 
@@ -141,12 +157,20 @@ public:
 	 *
 	 *	Allows to get the scale of the component relative to the parent.
 	 *	\return The scale of the component.
+	 *	\sa
+	 *	- `get_level_scale()`
+	 *	- `get_transform()`
+	 *	- `set_scale()`
 	 *
 	 *	\~russian
 	 *	\brief Масштаб компонента относительно родителя
 	 *
 	 *	Позволяет получить масштаб компонента относительно родителя.
 	 *	\return Масштаб компонента.
+	 *	\sa
+	 *	- `get_level_scale()`
+	 *	- `get_transform()`
+	 *	- `set_scale()`
 	 */
 	const Vector2& get_scale() const noexcept;
 
@@ -157,6 +181,9 @@ public:
 	 *	Allows to get the transform (position, rotation and scale) of the component relative to the
 	 *	parent.
 	 *	\return The transform of the component.
+	 *	\sa
+	 *	- `get_level_transform()`
+	 *	- `set_transform()`
 	 *
 	 *	\~russian
 	 *	\brief Преобразование компонента относительно родителя
@@ -164,6 +191,9 @@ public:
 	 *	Позволяет получить преобразование (положение, поворот и масштаб) компонента относительно
 	 *	родителя.
 	 *	\return Преобразование компонента.
+	 *	\sa
+	 *	- `get_level_transform()`
+	 *	- `set_transform()`
 	 */
 	const Transform& get_transform() const noexcept;
 
@@ -173,12 +203,20 @@ public:
 	 *
 	 *	Allows to get the position of the component on the level.
 	 *	\return The position of the component.
+	 *	\sa
+	 *	- `get_position()`
+	 *	- `get_level_transform()`
+	 *	- `set_position()`
 	 *
 	 *	\~russian
 	 *	\brief Положение компонента на уровне
 	 *
 	 *	Позволяет получить положение компонента на уровне.
 	 *	\return Положение компонента.
+	 *	\sa
+	 *	- `get_position()`
+	 *	- `get_level_transform()`
+	 *	- `set_position()`
 	 */
 	Vector2 get_level_position() const;
 
@@ -188,12 +226,20 @@ public:
 	 *
 	 *	Allows to get the angle of rotation of the component on the level.
 	 *	\return The angle of rotation of the component.
+	 *	\sa
+	 *	- `get_rotation()`
+	 *	- `get_level_transform()`
+	 *	- `set_rotation()`
 	 *
 	 *	\~russian
 	 *	\brief Поворот компонента на уровне
 	 *
 	 *	Позволяет получить угол поворота компонента на уровне.
 	 *	\return Угол поворота компонента.
+	 *	\sa
+	 *	- `get_rotation()`
+	 *	- `get_level_transform()`
+	 *	- `set_rotation()`
 	 */
 	Angle get_level_rotation() const;
 
@@ -203,12 +249,20 @@ public:
 	 *
 	 *	Allows to get the scale of the component on the level.
 	 *	\return The scale of the component.
+	 *	\sa
+	 *	- `get_scale()`
+	 *	- `get_level_transform()`
+	 *	- `set_scale()`
 	 *
 	 *	\~russian
 	 *	\brief Масштаб компонента на уровне
 	 *
 	 *	Позволяет получить масштаб компонента на уровне.
 	 *	\return Масштаб компонента.
+	 *	\sa
+	 *	- `get_scale()`
+	 *	- `get_level_transform()`
+	 *	- `set_scale()`
 	 */
 	Vector2 get_level_scale() const;
 
@@ -218,12 +272,18 @@ public:
 	 *
 	 *	Allows to get the transform (position, rotation and scale) of the component on the level.
 	 *	\return The transform of the component.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `set_transform()`
 	 *
 	 *	\~russian
 	 *	\brief Преобразование компонента на уровне
 	 *
 	 *	Позволяет получить преобразование (положение, поворот и масштаб) компонента на уровне.
 	 *	\return Преобразование компонента.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `set_transform()`
 	 */
 	Transform get_level_transform() const;
 
@@ -292,32 +352,30 @@ public:
 	 *	\brief The parent component
 	 *
 	 *	Allows to get the parent component.
-	 *	\return The pointer to the parent component; the null pointer if the component is root.
+	 *	\return The parent component or the reference to itself if the component is root.
 	 *
 	 *	\~russian
 	 *	\brief Родительский компонент
 	 *
 	 *	Позволяет получить родительский компонент.
-	 *	\return Указатель на родительский компонент; нулевой указатель, если компонент корневой.
+	 *	\return Родительский компонент или ссылка на себя, если компонент корневой
 	 */
-	Component* get_parent() noexcept;
+	Component& get_parent() noexcept;
 
 	/**
 	 *	\~english
 	 *	\brief The parent component
 	 *
 	 *	Allows to get the parent component.
-	 *	\return The constant pointer to the parent component; the null pointer if the component is
-	 *	root.
+	 *	\return The parent component or the reference to itself if the component is root.
 	 *
 	 *	\~russian
 	 *	\brief Родительский компонент
 	 *
 	 *	Позволяет получить родительский компонент.
-	 *	\return Константный указатель на родительский компонент; нулевой указатель, если компонент
-	 *	корневой.
+	 *	\return Родительский компонент или ссылка на себя, если компонент корневой
 	 */
-	const Component* get_parent() const noexcept;
+	const Component& get_parent() const noexcept;
 
 	/**
 	 *	\~english
@@ -327,6 +385,7 @@ public:
 	 *	\tparam T_Component The class of a new component. It must be inherited from the `Component`
 	 *	class.
 	 *	\param transform The transform of the new component relative to this one.
+	 *	\param is_tickable If `false`, the `Component::tick()` method will not be called.
 	 *	\return The pointer to the new component.
 	 *
 	 *	\~russian
@@ -335,10 +394,11 @@ public:
 	 *	Компонент может иметь дочерние компоненты. Этот метод позволяет создать их.
 	 *	\tparam T_Component Класс нового компонента. Он должен быть наследником класса `Component`.
 	 *	\param transform Преобразование нового компонента относительно данного.
+	 *	\param is_tickable Если `false`, метод `Component::tick()` не будет вызываться.
 	 *	\return Указатель на новый компонент.
 	 */
 	template<typename T_Component>
-	std::shared_ptr<T_Component> create_component(const Transform& transform);
+	std::shared_ptr<T_Component> create_component(const Transform& transform, bool is_tickable);
 
 	/**
 	 *	\~english
@@ -346,12 +406,22 @@ public:
 	 *
 	 *	Allows to change the position of the component relative to the parent.
 	 *	\param position The new position.
+	 *	\sa
+	 *	- `move()`
+	 *	- `set_transform()`
+	 *	- `get_position()`
+	 *	- `get_level_position()`
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает положение актёра
 	 *
 	 *	Позволяет изменить положение актёра на уровне.
 	 *	\param position Новое положение.
+	 *	\sa
+	 *	- `move()`
+	 *	- `set_transform()`
+	 *	- `get_position()`
+	 *	- `get_level_position()`
 	 */
 	void set_position(const Vector2& position);
 
@@ -361,12 +431,22 @@ public:
 	 *
 	 *	Allows to change the angle of rotation of the component relative to the parent.
 	 *	\param rotation The new angle of rotation.
+	 *	\sa
+	 *	- `rotate()`
+	 *	- `set_transform()`
+	 *	- `get_rotation()`
+	 *	- `get_level_rotation()`
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает поворот компонента относительно родителя
 	 *
 	 *	Позволяет изменить угол поворота компонента относительно родителя.
 	 *	\param rotation Новый угол поворота.
+	 *	\sa
+	 *	- `rotate()`
+	 *	- `set_transform()`
+	 *	- `get_rotation()`
+	 *	- `get_level_rotation()`
 	 */
 	void set_rotation(const Angle& rotation);
 
@@ -376,12 +456,22 @@ public:
 	 *
 	 *	Allows to change the scale of the actor component relative to the parent.
 	 *	\param scale The new scale.
+	 *	\sa
+	 *	- `scale()`
+	 *	- `set_transform()`
+	 *	- `get_scale()`
+	 *	- `get_level_scale()`
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает масштаб компонента относительно родителя
 	 *
 	 *	Позволяет изменить масштаб компонента относительно родителя.
 	 *	\param scale Новый масштаб.
+	 *	\sa
+	 *	- `scale()`
+	 *	- `set_transform()`
+	 *	- `get_scale()`
+	 *	- `get_level_scale()`
 	 */
 	void set_scale(const Vector2& scale);
 
@@ -391,12 +481,18 @@ public:
 	 *
 	 *	Allows to change the transform of the actor component relative to the parent.
 	 *	\param transform The new transform.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `get_level_transform()`
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает преобразование компонента относительно родителя
 	 *
 	 *	Позволяет изменить преобразование компонента относительно родителя.
 	 *	\param transform Новое преобразование.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `get_level_transform()`
 	 */
 	void set_transform(const Transform& transform);
 
@@ -406,12 +502,22 @@ public:
 	 *
 	 *	Adds the passed value to the position of the component.
 	 *	\param delta The offset to the actor.
+	 *	\sa
+	 *	- `set_position()`
+	 *	- `set_transform()`
+	 *	- `get_position()`
+	 *	- `get_level_position()`
 	 *
 	 *	\~russian
 	 *	\brief Двигает компонент
 	 *
 	 *	Прибавляет переданное значение к положению компонента.
 	 *	\param delta Смещение актёра.
+	 *	\sa
+	 *	- `set_position()`
+	 *	- `set_transform()`
+	 *	- `get_position()`
+	 *	- `get_level_position()`
 	 */
 	void move(const Vector2& delta);
 
@@ -421,12 +527,22 @@ public:
 	 *
 	 *	Adds the passed value to the angle of rotation of the component.
 	 *	\param delta The angle of rotation.
+	 *	\sa
+	 *	- `set_rotation()`
+	 *	- `set_transform()`
+	 *	- `get_rotation()`
+	 *	- `get_level_rotation()`
 	 *
 	 *	\~russian
 	 *	\brief Поворачивает компонент
 	 *
 	 *	Прибавляет переданное значение к углу поворота компонента.
 	 *	\param delta Угол поворота.
+	 *	\sa
+	 *	- `set_rotation()`
+	 *	- `set_transform()`
+	 *	- `get_rotation()`
+	 *	- `get_level_rotation()`
 	 */
 	void rotate(const Angle& delta);
 
@@ -436,12 +552,22 @@ public:
 	 *
 	 *	Multiplies the scale of the component by the passed value.
 	 *	\param factor The scale factor.
+	 *	\sa
+	 *	- `set_scale()`
+	 *	- `set_transform()`
+	 *	- `get_scale()`
+	 *	- `get_level_scale()`
 	 *
 	 *	\~russian
 	 *	\brief Масштабирует компонент
 	 *
 	 *	Умножает масштаб компонента на переданное значение.
 	 *	\param factor Коэффициент масштабирования.
+	 *	\sa
+	 *	- `set_scale()`
+	 *	- `set_transform()`
+	 *	- `get_scale()`
+	 *	- `get_level_scale()`
 	 */
 	void scale(const Vector2& factor);
 
@@ -553,11 +679,12 @@ protected:
 
 private:
 	static int components_counter_;
-	int number_;
+	int id_;
 
 	Transform transform_;
 
-	std::list<std::shared_ptr<Component>> components_;
+	std::set<std::shared_ptr<Component>> components_;
+	std::set<std::shared_ptr<Component>> tickable_components_;
 	Component* parent_;
 	Actor& actor_;
 
@@ -573,12 +700,16 @@ private:
 		/* Component: public */
 
 template<typename T_Component>
-std::shared_ptr<T_Component> Component::create_component(const Transform& transform)
+std::shared_ptr<T_Component> Component::create_component(const Transform& transform, bool is_tickable)
 {
-	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_component method template must be Component");
+	static_assert(std::is_base_of_v<Component, T_Component>, L"An argument of create_component method template must be Component");
 
 	std::shared_ptr<T_Component> component = std::make_shared<T_Component>(actor_, this, transform);
-	components_.push_back(component);
+	components_.insert(component);
+	if (is_tickable)
+	{
+		tickable_components_.insert(component);
+	}
 	dynamic_cast<Component*>(component.get())->when_begin_play();
 	return component;
 }

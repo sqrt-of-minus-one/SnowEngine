@@ -10,23 +10,24 @@
 
 #include "../Util/Util.h"
 #include "../Actor/Actor.h"
-#include "../Util/Function/EventBinder.h"
+#include "../Game/Game.h"
 
 using namespace snow;
 
 		/* Level: public */
 
 Level::Level() :
-	number_(levels_counter_++),
+	id_(levels_counter_++),
 	is_destroyed_(false),
 	actors_(),
+	tickable_actors_(),
 	on_destroyed_(),
-	on_destroyed(on_destroyed_)
+	on_destroyed(on_destroyed_),
 {}
 
 String Level::to_string() const
 {
-	return L"Level #%d (actors: %d)"_s.format(number_, actors_.size());
+	return L"Level #%d (actors: %d)"_s.format(id_, actors_.size());
 }
 
 std::shared_ptr<json::Element> Level::to_json() const
@@ -37,15 +38,18 @@ std::shared_ptr<json::Element> Level::to_json() const
 	{
 		array->get_content().push_back(i->to_json());
 	}
-	object->get_content().insert({ L"id"_s, util::to_json(number_) });
+	object->get_content().insert({ L"id"_s, util::to_json(id_) });
 	object->get_content().insert({ L"actors"_s, array });
 	return object;
 }
 
 void Level::destroy()
 {
-	is_destroyed_ = true;
-	on_destroyed_.execute(*this);
+	if (!is_destroyed_)
+	{
+		is_destroyed_ = true;
+		on_destroyed_.execute(*this);
+	}
 }
 
 bool Level::is_destroyed() const noexcept
@@ -57,9 +61,12 @@ bool Level::is_destroyed() const noexcept
 
 void Level::tick(double delta_sec)
 {
-	for (auto& i : actors_)
+	for (std::shared_ptr<Actor> i : actors_)
 	{
-		i->tick(delta_sec);
+		if (!i->is_destroyed())
+		{
+			i->tick(delta_sec);
+		}
 	}
 }
 
@@ -74,6 +81,14 @@ void Level::remove_actor_(Actor& actor)
 		if (i->get() == &actor)
 		{
 			actors_.erase(i);
+			break;
+		}
+	}
+	for (auto i = tickable_actors_.begin(); i != tickable_actors_.end(); i++)
+	{
+		if (i->get() == &actor)
+		{
+			tickable_actors_.erase(i);
 			break;
 		}
 	}

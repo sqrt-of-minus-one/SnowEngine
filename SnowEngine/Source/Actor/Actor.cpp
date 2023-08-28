@@ -16,9 +16,11 @@ using namespace snow;
 		/* Actor: public */
 
 Actor::Actor(Level& level, const Transform& transform) :
-	number_(actors_counter_++),
+	id_(actors_counter_++),
 	is_destroyed_(false),
 	transform_(transform),
+	root_component_(),
+	is_root_component_tickable_(true),
 	level_(level),
 	on_destroyed_(),
 	on_destroyed(on_destroyed_),
@@ -28,13 +30,13 @@ Actor::Actor(Level& level, const Transform& transform) :
 
 String Actor::to_string() const
 {
-	return L"Actor #"_s + util::to_string(number_);
+	return L"Actor #"_s + util::to_string(id_);
 }
 
 std::shared_ptr<json::Element> Actor::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"id"_s, util::to_json(number_) });
+	object->get_content().insert({ L"id"_s, util::to_json(id_) });
 	object->get_content().insert({ L"transform"_s, transform_.to_json() });
 	object->get_content().insert({ L"root_component"_s, root_component_ ? root_component_->to_json() : json::NullValue::make() });
 	return object;
@@ -159,8 +161,11 @@ std::shared_ptr<const Component> Actor::get_root_component() const noexcept
 
 void Actor::destroy()
 {
-	is_destroyed_ = true;
-	on_destroyed_.execute(*this);
+	if (!is_destroyed_)
+	{
+		is_destroyed_ = true;
+		on_destroyed_.execute(*this);
+	}
 }
 
 bool Actor::is_destroyed() const noexcept
@@ -172,7 +177,10 @@ bool Actor::is_destroyed() const noexcept
 
 void Actor::tick(double delta_sec)
 {
-	root_component_->tick(delta_sec);
+	if (is_root_component_tickable_)
+	{
+		root_component_->tick(delta_sec);
+	}
 }
 
 void Actor::when_begin_play()

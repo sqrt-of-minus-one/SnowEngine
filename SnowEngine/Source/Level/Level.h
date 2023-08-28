@@ -8,8 +8,6 @@
 
 #include "../Object.h"
 
-#include <list>
-
 #include "../Util/Function/EventBinder.h"
 #include "../Actor/Actor.h"
 
@@ -20,7 +18,7 @@ class Transform;
 
 /**
  *	\~english
- *	\brief The class of SnowEngine level
+ *	\brief The class of the SnowEngine level
  *	
  *	The level is the place where there are actors and where the game takes place. You may create
  *	your own levels as classes derived from this one.
@@ -33,8 +31,6 @@ class Transform;
  */
 class Level : public Object
 {
-	friend class Game;
-
 public:
 			/* CONSTRUCTORS */
 
@@ -61,14 +57,14 @@ public:
 	 *	\~english
 	 *	\brief Converts the level to string
 	 *	
-	 *	Creates the string `Level #<n> (actors: <a>)`, where `<n>` is a unique number of the level,
-	 *	`<a>` is the number of actors on the level.
+	 *	Creates the string `"Level #<n> (actors: <a>)"`, where `<n>` is a unique number of the
+	 *	level, `<a>` is the number of actors on the level.
 	 *	\return The created string.
 	 *	
 	 *	\~russian
 	 *	\brief Конвертирует уровень в строку
 	 *	
-	 *	Создаёт строку `Level #<n> (actors: <a>)`, где `<n>` — уникальный номер уровня, `<a>` —
+	 *	Создаёт строку `"Level #<n> (actors: <a>)"`, где `<n>` — уникальный номер уровня, `<a>` —
 	 *	количество актёров на уровне.
 	 *	\return Созданная строка.
 	 */
@@ -79,8 +75,8 @@ public:
 	 *	\brief Creates a JSON with the level data
 	 *	
 	 *	Creates a JSON object containing the following fields:
-	 *	- `"id"`: the ID of the level (integer value).
-	 *	- `"actors"`: the array of actors on the level, each element is an object created by
+	 *	- `id`: the ID of the level (integer value).
+	 *	- `actors`: the array of actors on the level, each element is an object created by
 	 *	`Actor::to_json()`.
 	 *	\return The JSON object describing the level.
 	 *	\warning This method produces the JSON which describes every component of every actor on
@@ -90,9 +86,9 @@ public:
 	 *	\brief Создаёт JSON с информацией об уровне
 	 *	
 	 *	Создаёт объект JSON, содержащий следующие поля:
-	 *	- `"id"`: ID уровня (целочисленное значение);
-	 *	- `"actors"`: массив актёров на уровне, каждый элемент является объектом, создаваемым
-	 *	методом `Actor::to_json()`.
+	 *	- `id`: ID уровня (целочисленное значение);
+	 *	- `actors`: массив актёров на уровне, каждый элемент является объектом, создаваемым методом
+	 *	`Actor::to_json()`.
 	 *	\return Объект JSON, описывающий уровень.
 	 *	\warning Этот метод производит JSON, который описывает каждый компонент каждого актёра на
 	 *	уровне. Иногда это много.
@@ -108,7 +104,10 @@ public:
 	 *	Creates a new actor on the level.
 	 *	\tparam T_Actor The class of a new actor, which must be derived from the `Actor` class.
 	 *	\param transform The transform of a new actor.
+	 *	\param is_tickable If `false`, the `Actor::tick()` method will not be called every tick.
 	 *	\return The pointer to the created actor.
+	 *	\sa
+	 *	- `Actor`
 	 *	
 	 *	\~russian
 	 *	\brief Создаёт нового актёра
@@ -116,10 +115,13 @@ public:
 	 *	Создаёт нового актёра на уровне.
 	 *	\tparam T_Actor Класс нового актёра, который должен быть наследником класса `Actor`.
 	 *	\param transform Преобразование нового актёра.
+	 *	\param is_tickable Если `false`, метод `Actor::tick()` не будет вызываться каждый тик.
 	 *	\return Указатель на созданный актёр.
+	 *	\sa
+	 *	- `Actor`
 	 */
 	template<typename T_Actor>
-	std::shared_ptr<T_Actor> spawn_actor(const Transform& transform);
+	std::shared_ptr<T_Actor> spawn_actor(const Transform& transform, bool is_tickable = true);
 
 	/**
 	 *	\~english
@@ -127,12 +129,16 @@ public:
 	 *	
 	 *	Destroys the level and all actors on it. The level cannot be recovered after the
 	 *	destroying.
+	 *	\sa
+	 *	- `is_destroyed()`
 	 *	
 	 *	\~russian
 	 *	\brief Уничтожает уровень
 	 *	
 	 *	Уничтожает уровень и все актёры на нём. Уровень не может быть восстановлен после
 	 *	уничтожения.
+	 *	\sa
+	 *	- `is_destroyed()`
 	 */
 	void destroy();
 	
@@ -142,12 +148,16 @@ public:
 	 *	
 	 *	Checks whether the level has been destroyed by the `destroy` method.
 	 *	\return `true` if the level is destroyed, `false` otherwise.
+	 *	\sa
+	 *	- `destroy()`
 	 *	
 	 *	\~russian
 	 *	\brief Проверяет, уничтожен ли уровень
 	 *	
 	 *	Проверяет, был ли уровень уничтожен методом `destroy`.
 	 *	\return `true`, если уровень уничтожен, иначе `false`.
+	 *	\sa
+	 *	- `destroy()`
 	 */
 	bool is_destroyed() const noexcept;
 
@@ -194,15 +204,17 @@ protected:
 
 private:
 	static int levels_counter_;
-	int number_;
+	int id_;
 
 	bool is_destroyed_;
 
 	void remove_actor_(Actor& actor);
 
-	std::list<std::shared_ptr<Actor>> actors_;
+	std::set<std::shared_ptr<Actor>> actors_;
+	std::set<std::shared_ptr<Actor>> tickable_actors_;
 
 	Event<Level& /*level*/> on_destroyed_;
+	Event<double /*delta_sec*/> on_tick_;
 };
 
 		
@@ -211,14 +223,18 @@ private:
 		/* Level: public */
 
 template<typename T_Actor>
-std::shared_ptr<T_Actor> Level::spawn_actor(const Transform& transform)
+std::shared_ptr<T_Actor> Level::spawn_actor(const Transform& transform, bool is_tickable)
 {
 	static_assert(std::is_base_of_v<Actor, T_Actor>, "An argument of spawn_actor method template must be Actor");
 
 	std::shared_ptr<T_Actor> actor = std::make_shared<T_Actor>(*this, transform);
 	actor->on_destroyed.bind<Level>(*this, &Level::remove_actor_, true);
 
-	actors_.push_back(actor);
+	actors_.insert(actor);
+	if (is_tickable)
+	{
+		tickable_actors_.insert(actor);
+	}
 	dynamic_cast<Actor*>(actor.get())->when_begin_play();
 	return actor;
 }

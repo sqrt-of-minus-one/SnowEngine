@@ -16,7 +16,7 @@ using namespace snow;
 		/* Component: public */
 
 Component::Component(Actor& actor, Component* parent, const Transform& transform) :
-	number_(components_counter_++),
+	id_(components_counter_++),
 	transform_(transform),
 	actor_(actor),
 	parent_(parent),
@@ -28,7 +28,7 @@ Component::Component(Actor& actor, Component* parent, const Transform& transform
 
 String Component::to_string() const
 {
-	return L"Component #"_s + util::to_string(number_);
+	return L"Component #"_s + util::to_string(id_);
 }
 
 std::shared_ptr<json::Element> Component::to_json() const
@@ -40,7 +40,7 @@ std::shared_ptr<json::Element> Component::to_json() const
 		components->get_content().push_back(i->to_json());
 	}
 
-	object->get_content().insert({ L"id"_s, util::to_json(number_) });
+	object->get_content().insert({ L"id"_s, util::to_json(id_) });
 	object->get_content().insert({ L"transform"_s, transform_.to_json() });
 	object->get_content().insert({ L"components"_s, components });
 	return object;
@@ -117,14 +117,14 @@ const Level& Component::get_level() const noexcept
 	return actor_.get_level();
 }
 
-Component* Component::get_parent() noexcept
+Component& Component::get_parent() noexcept
 {
-	return parent_;
+	return parent_ ? *parent_ : *this;
 }
 
-const Component* Component::get_parent() const noexcept
+const Component& Component::get_parent() const noexcept
 {
-	return parent_;
+	return parent_ ? *parent_ : *this;
 }
 
 void Component::set_position(const Vector2& position)
@@ -187,7 +187,7 @@ void Component::scale(const Vector2& factor)
 
 void Component::tick(double delta_sec)
 {
-	for (auto& i : components_)
+	for (auto& i : tickable_components_)
 	{
 		i->tick(delta_sec);
 	}
@@ -206,7 +206,7 @@ void Component::child_level_transformed_()
 	Transform transform = get_level_transform();
 	on_level_transformed_.execute(*this, transform);
 	when_transformed(transform);
-	for (std::shared_ptr<Component>& i : components_)
+	for (std::shared_ptr<Component> i : components_)
 	{
 		i->child_level_transformed_();
 	}

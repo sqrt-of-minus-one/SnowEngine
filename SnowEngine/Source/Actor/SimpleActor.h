@@ -29,7 +29,7 @@ namespace snow
 template<typename T_Component>
 class SimpleActor : public Actor
 {
-	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of SimpleActor class template must be Component");
+	static_assert(std::is_base_of_v<Component, T_Component>, L"An argument of SimpleActor class template must be Component");
 	
 public:
 			/* CONSTRUCTORS */

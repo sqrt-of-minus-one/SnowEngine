@@ -6,8 +6,12 @@
 
 #pragma once
 
-#include <memory>
-#include <list>
+#include "../Object.h"
+
+#include <mutex>
+#include <set>
+
+#include "../Util/Function/EventBinder.h"
 
 namespace sf
 {
@@ -181,7 +185,11 @@ public:
 	 *	Allows to create a new level. You should use this method instead of the constructor of the
 	 *	level.
 	 *	\tparam T_Level The class of the level that will be created.
+	 *	\param is_tickable If `false`, the `Level::tick()` method will not be called every game
+	 *	tick.
 	 *	\return The pointer to the created level.
+	 *	\sa
+	 *	- `Level`
 	 *	
 	 *	\~russian
 	 *	\brief Создаёт новый уровень
@@ -189,10 +197,33 @@ public:
 	 *	Позволяет создать новый уровень. Этот метод следует использовать вместо конструктора
 	 *	уровня.
 	 *	\tparam T_Level Класс уровня, который будет создан.
+	 *	\param is_tickable Если `false`, метод `Level::tick()` не будет вызываться каждый игровой
+	 *	тик.
 	 *	\return Указатель на созданный уровень.
+	 *	\sa
+	 *	- `Level`
 	 */
 	template<typename T_Level>
-	std::shared_ptr<T_Level> create_level();
+	std::shared_ptr<T_Level> create_level(bool is_tickable = true);
+
+	/**
+	 *	\~english
+	 *	\brief Every tick
+	 *	
+	 *	This event is called every game tick.
+	 *	
+	 *	Event parameters:
+	 *	- `double delta_sec`: the length of the tick in seconds.
+	 *	
+	 *	\~russian
+	 *	\brief Каждый тик
+	 *	
+	 *	Это событие вызывается каждый игровой тик.
+	 *	
+	 *	Параметры события:
+	 *	- `double delta_sec`: длительность тика в секундах.
+	 */
+	EventBinder<double /*delta_sec*/> on_tick;
 
 private:
 	Game();
@@ -203,8 +234,11 @@ private:
 
 	void remove_level_(Level& level);
 
+	Event<double /*delta_sec*/> on_tick_;
+
 	std::shared_ptr<sf::RenderWindow> window_; // The game window (if it has been created)
-	std::list<std::shared_ptr<Level>> levels_;
+	std::set<std::shared_ptr<Level>> levels_;
+	std::set<std::shared_ptr<Level>> tickable_levels_;
 
 	TimePoint tick_time_point_;
 	bool is_started_;
@@ -221,15 +255,19 @@ private:
 		/* Game: public */
 
 template<typename T_Level>
-std::shared_ptr<T_Level> Game::create_level()
+std::shared_ptr<T_Level> Game::create_level(bool is_tickable)
 {
 	static_assert(std::is_base_of<Level, T_Level>::value, L"An argument of create_level method template must be Level");
 
-	std::shared_ptr<T_Level> level(new T_Level);
+	std::shared_ptr<T_Level> level = std::make_shared<T_Level>();
 	level->on_destroyed.bind(&Game::remove_level_, true);
 
 	std::lock_guard<std::mutex> levels_grd(levels_mtx_);
-	levels_.push_back(level);
+	levels_.insert(level);
+	if (is_tickable)
+	{
+		tickable_levels_.insert(level);
+	}
 	return level;
 }
 

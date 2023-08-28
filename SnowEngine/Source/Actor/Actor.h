@@ -109,12 +109,18 @@ public:
 	 *	
 	 *	Allows to get the position of the actor on the level.
 	 *	\return The position of the actor.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `set_position()`
 	 *	
 	 *	\~russian
 	 *	\brief Положение актёра
 	 *	
 	 *	Позволяет получить положение актёра на уровне.
 	 *	\return Положение актёра.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `set_position()`
 	 */
 	const Vector2& get_position() const noexcept;
 	
@@ -124,12 +130,18 @@ public:
 	 *	
 	 *	Allows to get the angle of rotation of the actor on the level.
 	 *	\return The angle of rotation of the actor.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `set_rotation()`
 	 *	
 	 *	\~russian
 	 *	\brief Поворот актёра
 	 *	
 	 *	Позволяет получить угол поворота актёра на уровне.
 	 *	\return Угол поворота актёра.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `set_rotation()`
 	 */
 	const Angle& get_rotation() const noexcept;
 	
@@ -139,12 +151,18 @@ public:
 	 *	
 	 *	Allows to get the scale of the actor on the level.
 	 *	\return The scale of the actor.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `set_scale()`
 	 *	
 	 *	\~russian
 	 *	\brief Масштаб актёра
 	 *	
 	 *	Позволяет получить масштаб актёра на уровне.
 	 *	\return Масштаб актёра.
+	 *	\sa
+	 *	- `get_transform()`
+	 *	- `set_scale()`
 	 */
 	const Vector2& get_scale() const noexcept;
 
@@ -154,12 +172,16 @@ public:
 	 *
 	 *	Allows to get the transform (position, rotation and scale) of the actor on the level.
 	 *	\return The transform of the actor.
+	 *	\sa
+	 *	- `set_transform()`
 	 *
 	 *	\~russian
 	 *	\brief Преобразование актёра
 	 *
 	 *	Позволяет получить преобразование (положение, поворот и масштаб) актёра на уровне.
 	 *	\return Преобразование актёра.
+	 *	\sa
+	 *	- `set_transform()`
 	 */
 	const Transform& get_transform() const noexcept;
 
@@ -202,8 +224,12 @@ public:
 	 *	\tparam T_Component The class of a new component. It must be inherited from the `Component`
 	 *	class.
 	 *	\param transform The transform of the component relative to the actor.
+	 *	\param is_tickable If `false`, the `Component::tick()` method will not be called every
+	 *	tick.
 	 *	\return The pointer to the new component, the null pointer if the root component has
 	 *	already been created.
+	 *	\sa
+	 *	- `Component`
 	 *	
 	 *	\~russian
 	 *	\brief Создаёт корневой компонент актёра
@@ -212,11 +238,14 @@ public:
 	 *	только один корневой компонент. Корневой компонент не может быть заменён или удалён.
 	 *	\tparam T_Component Класс нового компонента. Он должен быть наследником класса `Component`.
 	 *	\param transform Преобразование компонента относительно актёра.
+	 *	\param is_tickable Если `false`, метод `Component::tick()` не будет вызываться каждый тик.
 	 *	\return Указатель на новый компонент; нулевой указатель, если корневой компонент уже был
 	 *	создан.
+	 *	\sa
+	 *	- `Component`
 	 */
 	template<typename T_Component>
-	std::shared_ptr<T_Component> create_root_component(const Transform& transform);
+	std::shared_ptr<T_Component> create_root_component(const Transform& transform, bool is_tickable = true);
 
 	/**
 	 *	\~english
@@ -224,12 +253,20 @@ public:
 	 *	
 	 *	Allows to change the position of the actor on the level.
 	 *	\param position The new position.
+	 *	\sa
+	 *	- `move()`
+	 *	- `set_transform()`
+	 *	- `get_position()`
 	 *	
 	 *	\~russian
 	 *	\brief Устанавливает положение актёра
 	 *	
 	 *	Позволяет изменить положение актёра на уровне.
 	 *	\param position Новое положение.
+	 *	\sa
+	 *	- `move()`
+	 *	- `set_transform()`
+	 *	- `get_position()`
 	 */
 	void set_position(const Vector2& position);
 
@@ -239,12 +276,20 @@ public:
 	 *
 	 *	Allows to change the angle of rotation of the actor on the level.
 	 *	\param rotation The new angle of rotation.
+	 *	\sa
+	 *	- `rotate()`
+	 *	- `set_transform()`
+	 *	- `get_rotation()`
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает поворот актёра
 	 *
 	 *	Позволяет изменить угол поворота актёра на уровне.
 	 *	\param rotation Новый угол поворота.
+	 *	\sa
+	 *	- `rotate()`
+	 *	- `set_transform()`
+	 *	- `get_rotation()`
 	 */
 	void set_rotation(const Angle& rotation);
 
@@ -254,12 +299,20 @@ public:
 	 *
 	 *	Allows to change the scale of the actor on the level.
 	 *	\param scale The new scale.
+	 *	\sa
+	 *	- `scale()`
+	 *	- `set_transform()`
+	 *	- `get_scale()`
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает масштаб актёра
 	 *
 	 *	Позволяет изменить масштаб актёра на уровне.
 	 *	\param scale Новый масштаб.
+	 *	\sa
+	 *	- `scale()`
+	 *	- `set_transform()`
+	 *	- `get_scale()`
 	 */
 	void set_scale(const Vector2& scale);
 
@@ -269,12 +322,16 @@ public:
 	 *
 	 *	Allows to change the transform of the actor on the level.
 	 *	\param transform The new transform.
+	 *	\sa
+	 *	- `get_transform()`
 	 *
 	 *	\~russian
 	 *	\brief Устанавливает преобразование актёра
 	 *
 	 *	Позволяет изменить преобразование актёра на уровне.
 	 *	\param transform Новое преобразование.
+	 *	\sa
+	 *	- `get_transform()`
 	 */
 	void set_transform(const Transform& transform);
 
@@ -284,12 +341,18 @@ public:
 	 *	
 	 *	Adds the passed value to the position of the actor on the level.
 	 *	\param delta The offset to the actor.
+	 *	\sa
+	 *	- `set_position()`
+	 *	- `get_position()`
 	 *	
 	 *	\~russian
 	 *	\brief Двигает актёр
 	 *	
 	 *	Прибавляет переданное значение к положению актёра на уровне.
 	 *	\param delta Смещение актёра.
+	 *	\sa
+	 *	- `set_position()`
+	 *	- `get_position()`
 	 */
 	void move(const Vector2& delta);
 
@@ -299,12 +362,18 @@ public:
 	 *
 	 *	Adds the passed value to the angle of rotation of the actor on the level.
 	 *	\param delta The angle of rotation.
+	 *	\sa
+	 *	- `set_rotation()`
+	 *	- `get_rotation()`
 	 *
 	 *	\~russian
 	 *	\brief Поворачивает актёр
 	 *
 	 *	Прибавляет переданное значение к углу поворота актёра на уровне.
 	 *	\param delta Угол поворота.
+	 *	\sa
+	 *	- `set_rotation()`
+	 *	- `get_rotation()`
 	 */
 	void rotate(const Angle& delta);
 
@@ -314,12 +383,18 @@ public:
 	 *
 	 *	Multiplies the scale of the actor on the level by the passed value.
 	 *	\param factor The scale factor.
+	 *	\sa
+	 *	- `set_scale()`
+	 *	- `get_scale()`
 	 *
 	 *	\~russian
 	 *	\brief Масштабирует актёр
 	 *
 	 *	Умножает масштаб актёра на уровне на переданное значение.
 	 *	\param factor Коэффициент масштабирования.
+	 *	\sa
+	 *	- `set_scale()`
+	 *	- `get_scale()`
 	 */
 	void scale(const Vector2& factor);
 
@@ -329,12 +404,16 @@ public:
 	 *	
 	 *	Allows to get the root component of the actor.
 	 *	\return The pointer to the root component.
+	 *	\sa
+	 *	- `create_root_component()`
 	 *	
 	 *	\~russian
 	 *	\brief Корневой компонент
 	 *	
 	 *	Позволяет получить корневой компонент актёра.
 	 *	\return Указатель на корневой компонент.
+	 *	\sa
+	 *	- `create_root_component()`
 	 */
 	std::shared_ptr<Component> get_root_component() noexcept;
 
@@ -344,12 +423,16 @@ public:
 	 *
 	 *	Allows to get the root component of the actor.
 	 *	\return The constant pointer to the root component.
+	 *	\sa
+	 *	- `create_root_component()`
 	 *
 	 *	\~russian
 	 *	\brief Корневой компонент
 	 *
 	 *	Позволяет получить корневой компонент актёра.
 	 *	\return Константный указатель на корневой компонент.
+	 *	\sa
+	 *	- `create_root_component()`
 	 */
 	std::shared_ptr<const Component> get_root_component() const noexcept;
 
@@ -359,11 +442,15 @@ public:
 	 *
 	 *	Destroys the actor and all its components. The actor cannot be recovered after the
 	 *	destroying.
+	 *	\sa
+	 *	- `is_destroyed()`
 	 *
 	 *	\~russian
 	 *	\brief Уничтожает актёр
 	 *
 	 *	Уничтожает актёр и все его компоненты. Актёр не может быть восстановлен после уничтожения.
+	 *	\sa
+	 *	- `is_destroyed()`
 	 */
 	void destroy();
 
@@ -373,12 +460,16 @@ public:
 	 *
 	 *	Checks whether the actor has been destroyed by the `destroy` method.
 	 *	\return `true` if the actor is destroyed, `false` otherwise.
+	 *	\sa
+	 *	- `destroy()`
 	 *
 	 *	\~russian
 	 *	\brief Проверяет, уничтожен ли актёр
 	 *
 	 *	Проверяет, был ли актёр уничтожен методом `destroy`.
 	 *	\return `true`, если актёр уничтожен, иначе `false`.
+	 *	\sa
+	 *	- `destroy()`
 	 */
 	bool is_destroyed() const noexcept;
 
@@ -467,12 +558,13 @@ protected:
 
 private:
 	static int actors_counter_;
-	int number_;
+	int id_;
 	bool is_destroyed_;
 
 	Transform transform_;
 
 	std::shared_ptr<Component> root_component_;
+	bool is_root_component_tickable_;
 	Level& level_;
 
 	Event<Actor& /*actor*/> on_destroyed_;
@@ -485,7 +577,7 @@ private:
 		/* Actor: public */
 
 template<typename T_Component>
-std::shared_ptr<T_Component> Actor::create_root_component(const Transform& transform)
+std::shared_ptr<T_Component> Actor::create_root_component(const Transform& transform, bool is_tickable)
 {
 	static_assert(std::is_base_of<Component, T_Component>::value, L"An argument of create_root_component method template must be Component");
 	if (root_component_ != nullptr)
@@ -494,6 +586,7 @@ std::shared_ptr<T_Component> Actor::create_root_component(const Transform& trans
 	}
 
 	root_component_ = std::make_shared<T_Component>(*this, nullptr, transform);
+	is_root_component_tickable_ = is_tickable;
 	dynamic_cast<Component*>(root_component_.get())->when_begin_play();
 	return root_component_;
 }
