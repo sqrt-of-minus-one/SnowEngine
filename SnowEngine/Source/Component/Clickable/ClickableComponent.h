@@ -77,7 +77,7 @@ public:
 	 *
 	 *	Удаляет компонент.
 	 */
-	~ClickableComponent();
+	virtual ~ClickableComponent();
 
 			/* METHODS */
 

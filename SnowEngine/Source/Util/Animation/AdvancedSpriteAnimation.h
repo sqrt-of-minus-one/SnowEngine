@@ -190,7 +190,7 @@ public:
 	 *
 	 *	Уничтожает объект.
 	 */
-	~AdvancedSpriteAnimation();
+	virtual ~AdvancedSpriteAnimation();
 
 			/* METHODS FROM Object */
 

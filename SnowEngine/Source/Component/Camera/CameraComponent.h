@@ -43,8 +43,8 @@ public:
 	 *	
 	 *	Creates a new component.
 	 *	\warning The constructor is designed for internal use only, don't use it directly. To
-	 *	create a component use the `create_component` method or the `create_root_component` method
-	 *	of the `Actor` class.
+	 *	create a component use the `create_component()` method or the
+	 *	`Actor::create_root_component()` method.
 	 *	\param actor The actor that the component will be attached to.
 	 *	\param parent The parent component or the null pointer if the component will be root.
 	 *	\param transform The transform of the component relative to the actor.
@@ -54,8 +54,8 @@ public:
 	 *	
 	 *	Создаёт новый компонент.
 	 *	\warning Конструктор предназначен только для внутреннего использования, не используйте его
-	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component` или методом
-	 *	`create_root_component` класса `Actor`.
+	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component()` или методом
+	 *	`Actor::create_root_component()`.
 	 *	\param actor Актёр, к которому будет прикреплён компонент.
 	 *	\param parent Родительский компонент  или нулевой указатель, если компонент будет корневым.
 	 *	\param transform Преобразование компонента относительно актёра.
@@ -73,7 +73,7 @@ public:
 	 *	
 	 *	Удаляет камеру.
 	 */
-	~CameraComponent();
+	virtual ~CameraComponent();
 
 			/* METHODS */
 
@@ -83,12 +83,16 @@ public:
 	 *	
 	 *	The area of the game window where a view of the camera is displayed, expressed as a factor.
 	 *	\return The rectangle occupied by the camera view.
+	 *	\sa
+	 *	- `set_viewport()`
 	 *	
 	 *	\~russian
 	 *	\brief Текущая область просмотра камеры
 	 *	
-	 *	Область игрового окна, где отображается вид с камеры, выраженный в коэффициентах.
+	 *	Область игрового окна, где отображается вид с камеры, выраженная в коэффициентах.
 	 *	\return Прямоугольник, занятый видом с камеры.
+	 *	\sa
+	 *	- `set_viewport()`
 	 */
 	DoubleRect get_viewport() const;
 
@@ -99,6 +103,8 @@ public:
 	 *	Sets the area of the game window where a view of the camera is displayed. It is expressed
 	 *	as a factor, e. g. the `set_viewport(DoubleRect(0, 0, 1, 1))` makes a full-window viewport.
 	 *	\param rect The viewport.
+	 *	\sa
+	 *	- `get_viewport()`
 	 *	
 	 *	\~russian
 	 *	\brief Устанавливает область просмотра камеры
@@ -106,6 +112,8 @@ public:
 	 *	Задаёт область игрового окна, где будет отображаться вид с камеры. Область выражается в
 	 *	коэффициентах, например, `set_viewport(DoubleRect(0, 0, 1, 1))` развернёт область просмотра
 	 *	на всё окно.
+	 *	\sa
+	 *	- `get_viewport()`
 	 */
 	void set_viewport(const DoubleRect& rect);
 
@@ -125,6 +133,35 @@ public:
 	 *	\return Словарь со всеми компонентами-камерами.
 	 */
 	static const std::map<const Level*, std::list<CameraComponent*>>& get_camera_components();
+
+			/* EVENTS*/
+
+	/**
+	 *	\~english
+	 *	\brief The layer should be drawn
+	 *	
+	 *	The event which is returned by this method is called when visible components on the passed
+	 *	level with the passed layer number should be drawn.
+	 *	
+	 *	The event parameters:
+	 *	- `sf::RenderWindow& window`: the SFML window where components should be drawn.
+	 *	\param level The level.
+	 *	\param layer The layer number.
+	 *	\return The event binder.
+	 *	
+	 *	\~russian
+	 *	\brief Слой должен быть отрисован
+	 *	
+	 *	Событие, возвращаемое этим методом, вызывается, когда видимые компоненты переданного уровня
+	 *	с переданным номером слоя должны быть отрисованы.
+	 *	
+	 *	Параметры события:
+	 *	- `sf::RenderWindow window`: окно SFML, где должны быть отрисованы компоненты.
+	 *	\param level Уровень.
+	 *	\param layer Номер слоя.
+	 *	\return «Привязыватель» события.
+	 */
+	static EventBinder<sf::RenderWindow& /*window*/>& on_draw(const Level& level, int layer);
 
 protected:
 			/* METHODS */
@@ -170,6 +207,8 @@ protected:
 private:
 	sf::View view_;
 
+	static std::map<const Level*, std::map<int /*layer*/, Event<sf::RenderWindow& /*window*/>>> on_draw_;
+	static std::map<const Level*, std::map<int /*layer*/, EventBinder<sf::RenderWindow& /*window*/>>> on_draw_binder_;
 	static std::map<const Level*, std::list<CameraComponent*>> camera_components_;
 };
 

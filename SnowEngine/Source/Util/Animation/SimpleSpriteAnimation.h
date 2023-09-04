@@ -130,7 +130,7 @@ public:
 	 *	
 	 *	Уничтожает объект.
 	 */
-	~SimpleSpriteAnimation();
+	virtaul ~SimpleSpriteAnimation();
 
 			/* METHODS FROM Object */
 

@@ -8,8 +8,7 @@
 
 #include <SFML/System/String.hpp>
 
-#include "../../Game/Game.h"
-#include "../../Game/Config.h"
+#include "../../Game/ConfigManager.h"
 
 using namespace snow;
 
@@ -26,7 +25,7 @@ MusicComponent::MusicComponent(Actor& actor, Component* parent, const Transform&
 bool MusicComponent::set_music(const String& music)
 {
 	music_name_ = music;
-	return music_.openFromFile(sf::String((Game::config.res_music_path + L'\\' + music).to_std_string()).toAnsiString());
+	return music_.openFromFile(sf::String((CURRENT_CONFIG.res_music_path / music.to_std_string()).to_std_string()).toAnsiString());
 }
 
 void MusicComponent::play()

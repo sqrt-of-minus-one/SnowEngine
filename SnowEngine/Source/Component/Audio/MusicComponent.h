@@ -23,12 +23,16 @@ class Actor;
  *
  *	This component creates sound. Use it for music and other long sounds. For short sounds you can
  *	use the `SoundComponent` class.
+ *	\sa
+ *	- `SoundComponent`
  *
  *	\~russian
  *	\brief Компонент, который может создавать музыку
  *
  *	Этот компонент создаёт звук. Используйте его для музыки и других длинных звуков. Для коротких
  *	звуков вы можете использовать класс `SoundComponent`.
+ *	\sa
+ *	- `SoundComponent`
  */
 class MusicComponent : public Component
 {
@@ -41,8 +45,8 @@ public:
 	 *	
 	 *	Creates a new sound component.
 	 *	\warningThe constructo r is designed for internal use only, don't use it directly. To
-	 *	create a component use the `create_component` method or the `create_root_component` method
-	 *	of the `Actor` class.
+	 *	create a component use the `create_component()` method or the
+	 *	`Actor::create_root_component()` method.
 	 *	\param actor The actor that the component will be attached to.
 	 *	\param parent The parent component or the null pointer if the component will be root.
 	 *	\param transform The transform of the component relative to the actor.
@@ -52,8 +56,8 @@ public:
 	 *	
 	 *	Создаёт новый звуковой компонент.
 	 *	\warning Конструктор предназначен только для внутреннего использования, не используйте его
-	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component` или методом
-	 *	`create_root_component` класса `Actor`.
+	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component()` или методом
+	 *	`Actor::create_root_component()`.
 	 *	\param actor Актёр, к которому будет прикреплён компонент.
 	 *	\param parent Родительский компонент  или нулевой указатель, если компонент будет корневым.
 	 *	\param transform Преобразование компонента относительно актёра.
@@ -82,39 +86,57 @@ public:
 	/**
 	 *	\~english
 	 *	\brief Play the music
-	 *
+	 *	
 	 *	Starts the music playback.
-	 *
+	 *	\sa
+	 *	- `pause()`
+	 *	- `stop()`
+	 *	
 	 *	\~russian
 	 *	\brief Воспроизвести музыку
-	 *
+	 *	
 	 *	Начинает воспроизведение музыки.
+	 *	\sa
+	 *	- `pause()`
+	 *	- `stop()`
 	 */
 	void play();
 
 	/**
 	 *	\~english
 	 *	\brief Pause the music
-	 *
+	 *	
 	 *	Pauses the music playback.
-	 *
+	 *	\sa
+	 *	- `play()`
+	 *	- `stop()`
+	 *	
 	 *	\~russian
 	 *	\brief Приостанавливает музыку
-	 *
+	 *	
 	 *	Приостанавливает воспроизведение музыки.
+	 *	\sa
+	 *	- `play()`
+	 *	- `stop()`
 	 */
 	void pause();
 
 	/**
 	 *	\~english
 	 *	\brief Stop the music
-	 *
+	 *	
 	 *	Stops the music playback.
-	 *
+	 *	\sa
+	 *	- `play()`
+	 *	- `pause()`
+	 *	
 	 *	\~russian
 	 *	\brief Останавливает музыку
-	 *
+	 *	
 	 *	Останавливает воспроизведение музыки.
+	 *	\sa
+	 *	- `play()`
+	 *	- `pause()`
 	 */
 	void stop();
 

@@ -44,8 +44,8 @@ public:
 	 *	
 	 *	Creates a new component.
 	 *	\warning The constructor is designed for internal use only, don't use it directly. To
-	 *	create a component use the `create_component` method or the `create_root_component` method
-	 *	of the `Actor` class.
+	 *	create a component use the `create_component()` method or the
+	 *	`Actor::create_root_component()` method.
 	 *	\param actor The actor that the component will be attached to.
 	 *	\param parent The parent component or the null pointer if the component will be root.
 	 *	\param transform The transform of the component relative to the actor.
@@ -55,8 +55,8 @@ public:
 	 *	
 	 *	Создаёт новый компонент.
 	 *	\warning Конструктор предназначен только для внутреннего использования, не используйте его
-	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component` или методом
-	 *	`create_root_component` класса `Actor`.
+	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component()` или методом
+	 *	`Actor::create_root_component()`.
 	 *	\param actor Актёр, к которому будет прикреплён компонент.
 	 *	\param parent Родительский компонент или нулевой указатель, если компонент будет корневым.
 	 *	\param transform Преобразование компонента относительно актёра.

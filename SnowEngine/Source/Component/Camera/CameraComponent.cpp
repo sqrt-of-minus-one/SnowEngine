@@ -64,6 +64,20 @@ const std::map<const Level*, std::list<CameraComponent*>>& CameraComponent::get_
 	return camera_components_;
 }
 
+EventBinder<sf::RenderWindow& /*window*/>& CameraComponent::on_draw(const Level& level, int layer)
+{
+	std::map<int, EventBinder<sf::RenderWindow&>>& map = on_draw_binder_[&level];
+	auto binder_iter = map.find(layer);
+	if (binder_iter != map.end())
+	{
+		return *bindre_iter;
+	}
+
+	on_draw_[&level].insert({ layer, Event<sf::RenderWindow>() });
+	map.insert({ layer, EventBinder<sf::RenderWindow>(on_draw_[&level][layer]) });
+	return map[layer];
+}
+
 		/* CameraComponent: protected */
 
 void CameraComponent::tick(double delta_sec)
@@ -71,17 +85,13 @@ void CameraComponent::tick(double delta_sec)
 	Component::tick(delta_sec);
 
 	std::shared_ptr<sf::RenderWindow> window = Game::get_window().lock();
-	const auto& all_visible_components = VisibleComponent::get_visible_components();
-	if (window && all_visible_components.find(&get_level()) != all_visible_components.end())
+	auto map_iter = on_draw_.find(&get_level());
+	if (window && map_iter != on_draw_.end())
 	{
 		window->setView(view_);
-		const auto& visible_components = all_visible_components.at(&get_level());
-		for (auto& i : visible_components)
+		for (auto& [k, v] : map_iter->second)
 		{
-			if (Object::is_valid(i))
-			{
-				i->draw(*window);
-			}
+			v.execute(*window);
 		}
 	}
 }
@@ -95,4 +105,6 @@ void CameraComponent::when_transformed(const Transform& new_level_transform)
 	// Todo: scale
 }
 
+std::map<const Level*, std::map<int /*layer*/, Event<>>> CameraComponent::on_draw_;
+std::map<const Level*, std::map<int /*layer*/, EventBinder<>>> CameraComponent::on_draw_binder_;
 std::map<const Level*, std::list<CameraComponent*>> CameraComponent::camera_components_;

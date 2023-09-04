@@ -7,39 +7,61 @@
 #include "VisibleComponent.h"
 
 #include "../../Actor/Actor.h"
+#include "../Camera/CameraComponent.h"
 
 using namespace snow;
 
 		/* VisibleComponent: public */
 
 VisibleComponent::VisibleComponent(Actor& actor, Component* parent, const Transform& transform) :
-	Component(actor, parent, transform)
-{
-	visible_components_[&actor.get_level()].push_back(this);
-}
+	Component(actor, parent, transform),
+	layer_(0),
+	on_draw_id_(CameraComponent::on_draw(actor.get_level(), layer_).bind<VisibleComponent>(*this, &VisibleComponent::draw))
+{}
 
 VisibleComponent::~VisibleComponent()
 {
-	auto& list = visible_components_[&get_level()];
-	for (auto i = list.begin(); i != list.end(); i++)
+	if (on_draw_id_ >= 0)
 	{
-		if (*i == this)
+		CameraComponent::on_draw(get_level(), layer_).unbind(on_draw_id_);
+	}
+}
+
+void VisibleComponent::set_visible(bool is_visible)
+{
+	if (is_visible)
+	{
+		if (on_draw_id_ < 0)
 		{
-			list.erase(i);
-			break;
+			on_draw_id_ = CameraComponent::on_draw(get_level(), layer_).bind<VisibleComponent>(*this, &VisibleComponent::draw);
 		}
 	}
-	if (list.empty())
+	else
 	{
-		visible_components_.erase(&get_level());
+		if (on_draw_id_ >= 0)
+		{
+			CameraComponent::on_draw(get_level(), layer_).unbind(on_draw_id_);
+			on_draw_id_ = -1;
+		}
 	}
 }
 
-const std::map<Level*, std::list<VisibleComponent*>>& VisibleComponent::get_visible_components()
+bool VisibleComponent::is_visible() const
 {
-	return visible_components_;
+	return on_draw_id_ >= 0;
 }
 
-		/* VisibleComponent: private */
+void VisibleComponent::set_layer(int layer)
+{
+	if (is_visible())
+	{
+		CameraComponent::on_draw(get_level(), layer_).unbind(on_draw_id_);
+		on_draw_id_ = CameraComponent::on_draw(get_level(), layer).bind<VisibleComponent>(*this, &VisibleComponent::draw);
+	}
+	layer_ = layer;
+}
 
-std::map<Level*, std::list<VisibleComponent*>> VisibleComponent::visible_components_;
+int VisibleComponent::get_layer() const
+{
+	return layer_;
+}

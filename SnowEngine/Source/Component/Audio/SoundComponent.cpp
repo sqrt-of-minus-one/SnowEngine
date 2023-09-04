@@ -8,8 +8,6 @@
 
 #include <SFML/Audio/SoundBuffer.hpp>
 
-#include "../../Game/Game.h"
-#include "../../Game/Config.h"
 #include "../../Util/ResourceManager.h"
 
 using namespace snow;
@@ -34,10 +32,7 @@ bool SoundComponent::set_sound(const String& sound)
 		sound_.setBuffer(*buffer_);
 		return true;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 void SoundComponent::play()

@@ -8,8 +8,8 @@
 
 #include "../Component.h"
 
-#include <vector>
 #include <map>
+#include <set>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -45,8 +45,8 @@ public:
 	 *	
 	 *	Creates a new component.
 	 *	\warning The constructor is designed for internal use only, don't use it directly. To
-	 *	create a component use the `create_component` method or the `create_root_component` method
-	 *	of the `Actor` class.
+	 *	create a component use the `create_component()` method or the
+	 *	`Actor::create_root_component()` method.
 	 *	\param actor The actor that the component will be attached to.
 	 *	\param parent The parent component or the null pointer if the component will be root.
 	 *	\param transform The transform of the component relative to the actor.
@@ -56,8 +56,8 @@ public:
 	 *	
 	 *	Создаёт новый компонент.
 	 *	\warning Конструктор предназначен только для внутреннего использования, не используйте его
-	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component` или методом
-	 *	`create_root_component` класса `Actor`.
+	 *	напрямую. Чтобы создать компонент, воспользуйтесь методом `create_component()` или методом
+	 *	`Actor::create_root_component()`.
 	 *	\param actor Актёр, к которому будет прикреплён компонент.
 	 *	\param parent Родительский компонент  или нулевой указатель, если компонент будет корневым.
 	 *	\param transform Преобразование компонента относительно актёра.
@@ -75,24 +75,24 @@ public:
 	 *	
 	 *	Удаляет коллизию.
 	 */
-	~CollisionComponent();
+	virtual ~CollisionComponent();
 
 			/* METHODS */
 
 	/**
 	 *	\~english
-	 *	\brief Do two collision components overlap
+	 *	\brief Whether two collision components overlap
 	 *	
 	 *	Checks whether two collision components overlap each other.
 	 *	\param collision_component The component to check.
 	 *	\return `true` if two components overlap, `false` otherwise.
 	 *	
 	 *	\~russian
-	 *	\brief Пересекаются ли компоненты-коллизии
+	 *	\brief Пересекаются ли два компонента-коллизии
 	 *	
 	 *	Проверяет, пересекаются ли два компонента-коллизии.
 	 *	\param collision_component Компонент для проверки.
-	 *	\return `true`, если два компонента пересекаются, иначе `false`.
+	 *	\return `true`, если два компонента пересекаются; иначе `false`.
 	 */
 	virtual bool overlap(const CollisionComponent& collision_component) const = 0;
 
@@ -101,15 +101,15 @@ public:
 	 *	\brief All the collisions which overlap this one
 	 *	
 	 *	Allows to get all the collision components that overlap this one.
-	 *	\return The vector with all the collisions that overlap this one.
+	 *	\return The set with all the collisions that overlap this one.
 	 *	
 	 *	\~russian
 	 *	\brief Все коллизии, которые пересекаются с этой
 	 *	
 	 *	Позволяет получить все компоненты-коллизии, пересекающиеся с данным.
-	 *	\return Вектор со всеми коллизиями, которые пересекаются с этой.
+	 *	\return Множество со всеми коллизиями, которые пересекаются с этой.
 	 */
-	std::vector<CollisionComponent*> get_overlap() const;
+	std::set<CollisionComponent*> get_overlap() const;
 
 	/**
 	 *	\~english
@@ -141,8 +141,8 @@ protected:
 	 *	\brief Определяет, в каких чанках находится компонент
 	 *	
 	 *	Определяет чанки, где находится компонент. Этот метод автоматически вызывается, когда
-	 *	компонент преобразуется и должен также вызываться, когда форма или размер области коллизии
-	 *	изменяется.
+	 *	изменяется преобразование компонента, и должен также вызываться, когда форма или размер
+	 *	области коллизии изменяется.
 	 */
 	void setup_chunks_();
 
