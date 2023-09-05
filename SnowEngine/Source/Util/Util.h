@@ -1266,6 +1266,44 @@ String json_to_string(std::shared_ptr<const json::Element> json);
  */
 Path json_to_path(std::shared_ptr<const json::Element> json);
 
+/**
+ *	\~english
+ *	\brief Casts the JSON element to the JSON object type
+ *	
+ *	Dynamically casts the JSON element to the JSON object type.
+ *	\param json The JSON element.
+ *	\return The pointer to the same element.
+ *	\throw std::invalid_argument The passed JSON is not an object.
+ *	
+ *	\~russian
+ *	\brief Приводит элемент JSON к типу объекта JSON
+ *	
+ *	Динамически преобразует элемент JSON к типу объекта JSON.
+ *	\param json Элемент JSON.
+ *	\return Указатель на тот же самый элемент.
+ *	\throw std::invalid_argument Переданный JSON не является объектом.
+*/
+std::shared_ptr<const json::JsonObject> json_to_object(std::shared_ptr<const json::Element> json);
+
+/**
+ *	\~english
+ *	\brief Casts the JSON element to the JSON array type
+ *	
+ *	Dynamically casts the JSON element to the JSON array type.
+ *	\param json The JSON element.
+ *	\return The pointer to the same element.
+ *	\throw std::invalid_argument The passed JSON is not an array.
+ *	
+ *	\~russian
+ *	\brief Приводит элемент JSON к типу массива JSON
+ *	
+ *	Динамически преобразует элемент JSON к типу массива JSON.
+ *	\param json Элемент JSON.
+ *	\return Указатель на тот же самый элемент.
+ *	\throw std::invalid_argument Переданный JSON не является массивом.
+*/
+std::shared_ptr<const json::Array> json_to_array(std::shared_ptr<const json::Element> json);
+
 }
 
 
