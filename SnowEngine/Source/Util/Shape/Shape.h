@@ -27,6 +27,7 @@ public:
 	virtual const String& shape_name() const = 0;
 	virtual bool is_inside(const Vector2& point) const = 0;
 //	virtual bool overlap(const Shape& shape) const = 0;
+	static bool overlap(const Shape& first, const Shape& second);
 
 	const Vector2& get_position() const;
 	const Angle& get_rotation() const;
@@ -41,6 +42,8 @@ public:
 	void move(const Vector2& delta);
 	void rotate(const Angle& delta);
 	void scale(const Vector2& factor);
+
+	virtual operator bool() const = 0;
 
 protected:
 	Shape();

@@ -29,12 +29,34 @@ public:
 	virtual const String& shape_name() const override;
 	virtual bool is_inside(const Vector2& point) const override;
 
+	virtual operator bool() const override;
+
+	ComplexShape& operator=(const ComplexShape& shape);
+	ComplexShape& operator=(ComplexShape&& shape);
+
+	friend ComplexShape operator+(const Shape& first, const Shape& second);
+	friend ComplexShape operator*(const Shape& first, const Shape& second);
+	friend ComplexShape operator&(const Shape& first, const Shape& second);
+	friend ComplexShape operator|(const Shape& first, const Shape& second);
+	friend ComplexShape operator^(const Shape& first, const Shape& second);
+
+	ComplexShape& operator+=(const Shape& shape);
+	ComplexShape& operator*=(const Shape& shape);
+	ComplexShape& operator&=(const Shape& shape);
+	ComplexShape& operator|=(const Shape& shape);
+	ComplexShape& operator^=(const Shape& shape);
+
 	static const String SHAPE_NAME;
 
 private:
+	ComplexShape();
+	ComplexShape(EType type, const Shape& first, const Shape& second);
+
 	EType type_;
 	std::unique_ptr<Shape> first_;
 	std::unique_ptr<Shape> second_;
+
+	void operator_as_(const Shape& shape);
 };
 
 }

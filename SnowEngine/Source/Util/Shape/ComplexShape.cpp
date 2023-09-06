@@ -42,14 +42,14 @@ ComplexShape::EType char_to_type_(wchar_t ch)
 		/* ComplexShape: public */
 
 ComplexShape::ComplexShape(const ComplexShape& shape) :
-	Shape(shape.anchor_, shape.transform_),
+	Shape(shape.transform_),
 	type_(shape.type_),
 	first_(std::make_unique<Shape>(*shape.first_)),
 	second_(std::make_unique<Shape>(*shape.second_))
 {}
 
 ComplexShape::ComplexShape(ComplexShape&& shape) :
-	Shape(shape.anchor_, shape.transform_),
+	Shape(shape.transform_),
 	type_(shape.type_),
 	first_(std::move(shape.first_)),
 	second_(std::move(shape.second_))
@@ -124,4 +124,128 @@ bool ComplexShape::is_inside(const Vector2& point) const
 	}
 }
 
+ComplexShape::operator bool() const
+{
+	switch (type_)
+	{
+	case EType::AND:
+	{
+		return overlap(*first_, *second_);
+	}
+	case EType::OR:
+	{
+		return static_cast<bool>(*first_) && static_cast<bool>(*second_);
+	}
+	case EType::XOR:
+	{
+		return *first_ != *second_;
+	}
+	}
+}
+
+ComplexShape& ComplexShape::operator=(const ComplexShape& shape)
+{
+	type_ = shape.type_;
+	first_ = Shape::unique_from_json(shape.first_->to_json());
+	second_ = Shape::unique_from_json(shape.second_->to_json());
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator=(ComplexShape&& shape)
+{
+	type_ = shape.type_;
+	first_ = std::move(shape.first_);
+	second_ = std::move(shape.second_);
+	return *this;
+}
+
+ComplexShape snow::operator+(const Shape& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::OR, first, second);
+}
+
+ComplexShape snow::operator*(const Shape& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::AND, first, second);
+}
+
+ComplexShape snow::operator&(const Shape& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::AND, first, second);
+}
+
+ComplexShape snow::operator|(const Shape& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::OR, first, second);
+}
+
+ComplexShape snow::operator^(const Shape& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::XOR, first, second);
+}
+
+ComplexShape& ComplexShape::operator+=(const Shape& shape)
+{
+	operator_as_(shape);
+	type_ = EType::OR;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator*=(const Shape& shape)
+{
+	operator_as_(shape);
+	type_ = EType::AND;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator&=(const Shape& shape)
+{
+	operator_as_(shape);
+	type_ = EType::AND;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator|=(const Shape& shape)
+{
+	operator_as_(shape);
+	type_ = EType::OR;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator^=(const Shape& shape)
+{
+	operator_as_(shape);
+	type_ = EType::XOR;
+	return *this;
+}
+
 const String ComplexShape::SHAPE_NAME = L"Complex";
+
+		/* ComplexShape: private */
+
+ComplexShape::ComplexShape() :
+	Shape(),
+	type_(),
+	first_(),
+	second_()
+{}
+
+ComplexShape::ComplexShape(EType type, const Shape& first, const Shape& second) :
+	Shape(),
+	type_(type),
+	first_(Shape::unique_from_json(first.to_json())),
+	second_(Shape::unique_from_json(second.to_json()))
+{}
+
+void ComplexShape::operator_as_(const Shape& shape)
+{
+	std::unique_ptr<Shape> f = std::move(first_);
+
+	std::unique_ptr<ComplexShape> new_first = std::make_unique<ComplexShape>();
+	new_first->type_ = type_;
+	new_first->first_ = std::move(f);
+	new_first->second_ = std::move(second_);
+	
+	first_ = std::move(new_first);
+	second_ = Shape::unique_from_json(shape.to_json());
+}

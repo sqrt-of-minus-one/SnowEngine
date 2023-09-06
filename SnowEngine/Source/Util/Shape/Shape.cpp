@@ -47,6 +47,11 @@ std::unique_ptr<Shape> Shape::unique_from_json(std::shared_ptr<const json::Eleme
 	FROM_JSON_(json, std::make_unique);
 }
 
+bool Shape::overlap(const Shape& first, const Shape& second)
+{
+	// ???
+}
+
 const Vector2& Shape::get_position() const
 {
 	return transform_.get_position();
