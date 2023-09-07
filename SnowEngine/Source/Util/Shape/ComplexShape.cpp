@@ -145,6 +145,7 @@ ComplexShape::operator bool() const
 
 ComplexShape& ComplexShape::operator=(const ComplexShape& shape)
 {
+	transform_ = shape.transform_;
 	type_ = shape.type_;
 	first_ = Shape::unique_from_json(shape.first_->to_json());
 	second_ = Shape::unique_from_json(shape.second_->to_json());
@@ -153,6 +154,7 @@ ComplexShape& ComplexShape::operator=(const ComplexShape& shape)
 
 ComplexShape& ComplexShape::operator=(ComplexShape&& shape)
 {
+	transform_ = shape.transform_;
 	type_ = shape.type_;
 	first_ = std::move(shape.first_);
 	second_ = std::move(shape.second_);
@@ -161,32 +163,114 @@ ComplexShape& ComplexShape::operator=(ComplexShape&& shape)
 
 ComplexShape snow::operator+(const Shape& first, const Shape& second)
 {
-	return ComplexShape(ComplexShape::EType::OR, first, second);
+	return ComplexShape(ComplexShape::EType::OR, Shape::unique_copy(first), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator+(const Shape& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::OR, Shape::unique_copy(first), Shape::unique_move(std::move(second)));
+}
+
+ComplexShape snow::operator+(Shape&& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::OR, Shape::unique_move(std::move(first)), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator+(Shape&& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::OR, Shape::unique_move(std::move(first)), Shape::unique_move(std::move(second)));
 }
 
 ComplexShape snow::operator*(const Shape& first, const Shape& second)
 {
-	return ComplexShape(ComplexShape::EType::AND, first, second);
+	return ComplexShape(ComplexShape::EType::AND, Shape::unique_copy(first), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator*(const Shape& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::AND, Shape::unique_copy(first), Shape::unique_move(std::move(second)));
+}
+
+ComplexShape snow::operator*(Shape&& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::AND, Shape::unique_move(std::move(first)), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator*(Shape&& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::AND, Shape::unique_move(std::move(first)), Shape::unique_move(std::move(second)));
 }
 
 ComplexShape snow::operator&(const Shape& first, const Shape& second)
 {
-	return ComplexShape(ComplexShape::EType::AND, first, second);
+	return ComplexShape(ComplexShape::EType::AND, Shape::unique_copy(first), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator&(const Shape& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::AND, Shape::unique_copy(first), Shape::unique_move(std::move(second)));
+}
+
+ComplexShape snow::operator&(Shape&& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::AND, Shape::unique_move(std::move(first)), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator&(Shape&& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::AND, Shape::unique_move(std::move(first)), Shape::unique_move(std::move(second)));
 }
 
 ComplexShape snow::operator|(const Shape& first, const Shape& second)
 {
-	return ComplexShape(ComplexShape::EType::OR, first, second);
+	return ComplexShape(ComplexShape::EType::OR, Shape::unique_copy(first), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator|(const Shape& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::OR, Shape::unique_copy(first), Shape::unique_move(std::move(second)));
+}
+
+ComplexShape snow::operator|(Shape&& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::OR, Shape::unique_move(std::move(first)), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator|(Shape&& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::OR, Shape::unique_move(std::move(first)), Shape::unique_move(std::move(second)));
 }
 
 ComplexShape snow::operator^(const Shape& first, const Shape& second)
 {
-	return ComplexShape(ComplexShape::EType::XOR, first, second);
+	return ComplexShape(ComplexShape::EType::XOR, Shape::unique_copy(first), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator^(const Shape& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::XOR, Shape::unique_copy(first), Shape::unique_move(std::move(second)));
+}
+
+ComplexShape snow::operator^(Shape&& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::XOR, Shape::unique_move(std::move(first)), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator^(Shape&& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::XOR, Shape::unique_move(std::move(first)), Shape::unique_move(std::move(second)));
 }
 
 ComplexShape& ComplexShape::operator+=(const Shape& shape)
 {
 	operator_as_(shape);
+	type_ = EType::OR;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator+=(Shape&& shape)
+{
+	operator_as_(std::move(shape));
 	type_ = EType::OR;
 	return *this;
 }
@@ -198,9 +282,23 @@ ComplexShape& ComplexShape::operator*=(const Shape& shape)
 	return *this;
 }
 
+ComplexShape& ComplexShape::operator*=(Shape&& shape)
+{
+	operator_as_(std::move(shape));
+	type_ = EType::AND;
+	return *this;
+}
+
 ComplexShape& ComplexShape::operator&=(const Shape& shape)
 {
 	operator_as_(shape);
+	type_ = EType::AND;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator&=(Shape&& shape)
+{
+	operator_as_(std::move(shape));
 	type_ = EType::AND;
 	return *this;
 }
@@ -212,9 +310,23 @@ ComplexShape& ComplexShape::operator|=(const Shape& shape)
 	return *this;
 }
 
+ComplexShape& ComplexShape::operator|=(Shape&& shape)
+{
+	operator_as_(std::move(shape));
+	type_ = EType::OR;
+	return *this;
+}
+
 ComplexShape& ComplexShape::operator^=(const Shape& shape)
 {
 	operator_as_(shape);
+	type_ = EType::XOR;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator^=(Shape&& shape)
+{
+	operator_as_(std::move(shape));
 	type_ = EType::XOR;
 	return *this;
 }
@@ -230,11 +342,11 @@ ComplexShape::ComplexShape() :
 	second_()
 {}
 
-ComplexShape::ComplexShape(EType type, const Shape& first, const Shape& second) :
+ComplexShape::ComplexShape(EType type, std::unique_ptr<Shape>&& first, std::unique_ptr<Shape>&& second) :
 	Shape(),
 	type_(type),
-	first_(Shape::unique_from_json(first.to_json())),
-	second_(Shape::unique_from_json(second.to_json()))
+	first_(std::move(first)),
+	second_(std::move(second))
 {}
 
 void ComplexShape::operator_as_(const Shape& shape)
@@ -247,5 +359,5 @@ void ComplexShape::operator_as_(const Shape& shape)
 	new_first->second_ = std::move(second_);
 	
 	first_ = std::move(new_first);
-	second_ = Shape::unique_from_json(shape.to_json());
+	second_ = Shape::unique_copy(shape);
 }

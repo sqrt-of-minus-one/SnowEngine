@@ -35,28 +35,53 @@ public:
 	ComplexShape& operator=(ComplexShape&& shape);
 
 	friend ComplexShape operator+(const Shape& first, const Shape& second);
-	friend ComplexShape operator*(const Shape& first, const Shape& second);
-	friend ComplexShape operator&(const Shape& first, const Shape& second);
-	friend ComplexShape operator|(const Shape& first, const Shape& second);
-	friend ComplexShape operator^(const Shape& first, const Shape& second);
+	friend ComplexShape operator+(const Shape& first, Shape&& second);
+	friend ComplexShape operator+(Shape&& first, const Shape& second);
+	friend ComplexShape operator+(Shape&& first, Shape&& second);
 
+	friend ComplexShape operator*(const Shape& first, const Shape& second);
+	friend ComplexShape operator*(const Shape& first, Shape&& second);
+	friend ComplexShape operator*(Shape&& first, const Shape& second);
+	friend ComplexShape operator*(Shape&& first, Shape&& second);
+	
+	friend ComplexShape operator&(const Shape& first, const Shape& second);
+	friend ComplexShape operator&(const Shape& first, Shape&& second);
+	friend ComplexShape operator&(Shape&& first, const Shape& second);
+	friend ComplexShape operator&(Shape&& first, Shape&& second);
+	
+	friend ComplexShape operator|(const Shape& first, const Shape& second);
+	friend ComplexShape operator|(const Shape& first, Shape&& second);
+	friend ComplexShape operator|(Shape&& first, const Shape& second);
+	friend ComplexShape operator|(Shape&& first, Shape&& second);
+	
+	friend ComplexShape operator^(const Shape& first, const Shape& second);
+	friend ComplexShape operator^(const Shape& first, Shape&& second);
+	friend ComplexShape operator^(Shape&& first, const Shape& second);
+	friend ComplexShape operator^(Shape&& first, Shape&& second);
+	
 	ComplexShape& operator+=(const Shape& shape);
+	ComplexShape& operator+=(Shape&& shape);
 	ComplexShape& operator*=(const Shape& shape);
+	ComplexShape& operator*=(Shape&& shape);
 	ComplexShape& operator&=(const Shape& shape);
+	ComplexShape& operator&=(Shape&& shape);
 	ComplexShape& operator|=(const Shape& shape);
+	ComplexShape& operator|=(Shape&& shape);
 	ComplexShape& operator^=(const Shape& shape);
+	ComplexShape& operator^=(Shape&& shape);
 
 	static const String SHAPE_NAME;
 
 private:
 	ComplexShape();
-	ComplexShape(EType type, const Shape& first, const Shape& second);
+	ComplexShape(EType type, std::unique_ptr<Shape>&& first, std::unique_ptr<Shape>&& second);
 
 	EType type_;
 	std::unique_ptr<Shape> first_;
 	std::unique_ptr<Shape> second_;
 
 	void operator_as_(const Shape& shape);
+	void operator_as_(Shape&& shape);
 };
 
 }

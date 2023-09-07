@@ -20,6 +20,10 @@ public:
 
 	static std::shared_ptr<Shape> shared_from_json(std::shared_ptr<const json::Element> json);
 	static std::unique_ptr<Shape> unique_from_json(std::shared_ptr<const json::Element> json);
+	static std::shared_ptr<Shape> shared_copy(const Shape& shape);
+	static std::unique_ptr<Shape> unique_copy(const Shape& shape);
+	static std::shared_ptr<Shape> shared_move(Shape&& shape);
+	static std::unique_ptr<Shape> unique_move(Shape&& shape);
 
 	virtual double area() const = 0;
 	virtual double perimeter() const = 0;

@@ -86,4 +86,10 @@ double Circle::get_radius() const
 	return semi_axes_.get_x();
 }
 
+Circle& Circle::operator=(const Circle& circle)
+{
+	Circle::operator=(circle);
+	return *this;
+}
+
 const String Circle::SHAPE_NAME = L"Circle";

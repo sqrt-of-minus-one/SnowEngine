@@ -32,7 +32,12 @@ public:
 	virtual const String& shape_name() const override;
 	virtual bool is_inside(const Vector2& point) const override;
 
+	virtual operator bool() const override;
+
 	const std::vector<Vector2>& get_vertices() const;
+
+	Polygon& operator=(const Polygon& polygon);
+	Polygon& operator=(Polygon& polygon);
 
 	static const String SHAPE_NAME;
 

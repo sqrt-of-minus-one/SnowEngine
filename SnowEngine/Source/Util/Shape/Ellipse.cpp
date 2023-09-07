@@ -8,6 +8,7 @@
 
 #include "../Util.h"
 #include "../Json/JsonObject.h"
+#include "../../Math/Shape/DoubleRect.h"
 
 using namespace snow;
 
@@ -23,12 +24,6 @@ Ellipse::Ellipse(const Ellipse& ellipse) :
 	centre_(ellipse.centre_)
 {}
 
-Ellipse::Ellipse(Ellipse&& ellipse) :
-	Shape(std::move(ellipse)),
-	semi_axes_(ellipse.semi_axes_),
-	centre_(ellipse.centre_)
-{}
-
 Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 	Shape(),
 	semi_axes_(),
@@ -37,7 +32,6 @@ Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		anchor_ = Vector2(object->get_content().at(L"anchor"_s));
 		transform_ = Transform(object->get_content().at(L"transform"_s));
 		semi_axes_ = Vector2(object->get_content().at(L"semi_axes"_s));
 		
@@ -61,6 +55,12 @@ Ellipse::Ellipse(const Vector2& semi_axes, const Vector2& centre) :
 	Shape(),
 	semi_axes_(semi_axes),
 	centre_(centre)
+{}
+
+Ellipse::Ellipse(const DoubleRect& rect) :
+	Shape(),
+	semi_axes_(rect.get_size() / 2),
+	centre_(rect.get_position() + semi_axes_)
 {}
 
 String Ellipse::to_string() const
@@ -96,6 +96,11 @@ bool Ellipse::is_inside(const Vector2& point) const
 	// ?
 }
 
+Ellipse::operator bool() const
+{
+	return !semi_axes_.is_zero();
+}
+
 const Vector2& Ellipse::get_semi_axes() const
 {
 	return semi_axes_;
@@ -104,6 +109,14 @@ const Vector2& Ellipse::get_semi_axes() const
 const Vector2& Ellipse::get_centre() const
 {
 	return centre_;
+}
+
+Ellipse& Ellipse::operator=(const Ellipse& ellipse)
+{
+	transform_ = ellipse.transform_;
+	semi_axes_ = ellipse.semi_axes_;
+	centre_ = ellipse.centre_;
+	return *this;
 }
 
 const String Ellipse::SHAPE_NAME = L"Ellipse";

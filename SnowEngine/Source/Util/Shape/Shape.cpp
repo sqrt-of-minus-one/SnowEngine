@@ -12,7 +12,7 @@
 
 using namespace snow;
 
-#define FROM_JSON_(json, make)																					\
+#define FROM_JSON_(json, make)																						\
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);									\
 	String shape;																									\
 	try																												\
@@ -25,7 +25,15 @@ using namespace snow;
 	}																												\
 																													\
 	if (shape == ComplexShape::SHAPE_NAME)																			\
-		return make<ComplexShape>(json);																
+		return make<ComplexShape>(json);																			
+
+#define COPY_(shape, make)															\
+	if ((shape).shape_name() == ComplexShape::SHAPE_NAME)							\
+		return make<ComplexShape>(*dynamic_cast<const ComplexShape*>(&(shape)));	
+
+#define MOVE_(shape, make)															\
+	if ((shape).shape_name() == ComplexShape::SHAPE_NAME)							\
+		return make<ComplexShape>(std::move(*dynamic_cast<const ComplexShape*>(&(shape))));
 
 		/* Shape: public */
 
@@ -45,6 +53,26 @@ std::shared_ptr<Shape> Shape::shared_from_json(std::shared_ptr<const json::Eleme
 std::unique_ptr<Shape> Shape::unique_from_json(std::shared_ptr<const json::Element> json)
 {
 	FROM_JSON_(json, std::make_unique);
+}
+
+std::shared_ptr<Shape> Shape::shared_copy(const Shape& shape)
+{
+	COPY_(shape, std::make_shared);
+}
+
+std::unique_ptr<Shape> Shape::unique_copy(const Shape& shape)
+{
+	COPY_(shape, std::make_unique);
+}
+
+std::shared_ptr<Shape> Shape::shared_move(Shape&& shape)
+{
+	MOVE_(shape, std::make_shared);
+}
+
+std::unique_ptr<Shape> Shape::unique_move(Shape&& shape)
+{
+	MOVE_(shape, std::make_unique);
 }
 
 bool Shape::overlap(const Shape& first, const Shape& second)

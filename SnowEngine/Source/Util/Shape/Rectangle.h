@@ -31,7 +31,12 @@ public:
 	virtual const String& shape_name() const override;
 	virtual bool is_inside(const Vector2& point) const override;
 
+	virtual operator bool() const override;
+
 	const DoubleRect& get_rect() const;
+
+	Rectangle& operator=(const Rectangle& rectangle);
+	Rectangle& operator=(Rectangle&& rectangle);
 
 	static const String SHAPE_NAME;
 

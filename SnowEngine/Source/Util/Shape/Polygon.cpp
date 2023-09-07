@@ -36,7 +36,6 @@ Polygon::Polygon(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		anchor_ = Vector2(object->get_content().at(L"anchor"_s));
 		transform_ = Transform(object->get_content().at(L"transform"_s));
 		std::shared_ptr<const json::Array> vertices = util::json_to_array(object->get_content().at(L"vertices"_s));
 		for (const auto& i : vertices->get_content())
@@ -97,9 +96,28 @@ bool Polygon::is_inside(const Vector2& point) const
 	// !?
 }
 
+Polygon::operator bool() const
+{
+	return !vertices_.empty();
+}
+
 const std::vector<Vector2>& Polygon::get_vertices() const
 {
 	return vertices_;
+}
+
+Polygon& Polygon::operator=(const Polygon& polygon)
+{
+	transform_ = polygon.transform_;
+	vertices_ = polygon.vertices_;
+	return *this;
+}
+
+Polygon& Polygon::operator=(Polygon&& polygon)
+{
+	transform_ = polygon.transform_;
+	vertices_ = std::move(polygon.vertices_);
+	return *this;
 }
 
 const String Polygon::SHAPE_NAME = L"Polygon";

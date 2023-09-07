@@ -31,7 +31,6 @@ Rectangle::Rectangle(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		anchor_ = Vector2(object->get_content().at(L"anchor"_s));
 		transform_ = Transform(object->get_content().at(L"transform"_s));
 		rect_ = DoubleRect(object->get_content().at(L"rect"_s));
 	}
@@ -92,9 +91,28 @@ bool Rectangle::is_inside(const Vector2& point) const
 	// ?
 }
 
+Rectangle::operator bool() const
+{
+	return !rect_.get_size().is_zero();
+}
+
 const DoubleRect& Rectangle::get_rect() const
 {
 	return rect_;
+}
+
+Rectangle& Rectangle::operator=(const Rectangle& rectangle)
+{
+	rect_ = rectangle.rect_;
+	Polygon::operator=(rectangle);
+	return *this;
+}
+
+Rectangle& Rectangle::operator=(Rectangle&& rectangle)
+{
+	rect_ = rectangle.rect_;
+	Polygon::operator=(std::move(rectangle));
+	return *this;
 }
 
 const String Rectangle::SHAPE_NAME = L"Rectangle";

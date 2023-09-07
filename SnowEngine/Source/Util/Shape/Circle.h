@@ -27,6 +27,10 @@ public:
 	virtual bool is_inside(const Vector2& point) const override;
 
 	double get_radius() const;
+
+	Circle& operator=(const Circle& circle);
+
+	static const String SHAPE_NAME;
 }
 
 }
