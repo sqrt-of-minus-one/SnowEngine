@@ -13,6 +13,8 @@
 namespace snow
 {
 
+class DoubleRect;
+
 class Shape : public Object
 {
 public:
@@ -25,11 +27,17 @@ public:
 	static std::shared_ptr<Shape> shared_move(Shape&& shape);
 	static std::unique_ptr<Shape> unique_move(Shape&& shape);
 
+	virtual double non_transformed_area() const = 0;
+	virtual double non_transformed_perimeter() const = 0;
+	virtual DoubleRect non_transformed_boundary_rect() const = 0;
+
 	virtual double area() const = 0;
 	virtual double perimeter() const = 0;
+	virtual DoubleRect get_boundary_rect() const = 0;
 	
 	virtual const String& shape_name() const = 0;
-	virtual bool is_inside(const Vector2& point) const = 0;
+	virtual bool is_inside_non_transformed(const Vector2& point) const = 0;
+	bool is_inside(const Vector2& point) const;
 //	virtual bool overlap(const Shape& shape) const = 0;
 	static bool overlap(const Shape& first, const Shape& second);
 
@@ -51,7 +59,7 @@ public:
 
 protected:
 	Shape();
-	Shape(const Transform& transfrom);
+	Shape(const Shape& shape);
 	Transform transform_;
 };
 

@@ -6,6 +6,7 @@
 
 #include "ComplexShape.h"
 
+#include "../../Math/Shape/DoubleRect.h"
 #include "../Util.h"
 #include "../Json/JsonObject.h"
 
@@ -42,14 +43,14 @@ ComplexShape::EType char_to_type_(wchar_t ch)
 		/* ComplexShape: public */
 
 ComplexShape::ComplexShape(const ComplexShape& shape) :
-	Shape(shape.transform_),
+	Shape(shape),
 	type_(shape.type_),
 	first_(std::make_unique<Shape>(*shape.first_)),
 	second_(std::make_unique<Shape>(*shape.second_))
 {}
 
 ComplexShape::ComplexShape(ComplexShape&& shape) :
-	Shape(shape.transform_),
+	Shape(shape),
 	type_(shape.type_),
 	first_(std::move(shape.first_)),
 	second_(std::move(shape.second_))
@@ -64,7 +65,6 @@ ComplexShape::ComplexShape(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		anchor_ = Vector2(object->get_content().at(L"anchor"_s));
 		transform_ = Transform(object->get_content().at(L"transform"_s));
 		type_ = char_to_type_(util::json_to_char(object->get_content().at(L"type"_s)));
 		first_ = Shape::unique_from_json(object->get_content().at(L"first"_s));
@@ -90,6 +90,21 @@ std::shared_ptr<json::Element> ComplexShape::to_json() const
 	return object;
 }
 
+double ComplexShape::non_transformed_area() const
+{
+	// ??
+}
+
+double ComplexShape::non_transformed_perimeter() const
+{
+	// ??
+}
+
+DoubleRect ComplexShape::non_transformed_boundary_rect() const
+{
+	// ??
+}
+
 double ComplexShape::area() const
 {
 	// !??
@@ -100,12 +115,17 @@ double ComplexShape::perimeter() const
 	// !!????
 }
 
+DoubleRect ComplexShape::get_boundary_rect() const
+{
+	// ??
+}
+
 const String& ComplexShape::shape_name() const
 {
 	return SHAPE_NAME;
 }
 
-bool ComplexShape::is_inside(const Vector2& point) const
+bool ComplexShape::is_inside_non_transformed(const Vector2& point) const
 {
 	switch (type_)
 	{

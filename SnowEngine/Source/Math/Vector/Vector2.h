@@ -286,6 +286,38 @@ public:
 
 	/**
 	 *	\~english
+	 *	\brief Sets the polar angle
+	 *	
+	 *	Rotates the vector so that the angle between it and the positive direction of X-axis is
+	 *	equal to the passed value. Does not change the length of the vector.
+	 *	\param angle The angle.
+	 *	
+	 *	\~russian
+	 *	\brief Устанавливает полярный угол
+	 *	
+	 *	Вращает вектор так, чтобы угол между ним и положительным направлением оси X был равен
+	 *	переданному занчению. Не изменяет длину вектора.
+	 *	\param angle Угол.
+	 */
+	void set_angle(const Angle& angle);
+
+	/**
+	 *	\~english
+	 *	\brief Rotates the vector
+	 *	
+	 *	Rotates the vector without changing its length.
+	 *	\param delta The angle of rotation.
+	 *	
+	 *	\~russian
+	 *	\brief Вращает вектор
+	 *	
+	 *	Вращает вектор, не изменяя его длины.
+	 *	\param delta Угол поворота.
+	 */
+	void rotate(const Angle& delta);
+
+	/**
+	 *	\~english
 	 *	\brief An angle between two vectors
 	 *	
 	 *	Allows to get an angle between two vectors. The result is between 0° and 180°.

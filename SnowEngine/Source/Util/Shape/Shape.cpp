@@ -7,6 +7,9 @@
 #include "Shape.h"
 
 #include "ComplexShape.h"
+#include "Rectangle.h"
+#include "Circle.h"
+#include "NullShape.h"
 #include "../Json/JsonObject.h"
 #include "../Util.h"
 
@@ -24,16 +27,46 @@ using namespace snow;
 		throw std::invalid_argument("Couldn't create a shape: the JSON object must contain a \"shape\" element");	\
 	}																												\
 																													\
+	if (shape == Rectangle::SHAPE_NAME)																				\
+		return make<Rectangle>(json);																				\
+	if (shape == Circle::SHAPE_NAME)																				\
+		return make<Circle>(json);																					\
 	if (shape == ComplexShape::SHAPE_NAME)																			\
-		return make<ComplexShape>(json);																			
+		return make<ComplexShape>(json);																			\
+	if (shape == NullShape::SHAPE_NAME)																				\
+		return make<NullShape>(json);																				\
+	if (shape == Polygon::SHAPE_NAME)																				\
+		return make<Polygon>(json);																					\
+	if (shape == Ellipse::SHAPE_NAME)																				\
+		return make<Ellipse>(json);
 
 #define COPY_(shape, make)															\
+	if ((shape).shape_name() == Rectangle::SHAPE_NAME)								\
+		return make<Rectangle>(*dynamic_cast<const Rectangle*>(&(shape)));			\
+	if ((shape).shape_name() == Circle::SHAPE_NAME)									\
+		return make<Circle>(*dynamic_cast<const Circle*>(&(shape)));				\
 	if ((shape).shape_name() == ComplexShape::SHAPE_NAME)							\
-		return make<ComplexShape>(*dynamic_cast<const ComplexShape*>(&(shape)));	
+		return make<ComplexShape>(*dynamic_cast<const ComplexShape*>(&(shape)));	\
+	if ((shape).shape_name() == NullShape::SHAPE_NAME)								\
+		return make<NullShape>(*dynamic_cast<const NullShape*>(&(shape)));			\
+	if ((shape).shape_name() == Polygon::SHAPE_NAME)								\
+		return make<Polygon>(*dynamic_cast<const Polygon*>(&(shape)));				\
+	if ((shape).shape_name() == Ellipse::SHAPE_NAME)								\
+		return make<Ellipse>(*dynamic_cast<const Ellipse*>(&(shape)));
 
-#define MOVE_(shape, make)															\
-	if ((shape).shape_name() == ComplexShape::SHAPE_NAME)							\
-		return make<ComplexShape>(std::move(*dynamic_cast<const ComplexShape*>(&(shape))));
+#define MOVE_(shape, make)																	\
+	if ((shape).shape_name() == Rectangle::SHAPE_NAME)										\
+		return make<Rectangle>(std::move(*dynamic_cast<const Rectangle*>(&(shape))));		\
+	if ((shape).shape_name() == Circle::SHAPE_NAME)											\
+		return make<Circle>(std::move(*dynamic_cast<const Circle*>(&(shape))));				\
+	if ((shape).shape_name() == ComplexShape::SHAPE_NAME)									\
+		return make<ComplexShape>(std::move(*dynamic_cast<const ComplexShape*>(&(shape))));	\
+	if ((shape).shape_name() == NullShape::SHAPE_NAME)										\
+		return make<NullShape>(std::move(*dynamic_cast<const NullShape*>(&(shape))));		\
+	if ((shape).shape_name() == Polygon::SHAPE_NAME)										\
+		return make<Polygon>(std::move(*dynamic_cast<const Polygon*>(&(shape))));			\
+	if ((shape).shape_name() == Ellipse::SHAPE_NAME)										\
+		return make<Ellipse>(std::move(*dynamic_cast<const Ellipse*>(&(shape))));
 
 		/* Shape: public */
 
@@ -75,6 +108,11 @@ std::unique_ptr<Shape> Shape::unique_move(Shape&& shape)
 	MOVE_(shape, std::make_unique);
 }
 
+bool Shape::is_inside(const Vector2& point) const
+{
+	is_inside_non_transformed(transform_.transform(point));
+}
+
 bool Shape::overlap(const Shape& first, const Shape& second)
 {
 	// ???
@@ -107,7 +145,7 @@ void Shape::set_position(const Vector2& position)
 
 void Shape::set_rotation(const Angle& rotation)
 {
-	transform_.set_rotation(rotation)
+	transform_.set_rotation(rotation);
 }
 
 void Shape::set_scale(const Vector2& scale)
@@ -122,17 +160,17 @@ void Shape::set_transform(const Transform& transform)
 
 void Shape::move(const Vector2& delta)
 {
-	transform_.set_position(transform_.get_position() + delta);
+	transform_.move(delta);
 }
 
 void Shape::rotate(const Angle& delta)
 {
-	transform_.set_rotation(transform_.get_rotation() + delta);
+	transform_.rotate(delta);
 }
 
 void Shape::scale(const Vector2& factor)
 {
-	transform_.set_scale(transform_.get_scale() * factor);
+	transform_.scale(factor);
 }
 
 		/* Shape: protected */
@@ -141,6 +179,6 @@ Shape::Shape() :
 	transform_()
 {}
 
-Shape::Shape(const Transform& transform) :
-	transform_(transform)
+Shape::Shape(const Shape& shape) :
+	transform_(shape.transform_)
 {}

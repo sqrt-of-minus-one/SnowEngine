@@ -66,7 +66,7 @@ std::shared_ptr<const json::JsonObject> Circle::to_json() const
 	return object;
 }
 
-double Circle::perimeter() const
+double Circle::non_transformed_perimeter() const
 {
 	return 2 * math::PI * semi_axes_.get_x();
 }
@@ -76,9 +76,9 @@ const String& Circle::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Circle::is_inside(const Vector2& point) const
+bool Circle::is_inside_non_transformed(const Vector2& point) const
 {
-	// ...
+	return (point - centre_).length_sq() <= semi_axes_.get_x() * semi_axes_.get_x();
 }
 
 double Circle::get_radius() const
@@ -93,3 +93,12 @@ Circle& Circle::operator=(const Circle& circle)
 }
 
 const String Circle::SHAPE_NAME = L"Circle";
+
+		/* Circle: protected */
+
+void Circle::calc_prop_()
+{
+	eccentricity_ = 0.;
+	focal_distance_ = 0.;
+	foci_ = { centre_, centre_ };
+}

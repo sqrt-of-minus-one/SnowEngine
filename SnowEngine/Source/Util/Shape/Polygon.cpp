@@ -6,6 +6,7 @@
 
 #include "Polygon.h"
 
+#include "../../Math/Shape/DoubleRect.h"
 #include "../Util.h"
 #include "../Json/JsonObject.h"
 #include "../Json/Element.h"
@@ -20,12 +21,12 @@ Polygon::Polygon() :
 {}
 
 Polygon::Polygon(const Polygon& polygon) :
-	Shape(polygon.anchor_, polygon.transform_),
+	Shape(polygon),
 	vertices_(polygon.vertices_)
 {}
 
 Polygon::Polygon(Polygon&& polygon) :
-	Shape(polygon.anchor_, polygon.transform_),
+	Shape(polygon),
 	vertices_(std::move(polygon.vertices_))
 {}
 
@@ -76,6 +77,21 @@ std::shared_ptr<json::Element> Polygon::to_json() const
 	return object;
 }
 
+double Polygon::non_transformed_area() const
+{
+	// ??
+}
+
+double Polygon::non_transformed_perimeter() const
+{
+	// ??
+}
+
+DoubleRect Polygon::non_transformed_boundary_rect() const
+{
+	// ??
+}
+
 double Polygon::area() const
 {
 	// ?
@@ -86,12 +102,17 @@ double Polygon::perimeter() const
 	// ?
 }
 
+DoubleRect Polygon::get_boundary_rect() const
+{
+	// ...
+}
+
 const String& Polygon::shape_name() const
 {
 	return SHAPE_NAME;
 }
 
-bool Polygon::is_inside(const Vector2& point) const
+bool Polygon::is_inside_non_transformed(const Vector2& point) const
 {
 	// !?
 }

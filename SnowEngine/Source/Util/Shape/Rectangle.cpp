@@ -71,14 +71,34 @@ std::shared_ptr<json::Element> Rectangle::to_json() const
 	return object;
 }
 
-double Rectangle::area() const
+double Rectangle::non_transformed_area() const
 {
 	return rect_.area();
 }
 
-double Rectangle::perimeter() const
+double Rectangle::non_transformed_perimeter() const
 {
 	return rect_.perimeter();
+}
+
+DoubleRect Rectangle::non_transformed_boundary_rect() const
+{
+	return rect_;
+}
+
+double Rectangle::area() const
+{
+	// ...
+}
+
+double Rectangle::perimeter() const
+{
+	// ...
+}
+
+DoubleRect Rectangle::get_boundary_rect() const
+{
+	// ...
 }
 
 const String& Rectangle::shape_name() const
@@ -86,9 +106,10 @@ const String& Rectangle::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Rectangle::is_inside(const Vector2& point) const
+bool Rectangle::is_inside_non_transformed(const Vector2& point) const
 {
-	// ?
+	return point.get_x() >= rect_.get_position().get_x() && point.get_x() <= rect_.get_corner_position().get_x() &&
+		   point.get_y() >= rect_.get_position().get_y() && point.get_y() <= rect_.get_corner_position().get_y();
 }
 
 Rectangle::operator bool() const

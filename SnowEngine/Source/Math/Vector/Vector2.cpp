@@ -147,6 +147,18 @@ Angle Vector2::get_angle() const
 	return math::arctg(y_ / x_) + (y_ >= 0 ? Angle::STRAIGHT : -Angle::STRAIGHT);
 }
 
+void Vector2::set_angle(const Angle& angle)
+{
+	double len = length();
+	x_ = len * math::cos(angle);
+	y_ = len * math::sin(angle);
+}
+
+void Vector2::rotate(const Angle& delta)
+{
+	set_angle(get_angle() + delta);
+}
+
 Angle Vector2::get_angle(const Vector2& vector) const
 {
 	return (get_angle() - vector.get_angle()).get_normalized_180().abs();
