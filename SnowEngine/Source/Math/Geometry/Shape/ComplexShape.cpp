@@ -6,9 +6,9 @@
 
 #include "ComplexShape.h"
 
-#include "../../Math/Shape/DoubleRect.h"
-#include "../Util.h"
-#include "../Json/JsonObject.h"
+#include "../DoubleRect.h"
+#include "../../../Util/Util.h"
+#include "../../../Util/Json/JsonObject.h"
 
 using namespace snow;
 

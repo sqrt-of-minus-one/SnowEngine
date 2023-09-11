@@ -6,8 +6,8 @@
 
 #include "Circle.h"
 
-#include "../Util.h"
-#include "../Json/JsonObject.h"
+#include "../../../Util/Util.h"
+#include "../../../Util/Json/JsonObject.h"
 
 using namespace snow;
 

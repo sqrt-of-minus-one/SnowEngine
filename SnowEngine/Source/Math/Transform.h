@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include "../../Object.h"
+#include "../Object.h"
 
-#include "../../Math/Vector/Vector2.h"
-#include "../../Math/Angle.h"
+#include "Vector/Vector2.h"
+#include "Angle.h"
 
 namespace snow
 {

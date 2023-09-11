@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "../../Object.h"
+#include "../../../Object.h"
 
-#include "../Types/Transform.h"
+#include "../../Transform.h"
 
 namespace snow
 {

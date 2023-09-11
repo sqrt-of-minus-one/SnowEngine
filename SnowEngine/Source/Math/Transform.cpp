@@ -6,9 +6,9 @@
 
 #include "Transform.h"
 
-#include "String.h"
-#include "../Json/JsonObject.h"
-#include "../Json/Value.h"
+#include "../Util/Types/String.h"
+#include "../Util/Json/JsonObject.h"
+#include "../Util/Json/Value.h"
 
 using namespace snow;
 

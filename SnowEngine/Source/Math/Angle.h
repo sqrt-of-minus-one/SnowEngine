@@ -308,7 +308,8 @@ public:
 	 *	\return A reference to itself.
 	 *	\sa
 	 *	- `normalize_180()`
-	 *	- `get_normalized_360()`, `get_normalized_180()`
+	 *	- `normalize_90()`
+	 *	- `get_normalized_360()`
 	 *
 	 *	\~russian
 	 *	\brief Нормализует величину угла, чтобы она попадала в полуинтервал \f$[0°; 360°)\f$
@@ -336,7 +337,8 @@ public:
 	 *	\return Ссылка на себя.
 	 *	\sa
 	 *	- `normalize_180()`
-	 *	- `get_normalized_360()`, `get_normalized_180()`
+	 *	- `normalize_90()`
+	 *	- `get_normalized_360()`
 	 */
 	Angle& normalize_360();
 
@@ -368,7 +370,8 @@ public:
 	 *	\return A reference to itself.
 	 *	\sa
 	 *	- `normalize_360()`
-	 *	- `get_normalized_360()`, `get_normalized_180()`
+	 *	- `normalize_90()`
+	 *	- `get_normalized_180()`
 
 	 *	\~russian
 	 *	\brief Нормализует величину угла, чтобы она попадала в полуинтервал \f$(-180°; 180°]\f$
@@ -396,9 +399,79 @@ public:
 	 *	\return Ссылка на себя.
 	 *	\sa
 	 *	- `normalize_360()`
-	 *	- `get_normalized_360()`, `get_normalized_180()`
+	 *	- `normalize_90()`
+	 *	- `get_normalized_180()`
 	 */
 	Angle& normalize_180();
+
+	/**
+	 *	\~english
+	 *	\brief Normalizes an angle value so that it is inside \f$(-90°, 90°]\f$
+	 *
+	 *	Changes an angle value to a value inside the interval \f$(-90°, 90°]\f$ so that the tangent
+	 *	of the angle doesn't change.
+	 *	\code
+	 *		Angle angle1(30_deg);
+	 *		angle1.normalize_90(); // Now angle1 == 30_deg;
+	 *
+	 *		Angle angle2(270_deg);
+	 *		angle2.normalize_90(); // Now angle2 == 90_deg;
+	 *
+	 *		Angle angle3(360_deg);
+	 *		angle3.normalize_90(); // Now angle3 == 0_deg;
+	 *
+	 *		Angle angle4(400_deg);
+	 *		angle4.normalize_90(); // Now angle4 == 40_deg;
+	 *
+	 *		Angle angle5(-90_deg);
+	 *		angle5.normalize_90(); // Now angle5 == 90_deg;
+	 *
+	 *		Angle angle6(100_deg);
+	 *		angle6.normalize_90(); // Now angle6 == -80_deg;
+	 *		
+	 *		Angle angle7(-135_deg);
+	 *		angle7.normalize_90(); // Now angle7 == 45_deg;
+	 *	\endcode
+	 *	\return A reference to itself.
+	 *	\sa
+	 *	- `normalize_360()`
+	 *	- `normalize_180()`
+	 *	- `get_normalized_90()`
+
+	 *	\~russian
+	 *	\brief Нормализует величину угла, чтобы она попадала в полуинтервал \f$(-90°; 90°]\f$
+	 *
+	 *	Изменяет величину угла на лежащую в полуинтервале \f$(-90°; 90°]\f$ так, чтобы танегс угла
+	 *	при этом не изменился.
+	 *	\code
+	 *		Angle angle1(30_deg);
+	 *		angle1.normalize_90(); // Теперь angle1 == 30_deg;
+	 *
+	 *		Angle angle2(270_deg);
+	 *		angle2.normalize_90(); // Теперь angle2 == 90_deg;
+	 *
+	 *		Angle angle3(360_deg);
+	 *		angle3.normalize_90(); // Теперь angle3 == 0_deg;
+	 *
+	 *		Angle angle4(400_deg);
+	 *		angle4.normalize_90(); // Теперь angle4 == 40_deg;
+	 *
+	 *		Angle angle5(-90_deg);
+	 *		angle5.normalize_90(); // Теперь angle5 == 90_deg;
+	 *
+	 *		Angle angle6(100_deg);
+	 *		angle6.normalize_90(); // Теперь angle6 == -80_deg;
+	 *		
+	 *		Angle angle7(-135_deg);
+	 *		angle7.normalize_90(); // Теперь angle7 == 45_deg;
+	 *	\endcode
+	 *	\return Ссылка на себя.
+	 *	\sa
+	 *	- `normalize_360()`
+	 *	- `normalize_180()`
+	 *	- `get_normalized_90()`
+	 */
+	Angle& normalize_90();
 
 	/**
 	 *	\~english
@@ -428,7 +501,8 @@ public:
 	 *	\return A normalized angle.
 	 *	\sa
 	 *	- `get_normalized_180()`
-	 *	- `normalize_360()`, `normalize_180()`
+	 *	- `get_normalized_90()`
+	 *	- `normalize_360()`
 	 *
 	 *	\~russian
 	 *	\brief Нормализованный угол со значением в полуинтервале \f$[0°; 360°)\f$
@@ -457,7 +531,8 @@ public:
 	 *	\return Нормализованный угол.
 	 *	\sa
 	 *	- `get_normalized_180()`
-	 *	- `normalize_360()`, `normalize_180()`
+	 *	- `get_normalized_90()`
+	 *	- `normalize_360()`
 	 */
 	const Angle get_normalized_360() const;
 
@@ -489,7 +564,8 @@ public:
 	 *	\return A normalized angle.
 	 *	\sa
 	 *	- `get_normalized_360()`
-	 *	- `normalize_360()`, `normalize_180()`
+	 *	- `get_normalized_90()`
+	 *	- `normalize_180()`
 	 *
 	 *	\~russian
 	 *	\brief Нормализованный угол со значением в полуинтервале \f$(-180°, 180°]\f$
@@ -518,9 +594,78 @@ public:
 	 *	\return Нормализованный угол.
 	 *	\sa
 	 *	- `get_normalized_360()`
-	 *	- `normalize_360()`, `normalize_180()`
+	 *	- `get_normalized_90()`
+	 *	- `normalize_180()`
 	 */
 	const Angle get_normalized_180() const;
+
+	/**
+	 *	\~english
+	 *	\brief A normalized angle with value inside \f$(-90°, 90°]\f$
+	 *
+	 *	Allows to get an angle with the same tangent whose value is inside \f$(-90°, 90°]\f$.
+	 *	\code
+	 *		const Angle angle1(30_deg);
+	 *		angle1.get_normalized_90() == 30_deg;
+	 *
+	 *		const Angle angle2(270_deg);
+	 *		angle2.get_normalized_90() == 90_deg;
+	 *
+	 *		const Angle angle3(360_deg);
+	 *		angle3.get_normalized_90() == 0_deg;
+	 *
+	 *		const Angle angle4(400_deg);
+	 *		angle4.get_normalized_90() == 40_deg;
+	 *
+	 *		const Angle angle5(-90_deg);
+	 *		angle5.get_normalized_90() == 90_deg;
+	 *
+	 *		Angle angle6(100_deg);
+	 *		angle6.get_normalized_90() == -80_deg;
+	 *		
+	 *		Angle angle7(-135_deg);
+	 *		angle7.get_normalized_90() == 45_deg;
+	 *	\endcode
+	 *	\return A normalized angle.
+	 *	\sa
+	 *	- `get_normalized_360()`
+	 *	- `get_normalized_180()`
+	 *	- `normalize_90()`
+	 *
+	 *	\~russian
+	 *	\brief Нормализованный угол со значением в полуинтервале \f$(-90°, 90°]\f$
+	 *
+	 *	Позволяет получить угол с таким же тангенсом, чьё значение лежит в полуинтервале
+	 *	\f$(-90°, 90°]\f$.
+	 *	\code
+	 *		const Angle angle1(30_deg);
+	 *		angle1.get_normalized_90() == 30_deg;
+	 *
+	 *		const Angle angle2(270_deg);
+	 *		angle2.get_normalized_90() == -90_deg;
+	 *
+	 *		const Angle angle3(360_deg);
+	 *		angle3.get_normalized_90() == 0_deg;
+	 *
+	 *		const Angle angle4(400_deg);
+	 *		angle4.get_normalized_90() == 40_deg;
+	 *
+	 *		const Angle angle5(-90_deg);
+	 *		angle5.get_normalized_90() == -90_deg;
+	 *
+	 *		Angle angle6(100_deg);
+	 *		angle6.get_normalized_90() == -80_deg;
+	 *		
+	 *		Angle angle7(-135_deg);
+	 *		angle7.get_normalized_90() == 45_deg;
+	 *	\endcode
+	 *	\return Нормализованный угол.
+	 *	\sa
+	 *	- `get_normalized_360()`
+	 *	- `get_normalized_90()`
+	 *	- `normalize_90()`
+	 */
+	const Angle get_normalized_90() const;
 
 	/**
 	 *	\~english

@@ -10,8 +10,8 @@
 #include "Rectangle.h"
 #include "Circle.h"
 #include "NullShape.h"
-#include "../Json/JsonObject.h"
-#include "../Util.h"
+#include "../../../Util/Json/JsonObject.h"
+#include "../../../Util/Util.h"
 
 using namespace snow;
 
