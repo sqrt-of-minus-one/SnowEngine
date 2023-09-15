@@ -24,6 +24,7 @@ public:
 	Ray(const Ray& ray);
 	Ray(std::shared_ptr<const json::Element> json);
 	Ray(const Vector2& initial_point, const Angle& angle);
+	Ray(const Vector2& initial_point, const Vector2& direction);
 
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;
@@ -32,11 +33,13 @@ public:
 	const Angle& get_angle() const;
 	void set_initial_point(const Vector2& point);
 	void set_angle(const Angle& angle);
+	const Vector2& get_ray_point() const;
+	Vector2 get_direction_vector() const;
 
 	bool is_on(const Vector2& point) const;
 	bool is_on(const LineSegment& segment) const;
 	bool is_on(const Ray& ray) const;
-
+	
 	Ray& operator=(const Ray& ray);
 
 	Ray operator-() const;
@@ -51,6 +54,9 @@ public:
 private:
 	Vector2 initial_point_;
 	Angle angle_;
+	Vector2 ray_point_;
+
+	void calc_ray_point_();
 };
 
 }

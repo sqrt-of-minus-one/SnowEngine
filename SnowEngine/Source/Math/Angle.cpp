@@ -181,7 +181,7 @@ const Angle Angle::get_normalized_90() const
 	Angle ret = get_normalized_180();
 	if (ret > RIGHT)
 		return ret - 180_deg;
-	if (ret < -RIGHT)
+	else if (ret < -RIGHT)
 		return ret + 180_deg;
 	else
 		return ret;

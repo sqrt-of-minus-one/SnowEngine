@@ -8,12 +8,12 @@
 
 #include "../../Object.h"
 
+#include "../Vector/Vector2.h"
 #include "../Angle.h"
 
 namespace snow
 {
 
-class Vector2;
 class Ray;
 class LineSegment;
 
@@ -33,11 +33,13 @@ public:
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;
 
-	double get_b() const;
+	const Vector2& get_point() const;
 	const Angle& get_angle() const;
-	void set_b(double b);
+	void set_point(const Vector2& b);
 	void set_angle(const Angle& angle);
+	double get_k() const;
 	Vector2 get_direction_vector() const;
+	double get_b() const;
 
 	bool is_on(const Vector2& point) const;
 	bool is_on(const LineSegment& segment) const;
@@ -45,6 +47,8 @@ public:
 	bool is_parallel(const Line& line) const;
 	bool is_perpendicular(const Line& line) const;
 	bool are_on_one_side(const Vector2& first, const Vector2& second) const;
+	bool are_on_one_side(const Vector2& origin, const Vector2& first, const Vector2& second) const;
+	bool are_on_one_side_simple(const Vector2& origin, const Vector2& first, const Vector2& second) const;
 
 	Line& operator=(const Line& line);
 	Line& operator=(const Ray& ray);
@@ -58,8 +62,9 @@ public:
 	bool operator!=(const Line& line) const;
 
 private:
-	double b_;
-	Angle angle_;
+	Vector2 point_;
+	Angle angle_; // Is supposed to be always between -90° and 90°
+	double k_; // y = kx + b
 };
 
 }
