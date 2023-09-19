@@ -86,13 +86,23 @@ void LineSegment::set_endpoints(const Vector2& first, const Vector2& second)
 	endpoints_.second = second;
 }
 
-bool LineSegment::is_on(const Vector2& point)
+double LineSegment::length_sq() const
+{
+	return (endpoints_.first - endpoints_.second).length_sq();
+}
+
+double LineSegment::length() const
+{
+	return sqrt(length_sq());
+}
+
+bool LineSegment::is_on(const Vector2& point) const
 {
 	Line line(*this);
 	return !line.are_on_one_side_simple(point, endpoints_.first, endpoints_.second);
 }
 
-bool LineSegment::is_on(const LineSegment& segment)
+bool LineSegment::is_on(const LineSegment& segment) const
 {
 	Line line(*this);
 	return !line.are_on_one_side_simple(segment.endpoints_.first, endpoints_.first, endpoints_.second) &&

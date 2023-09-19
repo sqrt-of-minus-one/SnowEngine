@@ -102,12 +102,7 @@ double ComplexShape::non_transformed_perimeter() const
 
 DoubleRect ComplexShape::non_transformed_boundary_rect() const
 {
-	// ??
-}
-
-double ComplexShape::area() const
-{
-	// !??
+	// ???
 }
 
 double ComplexShape::perimeter() const

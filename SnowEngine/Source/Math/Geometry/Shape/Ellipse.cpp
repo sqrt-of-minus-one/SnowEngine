@@ -118,14 +118,9 @@ DoubleRect Ellipse::non_transformed_boundary_rect() const
 	return DoubleRect(Vector2(centre_ - semi_axes_), Vector2(semi_axes_ * 2));
 }
 
-double Ellipse::area() const
-{
-	// ...
-}
-
 double Ellipse::perimeter() const
 {
-	// ...
+	return sqrt(2) * math::PI * (semi_axes_ * transform_.get_scale()).length();
 }
 
 DoubleRect Ellipse::get_boundary_rect() const

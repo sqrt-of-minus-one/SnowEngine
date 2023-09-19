@@ -32,6 +32,8 @@ public:
 	const std::pair<Vector2, Vector2>& get_endpoints() const;
 	void set_endpoints(const std::pair<Vector2, Vector2>& endpoints);
 	void set_endpoints(const Vector2& first, const Vector2& second);
+	double length_sq() const;
+	double length() const;
 
 	bool is_on(const Vector2& point) const;
 	bool is_on(const LineSegment& segment) const;

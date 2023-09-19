@@ -86,19 +86,9 @@ DoubleRect Rectangle::non_transformed_boundary_rect() const
 	return rect_;
 }
 
-double Rectangle::area() const
-{
-	// ...
-}
-
 double Rectangle::perimeter() const
 {
-	// ...
-}
-
-DoubleRect Rectangle::get_boundary_rect() const
-{
-	// ...
+	return 2 * (rect_.get_size().get_x() * transform_.get_scale().get_x() + rect_.get_size().get_y() * transform_.get_scale().get_y());
 }
 
 const String& Rectangle::shape_name() const

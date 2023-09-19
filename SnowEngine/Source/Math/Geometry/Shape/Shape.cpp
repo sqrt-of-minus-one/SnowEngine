@@ -108,6 +108,11 @@ std::unique_ptr<Shape> Shape::unique_move(Shape&& shape)
 	MOVE_(shape, std::make_unique);
 }
 
+double Shape::area() const
+{
+	return non_transformed_area() * transform_.get_scale().get_x() * transform_.get_scale().get_y();
+}
+
 bool Shape::is_inside(const Vector2& point) const
 {
 	is_inside_non_transformed(transform_.transform(point));

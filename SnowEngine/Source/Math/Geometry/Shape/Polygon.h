@@ -30,7 +30,6 @@ public:
 	virtual double non_transformed_perimeter() const override;
 	virtual DoubleRect non_transformed_boundary_rect() const override;
 
-	virtual double area() const override;
 	virtual double perimeter() const override;
 	virtual DoubleRect get_boundary_rect() const override;
 
@@ -40,6 +39,7 @@ public:
 	virtual operator bool() const override;
 
 	const std::vector<Vector2>& get_vertices() const;
+	std::vector<Vector2> get_transformed_vertices() const;
 
 	Polygon& operator=(const Polygon& polygon);
 	Polygon& operator=(Polygon& polygon);
@@ -48,6 +48,10 @@ public:
 
 protected:
 	std::vector<Vector2> vertices_;
+
+private:
+	static double perimeter_(const std::vector<Vector2>& vertices);
+	static DoubleRect boundary_rect_(const std::vector<Vector2>& vertices);
 };
 
 }

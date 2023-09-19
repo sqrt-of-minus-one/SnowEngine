@@ -31,7 +31,7 @@ public:
 	virtual double non_transformed_perimeter() const = 0;
 	virtual DoubleRect non_transformed_boundary_rect() const = 0;
 
-	virtual double area() const = 0;
+	double area() const;
 	virtual double perimeter() const = 0;
 	virtual DoubleRect get_boundary_rect() const = 0;
 	
