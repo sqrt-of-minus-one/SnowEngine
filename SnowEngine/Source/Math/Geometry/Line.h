@@ -46,13 +46,20 @@ public:
 	bool is_on(const Ray& ray) const;
 	bool is_parallel(const Line& line) const;
 	bool is_perpendicular(const Line& line) const;
-	bool are_on_one_side(const Vector2& first, const Vector2& second) const;
-	bool are_on_one_side(const Vector2& origin, const Vector2& first, const Vector2& second) const;
-	bool are_on_one_side_simple(const Vector2& origin, const Vector2& first, const Vector2& second) const;
+	bool are_on_one_side(const Vector2& first, const Vector2& second, bool if_on = true) const;
+	double distance(const Vector2& point) const;
+	
+	std::shared_ptr<Vector2> intersection(const Line& line) const;
+	std::shared_ptr<Vector2> intersection(const Ray& ray, bool including_ends = true) const;
+	std::shared_ptr<Vector2> intersection(const LineSegment& segment, bool including_ends = true) const;
 
 	Line& operator=(const Line& line);
 	Line& operator=(const Ray& ray);
 	Line& operator=(const LineSegment& segment);
+
+	std::shared_ptr<Vector2> operator*(const Line& line) const;
+	std::shared_ptr<Vector2> operator*(const Ray& ray) const;
+	std::shared_ptr<Vector2> operator*(const LineSegment& segment) const;
 
 	std::shared_ptr<Vector2> operator&(const Line& line) const;
 	std::shared_ptr<Vector2> operator&(const Ray& ray) const;

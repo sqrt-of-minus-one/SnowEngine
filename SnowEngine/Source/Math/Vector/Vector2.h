@@ -330,6 +330,33 @@ public:
 	 *	\return Угол между двумя векторами.
 	 */
 	Angle get_angle(const Vector2& vector) const;
+
+	/**
+	 *	\~english
+	 *	\brief Checks if the angle formed by three points is acute
+	 *	
+	 *	Checks if the angle between `first - *this` and `second - *this` vectors is acute.
+	 *	\param first The first point.
+	 *	\param second The second point.
+	 *	\param if_on The value that the method should return if the angle is right or if `first` or
+	 *	`second` equals `*this`.
+	 *	\return `true` if the angle between `first - *this` and `second - *this` is acute, `false`
+	 *	if the angle is obtuse, `if_on` if the angle is right of if `first == *this` or
+	 *	`second == *this`.
+	 *	
+	 *	\~russian
+	 *	\brief Проверяет, является ли угол, образуемый тремя точками, острым
+	 *	
+	 *	Проверяет, является ли угол между векторами `first - *this` и `second - *this` острым.
+	 *	\param first Первая точка.
+	 *	\param second Вторая точка.
+	 *	\param if_on Значение, которое должен вернуть метод в случае, если угол прямой или если
+	 *	`first` или `second` совпадают с `*this`.
+	 *	\return `true`, если угол между `first - *this` и `second - *this` острый, `false`, если
+	 *	этого угол тупой, `if_on`, если угол прямой или если `first == *this` или
+	 *	`second == *this`.
+	 */
+	bool are_on_one_side(const Vector2& first, const Vector2& second, bool if_on = true) const;
 	
 	/**
 	 *	\~english

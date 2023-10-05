@@ -164,6 +164,19 @@ Angle Vector2::get_angle(const Vector2& vector) const
 	return (get_angle() - vector.get_angle()).get_normalized_180().abs();
 }
 
+bool Vector2::are_on_one_side(const Vector2& first, const Vector2& second, bool if_on) const
+{
+	double prod = (first - *this) & (second - *this);
+	if (prod == 0.)
+	{
+		return if_on;
+	}
+	else
+	{
+		return prod > 0.;
+	}
+}
+
 bool Vector2::is_collinear(const Vector2& vector) const noexcept
 {
 	// Multiplication is cheaper than division

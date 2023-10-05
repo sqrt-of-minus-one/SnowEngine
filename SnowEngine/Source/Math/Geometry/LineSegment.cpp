@@ -52,7 +52,7 @@ LineSegment::LineSegment(const Vector2& first, const Vector2& second) :
 {}
 
 LineSegment::LineSegment(const Ray& ray, double length) :
-	endpoints_(ray.get_initial_point(), ray.get_initial_point() + length * ray.get_direction_vector())
+	endpoints_(ray.get_origin(), ray.get_origin() + length * ray.get_direction_vector())
 {}
 
 String LineSegment::to_string() const
@@ -96,17 +96,46 @@ double LineSegment::length() const
 	return sqrt(length_sq());
 }
 
-bool LineSegment::is_on(const Vector2& point) const
+Vector2 LineSegment::get_centre() const
 {
-	Line line(*this);
-	return !line.are_on_one_side_simple(point, endpoints_.first, endpoints_.second);
+	return (endpoints_.first + endpoints_.second) * .5;
 }
 
-bool LineSegment::is_on(const LineSegment& segment) const
+bool LineSegment::is_on(const Vector2& point, bool including_ends) const
 {
 	Line line(*this);
-	return !line.are_on_one_side_simple(segment.endpoints_.first, endpoints_.first, endpoints_.second) &&
-		!line.are_on_one_side_simple(segment.endpoints_.second, endpoints_.first, endpoints_.second);
+	return line.is_on(point) && !point.are_on_one_side(endpoints_.first, endpoints_.second, including_ends);
+}
+
+bool LineSegment::is_on(const LineSegment& segment, bool including_ends) const
+{
+	Line line(*this);
+	return line.is_on(segment.endpoints_.first) && line.is_on(segment.endpoints_.second) &&
+		!segment.endpoints_.first.are_on_one_side(endpoints_.first, endpoints_.second, including_ends) &&
+		!segment.endpoints_.second.are_on_one_side(endpoints_.first, endpoints_.second, including_ends);
+}
+
+std::shared_ptr<Vector2> LineSegment::intersection(const Line& line, bool including_ends) const
+{
+	return line.intersection(*this, including_ends);
+}
+
+std::shared_ptr<Vector2> LineSegment::intersection(const Ray& ray, bool including_ends) const
+{
+	return ray.intersection(*this, including_ends);
+}
+
+std::shared_ptr<Vector2> LineSegment::intersection(const LineSegment& segment, bool including_ends) const
+{
+	Line line1(*this), line2(segment);
+	std::shared_ptr<Vector2> point = line1 & line2;
+	if (point &&
+		!point->are_on_one_side(endpoints_.first, endpoints_.second, including_ends) &&
+		!point->are_on_one_side(segment.endpoints_.first, segment.endpoints_.second, including_ends))
+	{
+		return point;
+	}
+	return nullptr;
 }
 
 LineSegment& LineSegment::operator=(const LineSegment& segment)
@@ -115,27 +144,34 @@ LineSegment& LineSegment::operator=(const LineSegment& segment)
 	return *this;
 }
 
+std::shared_ptr<Vector2> LineSegment::operator*(const Line& line) const
+{
+	return intersection(line, false);
+}
+
+std::shared_ptr<Vector2> LineSegment::operator*(const Ray& ray) const
+{
+	return intersection(ray, false);
+}
+
+std::shared_ptr<Vector2> LineSegment::operator*(const LineSegment& segment) const
+{
+	return intersection(segment, false);
+}
+
 std::shared_ptr<Vector2> LineSegment::operator&(const Line& line) const
 {
-	return line.operator&(*this);
+	return intersection(line, true);
 }
 
 std::shared_ptr<Vector2> LineSegment::operator&(const Ray& ray) const
 {
-	return ray.operator&(*this);
+	return intersection(ray, true);
 }
 
 std::shared_ptr<Vector2> LineSegment::operator&(const LineSegment& segment) const
 {
-	Line line1(*this), line2(segment);
-	std::shared_ptr<Vector2> point = line1 & line2;
-	if (point &&
-		!line1.are_on_one_side_simple(*point, endpoints_.first, endpoints_.second) &&
-		!line2.are_on_one_side_simple(*point, segment.endpoints_.first, segment.endpoints_.second))
-	{
-		return point;
-	}
-	return nullptr;
+	return intersection(segment, true);
 }
 
 bool LineSegment::operator==(const LineSegment& segment) const

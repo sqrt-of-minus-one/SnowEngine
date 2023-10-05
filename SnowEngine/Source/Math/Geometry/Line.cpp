@@ -51,7 +51,7 @@ Line::Line(std::shared_ptr<const json::Element> json) :
 }
 
 Line::Line(const Ray& ray) :
-	Line(ray.get_initial_point(), ray.get_angle())
+	Line(ray.get_origin(), ray.get_angle())
 {}
 
 Line::Line(const LineSegment& segment) :
@@ -152,12 +152,12 @@ double Line::get_b() const
 
 bool Line::is_on(const Vector2& point) const
 {
-	Vector2 vector = point - point_;
-	if (vector.get_x() == 0.)
+	if (angle_ == Angle::RIGHT)
 	{
-		return vector.get_y() == 0. || angle_ == Angle::RIGHT;
+		return point.get_x() == point_.get_x();
 	}
-	return angle_ != Angle::RIGHT && vector.get_y() / vector.get_x() == k_;
+	Vector2 vector = point - point_;
+	return vector.get_y() == k_ * vector.get_x();
 }
 
 bool Line::is_on(const LineSegment& segment) const
@@ -167,7 +167,7 @@ bool Line::is_on(const LineSegment& segment) const
 
 bool Line::is_on(const Ray& ray) const
 {
-	return is_on(ray.get_initial_point()) && angle_ == ray.get_angle().get_normalized_90();
+	return is_on(ray.get_origin()) && is_on(ray.get_ray_point());
 }
 
 bool Line::is_parallel(const Line& line) const
@@ -180,52 +180,31 @@ bool Line::is_perpendicular(const Line& line) const
 	return (angle_ - line.angle_).get_normalized_90() == Angle::RIGHT;
 }
 
-bool Line::are_on_one_side(const Vector2& first, const Vector2& second) const
+bool Line::are_on_one_side(const Vector2& first, const Vector2& second, bool if_on) const
 {
 	if (is_on(first) || is_on(second))
 	{
-		return true;
+		return if_on;
 	}
 	return
 		(first - point_).get_angle().get_normalized_90() < angle_ ^
 		(second - point_).get_angle().get_normalized_90() > angle_;
 }
 
-bool Line::are_on_one_side(const Vector2& origin, const Vector2& first, const Vector2& second) const
+double Line::distance(const Vector2& point) const
 {
-	return is_on(origin) && is_on(first) && are_on_one_side_simple(origin, first, second);
+	if (angle_ == Angle::RIGHT)
+	{
+		return std::abs(point.get_x() - point_.get_x());
+	}
+	if (angle_ == Angle::ZERO)
+	{
+		return std::abs(point.get_y() - point_.get_y());
+	}
+	return std::abs(-k_ * point.get_x() + point.get_y() - get_b()) / std::sqrt(k_ * k_ + 1);
 }
 
-bool Line::are_on_one_side_simple(const Vector2& origin, const Vector2& first, const Vector2& second) const
-{
-	return (first - origin).is_co_directed(second - origin);
-}
-
-Line& Line::operator=(const Line& line)
-{
-	point_ = line.point_;
-	angle_ = line.angle_;
-	k_ = line.k_;
-	return *this;
-}
-
-Line& Line::operator=(const Ray& ray)
-{
-	point_ = ray.get_initial_point();
-	angle_ = ray.get_angle().get_normalized_90();
-	k_ = math::tg(angle_);
-	return *this;
-}
-
-Line& Line::operator=(const LineSegment& segment)
-{
-	point_ = segment.get_endpoints().first;
-	angle_ = (segment.get_endpoints().first - segment.get_endpoints().second).get_angle().get_normalized_90();
-	k_ = math::tg(angle_);
-	return *this;
-}
-
-std::shared_ptr<Vector2> Line::operator&(const Line& line) const
+std::shared_ptr<Vector2> Line::intersection(const Line& line) const
 {
 	if (is_parallel(line))
 	{
@@ -251,26 +230,80 @@ std::shared_ptr<Vector2> Line::operator&(const Line& line) const
 	return vector;
 }
 
-std::shared_ptr<Vector2> Line::operator&(const Ray& ray) const
+std::shared_ptr<Vector2> Line::intersection(const Ray& ray, bool including_ends) const
 {
 	Line line(ray);
 	std::shared_ptr<Vector2> point = operator&(line);
-	if (point && line.are_on_one_side_simple(ray.get_initial_point(), ray.get_ray_point(), *point))
+	if (point && ray.get_origin().are_on_one_side(ray.get_ray_point(), *point, including_ends))
 	{
 		return point;
 	}
 	return nullptr;
 }
 
-std::shared_ptr<Vector2> Line::operator&(const LineSegment& segment) const
+std::shared_ptr<Vector2> Line::intersection(const LineSegment& segment, bool including_ends) const
 {
 	Line line(segment);
 	std::shared_ptr<Vector2> point = operator&(line);
-	if (point && !line.are_on_one_side_simple(*point, segment.get_endpoints().first, segment.get_endpoints().second))
+	if (point && !point->are_on_one_side(segment.get_endpoints().first, segment.get_endpoints().second, including_ends))
 	{
 		return point;
 	}
 	return nullptr;
+}
+
+Line& Line::operator=(const Line& line)
+{
+	point_ = line.point_;
+	angle_ = line.angle_;
+	k_ = line.k_;
+	return *this;
+}
+
+Line& Line::operator=(const Ray& ray)
+{
+	point_ = ray.get_origin();
+	angle_ = ray.get_angle().get_normalized_90();
+	k_ = math::tg(angle_);
+	return *this;
+}
+
+Line& Line::operator=(const LineSegment& segment)
+{
+	point_ = segment.get_endpoints().first;
+	angle_ = (segment.get_endpoints().first - segment.get_endpoints().second).get_angle().get_normalized_90();
+	k_ = math::tg(angle_);
+	return *this;
+}
+
+std::shared_ptr<Vector2> Line::operator*(const Line& line) const
+{
+	return intersection(line);
+}
+
+std::shared_ptr<Vector2> Line::operator*(const Ray& ray) const
+{
+	return intersection(ray, false);
+}
+
+std::shared_ptr<Vector2> Line::operator*(const LineSegment& segment) const
+{
+	return intersection(segment, false);
+}
+
+std::shared_ptr<Vector2> Line::operator&(const Line& line) const
+{
+	return intersection(line);
+}
+
+std::shared_ptr<Vector2> Line::operator&(const Ray& ray) const
+{
+	return intersection(ray, true);
+}
+
+std::shared_ptr<Vector2> Line::operator&(const LineSegment& segment) const
+{
+	return intersection(segment, true);
 }
 
 bool Line::operator==(const Line& line) const
