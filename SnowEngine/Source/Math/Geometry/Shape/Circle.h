@@ -21,10 +21,10 @@ public:
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;
 
-	virtual double non_transformed_perimeter() const override;
+	virtual double perimeter(bool transformed = true) const override;
 
 	virtual const String& shape_name() const override;
-	virtual bool is_inside_non_transformed(const Vector2& point) const override;
+	virtual bool is_inside(const Vector2& point, bool transformed = true) const override;
 
 	double get_radius() const;
 

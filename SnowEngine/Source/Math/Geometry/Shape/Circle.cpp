@@ -29,7 +29,7 @@ Circle::Circle(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		transform_ = Transform(object->get_content().at(L"transform"_s));
+		set_transform(Transform(object->get_content().at(L"transform"_s)));
 		double radius = util::json_to_double(object->get_content().at(L"radius"_s));
 		semi_axes_ = Vector2(radius, radius);
 		
@@ -58,7 +58,7 @@ String Circle::to_string() const
 	return SHAPE_NAME;
 }
 
-std::shared_ptr<const json::JsonObject> Circle::to_json() const
+std::shared_ptr<const json::Element> Circle::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::dynamic_pointer_cast<json::JsonObject>(Shape::to_json());
 	object->get_content().insert({ L"radius"_s, util::to_json(semi_axes_.get_x()) });
@@ -66,9 +66,16 @@ std::shared_ptr<const json::JsonObject> Circle::to_json() const
 	return object;
 }
 
-double Circle::non_transformed_perimeter() const
+double Circle::perimeter(bool transformed) const
 {
-	return 2 * math::PI * semi_axes_.get_x();
+	if (transformed)
+	{
+		return Ellipse::perimeter(true);
+	}
+	else
+	{
+		return 2 * math::PI * semi_axes_.get_x();
+	}
 }
 
 const String& Circle::shape_name() const
@@ -76,9 +83,16 @@ const String& Circle::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Circle::is_inside_non_transformed(const Vector2& point) const
+bool Circle::is_inside(const Vector2& point, bool transformed) const
 {
-	return (point - centre_).length_sq() <= semi_axes_.get_x() * semi_axes_.get_x();
+	if (transformed)
+	{
+		return is_inside(get_transform().transform(point), false);
+	}
+	else
+	{
+		return (point - centre_).length_sq() <= semi_axes_.get_x() * semi_axes_.get_x();
+	}
 }
 
 double Circle::get_radius() const

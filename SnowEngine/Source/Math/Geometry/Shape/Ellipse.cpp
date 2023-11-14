@@ -46,7 +46,7 @@ Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		transform_ = Transform(object->get_content().at(L"transform"_s));
+		set_transform(Transform(object->get_content().at(L"transform"_s)));
 		semi_axes_ = Vector2(object->get_content().at(L"semi_axes"_s));
 		
 		auto centre_iter = object->get_content().find(L"centre"_s);
@@ -103,29 +103,41 @@ std::shared_ptr<json::Element> Ellipse::to_json() const
 	return object;
 }
 
-double Ellipse::non_transformed_area() const
+double Ellipse::area(bool transformed, double accuracy) const
 {
-	return math::PI * semi_axes_.get_x() * semi_axes_.get_y();
+	if (transformed)
+	{
+		return math::PI * semi_axes_.get_x() * semi_axes_.get_y() * get_scale().get_x() * get_scale().get_y();
+	}
+	else
+	{
+		return math::PI * semi_axes_.get_x() * semi_axes_.get_y();
+	}
 }
 
-double Ellipse::non_transformed_perimeter() const
+double Ellipse::perimeter(bool transformed) const
 {
-	return sqrt(2) * math::PI * semi_axes_.length();
+	if (transformed)
+	{
+		return sqrt(2) * math::PI * (semi_axes_ * get_scale()).length();
+	}
+	else
+	{
+		return sqrt(2) * math::PI * semi_axes_.length();
+	}
 }
 
-DoubleRect Ellipse::non_transformed_boundary_rect() const
+DoubleRect Ellipse::get_boundary_rect(bool transformed) const
 {
-	return DoubleRect(Vector2(centre_ - semi_axes_), Vector2(semi_axes_ * 2));
-}
-
-double Ellipse::perimeter() const
-{
-	return sqrt(2) * math::PI * (semi_axes_ * transform_.get_scale()).length();
-}
-
-DoubleRect Ellipse::get_boundary_rect() const
-{
-	// ...
+	if (transformed)
+	{
+		// Todo
+		return DoubleRect();
+	}
+	else
+	{
+		return DoubleRect(Vector2(centre_ - semi_axes_), Vector2(semi_axes_ * 2));
+	}
 }
 
 const String& Ellipse::shape_name() const
@@ -133,9 +145,16 @@ const String& Ellipse::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Ellipse::is_inside_non_transformed(const Vector2& point) const
+bool Ellipse::is_inside(const Vector2& point, bool transformed) const
 {
-	return (point - foci_.first).length() + (point - foci_.second).length() <= 2 * std::max(semi_axes_.get_x(), semi_axes_.get_y());
+	if (transformed)
+	{
+		return is_inside(get_transform().transform(point), false);
+	}
+	else
+	{
+		return (point - foci_.first).length() + (point - foci_.second).length() <= 2 * std::max(semi_axes_.get_x(), semi_axes_.get_y());
+	}
 }
 
 Ellipse::operator bool() const
@@ -170,7 +189,7 @@ std::pair<Vector2, Vector2> Ellipse::get_foci() const
 
 Ellipse& Ellipse::operator=(const Ellipse& ellipse)
 {
-	transform_ = ellipse.transform_;
+	set_transform(ellipse.get_transform());
 	semi_axes_ = ellipse.semi_axes_;
 	centre_ = ellipse.centre_;
 	calc_prop_();

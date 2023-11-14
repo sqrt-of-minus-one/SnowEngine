@@ -13,6 +13,8 @@
 namespace snow
 {
 
+class Ray;
+
 class Polygon : public Shape
 {
 public:
@@ -26,23 +28,21 @@ public:
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;
 
-	virtual double non_transformed_area() const override;
-	virtual double non_transformed_perimeter() const override;
-	virtual DoubleRect non_transformed_boundary_rect() const override;
-
-	virtual double perimeter() const override;
-	virtual DoubleRect get_boundary_rect() const override;
+	virtual double area(bool transformed = true, double accuracy = .01) const override;
+	virtual double perimeter(bool transformed = true) const override;
+	virtual DoubleRect get_boundary_rect(bool transformed = true) const override;
 
 	virtual const String& shape_name() const override;
-	virtual bool is_inside_non_transformed(const Vector2& point) const override;
+	virtual bool is_inside(const Vector2& point, bool transformed = true) const override;
 
 	virtual operator bool() const override;
 
-	const std::vector<Vector2>& get_vertices() const;
+	const std::vector<Vector2>& get_non_transformed_vertices() const;
 	std::vector<Vector2> get_transformed_vertices() const;
+	int intersections(const Ray& ray) const;
 
 	Polygon& operator=(const Polygon& polygon);
-	Polygon& operator=(Polygon& polygon);
+	Polygon& operator=(Polygon&& polygon);
 
 	static const String SHAPE_NAME;
 
@@ -50,6 +50,7 @@ protected:
 	std::vector<Vector2> vertices_;
 
 private:
+	void fix_();
 	static double perimeter_(const std::vector<Vector2>& vertices);
 	static DoubleRect boundary_rect_(const std::vector<Vector2>& vertices);
 };

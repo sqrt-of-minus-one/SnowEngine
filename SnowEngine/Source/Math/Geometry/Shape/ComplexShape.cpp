@@ -65,7 +65,7 @@ ComplexShape::ComplexShape(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		transform_ = Transform(object->get_content().at(L"transform"_s));
+		set_transform(Transform(object->get_content().at(L"transform"_s)));
 		type_ = char_to_type_(util::json_to_char(object->get_content().at(L"type"_s)));
 		first_ = Shape::unique_from_json(object->get_content().at(L"first"_s));
 		second_ = Shape::unique_from_json(object->get_content().at(L"second"_s));
@@ -90,29 +90,49 @@ std::shared_ptr<json::Element> ComplexShape::to_json() const
 	return object;
 }
 
-double ComplexShape::non_transformed_area() const
+double ComplexShape::area(bool transformed, double accuracy) const
 {
-	// ??
+	double result = 0.;
+	double intersection_area = 0.; // Todo
+	switch (type_)
+	{
+	case EType::AND:
+	{
+		result = intersection_area;
+		break;
+	}
+	case EType::OR:
+	{
+		result = first_->area() + second_->area() - intersection_area;
+		break;
+	}
+	case EType::XOR:
+	{
+		result = first_->area() + second_->area() - 2 * intersection_area;
+		break;
+	}
+	}
+	
+	if (transformed)
+	{
+		return result * get_scale().get_x() * get_scale().get_y();
+	}
+	else
+	{
+		return result;
+	}
 }
 
-double ComplexShape::non_transformed_perimeter() const
+double ComplexShape::perimeter(bool transform) const
 {
-	// ??
+	// Todo
+	return 0.;
 }
 
-DoubleRect ComplexShape::non_transformed_boundary_rect() const
+DoubleRect ComplexShape::get_boundary_rect(bool transform) const
 {
-	// ???
-}
-
-double ComplexShape::perimeter() const
-{
-	// !!????
-}
-
-DoubleRect ComplexShape::get_boundary_rect() const
-{
-	// ??
+	// Todo
+	return DoubleRect();
 }
 
 const String& ComplexShape::shape_name() const
@@ -120,8 +140,13 @@ const String& ComplexShape::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool ComplexShape::is_inside_non_transformed(const Vector2& point) const
+bool ComplexShape::is_inside(const Vector2& point, bool transformed) const
 {
+	if (transformed)
+	{
+		return is_inside(get_transform().transform(point), false);
+	}
+
 	switch (type_)
 	{
 	case EType::AND:
@@ -160,7 +185,7 @@ ComplexShape::operator bool() const
 
 ComplexShape& ComplexShape::operator=(const ComplexShape& shape)
 {
-	transform_ = shape.transform_;
+	set_transform(shape.get_transform());
 	type_ = shape.type_;
 	first_ = Shape::unique_from_json(shape.first_->to_json());
 	second_ = Shape::unique_from_json(shape.second_->to_json());
@@ -169,7 +194,7 @@ ComplexShape& ComplexShape::operator=(const ComplexShape& shape)
 
 ComplexShape& ComplexShape::operator=(ComplexShape&& shape)
 {
-	transform_ = shape.transform_;
+	set_transform(shape.get_transform());
 	type_ = shape.type_;
 	first_ = std::move(shape.first_);
 	second_ = std::move(shape.second_);

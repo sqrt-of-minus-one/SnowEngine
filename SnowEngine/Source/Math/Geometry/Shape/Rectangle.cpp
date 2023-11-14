@@ -31,7 +31,7 @@ Rectangle::Rectangle(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		transform_ = Transform(object->get_content().at(L"transform"_s));
+		set_transform(Transform(object->get_content().at(L"transform"_s)));
 		rect_ = DoubleRect(object->get_content().at(L"rect"_s));
 	}
 	catch(const std::out_of_range& e)
@@ -71,24 +71,33 @@ std::shared_ptr<json::Element> Rectangle::to_json() const
 	return object;
 }
 
-double Rectangle::non_transformed_area() const
+double Rectangle::area(bool transformed, double accuracy) const
 {
-	return rect_.area();
+	if (transformed)
+	{
+		return rect_.area() * get_scale().get_x() * get_scale().get_y();
+	}
+	else
+	{
+		return rect_.area();
+	}
 }
 
-double Rectangle::non_transformed_perimeter() const
+double Rectangle::perimeter(bool transformed) const
 {
-	return rect_.perimeter();
+	if (transformed)
+	{
+		return 2 * (rect_.get_size().get_x() * get_scale().get_x() + rect_.get_size().get_y() * get_scale().get_y());
+	}
+	else
+	{
+		return rect_.perimeter();
+	}
 }
 
-DoubleRect Rectangle::non_transformed_boundary_rect() const
+DoubleRect Rectangle::get_boundary_rect(bool transformed) const
 {
 	return rect_;
-}
-
-double Rectangle::perimeter() const
-{
-	return 2 * (rect_.get_size().get_x() * transform_.get_scale().get_x() + rect_.get_size().get_y() * transform_.get_scale().get_y());
 }
 
 const String& Rectangle::shape_name() const
@@ -96,10 +105,17 @@ const String& Rectangle::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Rectangle::is_inside_non_transformed(const Vector2& point) const
+bool Rectangle::is_inside(const Vector2& point, bool transformed) const
 {
-	return point.get_x() >= rect_.get_position().get_x() && point.get_x() <= rect_.get_corner_position().get_x() &&
-		   point.get_y() >= rect_.get_position().get_y() && point.get_y() <= rect_.get_corner_position().get_y();
+	if (transformed)
+	{
+		return is_inside(get_transform().transform(point), false);
+	}
+	else
+	{
+		return point.get_x() >= rect_.get_position().get_x() && point.get_x() <= rect_.get_corner_position().get_x() &&
+			   point.get_y() >= rect_.get_position().get_y() && point.get_y() <= rect_.get_corner_position().get_y();
+	}
 }
 
 Rectangle::operator bool() const

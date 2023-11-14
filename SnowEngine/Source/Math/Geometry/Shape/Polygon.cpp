@@ -51,17 +51,22 @@ Polygon::Polygon(std::shared_ptr<const json::Element> json) :
 	{
 		throw std::invalid_argument("Couldn't create a shape: the JSON doesn't contain necessary elements");
 	}
+	fix_();
 }
 
 Polygon::Polygon(const std::vector<Vector2>& vertices) :
 	Shape(),
 	vertices_(vertices)
-{}
+{
+	fix_();
+}
 
 Polygon::Polygon(std::vector<Vector2>&& vertices) :
 	Shape(),
 	vertices_(std::move(vertices))
-{}
+{
+	fix_();
+}
 
 String Polygon::to_string() const
 {
@@ -80,29 +85,36 @@ std::shared_ptr<json::Element> Polygon::to_json() const
 	return object;
 }
 
-double Polygon::non_transformed_area() const
+double Polygon::area(bool transformed, double accuracy) const
 {
-	// ??
+	double result = 0.;
+	std::vector<Vector2> vertices = vertices_;
+	while (vertices.size() >= 3)
+	{
+		LineSegment segment(vertices[vertices.size() - 2], vertices[0]);
+		Line line(segment);
+		double tr_area = segment.length() * line.distance(vertices.back()) * .5;
+		if (intersections(Ray(vertices.back(), segment.get_centre())) % 2 == 1)
+		{
+			result += tr_area;
+		}
+		else
+		{
+			result -= tr_area;
+		}
+		vertices.pop_back();
+	}
+	return transformed ? result * get_scale().get_x() * get_scale().get_y() : result;
 }
 
-double Polygon::non_transformed_perimeter() const
+double Polygon::perimeter(bool transformed) const
 {
-	return perimeter_(vertices_);
+	return perimeter_(transformed ? get_transformed_vertices() : get_non_transformed_vertices());
 }
 
-DoubleRect Polygon::non_transformed_boundary_rect() const
+DoubleRect Polygon::get_boundary_rect(bool transformed) const
 {
-	return boundary_rect_(vertices_);
-}
-
-double Polygon::perimeter() const
-{
-	return perimeter_(get_transformed_vertices());
-}
-
-DoubleRect Polygon::get_boundary_rect() const
-{
-	return boundary_rect_(get_transformed_vertices());
+	return boundary_rect_(transformed ? get_transformed_vertices() : get_non_transformed_vertices());
 }
 
 const String& Polygon::shape_name() const
@@ -110,25 +122,16 @@ const String& Polygon::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Polygon::is_inside_non_transformed(const Vector2& point) const
+bool Polygon::is_inside(const Vector2& point, bool transformed) const
 {
-	Ray ray(point, Angle::ZERO);
-	Line line(ray);
-
-	int intersections = 0;
-	for (int i = 0, prev = vertices_.size() - 1; i < vertices_.size(); prev = i++)
+	if (transformed)
 	{
-		LineSegment segment(vertices_[prev], vertices_[i]);
-		std::shared_ptr<Vector2> point = ray & segment;
-		if (point)
-		{
-			if (*point != vertices_[i] || line.are_on_one_side(vertices_[prev], vertices_[i == vertices_.size() - 1 ? 0 : i + 1]))
-			{
-				intersections++;
-			}
-		}
+		return is_inside(get_transform().transform(point), false);
 	}
-	return static_cast<bool>(intersections % 2);
+	else
+	{
+		return intersections(Ray(point, Angle::ZERO)) % 2 == 1;
+	}
 }
 
 Polygon::operator bool() const
@@ -136,7 +139,7 @@ Polygon::operator bool() const
 	return !vertices_.empty();
 }
 
-const std::vector<Vector2>& Polygon::get_vertices() const
+const std::vector<Vector2>& Polygon::get_non_transformed_vertices() const
 {
 	return vertices_;
 }
@@ -146,21 +149,47 @@ std::vector<Vector2> Polygon::get_transformed_vertices() const
 	std::vector<Vector2> result;
 	for (const Vector2& i : vertices_)
 	{
-		result.push_back(transform_.untransform(i));
+		result.push_back(get_transform().untransform(i));
 	}
 	return result;
 }
 
+int Polygon::intersections(const Ray& ray) const
+{
+#define NEXT(i) (i) == vertices_.size() - 1 ? 0 : (i) + 1
+#define NEXT_NEXT(i) (i) == vertices_.size() - 1 ? 1 : ((i) == vertices_.size() - 2 ? 0 : (i) + 2)
+
+	Line line(ray);
+	int intersections = 0;
+	for (int i = 0, prev = vertices_.size() - 1; i < vertices_.size(); prev = i++)
+	{
+		LineSegment segment(vertices_[prev], vertices_[i]);
+		std::shared_ptr<Vector2> point = ray & segment;
+		bool is_on;
+		if (point &&
+			(*point != vertices_[i] ||
+			!(is_on = ray.is_on(vertices_[NEXT(i)])) && line.are_on_one_side(vertices_[prev], vertices_[NEXT(i)]) ||
+			is_on && line.are_on_one_side(vertices_[prev], vertices_[NEXT_NEXT(i)])))
+		{
+			intersections++;
+		}
+	}
+	return intersections;
+	
+#undef NEXT
+#undef NEXT_NEXT
+}
+
 Polygon& Polygon::operator=(const Polygon& polygon)
 {
-	transform_ = polygon.transform_;
+	set_transform(polygon.get_transform());
 	vertices_ = polygon.vertices_;
 	return *this;
 }
 
 Polygon& Polygon::operator=(Polygon&& polygon)
 {
-	transform_ = polygon.transform_;
+	set_transform(polygon.get_transform());
 	vertices_ = std::move(polygon.vertices_);
 	return *this;
 }
@@ -168,6 +197,35 @@ Polygon& Polygon::operator=(Polygon&& polygon)
 const String Polygon::SHAPE_NAME = L"Polygon";
 
 		/* Polygon: private */
+
+void Polygon::fix_()
+{
+#define NEXT(i) (i) == vertices_.size() - 1 ? 0 : (i) + 1
+
+	for (int i = 0, prev = vertices_.size(); i < vertices_.size(); )
+	{
+		if (Line(vertices_[prev], vertices_[NEXT(i)]).is_on(vertices_[i]))
+		{
+			vertices_.erase(vertices_.begin() + i);
+		}
+		else
+		{
+			prev = i++;
+		}
+	}
+
+	for (int i = 0, i_prev = vertices_.size(); i < vertices_.size() - 1; i_prev = i++)
+	{
+		LineSegment i_segment(vertices_[i_prev], vertices_[i]);
+		for (int j = i + 1, j_prev = i; j < vertices_.size(); j_prev = j++)
+		{
+			LineSegment j_segment(vertices_[j_prev], vertices_[j]);
+			std::shared_ptr<Vector2> point = i_segment & j_segment;
+		}
+	}
+
+#undef NEXT
+}
 
 double Polygon::perimeter_(const std::vector<Vector2>& vertices)
 {
