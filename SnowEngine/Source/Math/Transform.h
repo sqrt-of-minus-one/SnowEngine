@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include "../../Object.h"
+#include "../Object.h"
 
-#include "../../Math/Vector/Vector2.h"
-#include "../../Math/Angle.h"
+#include "Vector/Vector2.h"
+#include "Angle.h"
 
 namespace snow
 {
@@ -24,6 +24,13 @@ namespace snow
  *	- The scale is the `Vector2` object containing the factors of scale (`Vector2(1., 1.)` is the
  *	normal scale).
  *	
+ *	The transformation can be treated as the new coordinate system. We'll call this new system a
+ *	local system, and the original system a global system. Then the `position` is the coordinates
+ *	of the origin of the local system in the global system. The `rotation` is the polar angle of
+ *	the ort of the X-axis of the local system in the global system. The `scale` is ratio of lengths
+ *	of the orts of the local and the global systems. The conversion from one coordinate system to
+ *	another can be performed by the `transform()` and `untransform()` methods.
+ *	
  *	\~russian
  *	\brief Положение, поворот и масштаб в одном классе
  *	
@@ -32,6 +39,14 @@ namespace snow
  *	- Поворот — объект `Angle`, содержащий угол поворота.
  *	- Масштаб — объект `Vector2`, содержащий коэффициенты масштаба (`Vector2(1.f, 1.f)` —
  *	нормальный масштаб).
+ *	
+ *	Преобразование может рассматриваться как новая система координат. Мы будем называть эту новую
+ *	систему «локальной системой», а первоначальную систему — «глобальной системой». Тогда положение
+ *	(`position`) — это координаты начала отсчёта локальной системы в глобальной системе. Поворот
+ *	(`rotation`) — это полярный угол орта оси X локальной системы в глобальной системе. Масштаб
+ *	(`scale`) — это отношения длин соответствующих ортов локальной и глобальной систем. Переход из
+ *	одной системы координат в другую может быть осуществлён методами `transform()` и
+ *	`untransform()`.
  */
 class Transform : public Object
 {
@@ -244,6 +259,85 @@ public:
 	 *	\param degrees Новый масштаб преобразования.
 	 */
 	void set_scale(const Vector2& scale) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Moves the transform
+	 *	
+	 *	Increases the position by the passed value.
+	 *	\param delta The offset.
+	 *	
+	 *	\~russian
+	 *	\brief Перемещает преобразование
+	 *	
+	 *	Увеличивает положение на переданное значение.
+	 *	\param delta Сдвиг.
+	 */
+	void move(const Vector2& delta) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Rotates the transform
+	 *	
+	 *	Increase the rotation by the passed angle.
+	 *	\param delta The anlge of the rotation.
+	 *	
+	 *	\~russian
+	 *	\brief Поворачивает преобразование
+	 *	
+	 *	Увеличивает поворот на переданный угол.
+	 *	\param delta Угол поворота.
+	 */
+	void rotate(const Angle& delta) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Scales the transform
+	 *	
+	 *	Multiplies the scale by the passed factor.
+	 *	\param factor The scale factor.
+	 *	
+	 *	\~russian
+	 *	\brief Масштабирует преобразование
+	 *	
+	 *	Умножает масштаб на переданный коэффициент.
+	 *	\param factor Коэффициент масштабирования.
+	 */
+	void scale(const Vector2& factor) noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Converts from global to local coordinates
+	 *	
+	 *	Converts the point coordinates from the global to the local coordinate system.
+	 *	\param point The global coordinates of the point.
+	 *	\return The local coordinates of the point.
+	 *	
+	 *	\~russian
+	 *	\brief Переходит от глобальных к локальным координатам
+	 *	
+	 *	Переводит координаты точки из глобальной в локальную систему координат.
+	 *	\param point Глобальные координаты точки.
+	 *	\return Локальные координаты точки.
+	 */
+	Vector2 transform(const Vector2& point) const;
+
+	/**
+	 *	\~english
+	 *	\brief Converts from local to global coordinates
+	 *	
+	 *	Converts the point coordinates from the local to the global coordinate system.
+	 *	\param point The local coordinates of the point.
+	 *	\return The global coordinates of the point.
+	 *	
+	 *	\~russian
+	 *	\brief Переходит от локальных к глобальным координатам
+	 *	
+	 *	Переводит координаты точки из локальной в глобальную систему координат.
+	 *	\param point Локальные координаты точки.
+	 *	\return Глобальные координаты точки.
+	 */
+	Vector2 untransform(const Vector2& point) const;
 
 			/* OPERATORS */
 

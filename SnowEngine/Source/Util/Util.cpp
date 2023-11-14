@@ -176,3 +176,23 @@ Path util::json_to_path(std::shared_ptr<const json::Element> json)
 {
 	return Path(json_to_string(json).to_std_string());
 }
+
+std::shared_ptr<const json::JsonObject> util::json_to_object(std::shared_ptr<const json::Element> json)
+{
+	std::shared_ptr<const json::JsonObject> object = std::dynamic_pointer_cast<const json::JsonObject>(json);
+	if (!object)
+	{
+		throw std::invalid_argument("The JSON is not an object");
+	}
+	return object;
+}
+
+std::shared_ptr<const json::Array> util::json_to_array(std::shared_ptr<const json::Element> json)
+{
+	std::shared_ptr<const json::Array> array = std::dynamic_pointer_cast<const json::Array>(json);
+	if (!array)
+	{
+		throw std::invalid_argument("The JSON is not an array");
+	}
+	return array;
+}

@@ -6,9 +6,9 @@
 
 #include "Transform.h"
 
-#include "String.h"
-#include "../Json/JsonObject.h"
-#include "../Json/Value.h"
+#include "../Util/Types/String.h"
+#include "../Util/Json/JsonObject.h"
+#include "../Util/Json/Value.h"
 
 using namespace snow;
 
@@ -106,6 +106,39 @@ void Transform::set_rotation(const Angle& rotation) noexcept
 void Transform::set_scale(const Vector2& scale) noexcept
 {
 	scale_ = scale;
+}
+
+void Transform::move(const Vector2& delta) noexcept
+{
+	position_ += delta;
+}
+
+void Transform::rotate(const Angle& delta) noexcept
+{
+	rotation_ += delta;
+}
+
+void Transform::scale(const Vector2& factor) noexcept
+{
+	scale_ *= factor;
+}
+
+Vector2 Transform::transform(const Vector2& point) const
+{
+	Vector2 result = point;
+	result -= position_;
+	result.rotate(-rotation_);
+	result /= scale_;
+	return result;
+}
+
+Vector2 Transform::untransform(const Vector2& point) const
+{
+	Vector2 result = point;
+	result *= scale_;
+	result.rotate(rotation_);
+	result += position_;
+	return result;
 }
 	
 Transform& Transform::operator=(const Transform& transform) noexcept

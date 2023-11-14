@@ -286,6 +286,38 @@ public:
 
 	/**
 	 *	\~english
+	 *	\brief Sets the polar angle
+	 *	
+	 *	Rotates the vector so that the angle between it and the positive direction of X-axis is
+	 *	equal to the passed value. Does not change the length of the vector.
+	 *	\param angle The angle.
+	 *	
+	 *	\~russian
+	 *	\brief Устанавливает полярный угол
+	 *	
+	 *	Вращает вектор так, чтобы угол между ним и положительным направлением оси X был равен
+	 *	переданному занчению. Не изменяет длину вектора.
+	 *	\param angle Угол.
+	 */
+	void set_angle(const Angle& angle);
+
+	/**
+	 *	\~english
+	 *	\brief Rotates the vector
+	 *	
+	 *	Rotates the vector without changing its length.
+	 *	\param delta The angle of rotation.
+	 *	
+	 *	\~russian
+	 *	\brief Вращает вектор
+	 *	
+	 *	Вращает вектор, не изменяя его длины.
+	 *	\param delta Угол поворота.
+	 */
+	void rotate(const Angle& delta);
+
+	/**
+	 *	\~english
 	 *	\brief An angle between two vectors
 	 *	
 	 *	Allows to get an angle between two vectors. The result is between 0° and 180°.
@@ -298,6 +330,33 @@ public:
 	 *	\return Угол между двумя векторами.
 	 */
 	Angle get_angle(const Vector2& vector) const;
+
+	/**
+	 *	\~english
+	 *	\brief Checks if the angle formed by three points is acute
+	 *	
+	 *	Checks if the angle between `first - *this` and `second - *this` vectors is acute.
+	 *	\param first The first point.
+	 *	\param second The second point.
+	 *	\param if_on The value that the method should return if the angle is right or if `first` or
+	 *	`second` equals `*this`.
+	 *	\return `true` if the angle between `first - *this` and `second - *this` is acute, `false`
+	 *	if the angle is obtuse, `if_on` if the angle is right of if `first == *this` or
+	 *	`second == *this`.
+	 *	
+	 *	\~russian
+	 *	\brief Проверяет, является ли угол, образуемый тремя точками, острым
+	 *	
+	 *	Проверяет, является ли угол между векторами `first - *this` и `second - *this` острым.
+	 *	\param first Первая точка.
+	 *	\param second Вторая точка.
+	 *	\param if_on Значение, которое должен вернуть метод в случае, если угол прямой или если
+	 *	`first` или `second` совпадают с `*this`.
+	 *	\return `true`, если угол между `first - *this` и `second - *this` острый, `false`, если
+	 *	этого угол тупой, `if_on`, если угол прямой или если `first == *this` или
+	 *	`second == *this`.
+	 */
+	bool are_on_one_side(const Vector2& first, const Vector2& second, bool if_on = true) const;
 	
 	/**
 	 *	\~english

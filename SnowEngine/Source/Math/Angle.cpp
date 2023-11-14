@@ -159,6 +159,12 @@ Angle& Angle::normalize_180()
 	return *this;
 }
 
+Angle& Angle::normalize_90()
+{
+	*this = get_normalized_90();
+	return *this;
+}
+
 const Angle Angle::get_normalized_360() const
 {
 	return Angle(value_deg_ - 360 * floor(value_deg_ / 360.));
@@ -168,6 +174,18 @@ const Angle Angle::get_normalized_180() const
 {
 	Angle ret = get_normalized_360();
 	return ret > STRAIGHT ? ret - 360_deg : ret;
+}
+
+const Angle Angle::get_normalized_90() const
+{
+	Angle ret = get_normalized_180();
+	if (ret > RIGHT)
+		return ret - 180_deg;
+	else if (ret < -RIGHT)
+		return ret + 180_deg;
+	else
+		return ret;
+	
 }
 
 const Angle Angle::abs() const
