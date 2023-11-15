@@ -2,7 +2,7 @@
 #include <conio.h>
 
 #include "Source/Game/Game.h"
-#include "Source/Util/Types/String.h"
+#include "Source/Util/String.h"
 #include "Source/Math/Vector/Point2.h"
 #include "Source/Level/Level.h"
 #include "Source/Actor/Actor.h"
@@ -43,7 +43,7 @@ int main()
 
 	clickable->on_pressed.bind([](EButton button) { std::wcout << "Hello!\n"; });
 
-	texture->set_texture(L"selection.png"_s);
+	texture->set_texture(L"selection.png");
 
 	std::list<Frame> frames;
 	frames.push_back({ IntRect(Point2(0, 0), Point2(32, 32)), .5f });
@@ -52,8 +52,8 @@ int main()
 	std::shared_ptr<AdvancedSpriteAnimation> animation = std::make_shared<AdvancedSpriteAnimation>(std::move(frames));
 	texture->set_sprite_animation(animation);
 
-	text->set_font(L"cambriab.ttf"_s);
-	text->set_text(L"Hello world!"_s);
+	text->set_font(L"cambriab.ttf");
+	text->set_text(L"Hello world!");
 
 	sound->set_sound(L"cow_passive_0.wav");
 

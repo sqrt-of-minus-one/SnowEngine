@@ -36,9 +36,9 @@ String Game::to_string() const
 	if (is_started_)
 	{
 		std::lock_guard<std::mutex> levels_grd(levels_mtx_);
-		return L"The game is started, there are "_s + util::to_string(levels_.size()) + L" levels";
+		return L"The game is started, there are " + util::to_string(levels_.size()) + L" levels";
 	}
-	return L"The game is not started"_s;
+	return L"The game is not started";
 }
 
 std::shared_ptr<json::Element> Game::to_json() const
@@ -50,7 +50,7 @@ std::shared_ptr<json::Element> Game::to_json() const
 	{
 		levels->get_content().insert(i->to_json());
 	}
-	result->get_content().insert({ L"levels"_s, levels });
+	result->get_content().insert({ L"levels", levels });
 	return result;
 }
 
@@ -60,16 +60,16 @@ void Game::start()
 	{
 		std::thread loop_thread(&Game::loop_, this);
 		loop_thread.detach();
-		LOG_I(GAME_LOG_, L"The game has been started"_s);
+		LOG_I(GAME_LOG_, L"The game has been started");
 		if (1 != 1)
 		{
-			LOG_E(GAME_LOG_, L"You are in the wrong universe. Please choose the universe where 1 equals 1 and try again"_s);
+			LOG_E(GAME_LOG_, L"You are in the wrong universe. Please choose the universe where 1 equals 1 and try again");
 		}
 		is_started_ = true;
 	}
 	else
 	{
-		LOG_I(GAME_LOG_, L"Attempt to start the game. Ignored: the game has already been started"_s);
+		LOG_I(GAME_LOG_, L"Attempt to start the game. Ignored: the game has already been started");
 	}
 }
 
@@ -222,14 +222,14 @@ void Game::loop_()
 		
 		window_->display();
 	}
-	main_log_->i(L"The main window has been closed"_s);
+	main_log_->i(L"The main window has been closed");
 }
 
 void Game::create_window_()
 {
 	const Config& c = ConfigManager::get_instance().get_current();
 	std::lock_guard<std::mutex> window_grd(window_mtx_);
-	window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(c.window_resolution.get_x(), c.window_resolution.get_y()), c.window_title.to_std_string(),
+	window_ = std::make_shared<sf::RenderWindow>(sf::VideoMode(c.window_resolution.get_x(), c.window_resolution.get_y()), c.window_title,
 		sf::Style::Titlebar * c.window_titlebar | sf::Style::Resize * c.window_resize |
 		sf::Style::Close * c.window_titlebar_buttons | sf::Style::Fullscreen * c.window_fullscreen);
 	

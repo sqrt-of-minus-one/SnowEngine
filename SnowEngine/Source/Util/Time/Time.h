@@ -8,7 +8,7 @@
 
 #include <chrono>
 
-#include "../Types/String.h"
+#include "../String.h"
 
 namespace snow
 {
@@ -304,7 +304,7 @@ STime to_stime(const std::tm& point);
  *	\param format Строка формата.
  *	\return Строка.
  */
-String to_string(const STime& point, const String& format = L"yyyy.MM.dd-HH:mm:ss"_s);
+String to_string(const STime& point, const String& format = L"yyyy.MM.dd-HH:mm:ss");
 
 /**
  *	\~english
@@ -365,7 +365,7 @@ String to_string(const STime& point, const String& format = L"yyyy.MM.dd-HH:mm:s
  *	\param format Строка формата.
  *	\return Строка.
  */
-String to_string(const Duration& duration, const String& format = L"hh:mm:ss.iii.uuu.nnn"_s);
+String to_string(const Duration& duration, const String& format = L"hh:mm:ss.iii.uuu.nnn");
 
 /**
  *	\~english

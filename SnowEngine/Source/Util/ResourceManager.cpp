@@ -22,7 +22,6 @@
 #include <algorithm>
 
 #include "Log/LogManager.h"
-#include "Types/String.h"
 #include "Util.h"
 #include "../Game/ConfigManager.h"
 #include "Time/TimerManager.h"
@@ -35,7 +34,7 @@ using namespace snow;
 // null, erases it.
 #define GET_RES_(res_map, name)								\
 	std::lock_guard<std::mutex> res_grd(res_mtx_);			\
-	auto iter = (res_map).find((name).to_std_string());		\
+	auto iter = (res_map).find(name);		\
 	if (iter != (res_map).end())							\
 	{														\
 		auto ret = iter->second.lock();						\
@@ -50,13 +49,13 @@ using namespace snow;
 // Returns the loaded resource or nullptr if the resource wasn't loaded
 #define LOAD_RES_(t, res_path, res_map, name)															\
 	std::shared_ptr<t> res = std::make_shared<t>();														\
-	if (res->loadFromFile(sf::String(((res_path) / (name).to_std_string()).wstring()).toAnsiString()))	\
+	if (res->loadFromFile(sf::String(((res_path) / (name)).wstring()).toAnsiString()))	\
 	{																									\
-		LOG_D(RESOURCE_LOG_, L"Resource "_s + name + L" has been loaded");								\
-		(res_map).insert(std::make_pair((name).to_std_string(), res));									\
+		LOG_D(RESOURCE_LOG_, L"Resource " + name + L" has been loaded");								\
+		(res_map).insert(std::make_pair((name), res));									\
 		return res;																						\
 	}																									\
-	LOG_W(RESOURCE_LOG_, L"Couldn't load resource "_s + name);											\
+	LOG_W(RESOURCE_LOG_, L"Couldn't load resource " + name);											\
 	return nullptr;
 
 // Checks the map and removes unused resources
@@ -79,7 +78,7 @@ for (auto i = (res_map).begin(); i != (res_map).end(); )	\
 for (auto i = (res_map).begin(); i != (res_map).end(); )
 	{
 		auto p = i->second.lock();
-		if (p && p->loadFromFile(sf::String(((res_path) / i->first.to_std_string()).wstring()).toAnsiString()))
+		if (p && p->loadFromFile(sf::String(((res_path) / i->first).wstring()).toAnsiString()))
 		{
 			resources_reloaded++;
 			i++;
@@ -101,16 +100,16 @@ ResourceManager& ResourceManager::get_instance()
 
 String ResourceManager::to_string() const
 {
-	return String::format(L"ResourceManager, loaded textures: %d, fonts: %d, sounds: %d"_s,
+	return string::format(L"ResourceManager, loaded textures: %d, fonts: %d, sounds: %d",
 		textures_.size(), fonts_.size(), sounds_.size());
 }
 
 std::shared_ptr<json::Element> ResourceManager::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"textures"_s, util::to_json(textures_.size()) });
-	object->get_content().insert({ L"fonts"_s, util::to_json(fonts_.size()) });
-	object->get_content().insert({ L"sounds"_s, util::to_json(sounds_.size()) });
+	object->get_content().insert({ L"textures", util::to_json(textures_.size()) });
+	object->get_content().insert({ L"fonts", util::to_json(fonts_.size()) });
+	object->get_content().insert({ L"sounds", util::to_json(sounds_.size()) });
 	return object;
 }
 
@@ -141,7 +140,7 @@ ResourceManager::ResourceManager() :
 	check_timer_(),
 	res_mtx_()
 {
-	LOG_I(RESOURCE_LOG_, L"The resource manager is created"_s);
+	LOG_I(RESOURCE_LOG_, L"The resource manager is created");
 
 	ConfigManager::get_instance().on_changed_res_check_period_sec.bind<ResourceManager>(*this, &ResourceManager::update_check_timer_);
 	ConfigManager::get_instance().on_changed_res_path<ResourceManager>(*this, &ResourceManager::update_res_path_);
@@ -166,7 +165,7 @@ void ResourceManager::update_res_path_(const Config& new_config)
 	RELOAD_RES_(fonts_, new_config.res_fonts_path);
 	RELOAD_RES_(sounds_, new_config.res_sounds_path);
 
-	LOG_D(RESOURCE_LOG_, L"Resources were reloaded ("_s + util::to_string(resources_reloaded) + L" reloaded, " + util::to_string(resourced_erased) + L" erased)");
+	LOG_D(RESOURCE_LOG_, L"Resources were reloaded (" + util::to_string(resources_reloaded) + L" reloaded, " + util::to_string(resourced_erased) + L" erased)");
 }
 
 void ResourceManager::check_resources_()

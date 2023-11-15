@@ -9,7 +9,7 @@
 #include <algorithm>
 
 #include "../Math.h"
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 #include "../../Util/Json/Array.h"
 #include "../../Util/Json/Value.h"
 
@@ -67,7 +67,7 @@ IntRect::IntRect(std::shared_ptr<const json::Element> json) :
 	
 String IntRect::to_string() const
 {
-	return L"["_s + position_.to_string() + L", " + size_.to_string() + L"]";
+	return L"[" + position_.to_string() + L", " + size_.to_string() + L"]";
 }
 
 std::shared_ptr<json::Element> IntRect::to_json() const

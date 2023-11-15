@@ -10,7 +10,7 @@
 
 #include <SFML/Audio/Music.hpp>
 
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 
 namespace snow
 {

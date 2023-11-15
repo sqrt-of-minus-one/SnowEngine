@@ -10,7 +10,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 
 namespace sf
 {

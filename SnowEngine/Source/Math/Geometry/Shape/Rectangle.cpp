@@ -31,8 +31,8 @@ Rectangle::Rectangle(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		set_transform(Transform(object->get_content().at(L"transform"_s)));
-		rect_ = DoubleRect(object->get_content().at(L"rect"_s));
+		set_transform(Transform(object->get_content().at(L"transform")));
+		rect_ = DoubleRect(object->get_content().at(L"rect"));
 	}
 	catch(const std::out_of_range& e)
 	{
@@ -67,7 +67,7 @@ String Rectangle::to_string() const
 std::shared_ptr<json::Element> Rectangle::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::dynamic_pointer_cast<json::JsonObject>(Shape::to_json());
-	object->get_content().insert({ L"rect"_s, rect_.to_json() });
+	object->get_content().insert({ L"rect", rect_.to_json() });
 	return object;
 }
 

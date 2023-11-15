@@ -46,17 +46,17 @@ Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		set_transform(Transform(object->get_content().at(L"transform"_s)));
-		semi_axes_ = Vector2(object->get_content().at(L"semi_axes"_s));
+		set_transform(Transform(object->get_content().at(L"transform")));
+		semi_axes_ = Vector2(object->get_content().at(L"semi_axes"));
 		
-		auto centre_iter = object->get_content().find(L"centre"_s);
+		auto centre_iter = object->get_content().find(L"centre");
 		if (centre_iter != object->get_content().end())
 		{
 			centre_ = Vector2(centre_iter->second);
 		}
 		else
 		{
-			centre_ = Vector2(object->get_content().at(L"center"_s));
+			centre_ = Vector2(object->get_content().at(L"center"));
 		}
 	}
 	catch(const std::out_of_range& e)
@@ -98,8 +98,8 @@ String Ellipse::to_string() const
 std::shared_ptr<json::Element> Ellipse::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::dynamic_pointer_cast<json::JsonObject>(Shape::to_json());
-	object->get_content().insert({ L"semi_axes"_s, semi_axes_.to_json() });
-	object->get_content().insert({ L"centre"_s, centre_.to_json() });
+	object->get_content().insert({ L"semi_axes", semi_axes_.to_json() });
+	object->get_content().insert({ L"centre", centre_.to_json() });
 	return object;
 }
 

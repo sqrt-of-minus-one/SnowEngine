@@ -10,7 +10,7 @@
 
 #include <ctime>
 
-#include "../Types/String.h"
+#include "../String.h"
 #include "../Util.h"
 #include "../../Game/Game.h"
 
@@ -20,18 +20,18 @@ String month_to_string_(time::EMonth month)
 {
 	switch (month)
 	{
-	case time::EMonth::JAN: return L"January"_s;
-	case time::EMonth::FEB: return L"February"_s;
-	case time::EMonth::MAR: return L"March"_s;
-	case time::EMonth::APR: return L"April"_s;
-	case time::EMonth::MAY: return L"May"_s;
-	case time::EMonth::JUN: return L"June"_s;
-	case time::EMonth::JUL: return L"July"_s;
-	case time::EMonth::AUG: return L"August"_s;
-	case time::EMonth::SEP: return L"September"_s;
-	case time::EMonth::OCT: return L"October"_s;
-	case time::EMonth::NOV: return L"November"_s;
-	default: return L"December"_s;
+	case time::EMonth::JAN: return L"January";
+	case time::EMonth::FEB: return L"February";
+	case time::EMonth::MAR: return L"March";
+	case time::EMonth::APR: return L"April";
+	case time::EMonth::MAY: return L"May";
+	case time::EMonth::JUN: return L"June";
+	case time::EMonth::JUL: return L"July";
+	case time::EMonth::AUG: return L"August";
+	case time::EMonth::SEP: return L"September";
+	case time::EMonth::OCT: return L"October";
+	case time::EMonth::NOV: return L"November";
+	default: return L"December";
 	}
 }
 
@@ -39,18 +39,18 @@ String month_to_str_(time::EMonth month)
 {
 	switch (month)
 	{
-	case time::EMonth::JAN: return L"Jan"_s;
-	case time::EMonth::FEB: return L"Feb"_s;
-	case time::EMonth::MAR: return L"Mar"_s;
-	case time::EMonth::APR: return L"Apr"_s;
-	case time::EMonth::MAY: return L"May"_s;
-	case time::EMonth::JUN: return L"Jun"_s;
-	case time::EMonth::JUL: return L"Jul"_s;
-	case time::EMonth::AUG: return L"Aug"_s;
-	case time::EMonth::SEP: return L"Sep"_s;
-	case time::EMonth::OCT: return L"Oct"_s;
-	case time::EMonth::NOV: return L"Nov"_s;
-	default: return L"Dec"_s;
+	case time::EMonth::JAN: return L"Jan";
+	case time::EMonth::FEB: return L"Feb";
+	case time::EMonth::MAR: return L"Mar";
+	case time::EMonth::APR: return L"Apr";
+	case time::EMonth::MAY: return L"May";
+	case time::EMonth::JUN: return L"Jun";
+	case time::EMonth::JUL: return L"Jul";
+	case time::EMonth::AUG: return L"Aug";
+	case time::EMonth::SEP: return L"Sep";
+	case time::EMonth::OCT: return L"Oct";
+	case time::EMonth::NOV: return L"Nov";
+	default: return L"Dec";
 	}
 }
 
@@ -58,13 +58,13 @@ String weekday_to_string_(time::EWeekDay week_day)
 {
 	switch (week_day)
 	{
-	case time::EWeekDay::MON: return L"Monday"_s;
-	case time::EWeekDay::TUE: return L"Tuesday"_s;
-	case time::EWeekDay::WED: return L"Wednesday"_s;
-	case time::EWeekDay::THU: return L"Thursday"_s;
-	case time::EWeekDay::FRI: return L"Friday"_s;
-	case time::EWeekDay::SAT: return L"Saturday"_s;
-	default: return L"Sunday"_s;
+	case time::EWeekDay::MON: return L"Monday";
+	case time::EWeekDay::TUE: return L"Tuesday";
+	case time::EWeekDay::WED: return L"Wednesday";
+	case time::EWeekDay::THU: return L"Thursday";
+	case time::EWeekDay::FRI: return L"Friday";
+	case time::EWeekDay::SAT: return L"Saturday";
+	default: return L"Sunday";
 	}
 }
 
@@ -72,13 +72,13 @@ String weekday_to_str_(time::EWeekDay week_day)
 {
 	switch (week_day)
 	{
-	case time::EWeekDay::MON: return L"Mon"_s;
-	case time::EWeekDay::TUE: return L"Tue"_s;
-	case time::EWeekDay::WED: return L"Wed"_s;
-	case time::EWeekDay::THU: return L"Thu"_s;
-	case time::EWeekDay::FRI: return L"Fri"_s;
-	case time::EWeekDay::SAT: return L"Sat"_s;
-	default: return L"Sun"_s;
+	case time::EWeekDay::MON: return L"Mon";
+	case time::EWeekDay::TUE: return L"Tue";
+	case time::EWeekDay::WED: return L"Wed";
+	case time::EWeekDay::THU: return L"Thu";
+	case time::EWeekDay::FRI: return L"Fri";
+	case time::EWeekDay::SAT: return L"Sat";
+	default: return L"Sun";
 	}
 }
 
@@ -156,7 +156,7 @@ String time::to_string(const STime& point, const String& format)
 				(format[i + 1] == L'y' || format[i + 1] == L'Y'))
 			{
 				int year = point.year % 100;
-				result += year >= 10 ? util::to_string(point.year % 100) : L"0"_s + util::to_string(point.year % 100);
+				result += year >= 10 ? util::to_string(point.year % 100) : L"0" + util::to_string(point.year % 100);
 				i++;
 				continue;
 			}
@@ -168,7 +168,7 @@ String time::to_string(const STime& point, const String& format)
 			if (i < format.size() - 3 &&
 				format[i + 1] == L'M' && format[i + 2] == L'M' && format[i + 3] == L'M')
 			{
-				result += month_to_string_(point.month).to_upper();
+				result += string::to_upper(month_to_string_(point.month));
 				i += 3;
 				continue;
 			}
@@ -184,7 +184,7 @@ String time::to_string(const STime& point, const String& format)
 			else if (i < format.size() - 2 &&
 				format[i + 1] == L'M' && format[i + 2] == L'M')
 			{
-				result += month_to_str_(point.month).to_upper();
+				result += string::to_upper(month_to_str_(point.month));
 				i += 2;
 				continue;
 			}
@@ -200,7 +200,7 @@ String time::to_string(const STime& point, const String& format)
 			else if (i < format.size() - 1 && format[i + 1] == L'M')
 			{
 				int month = static_cast<int>(point.month);
-				result += month >= 10 ? util::to_string(month) : L"0"_s + util::to_string(month);
+				result += month >= 10 ? util::to_string(month) : L"0" + util::to_string(month);
 				i++;
 				continue;
 			}
@@ -218,7 +218,7 @@ String time::to_string(const STime& point, const String& format)
 			if (i < format.size() - 1 && format[i + 1] == L'd')
 			{
 				int day = point.day;
-				result += day >= 10 ? util::to_string(day) : L"0"_s + util::to_string(day);
+				result += day >= 10 ? util::to_string(day) : L"0" + util::to_string(day);
 				i++;
 				continue;
 			}
@@ -228,19 +228,19 @@ String time::to_string(const STime& point, const String& format)
 				String ending;
 				if (point.day == 1 || point.day == 21 || point.day == 31)
 				{
-					ending = L"st"_s;
+					ending = L"st";
 				}
 				else if (point.day == 2 || point.day == 22)
 				{
-					ending = L"nd"_s;
+					ending = L"nd";
 				}
 				else if (point.day == 3 || point.day == 23)
 				{
-					ending = L"rd"_s;
+					ending = L"rd";
 				}
 				else
 				{
-					ending = L"th"_s;
+					ending = L"th";
 				}
 
 				result += util::to_string(point.day) + ending;
@@ -282,14 +282,14 @@ String time::to_string(const STime& point, const String& format)
 			// WW
 			if (i < format.size() - 1 && format[i + 1] == L'W')
 			{
-				result += weekday_to_string_(point.week_day).to_upper();
+				result += string::to_upper(weekday_to_string_(point.week_day));
 				i++;
 				continue;
 			}
 			// W
 			else
 			{
-				result += weekday_to_str_(point.week_day).to_upper();
+				result += string::to_upper(weekday_to_str_(point.week_day));
 				continue;
 			}
 			break;
@@ -300,7 +300,7 @@ String time::to_string(const STime& point, const String& format)
 			if (i < format.size() - 1 && format[i + 1] == L'h')
 			{
 				int hour = point.hour % 12 == 0 ? 12 : point.hour % 12;
-				result += hour >= 10 ? util::to_string(hour) : L"0"_s + util::to_string(hour);
+				result += hour >= 10 ? util::to_string(hour) : L"0" + util::to_string(hour);
 				i++;
 				continue;
 			}
@@ -317,7 +317,7 @@ String time::to_string(const STime& point, const String& format)
 			// HH
 			if (i < format.size() - 1 && format[i + 1] == L'H')
 			{
-				result += point.hour >= 10 ? util::to_string(point.hour) : L"0"_s + util::to_string(point.hour);
+				result += point.hour >= 10 ? util::to_string(point.hour) : L"0" + util::to_string(point.hour);
 				i++;
 				continue;
 			}
@@ -358,7 +358,7 @@ String time::to_string(const STime& point, const String& format)
 			// mm
 			if (i < format.size() - 1 && format[i + 1] == L'm')
 			{
-				result += point.minute >= 10 ? util::to_string(point.minute) : L"0"_s + util::to_string(point.minute);
+				result += point.minute >= 10 ? util::to_string(point.minute) : L"0" + util::to_string(point.minute);
 				i++;
 				continue;
 			}
@@ -377,7 +377,7 @@ String time::to_string(const STime& point, const String& format)
 			if (i < format.size() - 1 &&
 				(format[i + 1] == L's' || format[i + 1] == L'S'))
 			{
-				result += point.second >= 10 ? util::to_string(point.second) : L"0"_s + util::to_string(point.second);
+				result += point.second >= 10 ? util::to_string(point.second) : L"0" + util::to_string(point.second);
 				i++;
 				continue;
 			}
@@ -432,7 +432,7 @@ String time::to_string(const Duration& duration, const String& format)
 			if (j < format.size() - 1 &&
 				(format[j + 1] == L'h' || format[j + 1] == L'H'))
 			{
-				result += hh >= 10 ? util::to_string(hh) : L"0"_s + util::to_string(hh);
+				result += hh >= 10 ? util::to_string(hh) : L"0" + util::to_string(hh);
 				j++;
 				continue;
 			}
@@ -449,7 +449,7 @@ String time::to_string(const Duration& duration, const String& format)
 			// mm
 			if (j < format.size() - 1 && format[j + 1] == L'm')
 			{
-				result += m >= 10 ? util::to_string(m) : L"0"_s + util::to_string(m);
+				result += m >= 10 ? util::to_string(m) : L"0" + util::to_string(m);
 				j++;
 				continue;
 			}
@@ -471,7 +471,7 @@ String time::to_string(const Duration& duration, const String& format)
 			// ss
 			if (j < format.size() - 1 && format[j + 1] == L's')
 			{
-				result += s >= 10 ? util::to_string(s) : L"0"_s + util::to_string(s);
+				result += s >= 10 ? util::to_string(s) : L"0" + util::to_string(s);
 				j++;
 				continue;
 			}
@@ -494,7 +494,7 @@ String time::to_string(const Duration& duration, const String& format)
 			if (j < format.size() - 2 &&
 				format[j + 1] == L'i' && format[j + 2] == L'i')
 			{
-				result += j >= 100 ? util::to_string(i) : (j >= 10 ? L"0"_s + util::to_string(i) : L"00"_s + util::to_string(i));
+				result += j >= 100 ? util::to_string(i) : (j >= 10 ? L"0" + util::to_string(i) : L"00" + util::to_string(i));
 				j++;
 				continue;
 			}
@@ -517,7 +517,7 @@ String time::to_string(const Duration& duration, const String& format)
 			if (j < format.size() - 2 &&
 				format[j + 1] == L'u' && format[j + 2] == L'u')
 			{
-				result += u >= 100 ? util::to_string(u) : (u >= 10 ? L"0"_s + util::to_string(u) : L"00"_s + util::to_string(u));
+				result += u >= 100 ? util::to_string(u) : (u >= 10 ? L"0" + util::to_string(u) : L"00" + util::to_string(u));
 				j++;
 				continue;
 			}
@@ -540,7 +540,7 @@ String time::to_string(const Duration& duration, const String& format)
 			if (j < format.size() - 2 &&
 				format[j + 1] == L'n' && format[j + 2] == L'n')
 			{
-				result += n >= 100 ? util::to_string(n) : (n >= 10 ? L"0"_s + util::to_string(n) : L"00"_s + util::to_string(n));
+				result += n >= 100 ? util::to_string(n) : (n >= 10 ? L"0" + util::to_string(n) : L"00" + util::to_string(n));
 				j++;
 				continue;
 			}

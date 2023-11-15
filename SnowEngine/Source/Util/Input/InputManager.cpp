@@ -12,7 +12,7 @@
 //\\//_____\//\\____//\__/\\__\\/____/\\/____/\____\//_____\//\____,__\\__\\__\\//\| system     |//
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\///
 
-#include "Input.h"
+#include "InputManager.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -33,12 +33,12 @@ InputManager& InputManager::get_instance()
 
 String InputManager::to_string() const
 {
-	return L"InputManager"_s;
+	return L"InputManager";
 }
 
 std::shared_ptr<json::Element> InputManager::to_json() const
 {
-	return util::to_json(L"InputManager"_s);
+	return util::to_json(L"InputManager");
 }
 
 bool InputManager::is_key_pressed(EKey key)

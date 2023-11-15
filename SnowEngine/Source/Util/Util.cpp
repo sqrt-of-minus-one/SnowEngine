@@ -17,7 +17,7 @@ String util::to_string(double var, int precision)
 	// I hope one day SnowEngine will use C++20 and I'll be able to use std::format instead of std::swprintf:
 	// 
 	// int abs_precision = std::abs(precision);
-	// std::wstring str = std::format((L"{:." + to_string(abs_precision) + L"f}").to_std_string(), var);
+	// String str = std::format((L"{:." + to_string(abs_precision) + L"f}"), var);
 	// if (precision < 0) // Discard zeros in the end
 	// {
 	//	while (str.back() == L'0')
@@ -40,7 +40,7 @@ String util::to_string(double var, int precision)
 		tmp /= 10;
 	}
 	wchar_t* str = new wchar_t[str_len]; // Using std::swprintf to convert the number into the string
-	str_len = std::swprintf(str, str_len, (L"%." + to_string(abs_precision) + L"f").to_std_string().c_str(), var);
+	str_len = std::swprintf(str, str_len, (L"%." + to_string(abs_precision) + L"f").c_str(), var);
 	if (precision < 0) // Discard zeros in the end 
 	{
 		while (str[str_len - 1] == L'0')
@@ -60,12 +60,13 @@ String util::to_string(double var, int precision)
 
 String util::to_string(wchar_t var)
 {
-	return String(var);
+	String str;
+	return str += var;
 }
 
 String util::to_string(bool var)
 {
-	return var ? L"true"_s : L"false"_s;
+	return var ? L"true" : L"false";
 }
 
 String util::to_string(const std::wstring& var)
@@ -90,7 +91,8 @@ std::shared_ptr<json::Element> util::to_json(double var)
 
 std::shared_ptr<json::Element> util::to_json(wchar_t var)
 {
-	return std::make_shared<json::StringValue>(String(var));
+	String str;
+	return std::make_shared<json::StringValue>(str += var);
 }
 
 std::shared_ptr<json::Element> util::to_json(bool var)
@@ -100,7 +102,8 @@ std::shared_ptr<json::Element> util::to_json(bool var)
 
 std::shared_ptr<json::Element> util::to_json(const std::wstring& var)
 {
-	return std::make_shared<json::StringValue>(String(var));
+	String str;
+	return std::make_shared<json::StringValue>(str += var);
 }
 
 std::shared_ptr<json::Element> util::to_json(const Path& var)
@@ -174,7 +177,7 @@ String util::json_to_string(std::shared_ptr<const json::Element> json)
 
 Path util::json_to_path(std::shared_ptr<const json::Element> json)
 {
-	return Path(json_to_string(json).to_std_string());
+	return Path(json_to_string(json));
 }
 
 std::shared_ptr<const json::JsonObject> util::json_to_object(std::shared_ptr<const json::Element> json)

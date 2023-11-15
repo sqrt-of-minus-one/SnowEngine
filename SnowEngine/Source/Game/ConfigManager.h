@@ -221,8 +221,8 @@ public:
 	 *	Saves the current configuration profile to file.
 	 *	\code
 	 *		// These two strings do the same:
-	 *		ConfigManager::get_instance().save_current(L"some_name"_s);
-	 *		ConfigManager::get_instance().get_current().save(L"some_name"_s);
+	 *		ConfigManager::get_instance().save_current(L"some_name");
+	 *		ConfigManager::get_instance().get_current().save(L"some_name");
 	 *	\endcode
 	 *	\param name The name of the profile.
 	 *	\param allow_override Defines what the method should do if the profile with the passed name
@@ -240,8 +240,8 @@ public:
 	 *	Сохраняет текущий профиль конфигураций в файл.
 	 *	\code
 	 *		// Эти две строки делают одно и то же:
-	 *		ConfigManager::get_instance().save_current(L"some_name"_s);
-	 *		ConfigManager::get_instance().get_current().save(L"some_name"_s);
+	 *		ConfigManager::get_instance().save_current(L"some_name");
+	 *		ConfigManager::get_instance().get_current().save(L"some_name");
 	 *	\endcode
 	 *	\param name Название профиля.
 	 *	\param allow_override Определяет, что должен делать метод, если профиль с переданным
@@ -263,8 +263,8 @@ public:
 	 *	Loads a profile from file and applies it.
 	 *	\code
 	 *		// These two strings do the same:
-	 *		ConfigManager::get_instance().load_current(L"some_name"_s);
-	 *		ConfigManager::get_instance().set_current(Config(L"some_name"_s));
+	 *		ConfigManager::get_instance().load_current(L"some_name");
+	 *		ConfigManager::get_instance().set_current(Config(L"some_name"));
 	 *	\endcode
 	 *	\param name The name of the saved profile.
 	 *	\throw std::runtime_error The file with the profile does not exist or cannot be accessed.
@@ -281,8 +281,8 @@ public:
 	 *	Загружает профиль из файла и применяет его.
 	 *	\code
 	 *		// Эти две строки делают одно и то же:
-	 *		ConfigManager::get_instance().load_current(L"some_name"_s);
-	 *		ConfigManager::get_instance().set_current(Config(L"some_name"_s));
+	 *		ConfigManager::get_instance().load_current(L"some_name");
+	 *		ConfigManager::get_instance().set_current(Config(L"some_name"));
 	 *	\endcode
 	 *	\param name Имя сохранённого профиля.
 	 *	\throw std::runtime_error Файл с профилем не существует или к нему не удаётся получить

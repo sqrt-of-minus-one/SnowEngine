@@ -8,7 +8,7 @@
 
 #include "Point2.h"
 #include "Vector3.h"
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 #include "../../Util/Json/Array.h"
 #include "../../Util/Json/Value.h"
 #include "../../Util/Util.h"
@@ -87,7 +87,7 @@ Point3::Point3(std::shared_ptr<const json::Element> json) :
 
 String Point3::to_string() const
 {
-	return L"["_s + util::to_string(x_) + L", " + util::to_string(y_) + L", " + util::to_string(z_) + L"]";
+	return L"[" + util::to_string(x_) + L", " + util::to_string(y_) + L", " + util::to_string(z_) + L"]";
 }
 
 std::shared_ptr<json::Element> Point3::to_json() const

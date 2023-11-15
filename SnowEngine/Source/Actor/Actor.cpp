@@ -7,7 +7,7 @@
 #include "Actor.h"
 
 #include "../Level/Level.h"
-#include "../Util/Types/String.h"
+#include "../Util/String.h"
 #include "../Util/Util.h"
 #include "../Component/Component.h"
 
@@ -30,15 +30,15 @@ Actor::Actor(Level& level, const Transform& transform) :
 
 String Actor::to_string() const
 {
-	return L"Actor #"_s + util::to_string(id_);
+	return L"Actor #" + util::to_string(id_);
 }
 
 std::shared_ptr<json::Element> Actor::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"id"_s, util::to_json(id_) });
-	object->get_content().insert({ L"transform"_s, transform_.to_json() });
-	object->get_content().insert({ L"root_component"_s, root_component_ ? root_component_->to_json() : json::NullValue::make() });
+	object->get_content().insert({ L"id", util::to_json(id_) });
+	object->get_content().insert({ L"transform", transform_.to_json() });
+	object->get_content().insert({ L"root_component", root_component_ ? root_component_->to_json() : json::NullValue::make() });
 	return object;
 }
 

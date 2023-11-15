@@ -426,7 +426,7 @@ void json::snow_::Value_<T>::to_stream(std::wostream& stream, int nesting) const
 {
 	if (std::is_same<T, String>::value)
 	{
-		stream << L'"' << util::to_string(value_).escape() << L'"';
+		stream << L'"' << string::escape(util::to_string(value_)) << L'"';
 	}
 	else
 	{

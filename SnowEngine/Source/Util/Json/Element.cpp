@@ -18,7 +18,7 @@
 #include <sstream>
 #include <filesystem>
 
-#include "../Types/String.h"
+#include "../String.h"
 #include "JsonObject.h"
 #include "Array.h"
 #include "Value.h"
@@ -56,7 +56,7 @@ void json::Element::save(const Path& filename, bool allow_override) const
 
 std::shared_ptr<json::Element> json::Element::from_string(const String& string)
 {
-	std::wistringstream stream(string.to_std_string());
+	std::wistringstream stream(string);
 	return from_stream(stream);
 }
 
@@ -76,7 +76,7 @@ std::shared_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 	while (stream.read(&c, 1))
 	{
 		// Ignore space characters
-		if (String::is_space(c))
+		if (string::is_space(c))
 		{
 			continue;
 		}
@@ -120,7 +120,7 @@ std::shared_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 		case L't':
 		case L'T':
 		{
-			if (!read_lit_(stream, L"true"_s))
+			if (!read_lit_(stream, L"true"))
 			{
 				throw std::invalid_argument("Invalid JSON");
 			}
@@ -130,7 +130,7 @@ std::shared_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 		case L'f':
 		case L'F':
 		{
-			if (!read_lit_(stream, L"false"_s))
+			if (!read_lit_(stream, L"false"))
 			{
 				throw std::invalid_argument("Invalid JSON");
 			}
@@ -140,7 +140,7 @@ std::shared_ptr<json::Element> json::Element::from_stream(std::wistream& stream)
 		case L'n':
 		case L'N':
 		{
-			if (!read_lit_(stream, L"null"_s))
+			if (!read_lit_(stream, L"null"))
 			{
 				throw std::invalid_argument("Invalid JSON");
 			}
@@ -261,7 +261,7 @@ String json::Element::read_string_(std::wistream& stream, wchar_t first)
 		{
 			if (c == first)
 			{
-				return str.unescape();
+				return string::unescape(str);
 			}
 			if (c == L'\\')
 			{
@@ -340,23 +340,23 @@ std::shared_ptr<json::Element> json::Element::read_number_(std::wistream& stream
 		{
 		case 2:
 		{
-			return std::make_shared<IntValue>(result.to_int<2>(false));
+			return std::make_shared<IntValue>(string::to_int<2>(result, false));
 		}
 		case 8:
 		{
-			return std::make_shared<IntValue>(result.to_int<8>(false));
+			return std::make_shared<IntValue>(string::to_int<8>(result, false));
 		}
 		case 10:
 		{
 			if (has_point)
 			{
-				return std::make_shared<DoubleValue>(result.to_double());
+				return std::make_shared<DoubleValue>(string::to_double(result));
 			}
-			return std::make_shared<IntValue>(result.to_int<10>(false));
+			return std::make_shared<IntValue>(string::to_int<10>(result, false));
 		}
 		case 16:
 		{
-			return std::make_shared<IntValue>(result.to_int<16>(false));
+			return std::make_shared<IntValue>(string::to_int<16>(result, false));
 		}
 		}
 		throw std::invalid_argument("Invalid JSON");
@@ -369,8 +369,8 @@ std::shared_ptr<json::Element> json::Element::read_number_(std::wistream& stream
 
 bool json::Element::read_lit_(std::wistream& stream, const String& lit)
 {
-	String up = lit.to_upper();
-	String low = lit.to_lower();
+	String up = string::to_upper(lit);
+	String low = string::to_lower(lit);
 	// The first character is supposed to be already read
 	for (int i = 1; i < lit.size(); i++)
 	{
@@ -424,7 +424,7 @@ void json::Element::pass_(std::wistream& stream, wchar_t& c)
 			c = stream.peek();
 			continue;
 		}
-		if (String::is_space(c))
+		if (string::is_space(c))
 		{
 			stream.get(c);
 			c = stream.peek();

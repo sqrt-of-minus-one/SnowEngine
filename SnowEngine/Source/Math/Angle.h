@@ -128,10 +128,10 @@ public:
 	 *	key must be `deg`, `rad` or `grad`, its value must be a double or integer value
 	 *	representing the angle value in degrees, radians or gradians respectively.
 	 *	\code
-	 *		Angle first(json::Element::from_string(L"45"_s)); // 45°
-	 *		Angle second(json::Element::from_string(L"{ \"deg\": 30 }"_s)); // 30°
-	 *		Angle third(json::Element::from_string(L"{ \"rad\": 3.1415 }"_s)); // 360°
-	 *		Angle fourth(json::Element::from_string(L"{ \"grad\": 100 }"_s)); // 90°
+	 *		Angle first(json::Element::from_string(L"45")); // 45°
+	 *		Angle second(json::Element::from_string(L"{ \"deg\": 30 }")); // 30°
+	 *		Angle third(json::Element::from_string(L"{ \"rad\": 3.1415 }")); // 360°
+	 *		Angle fourth(json::Element::from_string(L"{ \"grad\": 100 }")); // 90°
 	 *	\endcode
 	 *	\param json The JSON element with the value of a new angle.
 	 *	\throw std::invalid_argument The passed JSON is not correct.
@@ -145,10 +145,10 @@ public:
 	 *	вещественное или целочисленное значение, представляющее собой значение угла в градусах,
 	 *	радианах или градианах соответственно.
 	 *	\code
-	 *		Angle first(json::Element::from_string(L"45"_s)); // 45°
-	 *		Angle second(json::Element::from_string(L"{ \"deg\": 30 }"_s)); // 30°
-	 *		Angle third(json::Element::from_string(L"{ \"rad\": 3.1415 }"_s)); // 360°
-	 *		Angle fourth(json::Element::from_string(L"{ \"grad\": 100 }"_s)); // 90°
+	 *		Angle first(json::Element::from_string(L"45")); // 45°
+	 *		Angle second(json::Element::from_string(L"{ \"deg\": 30 }")); // 30°
+	 *		Angle third(json::Element::from_string(L"{ \"rad\": 3.1415 }")); // 360°
+	 *		Angle fourth(json::Element::from_string(L"{ \"grad\": 100 }")); // 90°
 	 *	\endcode
 	 *	\param json Элемент JSON со значением нового угла.
 	 *	\throw std::invalid_argument Переданный JSON неправильный.

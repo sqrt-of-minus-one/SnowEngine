@@ -15,13 +15,12 @@
 namespace snow
 {
 
-class String;
-
 namespace json
 {
 class Element;
 }
 
+using String = std::wstring;
 using Path = std::filesystem::path;
 using TimePoint = std::chrono::steady_clock::time_point;
 using Duration = std::chrono::steady_clock::duration;

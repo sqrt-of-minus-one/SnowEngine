@@ -9,7 +9,7 @@
 #include "Ray.h"
 #include "LineSegment.h"
 #include "../Math.h"
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 #include "../../Util/Util.h"
 
 using namespace snow;
@@ -36,8 +36,8 @@ Line::Line(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		point_ = Vector2(object->get_content().at(L"point"_s));
-		angle_ = Angle(object->get_content().at(L"angle"_s));
+		point_ = Vector2(object->get_content().at(L"point"));
+		angle_ = Angle(object->get_content().at(L"angle"));
 	}
 	catch (const std::out_of_range& e)
 	{
@@ -85,18 +85,18 @@ Line::Line(const Vector2& first, const Vector2& second) :
 String Line::to_string() const
 {
 	if (angle_ == Angle::ZERO)
-		return L"y = "_s + util::to_string(point_.get_y());
+		return L"y = " + util::to_string(point_.get_y());
 	else if (angle_ == Angle::RIGHT)
-		return L"x = "_s + util::to_string(point_.get_x());
+		return L"x = " + util::to_string(point_.get_x());
 	else
-		return L"y = "_s + util::to_string(k_) + L" * x + " + util::to_string(get_b());
+		return L"y = " + util::to_string(k_) + L" * x + " + util::to_string(get_b());
 }
 
 std::shared_ptr<json::Element> Line::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"point"_s, point_.to_json() });
-	object->get_content().insert({ L"angle"_s, angle_.to_json() });
+	object->get_content().insert({ L"point", point_.to_json() });
+	object->get_content().insert({ L"angle", angle_.to_json() });
 	return object;
 }
 

@@ -25,7 +25,7 @@ MusicComponent::MusicComponent(Actor& actor, Component* parent, const Transform&
 bool MusicComponent::set_music(const String& music)
 {
 	music_name_ = music;
-	return music_.openFromFile(sf::String((CURRENT_CONFIG.res_music_path / music.to_std_string()).to_std_string()).toAnsiString());
+	return music_.openFromFile(sf::String(CURRENT_CONFIG.res_music_path / music).toAnsiString());
 }
 
 void MusicComponent::play()

@@ -11,7 +11,7 @@
 #include <filesystem>
 
 #include "../Math/Vector/Point2.h"
-#include "../Util/Types/String.h"
+#include "../Util/String.h"
 
 namespace snow
 {

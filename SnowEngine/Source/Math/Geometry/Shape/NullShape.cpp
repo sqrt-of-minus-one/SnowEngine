@@ -6,8 +6,8 @@
 
 #include "NullShape.h"
 
-#include "../../Math/Shape/DoubleRect.h"
-#include "../Types/String.h"
+#include "../DoubleRect.h"
+#include "../String.h"
 
 using namespace snow;
 

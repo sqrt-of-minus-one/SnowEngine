@@ -10,7 +10,7 @@
 
 #include <SFML/Audio/Sound.hpp>
 
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 
 namespace sf
 {

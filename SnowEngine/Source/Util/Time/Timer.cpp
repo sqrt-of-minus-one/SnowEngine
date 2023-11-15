@@ -15,7 +15,7 @@ using namespace snow;
 
 String Timer::to_string() const
 {
-	return String::format(L"Timer (period %fs; %fs left"_s,
+	return string::format(L"Timer (period %fs; %fs left",
 		time::std_to_sec(period_),
 		get_left_sec()) +
 		(is_paused_ ? L"; paused)" : L")");
@@ -24,9 +24,9 @@ String Timer::to_string() const
 std::shared_ptr<json::Element> Timer::to_json() const
 {
 	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
-	result->get_content().insert({ L"period_sec"_s, util::to_json(time::std_to_sec(period_)) });
-	result->get_content().insert({ L"left_sec"_s, util::to_json(get_left_sec()) });
-	result->get_content().insert({ L"is_paused"_s, util::to_json(is_paused_) });
+	result->get_content().insert({ L"period_sec", util::to_json(time::std_to_sec(period_)) });
+	result->get_content().insert({ L"left_sec", util::to_json(get_left_sec()) });
+	result->get_content().insert({ L"is_paused", util::to_json(is_paused_) });
 	return result;
 }
 

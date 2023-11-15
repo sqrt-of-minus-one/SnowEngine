@@ -262,7 +262,7 @@ String DelegateBinder<T_Ret, T_Args...>::to_string() const
 	{
 		return delegate_.to_string();
 	}
-	return L"No delegate"_s;
+	return L"No delegate";
 }
 
 template<typename T_Ret, typename... T_Args>

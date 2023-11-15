@@ -10,7 +10,7 @@
 
 #include <functional>
 
-#include "../Types/String.h"
+#include "../String.h"
 #include "../Json/JsonObject.h"
 #include "../Json/Value.h"
 
@@ -112,7 +112,7 @@ public:
  *		// Binding a lambda
  *		delegate.bind([](int a, int b) -> String
  *		{
- *			return L"Sum: "_s + util::to_string(a + b);
+ *			return L"Sum: " + util::to_string(a + b);
  *		});
  *		delegate.execute(6, 17); // == L"23"
  *	\endcode
@@ -138,7 +138,7 @@ public:
  *		// Привязка лямбда-функции
  *		delegate.bind([](int a, int b) -> String
  *		{
- *			return L"Sum: "_s + util::to_string(a + b);
+ *			return L"Sum: " + util::to_string(a + b);
  *		});
  *		delegate.execute(6, 17); // == L"23"
  *	\endcode
@@ -545,16 +545,16 @@ String Delegate<T_Ret, T_Args...>::to_string() const
 	{
 		if (is_method_)
 		{
-			return L"Delegate (method)"_s;
+			return L"Delegate (method)";
 		}
 		else
 		{
-			return L"Delegate (function)"_s;
+			return L"Delegate (function)";
 		}
 	}
 	else
 	{
-		return L"Empty delegate"_s;
+		return L"Empty delegate";
 	}
 }
 
@@ -562,7 +562,7 @@ template<typename T_Ret, typename... T_Args>
 std::shared_ptr<json::Element> Delegate<T_Ret, T_Args...>::to_json() const noexcept
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"is_method"_s, is_valid() ? util::to_json(is_method_) : json::NullValue::make() });
+	object->get_content().insert({ L"is_method", is_valid() ? util::to_json(is_method_) : json::NullValue::make() });
 	return object;
 }
 

@@ -107,12 +107,12 @@ String SimpleSpriteAnimation::to_string() const
 std::shared_ptr<json::Element> SimpleSpriteAnimation::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"sprite_size"_s, sprite_size_.to_json() });
-	object->get_content().insert({ L"origin"_s, origin_.to_json() });
-	object->get_content().insert({ L"grid_size"_s, grid_size_.to_json() });
-	object->get_content().insert({ L"frequency_sec"_s, util::to_json(frequency_sec_) });
-	object->get_content().insert({ L"current_position"_s, current_position_.to_json() });
-	object->get_content().insert({ L"time_left_sec"_s, util::to_json(timer_->get_left_sec()) });
+	object->get_content().insert({ L"sprite_size", sprite_size_.to_json() });
+	object->get_content().insert({ L"origin", origin_.to_json() });
+	object->get_content().insert({ L"grid_size", grid_size_.to_json() });
+	object->get_content().insert({ L"frequency_sec", util::to_json(frequency_sec_) });
+	object->get_content().insert({ L"current_position", current_position_.to_json() });
+	object->get_content().insert({ L"time_left_sec", util::to_json(timer_->get_left_sec()) });
 	return object;
 }
 

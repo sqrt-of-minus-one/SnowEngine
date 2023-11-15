@@ -16,7 +16,7 @@
  
 #include "../../Object.h"
 
-#include "../Types/String.h"
+#include "../String.h"
 
 namespace snow
 {

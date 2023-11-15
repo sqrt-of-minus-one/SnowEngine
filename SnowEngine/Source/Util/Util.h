@@ -14,7 +14,7 @@
 #include <map>
 
 #include "../Object.h"
-#include "Types/String.h"
+#include "String.h"
 #include "../Math/Math.h"
 #include "Json/JsonObject.h"
 #include "Json/Array.h"
@@ -22,8 +22,6 @@
 
 namespace snow
 {
-
-class String;
 
 namespace util
 {
@@ -82,11 +80,11 @@ String to_string(int var);
  *	number of digits after point, negative ones limit the maximum number of digits. When excess
  *	digits are discarded, the last remaining digit is rounded according to rounding rules.
  *	\code
- *		to_string(5.67) == L"5.67"_s;
- *		to_string(5.67, 0) == L"6"_s;
- *		to_string(5.67, 4) == L"5.6700"_s;
- *		to_string(5.67, -4) == L"5.67"_s;
- *		to_string(5.67895, -4) == L"5.679"_s;
+ *		to_string(5.67) == L"5.67";
+ *		to_string(5.67, 0) == L"6";
+ *		to_string(5.67, 4) == L"5.6700";
+ *		to_string(5.67, -4) == L"5.67";
+ *		to_string(5.67895, -4) == L"5.679";
  *	\endcode
  *	\return A string that represents the passed double.
  *	
@@ -100,11 +98,11 @@ String to_string(int var);
  *	Когда излишние знаки отбрасываются, последняя оставшаяся цифра округляется в соответствии с
  *	правилами округления.
  *	\code
- *		to_string(5.67) == L"5.67"_s;
- *		to_string(5.67, 0) == L"6"_s;
- *		to_string(5.67, 4) == L"5.6700"_s;
- *		to_string(5.67, -4) == L"5.67"_s;
- *		to_string(5.67895, -4) == L"5.679"_s;
+ *		to_string(5.67) == L"5.67";
+ *		to_string(5.67, 0) == L"6";
+ *		to_string(5.67, 4) == L"5.6700";
+ *		to_string(5.67, -4) == L"5.67";
+ *		to_string(5.67895, -4) == L"5.679";
  *	\endcode
  *	\return Строка, представляющая переданное вещественное число.
  */
@@ -1316,8 +1314,8 @@ std::shared_ptr<const json::Array> json_to_array(std::shared_ptr<const json::Ele
 		result += to_string(i);			\
 		result += L", ";				\
 	}									\
-	result[result.size() - 2] = L' ';	\
-	result[result.size() - 1] = L']';	\
+	result[result.length() - 2] = L' ';	\
+	result[result.length() - 1] = L']';	\
 	return result
 
 #define MAP_TO_STRING_							\
@@ -1327,8 +1325,8 @@ std::shared_ptr<const json::Array> json_to_array(std::shared_ptr<const json::Ele
 		result += to_string(i.first) + L": "	\
 			+ to_string(i.second) + L", ";		\
 	}											\
-	result[result.size() - 2] = L' ';			\
-	result[result.size() - 1] = L'}';			\
+	result[result.length() - 2] = L' ';			\
+	result[result.length() - 1] = L'}';			\
 	return result
 
 #define ARRAY_TO_JSON_									\
@@ -1389,7 +1387,7 @@ String util::to_string(long long var)
 	{
 		result += L'-';
 	}
-	return result.reverse();
+	return string::reverse(result);
 }
 
 template<int base>
@@ -1405,7 +1403,7 @@ String util::to_string(const T* var)
 	{
 		return to_string(*var);
 	}
-	return L"null"_s;
+	return L"null";
 }
 
 template<typename T>
@@ -1415,7 +1413,7 @@ String util::to_string(const std::unique_ptr<const T>& var)
 	{
 		return to_string(*var);
 	}
-	return L"null"_s;
+	return L"null";
 }
 
 template<typename T>
@@ -1425,7 +1423,7 @@ String util::to_string(const std::shared_ptr<const T>& var)
 	{
 		return to_string(*var);
 	}
-	return L"null"_s;
+	return L"null";
 }
 
 template<typename T>
@@ -1436,7 +1434,7 @@ String util::to_string(const std::weak_ptr<const T>& var)
 	{
 		return to_string(*var);
 	}
-	return L"null"_s;
+	return L"null";
 }
 
 template<typename T>
@@ -1448,7 +1446,7 @@ String util::to_string(const T& var)
 template<typename T1, typename T2>
 String util::to_string(const std::pair<T1, T2>& var)
 {
-	return L"[ "_s + to_string(pair.first) + L", " + to_string(pair.second) + L" ]";
+	return L"[ " + to_string(pair.first) + L", " + to_string(pair.second) + L" ]";
 }
 
 template<typename T, int N>

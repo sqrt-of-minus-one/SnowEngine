@@ -9,7 +9,7 @@
 #include "Point2.h"
 #include "../Angle.h"
 #include "../Math.h"
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 #include "../../Util/Json/Array.h"
 #include "../../Util/Json/Value.h"
 #include "../../Util/Util.h"
@@ -78,7 +78,7 @@ Vector2::Vector2(std::shared_ptr<const json::Element> json) :
 
 String Vector2::to_string() const
 {
-	return L"["_s + util::to_string(x_) + L", " + util::to_string(y_) + L"]";
+	return L"[" + util::to_string(x_) + L", " + util::to_string(y_) + L"]";
 }
 
 std::shared_ptr<json::Element> Vector2::to_json() const

@@ -51,13 +51,13 @@ Text::Text(const String& table, const String& key) :
 	table_(table),
 	id_(key)
 {
-	if (key.is_empty())
+	if (key.empty())
 	{
-		table.clear();
+		table_.clear();
 	}
-	else if (table.is_empty())
+	else if (table_.empty())
 	{
-		table = CURRENT_CONFIG.lang_default_table;
+		table_ = CURRENT_CONFIG.lang_default_table;
 	}
 }
 
@@ -102,19 +102,19 @@ String Text::to_string() const
 std::shared_ptr<json::Element> Text::to_json() const
 {
 	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
-	result->get_content().insert({ get_key(), to_string().to_json() });
+	result->get_content().insert({ get_key(), util::to_json(to_string()) });
 	return result;
 }
 
 String Text::get_key() const
 {
-	if (!id_.is_empty() && !table_.is_empty())
+	if (!id_.empty() && !table_.empty())
 	{
 		table_ + L'.' + id_;
 	}
 	else
 	{
-		return L""_s;
+		return L"";
 	}
 }
 

@@ -10,7 +10,7 @@
 
 #include <SFML/Graphics/Text.hpp>
 
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 
 namespace sf
 {

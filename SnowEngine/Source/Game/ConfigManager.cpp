@@ -33,9 +33,9 @@ std::shared_ptr<json::Element> ConfigManager::to_json() const
 {
 	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
 	std::lock_guard<std::mutex> path_grd(path_mtx_);
-	result->get_content().insert({ L"path"_s, util::to_json(path_) });
+	result->get_content().insert({ L"path", util::to_json(path_) });
 	std::lock_guard<std::mutex> current_grd(current_mtx_);
-	result->get_content().insert({ L"current"_s, current_.to_json() });
+	result->get_content().insert({ L"current", current_.to_json() });
 	return result;
 }
 
@@ -176,12 +176,12 @@ ConfigManager::ConfigManager() :
 	}
 	catch (const std::runtime_error& e)
 	{
-		LOG_E(CONFIG_LOG_, L"Couldn't open the initial configuration file. The file will be created with default values"_s);
+		LOG_E(CONFIG_LOG_, L"Couldn't open the initial configuration file. The file will be created with default values");
 		recreate_file_flag = true;
 	}
 	catch (const std::invalid_argument& e)
 	{
-		LOG_E(CONFIG_LOG_, L"The initial configuration file does not contain a valid JSON. The file will be recreated with default values"_s);
+		LOG_E(CONFIG_LOG_, L"The initial configuration file does not contain a valid JSON. The file will be recreated with default values");
 		recreate_file_flag = true;
 	}
 
@@ -189,31 +189,31 @@ ConfigManager::ConfigManager() :
 	{
 		try
 		{
-			path = util::json_to_path(init_json->get_content().at(L"path"_s));
+			path = util::json_to_path(init_json->get_content().at(L"path"));
 		}
 		catch (const std::out_of_range& e)
 		{
-			LOG_E(CONFIG_LOG_, L"The initial configuration file does not contain a \"path\" field. The file will be recreated with the default path value"_s);
+			LOG_E(CONFIG_LOG_, L"The initial configuration file does not contain a \"path\" field. The file will be recreated with the default path value");
 			recreate_file_flag = true;
 		}
 		catch (const std::invalid_argument& e)
 		{
-			LOG_E(CONFIG_LOG_, L"The \"path\" field in the initial configuration file is not a string. The file will be recreated with the default path value"_s);
+			LOG_E(CONFIG_LOG_, L"The \"path\" field in the initial configuration file is not a string. The file will be recreated with the default path value");
 			recreate_file_flag = true;
 		}
 
 		try
 		{
-			default_config = util::json_to_string(init_json->get_content().at(L"default"_s));
+			default_config = util::json_to_string(init_json->get_content().at(L"default"));
 		}
 		catch (const std::out_of_range& e)
 		{
-			LOG_E(CONFIG_LOG_, L"The initial configuration file does not contain a \"default\" field. The file will be recreated with the default value"_s);
+			LOG_E(CONFIG_LOG_, L"The initial configuration file does not contain a \"default\" field. The file will be recreated with the default value");
 			recreate_file_flag = true;
 		}
 		catch (const std::invalid_argument& e)
 		{
-			LOG_E(CONFIG_LOG_, L"The \"default\" field in the initial configuration file is not a string. The file will be recreated with the default value"_s);
+			LOG_E(CONFIG_LOG_, L"The \"default\" field in the initial configuration file is not a string. The file will be recreated with the default value");
 			recreate_file_flag = true;
 		}
 	}
@@ -224,16 +224,16 @@ ConfigManager::ConfigManager() :
 	if (recreate_file_flag)
 	{
 		init_json = std::make_shared<json::JsonObject>();
-		init_json->get_content().insert({ L"path"_s, std::make_shared<json::StringValue>(get_path()) });
-		init_json->get_content().insert({ L"default"_s, std::make_shared<json::StringValue>(default_config) });
+		init_json->get_content().insert({ L"path", std::make_shared<json::StringValue>(get_path()) });
+		init_json->get_content().insert({ L"default", std::make_shared<json::StringValue>(default_config) });
 		try
 		{
 			init_json->save(INIT_FILE);
-			LOG_I(CONFIG_LOG_, L"The initial configuration has been created or recreated"_s);
+			LOG_I(CONFIG_LOG_, L"The initial configuration has been created or recreated");
 		}
 		catch (const std::runtime_error& e)
 		{
-			LOG_E(CONFIG_LOG_, L"Couldn't create or recreate the initial configuration file"_s);
+			LOG_E(CONFIG_LOG_, L"Couldn't create or recreate the initial configuration file");
 		}
 	}
 }
