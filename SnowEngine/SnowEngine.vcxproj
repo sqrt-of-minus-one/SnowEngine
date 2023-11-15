@@ -43,8 +43,8 @@
     <ClInclude Include="Source\Math\Math.h" />
     <ClInclude Include="Source\Math\Shape\DoubleRect.h" />
     <ClInclude Include="Source\Math\Shape\IntRect.h" />
-    <ClInclude Include="Source\Math\Vector\Point2.h" />
-    <ClInclude Include="Source\Math\Vector\Point3.h" />
+    <ClInclude Include="Source\Math\Vector\IntVector2.h" />
+    <ClInclude Include="Source\Math\Vector\IntVector3.h" />
     <ClInclude Include="Source\Math\Vector\Vector2.h" />
     <ClInclude Include="Source\Math\Vector\Vector3.h" />
     <ClInclude Include="Source\Object.h" />
@@ -95,8 +95,8 @@
     <ClCompile Include="Source\Math\Math.cpp" />
     <ClCompile Include="Source\Math\Shape\DoubleRect.cpp" />
     <ClCompile Include="Source\Math\Shape\IntRect.cpp" />
-    <ClCompile Include="Source\Math\Vector\Point2.cpp" />
-    <ClCompile Include="Source\Math\Vector\Point3.cpp" />
+    <ClCompile Include="Source\Math\Vector\IntVector2.cpp" />
+    <ClCompile Include="Source\Math\Vector\IntVector3.cpp" />
     <ClCompile Include="Source\Math\Vector\Vector2.cpp" />
     <ClCompile Include="Source\Math\Vector\Vector3.cpp" />
     <ClCompile Include="Source\Object.cpp" />

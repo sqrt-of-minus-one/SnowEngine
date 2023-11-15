@@ -7,7 +7,7 @@
 #include "Vector3.h"
 
 #include "Vector2.h"
-#include "Point3.h"
+#include "IntVector3.h"
 #include "../Angle.h"
 #include "../Math.h"
 #include "../../Util/String.h"
@@ -350,9 +350,9 @@ Vector3::operator Vector2() const
 	return Vector2(x_, y_);
 }
 
-Vector3::operator Point3() const
+Vector3::operator IntVector3() const
 {
-	return Point3(static_cast<int>(x_), static_cast<int>(y_), static_cast<int>(z_));
+	return IntVector3(static_cast<int>(x_), static_cast<int>(y_), static_cast<int>(z_));
 }
 
 const Vector3 Vector3::ZERO(0., 0., 0.);

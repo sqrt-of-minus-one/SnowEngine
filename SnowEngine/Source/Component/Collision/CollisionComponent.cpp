@@ -17,8 +17,8 @@ using namespace snow;
 CollisionComponent::CollisionComponent(Actor& actor, Component* parent, const Transform& transform) :
 	Component(actor, parent, transform),
 	boundary_rect_(),
-	min_chunk_(static_cast<Point2>(boundary_rect_.get_position()) / CURRENT_CONFIG.chunks_collision_size),
-	max_chunk_(static_cast<Point2>(boundary_rect_.get_position() + boundary_rect_.get_size()) / CURRENT_CONFIG.chunks_collision_size)
+	min_chunk_(static_cast<IntVector2>(boundary_rect_.get_position()) / CURRENT_CONFIG.chunks_collision_size),
+	max_chunk_(static_cast<IntVector2>(boundary_rect_.get_position() + boundary_rect_.get_size()) / CURRENT_CONFIG.chunks_collision_size)
 {}
 
 CollisionComponent::~CollisionComponent()
@@ -89,8 +89,8 @@ void CollisionComponent::when_transformed(const Transform& new_level_transform)
 void CollisionComponent::setup_chunks_()
 {
 	DoubleRect new_boundary_rect = get_boundary_rect();
-	Point2 new_min_chunk = static_cast<Point2>(new_boundary_rect.get_position()) / CURRENT_CONFIG.chunks_collision_size;
-	Point2 new_max_chunk = static_cast<Point2>(new_boundary_rect.get_position() + new_boundary_rect.get_size()) / CURRENT_CONFIG.chunks_collision_size;
+	IntVector2 new_min_chunk = static_cast<IntVector2>(new_boundary_rect.get_position()) / CURRENT_CONFIG.chunks_collision_size;
+	IntVector2 new_max_chunk = static_cast<IntVector2>(new_boundary_rect.get_position() + new_boundary_rect.get_size()) / CURRENT_CONFIG.chunks_collision_size;
 	auto& level_chunks = collision_chunks_[&get_level()];
 	for (int i = min_chunk_.get_x(); i <= max_chunk_.get_x(); i++)
 	{

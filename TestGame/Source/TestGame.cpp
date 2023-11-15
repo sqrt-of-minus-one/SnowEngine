@@ -3,7 +3,7 @@
 
 #include "Source/Game/Game.h"
 #include "Source/Util/String.h"
-#include "Source/Math/Vector/Point2.h"
+#include "Source/Math/Vector/IntVector2.h"
 #include "Source/Level/Level.h"
 #include "Source/Actor/Actor.h"
 #include "Source/Util/Time/TimerManager.h"
@@ -46,8 +46,8 @@ int main()
 	texture->set_texture(L"selection.png");
 
 	std::list<Frame> frames;
-	frames.push_back({ IntRect(Point2(0, 0), Point2(32, 32)), .5f });
-	frames.push_back({ IntRect(Point2(32, 32), Point2(64, 64)), 1.5f });
+	frames.push_back({ IntRect(IntVector2(0, 0), IntVector2(32, 32)), .5f });
+	frames.push_back({ IntRect(IntVector2(32, 32), IntVector2(64, 64)), 1.5f });
 
 	std::shared_ptr<AdvancedSpriteAnimation> animation = std::make_shared<AdvancedSpriteAnimation>(std::move(frames));
 	texture->set_sprite_animation(animation);
@@ -65,7 +65,7 @@ int main()
 	sound_delegate.bind([&sound]() { sound->play(); });
 	TimerManager::get_instance().create_timer(sound_delegate, 0.f, 5.f);
 
-	InputManager::get_instance().on_mouse_released(EButton::RIGHT).bind([]() { std::wcout << L"Pressed! (" << InputManager::get_instance().get_window_mouse_position().to_string() << L")" << std::endl; InputManager::get_instance().set_screen_mouse_position(Point2(100, 100)); });
+	InputManager::get_instance().on_mouse_released(EButton::RIGHT).bind([]() { std::wcout << L"Pressed! (" << InputManager::get_instance().get_window_mouse_position().to_string() << L")" << std::endl; InputManager::get_instance().set_screen_mouse_position(IntVector2(100, 100)); });
 
 	std::wcout << util::to_string(-5.) << std::endl <<
 		util::to_string(-5.67, 0) << std::endl <<

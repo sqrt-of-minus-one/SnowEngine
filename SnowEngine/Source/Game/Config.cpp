@@ -119,7 +119,7 @@ Config::Config(std::shared_ptr<const json::Element> json) :
 
 	if (load_section_(config_log_(), section, config_json, L"window"))
 	{
-		LOAD_VALUE_(window_resolution,			Point2,					L"window",	L"resolution");
+		LOAD_VALUE_(window_resolution,			IntVector2,					L"window",	L"resolution");
 		LOAD_VALUE_(window_fullscreen,			util::json_to_bool,		L"window",	L"fullscreen");
 		LOAD_VALUE_(window_resize,				util::json_to_bool,		L"window",	L"resize");
 		LOAD_VALUE_(window_titlebar,			util::json_to_bool,		L"window",	L"titlebar");
@@ -136,8 +136,8 @@ Config::Config(std::shared_ptr<const json::Element> json) :
 	}
 	if(load_section_(config_log_(), section, config_json, L"chunks"))
 	{
-		LOAD_VALUE_(chunks_collision_size,		Point2,					L"chunks",	L"collision_size");
-		LOAD_VALUE_(chunks_clickable_size,		Point2,					L"chunks",	L"clickable_size");
+		LOAD_VALUE_(chunks_collision_size,		IntVector2,					L"chunks",	L"collision_size");
+		LOAD_VALUE_(chunks_clickable_size,		IntVector2,					L"chunks",	L"clickable_size");
 	}
 	if(load_section_(config_log_(), section, config_json, L"lang"))
 	{

@@ -214,9 +214,9 @@ public:
 	 *	corner coordinates become less than rectangle coordinates.
 	 *	\code
 	 *															// {{position}, {  size  }}
-	 *		IntRect rect(Point2(2.f, 2.f), Point2(2.f, 2.f));	// {{2.0, 2.0}, {2.0, 2.0}}
-	 *		rect.set_corner_position(Point2(5.5f, 5.5f));		// {{2.0, 2.0}, {3.5, 3.5}}
-	 *		rect.set_corner_position(Point2(1.f, 1.f));			// {{1.0, 1.0}, {1.0, 1.0}}
+	 *		IntRect rect(IntVector2(2.f, 2.f), IntVector2(2.f, 2.f));	// {{2.0, 2.0}, {2.0, 2.0}}
+	 *		rect.set_corner_position(IntVector2(5.5f, 5.5f));		// {{2.0, 2.0}, {3.5, 3.5}}
+	 *		rect.set_corner_position(IntVector2(1.f, 1.f));			// {{1.0, 1.0}, {1.0, 1.0}}
 	 *	\endcode
 	 *	\param corner_position The new position of the corner.
 	 *
@@ -228,9 +228,9 @@ public:
 	 *	координаты угла становятся меньше, чем координаты прямоугольника.
 	 *	\code
 	 *															// {{положен }, { размер }}
-	 *		IntRect rect(Point2(2.f, 2.f), Point2(2.f, 2.f));	// {{2.0, 2.0}, {2.0, 2.0}}
-	 *		rect.set_corner_position(Point2(5.5f, 5.5f));		// {{2.0, 2.0}, {3.5, 3.5}}
-	 *		rect.set_corner_position(Point2(1.f, 1.f));			// {{1.0, 1.0}, {1.0, 1.0}}
+	 *		IntRect rect(IntVector2(2.f, 2.f), IntVector2(2.f, 2.f));	// {{2.0, 2.0}, {2.0, 2.0}}
+	 *		rect.set_corner_position(IntVector2(5.5f, 5.5f));		// {{2.0, 2.0}, {3.5, 3.5}}
+	 *		rect.set_corner_position(IntVector2(1.f, 1.f));			// {{1.0, 1.0}, {1.0, 1.0}}
 	 *	\endcode
 	 *	\param corner_position Новое положение угла.
 	 */

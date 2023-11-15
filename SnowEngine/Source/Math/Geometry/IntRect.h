@@ -8,7 +8,7 @@
 
 #include "../../Object.h"
 
-#include "../Vector/Point2.h"
+#include "../Vector/IntVector2.h"
 
 namespace snow
 {
@@ -85,7 +85,7 @@ public:
 	 *	\param position Положение угла с наименьшими координатами.
 	 *	\param size Размер прямоугольника.
 	 */
-	IntRect(const Point2& position, const Point2& size);
+	IntRect(const IntVector2& position, const IntVector2& size);
 
 	/**
 	 *	\~english
@@ -160,7 +160,7 @@ public:
 	 *	Позволяет получить положение угла с наименьшими координатами.
 	 *	\return Положение прямоугольника.
 	 */
-	const Point2& get_position() const noexcept;
+	const IntVector2& get_position() const noexcept;
 	
 	/**
 	 *	\~english
@@ -175,7 +175,7 @@ public:
 	 *	Позволяет получить положение угла с наибольшими координатами.
 	 *	\return Положение угла с наибольшими координатами.
 	 */
-	Point2 get_corner_position() const;
+	IntVector2 get_corner_position() const;
 	
 	/**
 	 *	\~english
@@ -190,7 +190,7 @@ public:
 	 *	Позволяет получить размер прямоугольника.
 	 *	\return Размер прямоугольника.
 	 */
-	const Point2& get_size() const noexcept;
+	const IntVector2& get_size() const noexcept;
 	
 	/**
 	 *	\~english
@@ -207,7 +207,7 @@ public:
 	 *	прямоугольника.
 	 *	\param position Новое положение прямоугольника.
 	 */
-	void set_position(const Point2& position);
+	void set_position(const IntVector2& position);
 
 	/**
 	 *	\~english
@@ -218,9 +218,9 @@ public:
 	 *	corner coordinates become less than rectangle coordinates.
 	 *	\code
 	 *													// {{pos }, {size}}:
-	 *		IntRect rect(Point2(2, 2), Point2(2, 2));	// {{2, 2}, {2, 2}}
-	 *		rect.set_corner_position(Point2(5, 5));		// {{2, 2}, {3, 3}}
-	 *		rect.set_corner_position(Point2(1, 1));		// {{1, 1}, {1, 1}}
+	 *		IntRect rect(IntVector2(2, 2), IntVector2(2, 2));	// {{2, 2}, {2, 2}}
+	 *		rect.set_corner_position(IntVector2(5, 5));		// {{2, 2}, {3, 3}}
+	 *		rect.set_corner_position(IntVector2(1, 1));		// {{1, 1}, {1, 1}}
 	 *	\endcode
 	 *	\param corner_position The new position of the corner.
 	 *	
@@ -232,13 +232,13 @@ public:
 	 *	координаты угла становятся меньше, чем координаты прямоугольника.
 	 *	\code
 	 *													// {{пол }, {разм}}:
-	 *		IntRect rect(Point2(2, 2), Point2(2, 2));	// {{2, 2}, {2, 2}}
-	 *		rect.set_corner_position(Point2(5, 5));		// {{2, 2}, {3, 3}}
-	 *		rect.set_corner_position(Point2(1, 1));		// {{1, 1}, {1, 1}}
+	 *		IntRect rect(IntVector2(2, 2), IntVector2(2, 2));	// {{2, 2}, {2, 2}}
+	 *		rect.set_corner_position(IntVector2(5, 5));		// {{2, 2}, {3, 3}}
+	 *		rect.set_corner_position(IntVector2(1, 1));		// {{1, 1}, {1, 1}}
 	 *	\endcode
 	 *	\param corner_position Новое положение угла.
 	 */
-	void set_corner_position(const Point2& corner_position);
+	void set_corner_position(const IntVector2& corner_position);
 	
 	/**
 	 *	\~english
@@ -253,7 +253,7 @@ public:
 	 *	Позволяет установить размер прямоугольника без изменения его положения.
 	 *	\param size Новый размер.
 	 */
-	void set_size(const Point2& size);
+	void set_size(const IntVector2& size);
 	
 	/**
 	 *	\~english
@@ -356,8 +356,8 @@ public:
 	bool operator!=(const IntRect& rect) const;
 
 private:
-	Point2 position_;
-	Point2 size_;
+	IntVector2 position_;
+	IntVector2 size_;
 };
 
 /**

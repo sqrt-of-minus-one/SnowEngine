@@ -98,10 +98,10 @@
     <ClInclude Include="Source\Math\Vector\Vector3.h">
       <Filter>Source Files\Math\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Math\Vector\Point2.h">
+    <ClInclude Include="Source\Math\Vector\IntVector2.h">
       <Filter>Source Files\Math\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Math\Vector\Point3.h">
+    <ClInclude Include="Source\Math\Vector\IntVector3.h">
       <Filter>Source Files\Math\Vector</Filter>
     </ClInclude>
     <ClInclude Include="Source\Level\Level.h">
@@ -253,10 +253,10 @@
     <ClCompile Include="Source\Math\Vector\Vector3.cpp">
       <Filter>Source Files\Math\Vector</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math\Vector\Point2.cpp">
+    <ClCompile Include="Source\Math\Vector\IntVector2.cpp">
       <Filter>Source Files\Math\Vector</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math\Vector\Point3.cpp">
+    <ClCompile Include="Source\Math\Vector\IntVector3.cpp">
       <Filter>Source Files\Math\Vector</Filter>
     </ClCompile>
     <ClCompile Include="Source\Level\Level.cpp">

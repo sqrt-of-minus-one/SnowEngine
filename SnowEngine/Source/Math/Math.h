@@ -22,7 +22,7 @@ namespace math
  *	\brief Mathematical classes, functions and methods
  *	
  *	Mathematics in SnowEngine contains:
- *	- 2D- and 3D-vectors with real (`Vector2`, `Vector3`) and integer (`Point2`, `Point3`)
+ *	- 2D- and 3D-vectors with real (`Vector2`, `Vector3`) and integer (`IntVector2`, `IntVector3`)
  *	coordinates
  *	- Rectangles with real (`DoubleRect`) and integer (`IntRect`) coordinates
  *	- Angles (`Angle`)
@@ -32,7 +32,7 @@ namespace math
  *	\brief Математические классы, функции и методы
  *	
  *	Математика в SnowEngine включает в себя:
- *	- 2D- и 3D-векторы с вещественными (`Vector2`, `Vector3`) и целочисленными (`Point2`, `Point3`)
+ *	- 2D- и 3D-векторы с вещественными (`Vector2`, `Vector3`) и целочисленными (`IntVector2`, `IntVector3`)
  *	координатами
  *	- Прямоугольники с вещественными (`DoubleRect`) и целочисленными (`IntRect`) координатами.
  *	- Углы (`Angle`)
