@@ -29,7 +29,7 @@ class Event;
 template<typename... T_Args>
 class EventBinder;
 
-class Point2;
+class IntVector2;
 class Vector2;
 class CameraComponent;
 
@@ -172,7 +172,7 @@ public:
 	 *	Позволяет получить позицию курсора мыши в координатах экрана.
 	 *	\return Позиция курсора мыши на экране.
 	 */
-	Point2 get_screen_mouse_position();
+	IntVector2 get_screen_mouse_position();
 	
 	/**
 	 *	\~english
@@ -187,7 +187,7 @@ public:
 	 *	Позволяет получить позицию курсора мыши в игровом окне.
 	 *	\return Позиция курсора мыши в окне; нулевая точка, если окно ещё не было создано.
 	 */
-	Point2 get_window_mouse_position();
+	IntVector2 get_window_mouse_position();
 
 	/**
 	 *	\~english
@@ -221,7 +221,7 @@ public:
 	 *	Позволяет изменить позицию курсора мыши в координатах экрана.
 	 *	\param position Новая позиция курсора мыши на экране.
 	 */
-	void set_screen_mouse_position(const Point2& position);
+	void set_screen_mouse_position(const IntVector2& position);
 
 	/**
 	 *	\~english
@@ -238,7 +238,7 @@ public:
 	 *	делает ничего.
 	 *	\param position Новая позиция курсора мыши в координатах окна.
 	 */
-	void set_window_mouse_position(const Point2& position);
+	void set_window_mouse_position(const IntVector2& position);
 
 	/**
 	 *	\~english

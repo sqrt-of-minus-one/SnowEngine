@@ -1,7 +1,7 @@
 ﻿    ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
- //  File: Vector3.h                   //
+ //  File: IntVector3.h                   //
 ////////////////////////////////////////
 
 #pragma once
@@ -16,32 +16,31 @@ namespace snow
  *	\{
  */
 
-class Vector2;
-class IntVector3;
-class Angle;
+class IntVector2;
+class Vector3;
 
 /**
  *	\~english
- *	\brief The class of three-dimensional vector
+ *	\brief The class of three-dimensional integer vector
  *
- *	This class represents a three-dimensional vector. It has three real coordinates: X, Y, and Z.
- *	You can access them via `get_x()`, `get_y()`, `get_z()` and `set_x()`, `set_y()`, `set_z()`
- *	methods.
+ *	This class represents a three-dimensional integer vector. It has three integer coordinates: X,
+ *	Y, and Z. You can access them via `get_x()`, `get_y()`, `get_z()` and `set_x()`, `set_y()`,
+ *	`set_z()` methods.
  *	\sa
- *	- `Vector2`: two-dimensional vector
- *	- `IntVector2`, `IntVector3`: vectors with integer coordinates
+ *	- `IntVector2`: two-dimensional vector
+ *	- `Vector2`, `Vector3`: real vectors
  *
  *	\~russian
- *	\brief Класс трёхмерного вектора
+ *	\brief Класс трёхмерного целочисленного вектора
  *
- *	Этот класс представляет трёхмерный вектор. Он имеет три вещественные координаты: X, Y и Z. Вы
- *	можете получить к ним доступ с помощью методов `get_x()`, `get_y()`, `get_z()` и `set_x()`,
- *	`set_y()`, `set_z()`.
+ *	Этот класс представляет трёхмерный целочисленный вектор. Он имеет три целочисленные координаты:
+ *	X, Y и Z. Вы можете получить к ним доступ с помощью методов `get_x()`, `get_y()`, `get_z()` и
+ *	`set_x()`, `set_y()`, `set_z()`.
  *	\sa
- *	- `Vector2`: двумерный вектор
- *	- `IntVector2`, `IntVector3`: векторы с целочисленными координатами
+ *	- `IntVector2`: двумерный вектор
+ *	- `Vector2`, `Vector3`: вещественные векторы
  */
-class Vector3 : public Object
+class IntVector3 : public Object
 {
 public:
 			/* CONSTRUCTORS */
@@ -57,7 +56,7 @@ public:
 	 *
 	 *	Создаёт нулевой вектор \f$\{0; 0; 0\}\f$.
 	*/
-	Vector3();
+	IntVector3();
 
 	/**
 	 *	\~english
@@ -70,9 +69,9 @@ public:
 	 *	\brief Конструктор копирования
 	 *
 	 *	Создаёт копию вектора.
-	 *	\param vector Вектор, который будет скопирован.
+	 *	\param vector Вектор, который будет скопирована.
 	 */
-	Vector3(const Vector3& vector);
+	IntVector3(const IntVector3& vector);
 
 	/**
 	 *	\~english
@@ -89,7 +88,7 @@ public:
 	 *	Z устанавливается равной нулю.
 	 *	\param vector 2D-вектор, чьё значение будет скопировано.
 	 */
-	Vector3(const Vector2& vector);
+	IntVector3(const IntVector2& vector);
 
 	/**
 	 *	\~english
@@ -108,7 +107,7 @@ public:
 	 *	\param vector 2D-вектор, чьи X и Y координаты будут скопированы.
 	 *	\param z Координата Z вектора.
 	 */
-	Vector3(const Vector2& vector, double z);
+	IntVector3(const IntVector2& vector, int z);
 
 	/**
 	 *	\~english
@@ -127,28 +126,27 @@ public:
 	 *	\param y Координата Y вектора.
 	 *	\param z Координата Z вектора.
 	 */
-	Vector3(double x, double y, double z);
+	IntVector3(int x, int y, int z);
 
 	/**
 	 *	\~english
 	 *	\brief Creates a new vector from the JSON element
 	 *
 	 *	Creates a vector using values contained in the passed JSON element. It must be an array
-	 *	with three double or integer values.
+	 *	with three integer values.
 	 *	\param json The JSON element with the value of a new vector.
-	 *	\throw std::invalid_argument The passed JSON is not an array with three double or integer
-	 *	values.
+	 *	\throw std::invalid_argument The passed JSON is not an array with three integer values.
 	 *
 	 *	\~russian
 	 *	\breif Создаёт новый вектор из элемента JSON
 	 *
 	 *	Создаёт вектор, используя значения, содержащиеся в переданном элементе JSON. Это должен
-	 *	быть массив с тремя вещественными или целочисленными значениями.
+	 *	быть массив с тремя целочисленными значениями.
 	 *	\param json Элемент JSON со значением нового вектора.
-	 *	\throw std::invalid_argument Переданный JSON не является массивом с тремя вещественными или
-	 *	целочисленными значениями.
+	 *	\throw std::invalid_argument Переданный JSON не является массивом с тремя целочисленными
+	 *	значениями.
 	 */
-	Vector3(std::shared_ptr<const json::Element> json);
+	IntVector3(std::shared_ptr<const json::Element> json);
 
 			/* METHODS FROM Object */
 
@@ -198,7 +196,7 @@ public:
 	 *	Позволяет получить координату X вектора.
 	 *	\return Координата X вектора.
 	 */
-	double get_x() const noexcept;
+	int get_x() const noexcept;
 
 	/**
 	 *	\~english
@@ -213,7 +211,7 @@ public:
 	 *	Позволяет получить координату Y вектора.
 	 *	\return Координата Y вектора.
 	 */
-	double get_y() const noexcept;
+	int get_y() const noexcept;
 
 	/**
 	 *	\~english
@@ -228,7 +226,7 @@ public:
 	 *	Позволяет получить координату Z вектора.
 	 *	\return Координата Z вектора.
 	 */
-	double get_z() const noexcept;
+	int get_z() const noexcept;
 
 	/**
 	 *	\~english
@@ -243,7 +241,7 @@ public:
 	 *	Позволяет изменить координату X вектора.
 	 *	\param x Новое значение координаты X вектора.
 	 */
-	void set_x(double x) noexcept;
+	void set_x(int x) noexcept;
 
 	/**
 	 *	\~english
@@ -258,7 +256,7 @@ public:
 	 *	Позволяет изменить координату Y вектора.
 	 *	\param y Новое значение координаты Y вектора.
 	 */
-	void set_y(double y) noexcept;
+	void set_y(int y) noexcept;
 
 	/**
 	 *	\~english
@@ -273,7 +271,7 @@ public:
 	 *	Позволяет изменить координату Z вектора.
 	 *	\param z Новое значение координаты Z вектора.
 	 */
-	void set_z(double z) noexcept;
+	void set_z(int z) noexcept;
 
 	/**
 	 *	\~english
@@ -285,7 +283,7 @@ public:
 	 *	\~russian
 	 *	\brief Проверяет, является ли вектор нулевым
 	 *
-	 *	Вектор является нулевым, если его X, Y и Z координаты равны нулю.
+	 *	Вектор является нулевый, если его X, Y и Z координаты равны нулю.
 	 *	\return `true`, если вектор нулевой, иначе `false`.
 	 */
 	bool is_zero() const noexcept;
@@ -304,151 +302,7 @@ public:
 	 *	Создаёт копию вектора и заменяет координаты этой копии на их абсолютные значения.
 	 *	\return Абсолютное значение вектора.
 	 */
-	Vector3 abs() const noexcept;
-
-	/**
-	 *	\~english
-	 *	\brief The vector length
-	 *
-	 *	Allows to get the vector length. It is equal to \f$\sqrt{x^2 + y^2 + z^2}\f$. If you need
-	 *	the squared length, you should use the `length_sq()` method, which is more efficient and
-	 *	fast.
-	 *	\return The vector length.
-	 *
-	 *	\~russian
-	 *	\brief Длина вектора
-	 *
-	 *	Позволяет получить длину вектора. Она равна \f$\sqrt{x^2 + y^2 + z^2}\f$. Если вам нужен
-	 *	квадрат длины, следует использовать более эффективный и быстрый метод `length_sq()`.
-	 *	\return Длина вектора.
-	 */
-	double length() const noexcept;
-
-	/**
-	 *	\~english
-	 *	\brief The squared vector length
-	 *
-	 *	Allows to get the squared vector length. Is more efficient than the `length()` function.
-	 *	\return The squared vector length.
-	 *
-	 *	\~russian
-	 *	\brief Квадрат длины вектора
-	 *
-	 *	Позволяет получить длину вектора в квадрате. Эта функция более эффективна, чем `length()`.
-	 *	\return Квадрат длины вектора.
-	 */
-	double length_sq() const noexcept;
-	
-	/**
-	 *	\~english
-	 *	\brief A polar angle of the vector
-	 *	
-	 *	Allows to get an angle between the vector and the positive direction of Z-axis (a polar
-	 *	angle). The result is between 0° and 180°.
-	 *	\return A polar angle.
-	 *	
-	 *	\~russian
-	 *	\brief Зенитный угол вектора
-	 *	
-	 *	Позволяет получить угол между ветором и положительным направлением оси Z (зенитный угол).
-	 *	Результат находится между 0° и 180°.
-	 */
-	Angle get_polar_angle() const;
-
-	/**
-	 *	\~english
-	 *	\brief An azimuthal angle of the vector
-	 *	
-	 *	Allows to get an angle between an orthogonal projection of the vector on the OXY plane
-	 *	and the positive direction of X-axis (an azimuthal angle). The result is between -180° and
-	 *	180°.
-	 *	\return An azimuthal angle.
-	 *	
-	 *	\~russian
-	 *	\brief Азимутальный угол вектора
-	 *	
-	 *	Позволяет получить угол между ортогональной проекцией вектора на плоскость OXY и
-	 *	положительным направлением оси X (азимутальный угол). Результат лежит между -180° и 180°.
-	 */
-	Angle get_azimuthal_angle() const;
-
-	/**
-	 *	\~english
-	 *	\brief An angle between two vectors
-	 *
-	 *	Allows to get an angle between two vectors. The result is between 0° and 180°.
-	 *	\return An angle between two vectors.
-	 *
-	 *	\~russian
-	 *	\brief Угол между двумя векторами
-	 *
-	 *	Позволяет получить угол между двумя векторами. Результат лежит между 0° и 180°.
-	 *	\return Угол между двумя векторами.
-	 */
-	Angle get_angle(const Vector3& vector) const;
-
-	/**
-	 *	\~english
-	 *	\brief Checks whether two vectors are collinear
-	 *
-	 *	Allows to check whether two vectors are collinear (parallel). A zero vector is collinear to
-	 *	any other.
-	 *	\return `true` if two vectors are collinear, `false` otherwise.
-	 *	\sa
-	 *	- `is_co_directed()`, `is_orthogonal()`
-	 *
-	 *	\~russian
-	 *	\brief Проверяет, коллинеарны ли два вектора
-	 *
-	 *	Позволяет проверить, являются ли два вектора коллинеарными (параллельными). Нулевой вектор
-	 *	коллинеарен любому другому.
-	 *	\return `true`, если два вектора коллинеарны, иначе `false`.
-	 *	\sa
-	 *	- `is_co_directed()`, `is_orthogonal()`
-	 */
-	bool is_collinear(const Vector3& vector) const noexcept;
-
-	/**
-	 *	\~english
-	 *	\brief Checks whether two vectors are co-directed
-	 *
-	 *	Two vectors are co-directed, if they are collinear and have the same direction. A zero
-	 *	vector is co-directed to any other.
-	 *	\return `true` if two vectors are co-directed, `false` otherwise.
-	 *	\sa
-	 *	- `is_collinear()`, `is_orthogonal()`
-	 *
-	 *	\~russian
-	 *	\brief Проверяет, сонаправлены ли два вектора
-	 *
-	 *	Два вектора сонаправлены, если они коллинеарны и имеют одинаковое направление. Нулевой
-	 *	вектор сонаправлен любому другому.
-	 *	\return `true`, если два вектора сонаправлены, иначе `false`.
-	 *	\sa
-	 *	- `is_collinear()`, `is_orthogonal()`
-	 */
-	bool is_co_directed(const Vector3& vector) const noexcept;
-
-	/**
-	 *	\~english
-	 *	\brief Checks whether two vectors are orthogonal
-	 *
-	 *	Allows to check whether two vectors are orthogonal (perpendicular). A zero vector is
-	 *	orthogonal to any other.
-	 *	\return `true` if two vectors are orthogonal, `false` otherwise.
-	 *	\sa
-	 *	- `is_collinear()`, `is_co_directed()`
-	 *
-	 *	\~russian
-	 *	\brief Проверяет, ортогональны ли два вектора
-	 *
-	 *	Позволяет проверить, являются ли два вектора ортогональными (перпендикулярными). Нулевой
-	 *	вектор ортогонален любому другому.
-	 *	\return `true`, если два вектора ортогональны, иначе `false`.
-	 *	\sa
-	 *	- `is_collinear()`, `is_co_directed()`
-	 */
-	bool is_orthogonal(const Vector3& vector) const noexcept;
+	IntVector3 abs() const noexcept;
 	
 			/* OPERATORS */
 
@@ -464,10 +318,10 @@ public:
 	 *	\brief Копирует вектор
 	 *
 	 *	Присваивает переданное значение вектору.
-	 *	\param vector Вектор, который будет скопирован.
+	 *	\param vector Вектор, которая будет скопирована.
 	 *	\return Ссылка на себя.
 	 */
-	Vector3& operator=(const Vector3& vector) noexcept;
+	IntVector3& operator=(const IntVector3& vector) noexcept;
 
 	/**
 	 *	\~english
@@ -480,11 +334,11 @@ public:
 	 *	\~russian
 	 *	\brief Просто… возвращает себя
 	 *
-	 *	Не знаю как, но, быть может, это окажется полезным, если вам нужно r-value:
-	 *	`some_vector` — это l-value, но `+some_vector` — уже r-value.
-	 *	\return Копия самого себя.
+	 *	Не знаю как, но, быть может, это окажется полезным, если вам нужно r-value: `some_vector` —
+	 *	это l-value, но `+some_vector` — уже r-value.
+	 *	\return Копия самой себя.
 	 */
-	const Vector3 operator+() const;
+	const IntVector3 operator+() const;
 	
 	/**
 	 *	\~english
@@ -501,7 +355,7 @@ public:
 	 *	результат, что и `vector * -1`.
 	 *	\return Вектор с противоположными знаками у координат.
 	 */
-	const Vector3 operator-() const;
+	const IntVector3 operator-() const;
 
 	/**
 	 *	\~english
@@ -520,7 +374,7 @@ public:
 	 *	\param vector Второе слагаемое.
 	 *	\return Сумма двух векторов.
 	 */
-	const Vector3 operator+(const Vector3& vector) const;
+	const IntVector3 operator+(const IntVector3& vector) const;
 
 	/**
 	 *	\~english
@@ -539,7 +393,7 @@ public:
 	 *	\param vector Вычитаемое.
 	 *	\return Разность двух векторов.
 	 */
-	const Vector3 operator-(const Vector3& vector) const;
+	const IntVector3 operator-(const IntVector3& vector) const;
 
 	/**
 	 *	\~english
@@ -558,7 +412,7 @@ public:
 	 *	\param value Множитель.
 	 *	\return Произведение вектора и числа.
 	 */
-	const Vector3 operator*(double value) const;
+	const IntVector3 operator*(int value) const;
 
 	/**
 	 *	\~english
@@ -579,7 +433,7 @@ public:
 	 *	\param vector Вектор.
 	 *	\return Произведение вектора и числа.
 	 */
-	friend const Vector3 operator*(double value, const Vector3& vector);
+	friend const IntVector3 operator*(int value, const IntVector3& vector);
 
 	/**
 	 *	\~english
@@ -589,7 +443,7 @@ public:
 	 *	\f$\{x_1, y_1, z_1\} * \{x_2, y_2, z_2\} = \{x_1 \cdot x_2, y_1 \cdot y_2, z_1 \cdot
 	 *	z_2\}\f$.
 	 *	\warning Do not confuse this operation and dot product. If you need the latter, use
-	 *	`operator&()`.
+	 *	`Vector3::operator&()`.
 	 *	\param vector The multiplier.
 	 *	\return The coordinate-wise product of two vectors.
 	 *
@@ -600,109 +454,11 @@ public:
 	 *	\f$\{x_1; y_1; z_1\} * \{x_2; y_2; z_2\} = \{x_1 \cdot x_2; y_1 \cdot y_2; z_1 \cdot
 	 *	z_2\}\f$.
 	 *	\warning Не путайте эту операцию со скалярным произведением. Если вам нужно последнее,
-	 *	используйте `оператор&()`.
+	 *	`Vector3::operator&()`.
 	 *	\param vector Множитель.
 	 *	\return Покоординатное произведение двух векторов.
 	 */
-	const Vector3 operator*(const Vector3& vector) const;
-
-	/**
-	 *	\~english
-	 *	\brief Scalar multiplies vectors
-	 *
-	 *	Finds a dot product of two vectors by the formula:
-	 *	\f$\{x_1, y_1, z_1\} \cdot \{x_2, y_2, z_2\} = x_1 \cdot x_2 + y_1 \cdot y_2 + z_1 \cdot
-	 *	z_2\f$.
-	 *	\warning The `&` operator has pretty low priority (lower than comparison operators). Use
-	 *	parenthesis with it:
-	 *	\code
-	 *		if (vector & other_vector > 0.) // Error: > has higher priority than &
-	 *			// ...
-	 *
-	 *		if ((vector & other_vector) > 0.) // Correct
-	 *			// ...
-	 *	\endcode
-	 *	\param vector The second multiplier.
-	 *	\return The dot product of two vectors.
-	 *	\sa
-	 *	- `operator^()`: The cross product
-	 *
-	 *	\~russian
-	 *	\brief Скалярно умножает векторы
-	 *
-	 *	Вычисляет скалярное произведение двух векторов по формуле:
-	 *	\f$\{x_1; y_1; z_1\} \cdot \{x_2; y_2; z_2\} = x_1 \cdot x_2 + y_1 \cdot y_2 + z_1 \cdot
-	 *	z_2\f$.
-	 *	\warning Оператор `&` имеет довольно низкий приоритет (ниже, чем у операций сравнения).
-	 *	Используйте его вместе со скобками:
-	 *	\code
-	 *		if (vector & other_vector > 0.) // Ошибка: > имеет больший приоритет, чем &
-	 *			// ...
-	 *
-	 *		if ((vector & other_vector) > 0.) // Верно
-	 *			// ...
-	 *	\endcode
-	 *	\param vector Второй множитель.
-	 *	\return Скалярное произведение двух векторов.
-	 *	\sa
-	 *	- `operator^()`: Векторное произведение
-	 */
-	const double operator&(const Vector3& vector) const noexcept;
-
-	/**
-	 *	\~english
-	 *	\brief Cross product of two vectors
-	 *	
-	 *	Finds a cross product of two vectors by the formula:
-	 *	\f[
-	 *		\{x_1, y_1, z_1\} \times \{x_2, y_2, z_2\} =
-	 *		\begin{vmatrix}
-	 *			\vec{i} & \vec{j} & \vec{k} \\
-	 *			  x_1   &   y_1   &   z_1   \\
-	 *			  x_2   &   y_2   &   z_2
-	 *		\end{vmatrix} = \{y_1 z_2 - z_1 y_2, x_1 z_2 - z_1 x_2, x_1 y_2 - y_1 x_2\}
-	 *	\f]
-	 *	\warning The `^` operator has pretty low priority (lower than comparison operators). Use
-	 *	parenthesis with it:
-	 *	\code
-	 *		if (vector ^ other_vector == Vector3::ZERO) // Error: == has higher priority than ^
-	 *			// ...
-	 *
-	 *		if ((vector ^ other_vector) == Vector3::ZERO) // Correct
-	 *			// ...
-	 *	\endcode
-	 *	\param vector The second multiplier.
-	 *	\return The cross product of two vectors.
-	 *	\sa
-	 *	- `operator&()`: The dot product
-	 *	
-	 *	\~russian
-	 *	\brief Векторно умножает векторы
-	 *
-	 *	Вычисляет векторное произведение двух векторов по формуле:
-	 *	\f[
-	 *		\{x_1; y_1; z_1\} \times \{x_2; y_2; z_2\} =
-	 *		\begin{vmatrix}
-	 *			\vec{i} & \vec{j} & \vec{k} \\
-	 *			  x_1   &   y_1   &   z_1   \\
-	 *			  x_2   &   y_2   &   z_2
-	 *		\end{vmatrix} = \{y_1 z_2 - z_1 y_2; x_1 z_2 - z_1 x_2; x_1 y_2 - y_1 x_2\}
-	 *	\f]
-	 *	\warning Оператор `^` имеет довольно низкий приоритет (ниже, чем у операций сравнения).
-	 *	Используйте его вместе со скобками:
-	 *	\code
-	 *		if (vector ^ other_vector == Vector3::ZERO) // Ошибка: > имеет больший приоритет, чем ^
-	 *			// ...
-	 *
-	 *		if ((vector ^ other_vector) == Vector3::ZERO) // Верно
-	 *			// ...
-	 *	\endcode
-	 *	\param vector Второй множитель.
-	 *	\return Векторное произведение двух векторов.
-	 *	\sa
-	 *	- `operator&()`: Скалярное произведение
-	 */
-	const Vector3 operator^(const Vector3& vector) const;
+	const IntVector3 operator*(const IntVector3& vector) const;
 
 	/**
 	 *	\~english
@@ -710,6 +466,7 @@ public:
 	 *
 	 *	Divides each of the vector coordinates by a passed value:
 	 *	\f$\{x, y, z\} / v = \{\frac{x}{v}, \frac{y}{v}, \frac{z}{v}\}\f$.
+	 *	\warning The integer division is used: `IntVector2(5, 7, 9) / 2 == IntVector2(2, 3, 4)`.
 	 *	\param value The divisor.
 	 *	\return The quotient of the vector and the number.
 	 *	\throw std::domain_error The divisor is zero.
@@ -719,11 +476,12 @@ public:
 	 *
 	 *	Делит каждую координату вектора на переданное число.
 	 *	\f$\{x; y; z\} / v = \{\frac{x}{v}; \frac{y}{v}; \frac{z}{v}\}\f$.
+	 *	\warning Используется целочисленное деление: `IntVector2(5, 7, 9) / 2 == IntVector2(2, 3, 4)`.
 	 *	\param value Делитель.
 	 *	\return Частное вектора и числа.
 	 *	\throw std::domain_error Делитель равен нулю.
 	 */
-	const Vector3 operator/(double value) const;
+	const IntVector3 operator/(int value) const;
 
 	/**
 	 *	\~english
@@ -732,6 +490,8 @@ public:
 	 *	Separately divides X and Y coordinates of two vectors:
 	 *	\f$\{x_1, y_1, z_1\} / \{x_2, y_2, z_2\} = \{\frac{x_1}{x_2}, \frac{y_1}{y_2},
 	 *	\frac{z_1}{z_2}\}\f$.
+	 *	\warning The integer division is used: `IntVector2(5, 7, 9) / IntVector2(2, 3, 5) ==
+	 *	IntVector2(2, 2, 1)`.
 	 *	\param vector The divisor.
 	 *	\return The coordinate-wise quotient of two vectors.
 	 *	\throw std::domain_error One of the coordinates of the divisor is zero.
@@ -742,11 +502,13 @@ public:
 	 *	По отдельности делит X и Y координаты двух векторов:
 	 *	\f$\{x_1; y_1; z_1\} / \{x_2; y_2; z_2\} = \{\frac{x_1}{x_2}; \frac{y_1}{y_2};
 	 *	\frac{z_1}{z_2}\}\f$.
+	 *	\warning Используется целочисленное деление: `IntVector2(5, 7, 9) / IntVector2(2, 3, 5) ==
+	 *	IntVector2(2, 2, 1)`.
 	 *	\param vector Делитель.
 	 *	\return Результат покоординатного деления двух векторов.
 	 *	\throw std::domain_error Одна из координат делителя равна нулю.
 	 */
-	const Vector3 operator/(const Vector3& vector) const;
+	const IntVector3 operator/(const IntVector3& vector) const;
 
 	/**
 	 *	\~english
@@ -773,7 +535,7 @@ public:
 	 *	\param vector Второе слагаемое.
 	 *	\return Ссылка на себя.
 	 */
-	Vector3& operator+=(const Vector3& vector) noexcept;
+	IntVector3& operator+=(const IntVector3& vector) noexcept;
 
 	/**
 	 *	\~english
@@ -800,7 +562,7 @@ public:
 	 *	\param vector Вычитаемое.
 	 *	\return Ссылка на себя.
 	 */
-	Vector3& operator-=(const Vector3& vector) noexcept;
+	IntVector3& operator-=(const IntVector3& vector) noexcept;
 
 	/**
 	 *	\~english
@@ -827,19 +589,19 @@ public:
 	 *	\param value Множитель.
 	 *	\return Ссылка на себя.
 	 */
-	Vector3& operator*=(double value) noexcept;
+	IntVector3& operator*=(int value) noexcept;
 
 	/**
 	 *	\~english
 	 *	\brief Separately multiplies its own X and Y coordinates by coordinates of a passed vector
 	 *
 	 *	Finds the coordinate-wise product of two vectors and assigns it to itself.
+	 *	\warning Do not confuse this operation and dot product.
 	 *	\code
 	 *		// These strings do the same:
 	 *		vector *= another_vector;
 	 *		vector = vector * another_vector;
 	 *	\endcode
-	 *	\warning Do not confuse this operation and dot product.
 	 *	\param vector The multiplier.
 	 *	\return A reference to itself.
 	 *
@@ -847,43 +609,16 @@ public:
 	 *	\brief По отдельности умножает свои X и Y координаты на координаты переданного вектора
 	 *
 	 *	Находит покоординатное произведение двух векторов и присваивает себе его значение.
+	 *	\warning Не путайте эту операцию со скалярным произведением.
 	 *	\code
 	 *		// Эти строки делают одно и то же:
 	 *		vector *= another_vector;
 	 *		vector = vector * another_vector;
 	 *	\endcode
-	 *	\warning Не путайте эту операцию со скалярным произведением.
 	 *	\param vector Множитель.
 	 *	\return Ссылка на себя.
 	 */
-	Vector3& operator*=(const Vector3& vector) noexcept;
-
-	/**
-	 *	\~english
-	 *	\brief Multiplies itself by a passed vector (cross product)
-	 *
-	 *	Finds the cross product of two vectors and assigns it to itself.
-	 *	\code
-	 *		// These strings do the same:
-	 *		vector ^= another_vector;
-	 *		vector = vector ^ another_vector;
-	 *	\endcode
-	 *	\param vector The multiplier.
-	 *	\return A reference to itself.
-	 *
-	 *	\~russian
-	 *	\brief Векторно умножает себя на переданный вектор
-	 *
-	 *	Находит векторное произведение двух векторов и присваивает себе его значение.
-	 *	\code
-	 *		// Эти строки делают одно и то же:
-	 *		vector ^= another_vector;
-	 *		vector = vector ^ another_vector;
-	 *	\endcode
-	 *	\param vector Множитель.
-	 *	\return Ссылка на себя.
-	 */
-	Vector3& operator^=(const Vector3& vector) noexcept;
+	IntVector3& operator*=(const IntVector3& vector) noexcept;
 
 	/**
 	 *	\~english
@@ -895,6 +630,7 @@ public:
 	 *		vector /= num;
 	 *		vector = vector / num;
 	 *	\endcode
+	 *	\warning The integer division is used: `IntVector2(5, 7, 9) / 2 == IntVector2(2, 3, 4)`.
 	 *	\param value The divisor.
 	 *	\return A reference to itself.
 	 *	\throw std::domain_error The divisor is zero.
@@ -908,11 +644,13 @@ public:
 	 *		vector /= num;
 	 *		vector = vector / num;
 	 *	\endcode
+	 *	\warning Используется целочисленное деление: `IntVector2(5, 7, 9) / 2 ==
+	 *	IntVector2(2, 3, 4)`.
 	 *	\param value Делитель.
 	 *	\return Ссылка на себя.
 	 *	\throw std::domain_error Делитель равен нулю.
 	 */
-	Vector3& operator/=(double value);
+	IntVector3& operator/=(int value);
 
 	/**
 	 *	\~english
@@ -924,6 +662,8 @@ public:
 	 *		vector /= another_vector;
 	 *		vector = vector / another_vector;
 	 *	\endcode
+	 *	\warning The integer division is used: `IntVector2(5, 7, 9) / IntVector2(2, 3, 5) ==
+	 *	IntVector2(2, 2, 1)`.
 	 *	\param vector The divisor.
 	 *	\return A reference to itself.
 	 *	\throw std::domain_error One of the coordinates of the divisor is zero.
@@ -937,11 +677,13 @@ public:
 	 *		vector /= another_vector;
 	 *		vector = vector / another_vector;
 	 *	\endcode
+	 *	\warning Используется целочисленное деление: `IntVector2(5, 7, 9) / IntVector2(2, 3, 5) ==
+	 *	IntVector2(2, 2, 1)`.
 	 *	\param vector Делитель.
 	 *	\return Ссылка на себя.
 	 *	\throw std::domain_error Одна из координат делителя равна нулю.
 	 */
-	Vector3& operator/=(const Vector3& vector);
+	IntVector3& operator/=(const IntVector3& vector);
 
 	/**
 	 *	\~english
@@ -958,7 +700,7 @@ public:
 	 *	\param vector Вектор для сравнения.
 	 *	\return `true`, если векторы равны, иначе `false`.
 	 */
-	bool operator==(const Vector3& vector) const noexcept;
+	bool operator==(const IntVector3& vector) const noexcept;
 
 	/**
 	 *	\~english
@@ -975,65 +717,62 @@ public:
 	 *	\param vector Вектор для сравнения.
 	 *	\return `true`, если векторы не равны, иначе `false`.
 	 */
-	bool operator!=(const Vector3& vector) const noexcept;
+	bool operator!=(const IntVector3& vector) const noexcept;
 
 			/* CAST OPERATORS */
 
 	/**
 	 *	\~english
-	 *	\brief Cast to `Vector2`
+	 *	\brief Cast to `IntVector2`
 	 *
 	 *	Allows to get a 2D-vector with X and Y coordinates of this 3D-vector.
 	 *	\code
-	 *		Vector3 vector3(1., 2., 3.);
-	 *		Vector2 vector2(1., 2.);
-	 *		static_cast<Vector2>(vector3) == vector2; // true
+	 *		IntVector3 IntVector3(1, 2, 3);
+	 *		IntVector2 IntVector2(1, 2);
+	 *		static_cast<IntVector2>(IntVector3) == IntVector2; // true
 	 *	\endcode
 	 *	\warning Data loss is possible: Z coordinate is ignored.
-	 *	\return The 2D-vector with X and Y coordinates of this 3D-vector.
+	 *	\return The 2D-vector with X and Y coordinate of this 3D-vector.
 	 *	
 	 *	\~russian
-	 *	\brief Приведение к `Vector2`
+	 *	\brief Приведение к `IntVector2`
 	 *
 	 *	Позволяет получить 2D-вектор с X и Y координатами этого 3D-вектора.
 	 *	\code
-	 *		Vector3 vector3(1., 2., 3.);
-	 *		Vector2 vector2(1., 2.);
-	 *		static_cast<Vector2>(vector3) == vector2; // true
+	 *		IntVector3 IntVector3(1, 2, 3);
+	 *		IntVector2 IntVector2(1, 2);
+	 *		static_cast<IntVector2>(IntVector3) == IntVector2; // true
 	 *	\endcode
 	 *	\warning Возможна потеря данных: координата Z игнорируется.
 	 *	\return 2D-вектор с X и Y координатами этого 3D-вектора.
 	 */
-	operator Vector2() const;
+	operator IntVector2() const;
 
 	/**
 	 *	\~english
-	 *	\brief Cast to `IntVector3`
+	 *	\brief Cast to `Vector3`
 	 *
-	 *	Allows to get a 3D integer vector.
+	 *	Allows to get a 3D-vector with real coordinates.
 	 *	\code
-	 *		IntVector3 int_vector(1, 2, 3);
-	 *		Vector3 vector(1.5, 2., 3.9);
-	 *		static_cast<IntVector3>(vector) == int_vector; // true
+	 *		IntVector3 vector(1, 2, 3);
+	 *		Vector3 vector(1., 2., 3.);
+	 *		static_cast<Vector3>(vector) == vector; // true
 	 *	\endcode
-	 *	\warning Data loss is possible: double is converted to integer.
-	 *	\return The 3D-vector with integer coordinates that are equal to the coordinates of this
-	 *	vector casted to integer.
+	 *	\return The 3D-vector with real coordinates that are equal to the coordinates of this
+	 *	vector.
 	 *
 	 *	\~russian
-	 *	\brief Приведение к `IntVector3`
+	 *	\brief Приведение к `Vector3`
 	 *
-	 *	Позволяет получить трёхмерный целочисленный вектор.
+	 *	Позволяет получить 3D-вектор с вещественными координатами.
 	 *	\code
-	 *		IntVector3 int_vector(1, 2, 3);
-	 *		Vector3 vector(1.5, 2., 3.9);
-	 *		static_cast<IntVector3>(vector) == int_vector; // true
+	 *		IntVector3 vector(1, 2, 3);
+	 *		Vector3 vector(1., 2., 3.);
+	 *		static_cast<Vector3>(vector) == vector; // true
 	 *	\endcode
-	 *	\warning Возможна потеря данных: вещественные числа конвертируются в целые.
-	 *	\return Трёхмерный вектора с целочисленными координатами, равными целым частям координат
-	 *	этой точки.
+	 *	\return 3D-вектор с вещественными координатами, равными координатам этого вектора.
 	 */
-	operator IntVector3() const;
+	operator Vector3() const;
 	
 			/* CONSTANTS */
 
@@ -1043,16 +782,16 @@ public:
 	 *
 	 *	The zero vector. Each of its X, Y, and Z coordinates is zero. It's \f$\{0, 0, 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::I`, `Vector3::J`, `Vector3::K`
+	 *	- `IntVector3::I`, `IntVector3::J`, `IntVector3::K`
 	 *
 	 *	\~russian
 	 *	\brief Нулевой вектор
 	 *
 	 *	Нулевой вектор. Каждая из его координат X, Y и Z равна нулю: \f$\{0; 0; 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::I`, `Vector3::J`, `Vector3::K`
+	 *	- `IntVector3::I`, `IntVector3::J`, `IntVector3::K`
 	 */
-	static const Vector3 ZERO;
+	static const IntVector3 ZERO;
 
 	/**
 	 *	\~english
@@ -1060,16 +799,16 @@ public:
 	 *
 	 *	The ort of the abscissa axis. It's \f$\{1, 0, 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::J`, `Vector3::K`
+	 *	- `IntVector3::ZERO`, `IntVector3::J`, `IntVector3::K`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси X
 	 *
 	 *	Орт оси абсцисс: \f$\{1; 0; 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::J`, `Vector3::K`
+	 *	- `IntVector3::ZERO`, `IntVector3::J`, `IntVector3::K`
 	 */
-	static const Vector3 I;
+	static const IntVector3 I;
 
 	/**
 	 *	\~english
@@ -1077,16 +816,16 @@ public:
 	 *
 	 *	The ort of the ordinate axis. It's \f$\{0, 1, 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::K`
+	 *	- `IntVector3::ZERO`, `IntVector3::I`, `IntVector3::K`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси Y
 	 *
 	 *	Орт оси ординат: \f$\{0; 1; 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::K`
+	 *	- `IntVector3::ZERO`, `IntVector3::I`, `IntVector3::K`
 	 */
-	static const Vector3 J;
+	static const IntVector3 J;
 	
 	/**
 	 *	\~english
@@ -1094,26 +833,25 @@ public:
 	 *
 	 *	The ort of the applicate axis. It's \f$\{0, 0, 1\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::J`
+	 *	- `IntVector3::ZERO`, `IntVector3::I`, `IntVector3::J`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси Z
 	 *
 	 *	Орт оси аппликат: \f$\{0; 0; 1\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::J`
+	 *	- `IntVector3::ZERO`, `IntVector3::I`, `IntVector3::J`
 	 */
-	static const Vector3 K;
+	static const IntVector3 K;
 		
 private:
-	double x_, y_, z_;
+	int x_, y_, z_;
 };
 
-using Point3 = Vector3;
+using IntPoint3 = IntVector3;
 
 /**
- * 	\}
+ *	\}
  */
-
 
 }

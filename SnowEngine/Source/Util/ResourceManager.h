@@ -177,9 +177,9 @@ private:
 	void update_check_timer_(const Config& new_config);
 	void update_res_path_(const Config& new_config);
 
-	std::unordered_map<std::wstring, std::weak_ptr<sf::Texture>> textures_;
-	std::unordered_map<std::wstring, std::weak_ptr<sf::Font>> fonts_;
-	std::unordered_map<std::wstring, std::weak_ptr<sf::SoundBuffer>> sounds_;
+	std::unordered_map<String, std::weak_ptr<sf::Texture>> textures_;
+	std::unordered_map<String, std::weak_ptr<sf::Font>> fonts_;
+	std::unordered_map<String, std::weak_ptr<sf::SoundBuffer>> sounds_;
 	// Music is loaded from file directly, without resource manager
 
 	std::shared_ptr<Timer> check_timer_;

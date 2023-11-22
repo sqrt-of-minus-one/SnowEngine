@@ -10,7 +10,7 @@
 
 #include "Math.h"
 #include "../Util/Util.h"
-#include "../Util/Types/String.h"
+#include "../Util/String.h"
 #include "../Util/Json/JsonObject.h"
 #include "../Util/Json/Value.h"
 

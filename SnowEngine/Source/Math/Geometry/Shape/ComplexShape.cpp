@@ -65,10 +65,10 @@ ComplexShape::ComplexShape(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		set_transform(Transform(object->get_content().at(L"transform"_s)));
-		type_ = char_to_type_(util::json_to_char(object->get_content().at(L"type"_s)));
-		first_ = Shape::unique_from_json(object->get_content().at(L"first"_s));
-		second_ = Shape::unique_from_json(object->get_content().at(L"second"_s));
+		set_transform(Transform(object->get_content().at(L"transform")));
+		type_ = char_to_type_(util::json_to_char(object->get_content().at(L"type")));
+		first_ = Shape::unique_from_json(object->get_content().at(L"first"));
+		second_ = Shape::unique_from_json(object->get_content().at(L"second"));
 	}
 	catch(const std::out_of_range& e)
 	{
@@ -84,9 +84,9 @@ String ComplexShape::to_string() const
 std::shared_ptr<json::Element> ComplexShape::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::dynamic_pointer_cast<json::JsonObject>(Shape::to_json());
-	object->get_content().insert({ L"type"_s, util::to_json(type_to_char_(type_)) });
-	object->get_content().insert({ L"first"_s, first_->to_json() });
-	object->get_content().insert({ L"second"_s, second_->to_json() });
+	object->get_content().insert({ L"type", util::to_json(type_to_char_(type_)) });
+	object->get_content().insert({ L"first", first_->to_json() });
+	object->get_content().insert({ L"second", second_->to_json() });
 	return object;
 }
 

@@ -314,7 +314,7 @@ String EventBinder<T_Args...>::to_string() const
 	{
 		return event_.to_string();
 	}
-	return L"No event"_s;
+	return L"No event";
 }
 
 template<typename... T_Args>

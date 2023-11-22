@@ -14,7 +14,7 @@
 #include <unordered_set>
 
 #include "../../Math/Shape/DoubleRect.h"
-#include "../../Math/Vector/Point2.h"
+#include "../../Math/Vector/IntVector2.h"
 
 namespace snow
 {
@@ -184,8 +184,8 @@ protected:
 
 private:
 	DoubleRect boundary_rect_;
-	Point2 min_chunk_;
-	Point2 max_chunk_;
+	IntVector2 min_chunk_;
+	IntVector2 max_chunk_;
 
 	static std::map<const Level*, std::unordered_map<int /*x*/, std::unordered_map<int /*y*/, std::unordered_set<CollisionComponent*>>>> collision_chunks_;
 };

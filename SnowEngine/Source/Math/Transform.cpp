@@ -6,7 +6,7 @@
 
 #include "Transform.h"
 
-#include "../Util/Types/String.h"
+#include "../Util/String.h"
 #include "../Util/Json/JsonObject.h"
 #include "../Util/Json/Value.h"
 
@@ -66,7 +66,7 @@ Transform::Transform(std::shared_ptr<const json::Element> json) :
 
 String Transform::to_string() const
 {
-	return L"{"_s + position_.to_string() + L"; " + rotation_.to_string() + L"; " + scale_.to_string() + L"}";
+	return L"{" + position_.to_string() + L"; " + rotation_.to_string() + L"; " + scale_.to_string() + L"}";
 }
 
 std::shared_ptr<json::Element> Transform::to_json() const

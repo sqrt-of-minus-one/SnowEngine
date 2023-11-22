@@ -126,13 +126,13 @@ std::shared_ptr<json::Element> AdvancedSpriteAnimation::to_json() const
 	for (const Frame& i : frames_)
 	{
 		std::shared_ptr<json::JsonObject> frame = std::make_shared<json::JsonObject>();
-		frame->get_content().insert({ L"sprite_rect"_s, i.sprite_rect.to_json() });
-		frame->get_content().insert({ L"time_sec"_s, util::to_json(i.time_sec) });
+		frame->get_content().insert({ L"sprite_rect", i.sprite_rect.to_json() });
+		frame->get_content().insert({ L"time_sec", util::to_json(i.time_sec) });
 		frames->get_content().push_back(frame);
 	}
-	object->get_content().insert({ L"frames"_s, frames });
-	object->get_content().insert({ L"current_position"_s, util::to_json(current_position_) });
-	object->get_content().insert({ L"time_left_sec"_s, util::to_json(timer_->get_left_sec()) });
+	object->get_content().insert({ L"frames", frames });
+	object->get_content().insert({ L"current_position", util::to_json(current_position_) });
+	object->get_content().insert({ L"time_left_sec", util::to_json(timer_->get_left_sec()) });
 	return object;
 }
 

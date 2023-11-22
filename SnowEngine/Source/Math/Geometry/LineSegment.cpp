@@ -57,7 +57,7 @@ LineSegment::LineSegment(const Ray& ray, double length) :
 
 String LineSegment::to_string() const
 {
-	return L"["_s + endpoints_.first.to_string() + L", " + endpoints_.second.to_string() + L']';
+	return L"[" + endpoints_.first.to_string() + L", " + endpoints_.second.to_string() + L']';
 }
 
 std::shared_ptr<json::Element> LineSegment::to_json() const
@@ -66,7 +66,7 @@ std::shared_ptr<json::Element> LineSegment::to_json() const
 	std::shared_ptr<json::Array> endpoints = std::make_shared<json::Array>();
 	endpoints->get_content().push_back(endpoints_.first.to_json());
 	endpoints->get_content().push_back(endpoints_.second.to_json());
-	object->get_content().insert({ L"endpoints"_s, endpoints });
+	object->get_content().insert({ L"endpoints", endpoints });
 	return object;
 }
 

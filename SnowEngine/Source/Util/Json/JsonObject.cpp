@@ -14,7 +14,7 @@
 
 #include "JsonObject.h"
 
-#include "../Types/String.h"
+#include "../String.h"
 #include "../Util.h"
 
 using namespace snow;
@@ -52,7 +52,7 @@ void json::JsonObject::to_stream(std::wostream& stream, int nesting) const
 	bool is_first = true;
 	for (const auto& [k, v] : content_)
 	{
-		stream << (is_first ? L"\n" : L",\n") << tab << L'"' << k.escape() << L"\": ";
+		stream << (is_first ? L"\n" : L",\n") << tab << L'"' << string::escape(k) << L"\": ";
 		v->to_stream(stream, nesting + 1);
 		is_first = false;
 	}

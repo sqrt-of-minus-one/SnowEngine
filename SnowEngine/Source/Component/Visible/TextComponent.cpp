@@ -39,7 +39,7 @@ bool TextComponent::set_font(const String& font)
 
 void TextComponent::set_text(const String& text)
 {
-	text_.setString(text.to_std_string());
+	text_.setString(text);
 }
 
 void TextComponent::draw(sf::RenderWindow& window)

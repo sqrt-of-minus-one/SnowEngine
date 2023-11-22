@@ -473,7 +473,7 @@ Event<T_Args...>::Event(Event<T_Args...>&& event) :
 template<typename... T_Args>
 String Event<T_Args...>::to_string() const
 {
-	return L"Event, bound functions: "_s + util::to_string(size());
+	return L"Event, bound functions: " + util::to_string(size());
 }
 
 template<typename... T_Args>
@@ -584,7 +584,7 @@ void Event<T_Args...>::execute(T_Args... args)
 }
 
 template<typename... T_Args>
-void Event<T_Args...>::execute_carefully(T_Args... args)
+void Event<T_Args...>::execute_carefully(T_Args... args) const
 {
 	for (auto& [key, value] : functions_)
 	{

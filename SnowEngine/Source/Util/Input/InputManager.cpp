@@ -12,12 +12,12 @@
 //\\//_____\//\\____//\__/\\__\\/____/\\/____/\____\//_____\//\____,__\\__\\__\\//\| system     |//
 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\///
 
-#include "Input.h"
+#include "InputManager.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "../Function/EventBinder.h"
-#include "../../Math/Vector/Point2.h"
+#include "../../Math/Vector/IntVector2.h"
 #include "../../Game/Game.h"
 #include "../../Component/Camera/CameraComponent.h"
 
@@ -33,12 +33,12 @@ InputManager& InputManager::get_instance()
 
 String InputManager::to_string() const
 {
-	return L"InputManager"_s;
+	return L"InputManager";
 }
 
 std::shared_ptr<json::Element> InputManager::to_json() const
 {
-	return util::to_json(L"InputManager"_s);
+	return util::to_json(L"InputManager");
 }
 
 bool InputManager::is_key_pressed(EKey key)
@@ -59,23 +59,23 @@ SystemKeys InputManager::get_system_keys()
 	return ret;
 }
 
-Point2 InputManager::get_screen_mouse_position()
+IntVector2 InputManager::get_screen_mouse_position()
 {
 	sf::Vector2i position = sf::Mouse::getPosition();
-	return Point2(position.x, position.y);
+	return IntVector2(position.x, position.y);
 }
 
-Point2 InputManager::get_window_mouse_position()
+IntVector2 InputManager::get_window_mouse_position()
 {
 	auto window = Game::get_window().lock();
 	if (window)
 	{
 		sf::Vector2i position = sf::Mouse::getPosition(*window);
-		return Point2(position.x, position.y);
+		return IntVector2(position.x, position.y);
 	}
 	else
 	{
-		return Point2::ZERO;
+		return IntVector2::ZERO;
 	}
 }
 
@@ -93,12 +93,12 @@ Vector2 InputManager::get_level_mouse_position(const CameraComponent& relative_t
 	}
 }
 
-void InputManager::set_screen_mouse_position(const Point2& position)
+void InputManager::set_screen_mouse_position(const IntVector2& position)
 {
 	sf::Mouse::setPosition(sf::Vector2i(position.get_x(), position.get_y()));
 }
 
-void InputManager::set_window_mouse_position(const Point2& position)
+void InputManager::set_window_mouse_position(const IntVector2& position)
 {
 	auto window = Game::get_window().lock();
 	if (window)

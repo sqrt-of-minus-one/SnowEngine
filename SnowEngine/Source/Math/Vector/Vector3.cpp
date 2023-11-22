@@ -7,10 +7,10 @@
 #include "Vector3.h"
 
 #include "Vector2.h"
-#include "Point3.h"
+#include "IntVector3.h"
 #include "../Angle.h"
 #include "../Math.h"
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 #include "../../Util/Json/Array.h"
 #include "../../Util/Json/Value.h"
 #include "../../Util/Util.h"
@@ -96,7 +96,7 @@ Vector3::Vector3(std::shared_ptr<json::Element const> json) :
 
 String Vector3::to_string() const
 {
-	return L"["_s + util::to_string(x_) + L", " + util::to_string(y_) + L", " + util::to_string(z_) + L"]";
+	return L"[" + util::to_string(x_) + L", " + util::to_string(y_) + L", " + util::to_string(z_) + L"]";
 }
 
 std::shared_ptr<json::Element> Vector3::to_json() const
@@ -350,9 +350,9 @@ Vector3::operator Vector2() const
 	return Vector2(x_, y_);
 }
 
-Vector3::operator Point3() const
+Vector3::operator IntVector3() const
 {
-	return Point3(static_cast<int>(x_), static_cast<int>(y_), static_cast<int>(z_));
+	return IntVector3(static_cast<int>(x_), static_cast<int>(y_), static_cast<int>(z_));
 }
 
 const Vector3 Vector3::ZERO(0., 0., 0.);

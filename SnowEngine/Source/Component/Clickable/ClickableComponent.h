@@ -15,7 +15,7 @@
 
 #include "../../Util/Input/Keys.h"
 #include "../../Math/Shape/DoubleRect.h"
-#include "../../Math/Vector/Point2.h"
+#include "../../Math/Vector/IntVector2.h"
 
 namespace snow
 {
@@ -286,8 +286,8 @@ protected:
 
 private:
 	DoubleRect boundary_rect_;
-	Point2 min_chunk_;
-	Point2 max_chunk_;
+	IntVector2 min_chunk_;
+	IntVector2 max_chunk_;
 
 	Event<EButton /*button*/> on_pressed_;
 	Event<EButton /*button*/> on_released_;

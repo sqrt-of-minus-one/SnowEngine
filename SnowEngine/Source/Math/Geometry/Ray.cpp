@@ -34,8 +34,8 @@ Ray::Ray(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		origin_ = Vector2(object->get_content().at(L"initial_point"_s));
-		angle_ = Angle(object->get_content().at(L"angle"_s));
+		origin_ = Vector2(object->get_content().at(L"initial_point"));
+		angle_ = Angle(object->get_content().at(L"angle"));
 	}
 	catch (const std::out_of_range& e)
 	{
@@ -61,14 +61,14 @@ Ray::Ray(const Vector2& initial_point, const Vector2& point) :
 
 String Ray::to_string() const
 {
-	return L"Ray from "_s + origin_.to_string() + L" to " + angle_.to_string();
+	return L"Ray from " + origin_.to_string() + L" to " + angle_.to_string();
 }
 
 std::shared_ptr<json::Element> Ray::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"initial_point"_s, origin_.to_json() });
-	object->get_content().insert({ L"angle"_s, angle_.to_json() });
+	object->get_content().insert({ L"initial_point", origin_.to_json() });
+	object->get_content().insert({ L"angle", angle_.to_json() });
 	return object;
 }
 

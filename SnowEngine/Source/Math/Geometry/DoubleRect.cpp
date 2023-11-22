@@ -9,7 +9,7 @@
 #include <algorithm>
 
 #include "../Math.h"
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 #include "../../Util/Json/Array.h"
 
 using namespace snow;
@@ -66,7 +66,7 @@ DoubleRect::DoubleRect(std::shared_ptr<const json::Element> json) :
 	
 String DoubleRect::to_string() const
 {
-	return L"["_s + position_.to_string() + L", " + size_.to_string() + L"]";
+	return L"[" + position_.to_string() + L", " + size_.to_string() + L"]";
 }
 
 std::shared_ptr<json::Element> DoubleRect::to_json() const

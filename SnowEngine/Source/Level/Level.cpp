@@ -27,7 +27,7 @@ Level::Level() :
 
 String Level::to_string() const
 {
-	return L"Level #%d (actors: %d)"_s.format(id_, actors_.size());
+	return L"Level #%d (actors: %d)".format(id_, actors_.size());
 }
 
 std::shared_ptr<json::Element> Level::to_json() const
@@ -38,8 +38,8 @@ std::shared_ptr<json::Element> Level::to_json() const
 	{
 		array->get_content().push_back(i->to_json());
 	}
-	object->get_content().insert({ L"id"_s, util::to_json(id_) });
-	object->get_content().insert({ L"actors"_s, array });
+	object->get_content().insert({ L"id", util::to_json(id_) });
+	object->get_content().insert({ L"actors", array });
 	return object;
 }
 

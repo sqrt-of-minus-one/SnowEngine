@@ -7,7 +7,7 @@
 #include "Config.h"
 
 #include "ConfigManager.h"
-#include "../Util/Log/Log.h"
+#include "../Util/Log/LogManager.h"
 #include "../Util/Json/JsonObject.h"
 #include "../Util/Json/Array.h"
 #include "../Util/Json/Value.h"
@@ -21,11 +21,11 @@ using namespace snow;
 	}																																					\
 	catch (const std::out_of_range& e)																													\
 	{																																					\
-		config_log_().e(L"The \""_s + (section_name) + L"\" section does not contain the \"" + (name) + L"\" field. The default value will be used");	\
+		config_log_().e(L"The \"" + (section_name) + L"\" section does not contain the \"" + (name) + L"\" field. The default value will be used");	\
 	}																																					\
 	catch (const std::invalid_argument& e)																												\
 	{																																					\
-		config_log_().e(L"The \""_s + (section_name) + L"\" section contains invalid \"" + (name) + L"\" value. The default value will be used");		\
+		config_log_().e(L"The \"" + (section_name) + L"\" section contains invalid \"" + (name) + L"\" value. The default value will be used");		\
 	}
 
 bool load_section_(Log& log, std::shared_ptr<json::JsonObject> section, std::shared_ptr<json::JsonObject> json, const String& name)
@@ -41,7 +41,7 @@ bool load_section_(Log& log, std::shared_ptr<json::JsonObject> section, std::sha
 	}
 	catch (const std::out_of_range& e)
 	{
-		log.e(L"Couldn't load the \""_s + name + L"\" section of the configuration profile. The default values will be used");
+		log.e(L"Couldn't load the \"" + name + L"\" section of the configuration profile. The default values will be used");
 	}
 	return false;
 }
@@ -117,41 +117,41 @@ Config::Config(std::shared_ptr<const json::Element> json) :
 
 	std::shared_ptr<json::JsonObject> section;
 
-	if (load_section_(config_log_(), section, config_json, L"window"_s))
+	if (load_section_(config_log_(), section, config_json, L"window"))
 	{
-		LOAD_VALUE_(window_resolution,			Point2,					L"window"_s,	L"resolution"_s);
-		LOAD_VALUE_(window_fullscreen,			util::json_to_bool,		L"window"_s,	L"fullscreen"_s);
-		LOAD_VALUE_(window_resize,				util::json_to_bool,		L"window"_s,	L"resize"_s);
-		LOAD_VALUE_(window_titlebar,			util::json_to_bool,		L"window"_s,	L"titlebar"_s);
-		LOAD_VALUE_(window_titlebar_buttons,	util::json_to_bool,		L"window"_s,	L"titlebar_buttons"_s);
-		LOAD_VALUE_(window_title,				util::json_to_string,	L"window"_s,	L"title"_s);
+		LOAD_VALUE_(window_resolution,			IntVector2,					L"window",	L"resolution");
+		LOAD_VALUE_(window_fullscreen,			util::json_to_bool,		L"window",	L"fullscreen");
+		LOAD_VALUE_(window_resize,				util::json_to_bool,		L"window",	L"resize");
+		LOAD_VALUE_(window_titlebar,			util::json_to_bool,		L"window",	L"titlebar");
+		LOAD_VALUE_(window_titlebar_buttons,	util::json_to_bool,		L"window",	L"titlebar_buttons");
+		LOAD_VALUE_(window_title,				util::json_to_string,	L"window",	L"title");
 	}
-	if(load_section_(config_log_(), section, config_json, L"res"_s))
+	if(load_section_(config_log_(), section, config_json, L"res"))
 	{
-		LOAD_VALUE_(res_check_period_sec,		util::json_to_double,	L"res"_s,		L"check_period_sec"_s);
-		LOAD_VALUE_(res_textures_path,			util::json_to_path,		L"res"_s,		L"textures_path"_s);
-		LOAD_VALUE_(res_fonts_path,				util::json_to_path,		L"res"_s,		L"fonts_path"_s);
-		LOAD_VALUE_(res_sounds_path,			util::json_to_path,		L"res"_s,		L"sounds_path"_s);
-		LOAD_VALUE_(res_music_path,				util::json_to_path,		L"res"_s,		L"music_path"_s);
+		LOAD_VALUE_(res_check_period_sec,		util::json_to_double,	L"res",		L"check_period_sec");
+		LOAD_VALUE_(res_textures_path,			util::json_to_path,		L"res",		L"textures_path");
+		LOAD_VALUE_(res_fonts_path,				util::json_to_path,		L"res",		L"fonts_path");
+		LOAD_VALUE_(res_sounds_path,			util::json_to_path,		L"res",		L"sounds_path");
+		LOAD_VALUE_(res_music_path,				util::json_to_path,		L"res",		L"music_path");
 	}
-	if(load_section_(config_log_(), section, config_json, L"chunks"_s))
+	if(load_section_(config_log_(), section, config_json, L"chunks"))
 	{
-		LOAD_VALUE_(chunks_collision_size,		Point2,					L"chunks"_s,	L"collision_size"_s);
-		LOAD_VALUE_(chunks_clickable_size,		Point2,					L"chunks"_s,	L"clickable_size"_s);
+		LOAD_VALUE_(chunks_collision_size,		IntVector2,					L"chunks",	L"collision_size");
+		LOAD_VALUE_(chunks_clickable_size,		IntVector2,					L"chunks",	L"clickable_size");
 	}
-	if(load_section_(config_log_(), section, config_json, L"lang"_s))
+	if(load_section_(config_log_(), section, config_json, L"lang"))
 	{
-		LOAD_VALUE_(lang_path,					util::json_to_path,		L"lang"_s,		L"path"_s);
-		LOAD_VALUE_(lang_default_lang,			util::json_to_string,	L"lang"_s,		L"default_lang"_s);
-		LOAD_VALUE_(lang_default_table,			util::json_to_string,	L"lang"_s,		L"default_table"_s);
+		LOAD_VALUE_(lang_path,					util::json_to_path,		L"lang",		L"path");
+		LOAD_VALUE_(lang_default_lang,			util::json_to_string,	L"lang",		L"default_lang");
+		LOAD_VALUE_(lang_default_table,			util::json_to_string,	L"lang",		L"default_table");
 	}
-	if(load_section_(config_log_(), section, config_json, L"log"_s))
+	if(load_section_(config_log_(), section, config_json, L"log"))
 	{
-		LOAD_VALUE_(log_path,					util::json_to_path,		L"log"_s,		L"path"_s);
+		LOAD_VALUE_(log_path,					util::json_to_path,		L"log",		L"path");
 	}
-	if(load_section_(config_log_(), section, config_json, L"saves"_s))
+	if(load_section_(config_log_(), section, config_json, L"saves"))
 	{
-		LOAD_VALUE_(saves_path,					util::json_to_path,		L"saves"_s,		L"path"_s);
+		LOAD_VALUE_(saves_path,					util::json_to_path,		L"saves",		L"path");
 	}
 }
 
@@ -165,40 +165,40 @@ std::shared_ptr<json::Element> Config::to_json() const
 	std::shared_ptr<json::JsonObject> result = std::make_shared<json::JsonObject>();
 
 	std::shared_ptr<json::JsonObject> window = std::make_shared<json::JsonObject>();
-	window->get_content().insert({ L"resolution"_s, util::to_json(window_resolution) });
-	window->get_content().insert({ L"fullscreen"_s, util::to_json(window_fullscreen) });
-	window->get_content().insert({ L"resize"_s, util::to_json(window_resize) });
-	window->get_content().insert({ L"titlebar"_s, util::to_json(window_titlebar) });
-	window->get_content().insert({ L"titlebar_buttons"_s, util::to_json(window_titlebar_buttons) });
-	window->get_content().insert({ L"title"_s, util::to_json(window_title) });
-	result->get_content().insert({ L"window"_s, window });
+	window->get_content().insert({ L"resolution", util::to_json(window_resolution) });
+	window->get_content().insert({ L"fullscreen", util::to_json(window_fullscreen) });
+	window->get_content().insert({ L"resize", util::to_json(window_resize) });
+	window->get_content().insert({ L"titlebar", util::to_json(window_titlebar) });
+	window->get_content().insert({ L"titlebar_buttons", util::to_json(window_titlebar_buttons) });
+	window->get_content().insert({ L"title", util::to_json(window_title) });
+	result->get_content().insert({ L"window", window });
 
 	std::shared_ptr<json::JsonObject> res = std::make_shared<json::JsonObject>();
-	res->get_content().insert({ L"check_period_sec"_s, util::to_json(res_check_period_sec) });
-	res->get_content().insert({ L"textures_path"_s, util::to_json(res_textures_path) });
-	res->get_content().insert({ L"fonts_path"_s, util::to_json(res_fonts_path) });
-	res->get_content().insert({ L"sounds_path"_s, util::to_json(res_sounds_path) });
-	res->get_content().insert({ L"music_path"_s, util::to_json(res_music_path) });
-	result->get_content().insert({ L"res"_s, res });
+	res->get_content().insert({ L"check_period_sec", util::to_json(res_check_period_sec) });
+	res->get_content().insert({ L"textures_path", util::to_json(res_textures_path) });
+	res->get_content().insert({ L"fonts_path", util::to_json(res_fonts_path) });
+	res->get_content().insert({ L"sounds_path", util::to_json(res_sounds_path) });
+	res->get_content().insert({ L"music_path", util::to_json(res_music_path) });
+	result->get_content().insert({ L"res", res });
 	
 	std::shared_ptr<json::JsonObject> chunks = std::make_shared<json::JsonObject>();
-	chunks->get_content().insert({ L"collision_size"_s, util::to_json(chunks_collision_size) });
-	chunks->get_content().insert({ L"clickable_size"_s, util::to_json(chunks_clickable_size) });
-	result->get_content().insert({ L"chunks"_s, chunks });
+	chunks->get_content().insert({ L"collision_size", util::to_json(chunks_collision_size) });
+	chunks->get_content().insert({ L"clickable_size", util::to_json(chunks_clickable_size) });
+	result->get_content().insert({ L"chunks", chunks });
 
 	std::shared_ptr<json::JsonObject> lang = std::make_shared<json::JsonObject>();
-	lang->get_content().insert({ L"path"_s, util::to_json(lang_path) });
-	lang->get_content().insert({ L"default_lang"_s, util::to_json(lang_default_lang) });
-	lang->get_content().insert({ L"default_table"_s, util::to_json(lang_default_table) });
-	result->get_content().insert({ L"lang"_s, lang });
+	lang->get_content().insert({ L"path", util::to_json(lang_path) });
+	lang->get_content().insert({ L"default_lang", util::to_json(lang_default_lang) });
+	lang->get_content().insert({ L"default_table", util::to_json(lang_default_table) });
+	result->get_content().insert({ L"lang", lang });
 	
 	std::shared_ptr<json::JsonObject> log = std::make_shared<json::JsonObject>();
-	log->get_content().insert({ L"path"_s, util::to_json(log_path) });
-	result->get_content().insert({ L"log"_s, log });
+	log->get_content().insert({ L"path", util::to_json(log_path) });
+	result->get_content().insert({ L"log", log });
 	
 	std::shared_ptr<json::JsonObject> saves = std::make_shared<json::JsonObject>();
-	saves->get_content().insert({ L"path"_s, util::to_json(saves_path) });
-	result->get_content().insert({ L"saves"_s, saves });
+	saves->get_content().insert({ L"path", util::to_json(saves_path) });
+	result->get_content().insert({ L"saves", saves });
 
 	return result;
 }

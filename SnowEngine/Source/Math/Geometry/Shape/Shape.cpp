@@ -20,7 +20,7 @@ using namespace snow;
 	String shape;																									\
 	try																												\
 	{																												\
-		shape = util::json_to_string(object->get_content().at(L"shape"_s));											\
+		shape = util::json_to_string(object->get_content().at(L"shape"));											\
 	}																												\
 	catch (const std::out_of_range& e)																				\
 	{																												\
@@ -73,8 +73,8 @@ using namespace snow;
 std::shared_ptr<json::Element> Shape::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"shape"_s, shape_name().to_json() });
-	object->get_content().insert({ L"transform"_s, transform_.to_json() });
+	object->get_content().insert({ L"shape", shape_name().to_json() });
+	object->get_content().insert({ L"transform", transform_.to_json() });
 	return object;
 }
 

@@ -29,18 +29,18 @@ Circle::Circle(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		set_transform(Transform(object->get_content().at(L"transform"_s)));
-		double radius = util::json_to_double(object->get_content().at(L"radius"_s));
+		set_transform(Transform(object->get_content().at(L"transform")));
+		double radius = util::json_to_double(object->get_content().at(L"radius"));
 		semi_axes_ = Vector2(radius, radius);
 		
-		auto centre_iter = object->get_content().find(L"centre"_s);
+		auto centre_iter = object->get_content().find(L"centre");
 		if (centre_iter != object->get_content().end())
 		{
 			centre_ = Vector2(centre_iter->second);
 		}
 		else
 		{
-			centre_ = Vector2(object->get_content().at(L"center"_s));
+			centre_ = Vector2(object->get_content().at(L"center"));
 		}
 	}
 	catch(const std::out_of_range& e)
@@ -61,8 +61,8 @@ String Circle::to_string() const
 std::shared_ptr<const json::Element> Circle::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::dynamic_pointer_cast<json::JsonObject>(Shape::to_json());
-	object->get_content().insert({ L"radius"_s, util::to_json(semi_axes_.get_x()) });
-	object->get_content().insert({ L"centre"_s, centre_.to_json() });
+	object->get_content().insert({ L"radius", util::to_json(semi_axes_.get_x()) });
+	object->get_content().insert({ L"centre", centre_.to_json() });
 	return object;
 }
 

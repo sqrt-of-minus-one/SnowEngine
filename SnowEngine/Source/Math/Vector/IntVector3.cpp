@@ -1,53 +1,53 @@
     ////////////////////////////////////////
    //      SnowEngine by SnegirSoft      //
   //                                    //
- //  File: Point3.cpp                 //
+ //  File: IntVector3.cpp                 //
 ////////////////////////////////////////
 
-#include "Point3.h"
+#include "IntVector3.h"
 
-#include "Point2.h"
+#include "IntVector2.h"
 #include "Vector3.h"
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 #include "../../Util/Json/Array.h"
 #include "../../Util/Json/Value.h"
 #include "../../Util/Util.h"
 
 using namespace snow;
 
-		/* Point3: public */
+		/* IntVector3: public */
 
-Point3::Point3() :
+IntVector3::IntVector3() :
 	x_(0),
 	y_(0),
 	z_(0)
 {}
 
-Point3::Point3(const Point3& point) :
+IntVector3::IntVector3(const IntVector3& point) :
 	x_(point.x_),
 	y_(point.y_),
 	z_(point.z_)
 {}
 
-Point3::Point3(const Point2& point) :
+IntVector3::IntVector3(const IntVector2& point) :
 	x_(point.get_x()),
 	y_(point.get_y()),
 	z_(0)
 {}
 
-Point3::Point3(const Point2& point, int z) :
+IntVector3::IntVector3(const IntVector2& point, int z) :
 	x_(point.get_x()),
 	y_(point.get_y()),
 	z_(z)
 {}
 
-Point3::Point3(int x, int y, int z) :
+IntVector3::IntVector3(int x, int y, int z) :
 	x_(x),
 	y_(y),
 	z_(z)
 {}
 
-Point3::Point3(std::shared_ptr<const json::Element> json) :
+IntVector3::IntVector3(std::shared_ptr<const json::Element> json) :
 	x_(),
 	y_(),
 	z_()
@@ -85,12 +85,12 @@ Point3::Point3(std::shared_ptr<const json::Element> json) :
 	z_ = c[2];
 }
 
-String Point3::to_string() const
+String IntVector3::to_string() const
 {
-	return L"["_s + util::to_string(x_) + L", " + util::to_string(y_) + L", " + util::to_string(z_) + L"]";
+	return L"[" + util::to_string(x_) + L", " + util::to_string(y_) + L", " + util::to_string(z_) + L"]";
 }
 
-std::shared_ptr<json::Element> Point3::to_json() const
+std::shared_ptr<json::Element> IntVector3::to_json() const
 {
 	std::shared_ptr<json::Array> point = std::make_shared<json::Array>();
 	point->get_content().push_back(util::to_json(x_));
@@ -99,47 +99,47 @@ std::shared_ptr<json::Element> Point3::to_json() const
 	return point;
 }
 
-int Point3::get_x() const noexcept
+int IntVector3::get_x() const noexcept
 {
 	return x_;
 }
 
-int Point3::get_y() const noexcept
+int IntVector3::get_y() const noexcept
 {
 	return y_;
 }
 
-int Point3::get_z() const noexcept
+int IntVector3::get_z() const noexcept
 {
 	return z_;
 }
 
-void Point3::set_x(int x) noexcept
+void IntVector3::set_x(int x) noexcept
 {
 	x_ = x;
 }
 
-void Point3::set_y(int y) noexcept
+void IntVector3::set_y(int y) noexcept
 {
 	y_ = y;
 }
 
-void Point3::set_z(int z) noexcept
+void IntVector3::set_z(int z) noexcept
 {
 	z_ = z;
 }
 
-bool Point3::is_zero() const noexcept
+bool IntVector3::is_zero() const noexcept
 {
 	return x_ == 0 && y_ == 0 && z_ == 0;
 }
 
-Point3 Point3::abs() const noexcept
+IntVector3 IntVector3::abs() const noexcept
 {
-	return Point3(std::abs(x_), std::abs(y_), std::abs(z_));
+	return IntVector3(std::abs(x_), std::abs(y_), std::abs(z_));
 }
 
-Point3& Point3::operator=(const Point3& point) noexcept
+IntVector3& IntVector3::operator=(const IntVector3& point) noexcept
 {
 	x_ = point.x_;
 	y_ = point.y_;
@@ -147,60 +147,60 @@ Point3& Point3::operator=(const Point3& point) noexcept
 	return *this;
 }
 	
-const Point3 Point3::operator+() const
+const IntVector3 IntVector3::operator+() const
 {
 	return *this;
 }
 
-const Point3 Point3::operator-() const
+const IntVector3 IntVector3::operator-() const
 {
-	return Point3(-x_, -y_, -z_);
+	return IntVector3(-x_, -y_, -z_);
 }
 	
-const Point3 Point3::operator+(const Point3& point) const
+const IntVector3 IntVector3::operator+(const IntVector3& point) const
 {
-	return Point3(x_ + point.x_, y_ + point.y_, z_ + point.z_);
+	return IntVector3(x_ + point.x_, y_ + point.y_, z_ + point.z_);
 }
 
-const Point3 Point3::operator-(const Point3& point) const
+const IntVector3 IntVector3::operator-(const IntVector3& point) const
 {
-	return Point3(x_ - point.x_, y_ - point.y_, z_ - point.z_);
+	return IntVector3(x_ - point.x_, y_ - point.y_, z_ - point.z_);
 }
 
-const Point3 Point3::operator*(int value) const
+const IntVector3 IntVector3::operator*(int value) const
 {
-	return Point3(x_ * value, y_ * value, z_ * value);
+	return IntVector3(x_ * value, y_ * value, z_ * value);
 }
 
-const Point3 snow::operator*(int value, const Point3& point)
+const IntVector3 snow::operator*(int value, const IntVector3& point)
 {
 	return point * value;
 }
 
-const Point3 Point3::operator*(const Point3& point) const
+const IntVector3 IntVector3::operator*(const IntVector3& point) const
 {
-	return Point3(x_ * point.x_, y_ * point.y_, z_ * point.z_);
+	return IntVector3(x_ * point.x_, y_ * point.y_, z_ * point.z_);
 }
 
-const Point3 Point3::operator/(int value) const
+const IntVector3 IntVector3::operator/(int value) const
 {
 	if (value == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
-	return Point3(x_ / value, y_ / value, z_ / value);
+	return IntVector3(x_ / value, y_ / value, z_ / value);
 }
 
-const Point3 Point3::operator/(const Point3& point) const
+const IntVector3 IntVector3::operator/(const IntVector3& point) const
 {
 	if (point.x_ == 0 || point.y_ == 0 || point.z_ == 0)
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
-	return Point3(x_ / point.x_, y_ / point.y_, z_ / point.z_);
+	return IntVector3(x_ / point.x_, y_ / point.y_, z_ / point.z_);
 }
 	
-Point3& Point3::operator+=(const Point3& point) noexcept
+IntVector3& IntVector3::operator+=(const IntVector3& point) noexcept
 {
 	x_ += point.x_;
 	y_ += point.y_;
@@ -208,7 +208,7 @@ Point3& Point3::operator+=(const Point3& point) noexcept
 	return *this;
 }
 
-Point3& Point3::operator-=(const Point3& point) noexcept
+IntVector3& IntVector3::operator-=(const IntVector3& point) noexcept
 {
 	x_ -= point.x_;
 	y_ -= point.y_;
@@ -216,7 +216,7 @@ Point3& Point3::operator-=(const Point3& point) noexcept
 	return *this;
 }
 
-Point3& Point3::operator*=(int value) noexcept
+IntVector3& IntVector3::operator*=(int value) noexcept
 {
 	x_ *= value;
 	y_ *= value;
@@ -224,7 +224,7 @@ Point3& Point3::operator*=(int value) noexcept
 	return *this;
 }
 
-Point3& Point3::operator*=(const Point3& point) noexcept
+IntVector3& IntVector3::operator*=(const IntVector3& point) noexcept
 {
 	x_ *= point.x_;
 	y_ *= point.y_;
@@ -232,7 +232,7 @@ Point3& Point3::operator*=(const Point3& point) noexcept
 	return *this;
 }
 
-Point3& Point3::operator/=(int value)
+IntVector3& IntVector3::operator/=(int value)
 {
 	if (value == 0)
 	{
@@ -244,7 +244,7 @@ Point3& Point3::operator/=(int value)
 	return *this;
 }
 
-Point3& Point3::operator/=(const Point3& point)
+IntVector3& IntVector3::operator/=(const IntVector3& point)
 {
 	if (point.x_ == 0 || point.y_ == 0 || point.z_ == 0)
 	{
@@ -256,27 +256,27 @@ Point3& Point3::operator/=(const Point3& point)
 	return *this;
 }
 	
-bool Point3::operator==(const Point3& point) const noexcept
+bool IntVector3::operator==(const IntVector3& point) const noexcept
 {
 	return x_ == point.x_ && y_ == point.y_ && z_ == point.z_;
 }
 
-bool Point3::operator!=(const Point3& point) const noexcept
+bool IntVector3::operator!=(const IntVector3& point) const noexcept
 {
 	return x_ != point.x_ || y_ != point.y_ || z_ != point.z_;
 }
 
-Point3::operator Point2() const
+IntVector3::operator IntVector2() const
 {
-	return Point2(x_, y_);
+	return IntVector2(x_, y_);
 }
 
-Point3::operator Vector3() const
+IntVector3::operator Vector3() const
 {
 	return Vector3(static_cast<double>(x_), static_cast<double>(y_), static_cast<double>(z_));
 }
 
-const Point3 Point3::ZERO(0, 0, 0);
-const Point3 Point3::I(1, 0, 0);
-const Point3 Point3::J(0, 1, 0);
-const Point3 Point3::K(0, 0, 1);
+const IntVector3 IntVector3::ZERO(0, 0, 0);
+const IntVector3 IntVector3::I(1, 0, 0);
+const IntVector3 IntVector3::J(0, 1, 0);
+const IntVector3 IntVector3::K(0, 0, 1);

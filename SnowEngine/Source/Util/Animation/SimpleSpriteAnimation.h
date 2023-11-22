@@ -9,7 +9,7 @@
 #include "SpriteAnimation.h"
 #include "../../Object.h"
 
-#include "../../Math/Vector/Point2.h"
+#include "../../Math/Vector/IntVector2.h"
 
 namespace snow
 {
@@ -57,10 +57,10 @@ public:
 	 *	\param sprite_size The size of the sprite rectangle.
 	 *	\param origin The coordinates of the first sprite in the texture.
 	 *	\param grid_size How many sprites there are in the texture. E. g. if
-	 *	`grid_size = Point2(2, 2)`, the animation will contain four sprites, two in each row.
+	 *	`grid_size = IntVector2(2, 2)`, the animation will contain four sprites, two in each row.
 	 *	\param frequency_sec The time between frames changes in seconds.
 	 *	\param initial_position The number of the initial sprite. E. g. if
-	 *	`initial_position = Point2(0, 0)`, the animaition will begin from the top left sprite.
+	 *	`initial_position = IntVector2(0, 0)`, the animaition will begin from the top left sprite.
 	 *	\throw std::out_of_range One of the `initial_position` coordinates equals to or greater
 	 *	than the corresponding coordinate of the `grid_size`.
 	 *	
@@ -70,15 +70,15 @@ public:
 	 *	Создаёт новую простую спрайтовую анимацию с заданными характеристиками.
 	 *	\param sprite_size Размер спрайтового прямоугольника.
 	 *	\param origin Координаты первого спрайта в текстуре.
-	 *	\param grid_size Количество спрайтов в текстуре. Например, если	`grid_size = Point2(2, 2)`,
+	 *	\param grid_size Количество спрайтов в текстуре. Например, если	`grid_size = IntVector2(2, 2)`,
 	 *	то анимация будет содержать четыре спрайта, по два в каждом ряду.
 	 *	\param frequency_sec Время в секундах между сменами спрайтов.
 	 *	\param initial_position Номер начального спрайта. Например, если
-	 *	`initial_position = Point2(0, 0)`, анимация начнётся с верхнего левого спрайта.
+	 *	`initial_position = IntVector2(0, 0)`, анимация начнётся с верхнего левого спрайта.
 	 *	\throw std::out_of_range Одна из координат `initial_position` больше или равна
 	 *	соответствующей координате `grid_size`.
 	 */
-	SimpleSpriteAnimation(const Point2& sprite_size, const Point2& origin, const Point2& grid_size, double frequency_sec, const Point2& initial_position = Point2::ZERO);
+	SimpleSpriteAnimation(const IntVector2& sprite_size, const IntVector2& origin, const IntVector2& grid_size, double frequency_sec, const IntVector2& initial_position = IntVector2::ZERO);
 
 	/**
 	 *	\~english
@@ -199,12 +199,12 @@ public:
 	virtual IntRect get_sprite_rect() const override;
 
 private:
-	Point2 sprite_size_;
-	Point2 origin_;
-	Point2 grid_size_;
+	IntVector2 sprite_size_;
+	IntVector2 origin_;
+	IntVector2 grid_size_;
 	double frequency_sec_;
 
-	Point2 current_position_;
+	IntVector2 current_position_;
 
 	std::shared_ptr<Timer> timer_;
 

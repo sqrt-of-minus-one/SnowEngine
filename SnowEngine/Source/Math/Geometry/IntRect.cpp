@@ -9,7 +9,7 @@
 #include <algorithm>
 
 #include "../Math.h"
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 #include "../../Util/Json/Array.h"
 #include "../../Util/Json/Value.h"
 
@@ -27,7 +27,7 @@ IntRect::IntRect(const IntRect& rect) :
 	size_(rect.size_)
 {}
 
-IntRect::IntRect(const Point2& position, const Point2& size) :
+IntRect::IntRect(const IntVector2& position, const IntVector2& size) :
 	position_(position),
 	size_(size)
 {
@@ -61,13 +61,13 @@ IntRect::IntRect(std::shared_ptr<const json::Element> json) :
 	{
 		throw std::invalid_argument("Couldn't create a rectangle: the JSON array must have 2 elements");
 	}
-	position_ = Point2(array->get_content()[0]);
-	size_ = Point2(array->get_content()[1]);
+	position_ = IntVector2(array->get_content()[0]);
+	size_ = IntVector2(array->get_content()[1]);
 }
 	
 String IntRect::to_string() const
 {
-	return L"["_s + position_.to_string() + L", " + size_.to_string() + L"]";
+	return L"[" + position_.to_string() + L", " + size_.to_string() + L"]";
 }
 
 std::shared_ptr<json::Element> IntRect::to_json() const
@@ -78,27 +78,27 @@ std::shared_ptr<json::Element> IntRect::to_json() const
 	return rect;
 }
 
-const Point2& IntRect::get_position() const noexcept
+const IntVector2& IntRect::get_position() const noexcept
 {
 	return position_;
 }
 
-Point2 IntRect::get_corner_position() const
+IntVector2 IntRect::get_corner_position() const
 {
 	return position_ + size_;
 }
 
-const Point2& IntRect::get_size() const noexcept
+const IntVector2& IntRect::get_size() const noexcept
 {
 	return size_;
 }
 	
-void IntRect::set_position(const Point2& position)
+void IntRect::set_position(const IntVector2& position)
 {
 	position_ = position;
 }
 
-void IntRect::set_corner_position(const Point2& corner_position)
+void IntRect::set_corner_position(const IntVector2& corner_position)
 {
 	size_.set_x(std::abs(corner_position.get_x() - position_.get_x()));
 	size_.set_y(std::abs(corner_position.get_y() - position_.get_y()));
@@ -106,7 +106,7 @@ void IntRect::set_corner_position(const Point2& corner_position)
 	position_.set_y(std::min(position_.get_y(), corner_position.get_y()));
 }
 
-void IntRect::set_size(const Point2& size)
+void IntRect::set_size(const IntVector2& size)
 {
 	size_ = size;
 	if (size_.get_x() < 0)

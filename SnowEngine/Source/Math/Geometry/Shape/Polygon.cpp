@@ -40,8 +40,8 @@ Polygon::Polygon(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		transform_ = Transform(object->get_content().at(L"transform"_s));
-		std::shared_ptr<const json::Array> vertices = util::json_to_array(object->get_content().at(L"vertices"_s));
+		transform_ = Transform(object->get_content().at(L"transform"));
+		std::shared_ptr<const json::Array> vertices = util::json_to_array(object->get_content().at(L"vertices"));
 		for (const auto& i : vertices->get_content())
 		{
 			vertices_.push_back(Vector2(i));
@@ -81,7 +81,7 @@ std::shared_ptr<json::Element> Polygon::to_json() const
 	{
 		vertices->get_content().push_back(i.to_json());
 	}
-	object->get_content().insert({ L"vertices"_s, vertices });
+	object->get_content().insert({ L"vertices", vertices });
 	return object;
 }
 

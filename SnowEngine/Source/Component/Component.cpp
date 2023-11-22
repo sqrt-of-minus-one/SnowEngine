@@ -8,7 +8,7 @@
 
 #include "../Actor/Actor.h"
 #include "../Level/Level.h"
-#include "../Util/Types/String.h"
+#include "../Util/String.h"
 #include "../Util/Util.h"
 
 using namespace snow;
@@ -28,7 +28,7 @@ Component::Component(Actor& actor, Component* parent, const Transform& transform
 
 String Component::to_string() const
 {
-	return L"Component #"_s + util::to_string(id_);
+	return L"Component #" + util::to_string(id_);
 }
 
 std::shared_ptr<json::Element> Component::to_json() const
@@ -40,9 +40,9 @@ std::shared_ptr<json::Element> Component::to_json() const
 		components->get_content().push_back(i->to_json());
 	}
 
-	object->get_content().insert({ L"id"_s, util::to_json(id_) });
-	object->get_content().insert({ L"transform"_s, transform_.to_json() });
-	object->get_content().insert({ L"components"_s, components });
+	object->get_content().insert({ L"id", util::to_json(id_) });
+	object->get_content().insert({ L"transform", transform_.to_json() });
+	object->get_content().insert({ L"components", components });
 	return object;
 }
 

@@ -10,8 +10,8 @@
 
 #include <filesystem>
 
-#include "../Math/Vector/Point2.h"
-#include "../Util/Types/String.h"
+#include "../Math/Vector/IntVector2.h"
+#include "../Util/String.h"
 
 namespace snow
 {
@@ -70,7 +70,7 @@ class Log;
  *	
  *	| Category | Field              | Type                  | Description                                                 | Default value                        | Field of the class                |
  *	| -------- | ------------------ | --------------------- | ----------------------------------------------------------- | ------------------------------------ | --------------------------------- |
- *	| `window` | `resolution`       | `Point2` (JSON array) | The game window resolution                                  | [800, 600]                           | `Config::window_resolution`       |
+ *	| `window` | `resolution`       | `IntVector2` (JSON array) | The game window resolution                                  | [800, 600]                           | `Config::window_resolution`       |
  *	| `window` | `fullscreen`       | Boolean               | Is the game window fullscreen                               | `false`                              | `Config::window_fullscreen`       |
  *	| `window` | `resize`           | Boolean               | Can the game window be resized                              | `true`                               | `Config::window_resize`           |
  *	| `window` | `titlebar`         | Boolean               | Does the game window have a titlebar                        | `true`                               | `Config::window_titlebar`         |
@@ -81,8 +81,8 @@ class Log;
  *	| `res`    | `fonts_path`       | String (path)         | The path to the directory with fonts                        | `"Resources/Fonts"`                  | `Config::res_fonts_path`          |
  *	| `res`    | `sounds_path`      | String (path)         | The path to the directory with sounds                       | `"Resources/Sounds"`                 | `Config::res_sounds_path`         |
  *	| `res`    | `music_path`       | String (path)         | The path to the directory with music                        | `"Resources/Music"`                  | `Config::res_music_path`          |
- *	| `chunks` | `collision_size`   | `Point2` (JSON array) | The size of a collision chunk                               | [1500, 1500]                         | `Config::chunks_collision_size`   |
- *	| `chunks` | `clickable_size`   | `Point2` (JSON array) | The size of a clickable chunk                               | [500, 500]                           | `Config::chunks_clickable_size`   |
+ *	| `chunks` | `collision_size`   | `IntVector2` (JSON array) | The size of a collision chunk                               | [1500, 1500]                         | `Config::chunks_collision_size`   |
+ *	| `chunks` | `clickable_size`   | `IntVector2` (JSON array) | The size of a clickable chunk                               | [500, 500]                           | `Config::chunks_clickable_size`   |
  *	| `lang`   | `path`             | String (path)         | The path to the directory with localization files           | `"Localization"`                     | `Config::lang_path`               |
  *	| `lang`   | `default_lang`     | String                | The code of the default language                            | `"en_UK"`                            | `Config::lang_default_lang`       |
  *	| `lang`   | `default_table`    | String                | The name of the default localization table                  | `"default"`                          | `Config::lang_default_table`      |
@@ -106,7 +106,7 @@ class Log;
  *	
  *	| Категория | Поле               | Тип                    | Описание                                                          | Значение по умолчанию                | Поле класса                       |
  *	| --------- | ------------------ | ---------------------- | ----------------------------------------------------------------- | ------------------------------------ | --------------------------------- |
- *	| `window`  | `resolution`       | `Point2` (массив JSON) | Разрешение окна игры                                              | [800, 600]                           | `Config::window_resolution`       |
+ *	| `window`  | `resolution`       | `IntVector2` (массив JSON) | Разрешение окна игры                                              | [800, 600]                           | `Config::window_resolution`       |
  *	| `window`  | `fullscreen`       | Булев                  | Находится ли окно игры в полноэкранном режиме                     | `false`                              | `Config::window_fullscreen`       |
  *	| `window`  | `resize`           | Булев                  | Может ли у окна игры быть изменён размер                          | `true`                               | `Config::window_resize`           |
  *	| `window`  | `titlebar`         | Булев                  | Имеет ли окно игры строку с заголовком                            | `true`                               | `Config::window_titlebar`         |
@@ -117,8 +117,8 @@ class Log;
  *	| `res`     | `fonts_path`       | Строка (путь)          | Путь к директории со шрифтами                                     | `"Resources/Fonts"`                  | `Config::res_fonts_path`          |
  *	| `res`     | `sounds_path`      | Строка (путь)          | Путь к директории со звуками                                      | `"Resources/Sounds"`                 | `Config::res_sounds_path`         |
  *	| `res`     | `music_path`       | String                 | Путь к директории с музыкой                                       | `"Resources/Music"`                  | `Config::res_music_path`          |
- *	| `chunks`  | `collision_size`   | `Point2` (массив JSON) | Размер чанка коллизии                                             | [1500, 1500]                         | `Config::chunks_collision_size`   |
- *	| `chunks`  | `clickable_size`   | `Point2` (массив JSON) | Размер чанка кликабельных компонентов                             | [500, 500]                           | `Config::chunks_clickable_size`   |
+ *	| `chunks`  | `collision_size`   | `IntVector2` (массив JSON) | Размер чанка коллизии                                             | [1500, 1500]                         | `Config::chunks_collision_size`   |
+ *	| `chunks`  | `clickable_size`   | `IntVector2` (массив JSON) | Размер чанка кликабельных компонентов                             | [500, 500]                           | `Config::chunks_clickable_size`   |
  *	| `lang`    | `path`             | Строка (путь)          | Путь к директории с файлами локализации                           | `"Localization"`                     | `Config::lang_path`               |
  *	| `lang`    | `default_lang`     | Строка                 | Код языка по умолчанию                                            | `"en_UK"`                            | `Config::lang_default_lang`       |
  *	| `lang`    | `default_table`    | Строка                 | Название таблицы локализации по умолчанию                         | `"default"`                          | `Config::lang_default_table`      |
@@ -308,7 +308,7 @@ public:
 	 *	
 	 *	Разрешение игрового окна. Значение по умолчанию — [800, 600].
 	 */
-	Point2 window_resolution;
+	IntVector2 window_resolution;
 
 	/**
 	 *	\~english
@@ -492,7 +492,7 @@ public:
 	 *	\sa
 	 *	- `CollisionComponent`
 	 */
-	Point2 chunks_collision_size;
+	IntVector2 chunks_collision_size;
 	
 	/**
 	 *	\~english
@@ -516,7 +516,7 @@ public:
 	 *	\sa
 	 *	- `ClickableComponent`
 	 */
-	Point2 chunks_clickable_size;
+	IntVector2 chunks_clickable_size;
 
 			/* FIELDS
 				SECTION: lang */

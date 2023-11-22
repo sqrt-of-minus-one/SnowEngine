@@ -18,7 +18,7 @@ SimpleSpriteAnimation::SimpleSpriteAnimation(const SimpleSpriteAnimation& animat
 	SimpleSpriteAnimation(animation.sprite_size_, animation.origin_, animation.grid_size_, animation.frequency_sec_)
 {}
 
-SimpleSpriteAnimation::SimpleSpriteAnimation(const Point2& sprite_size, const Point2& origin, const Point2& grid_size, double frequency_sec, const Point2& initial_position) :
+SimpleSpriteAnimation::SimpleSpriteAnimation(const IntVector2& sprite_size, const IntVector2& origin, const IntVector2& grid_size, double frequency_sec, const IntVector2& initial_position) :
 	sprite_size_(sprite_size),
 	origin_(origin),
 	grid_size_(grid_size),
@@ -34,7 +34,7 @@ SimpleSpriteAnimation::SimpleSpriteAnimation(std::shared_ptr<const json::Element
 	origin_(),
 	grid_size_(),
 	frequency_sec_(),
-	current_position_(Point2::ZERO),
+	current_position_(IntVector2::ZERO),
 	timer_()
 {
 	if (!json)
@@ -54,17 +54,17 @@ SimpleSpriteAnimation::SimpleSpriteAnimation(std::shared_ptr<const json::Element
 	{
 		if (i.first == L"sprite_size")
 		{
-			sprite_size_ = Point2(i.second);
+			sprite_size_ = IntVector2(i.second);
 			fields_left--;
 		}
 		else if (i.first == L"origin")
 		{
-			origin_ = Point2(i.second);
+			origin_ = IntVector2(i.second);
 			fields_left--;
 		}
 		else if (i.first == L"grid_size")
 		{
-			grid_size_ = Point2(i.second);
+			grid_size_ = IntVector2(i.second);
 			fields_left--;
 		}
 		else if (i.first == L"frequency_sec")
@@ -78,7 +78,7 @@ SimpleSpriteAnimation::SimpleSpriteAnimation(std::shared_ptr<const json::Element
 			{
 				throw std::invalid_argument("Couldn't create an animation: the JSON must contain either initial_position or current_position, but not both of them");
 			}
-			current_position_ = Point2(i.second);
+			current_position_ = IntVector2(i.second);
 			current_flag = true;
 		}
 		else if (i.first == L"time_left_sec")
@@ -107,12 +107,12 @@ String SimpleSpriteAnimation::to_string() const
 std::shared_ptr<json::Element> SimpleSpriteAnimation::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"sprite_size"_s, sprite_size_.to_json() });
-	object->get_content().insert({ L"origin"_s, origin_.to_json() });
-	object->get_content().insert({ L"grid_size"_s, grid_size_.to_json() });
-	object->get_content().insert({ L"frequency_sec"_s, util::to_json(frequency_sec_) });
-	object->get_content().insert({ L"current_position"_s, current_position_.to_json() });
-	object->get_content().insert({ L"time_left_sec"_s, util::to_json(timer_->get_left_sec()) });
+	object->get_content().insert({ L"sprite_size", sprite_size_.to_json() });
+	object->get_content().insert({ L"origin", origin_.to_json() });
+	object->get_content().insert({ L"grid_size", grid_size_.to_json() });
+	object->get_content().insert({ L"frequency_sec", util::to_json(frequency_sec_) });
+	object->get_content().insert({ L"current_position", current_position_.to_json() });
+	object->get_content().insert({ L"time_left_sec", util::to_json(timer_->get_left_sec()) });
 	return object;
 }
 

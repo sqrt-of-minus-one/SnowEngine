@@ -6,10 +6,10 @@
 
 #include "Vector2.h"
 
-#include "Point2.h"
+#include "IntVector2.h"
 #include "../Angle.h"
 #include "../Math.h"
-#include "../../Util/Types/String.h"
+#include "../../Util/String.h"
 #include "../../Util/Json/Array.h"
 #include "../../Util/Json/Value.h"
 #include "../../Util/Util.h"
@@ -78,7 +78,7 @@ Vector2::Vector2(std::shared_ptr<const json::Element> json) :
 
 String Vector2::to_string() const
 {
-	return L"["_s + util::to_string(x_) + L", " + util::to_string(y_) + L"]";
+	return L"[" + util::to_string(x_) + L", " + util::to_string(y_) + L"]";
 }
 
 std::shared_ptr<json::Element> Vector2::to_json() const
@@ -320,9 +320,9 @@ bool Vector2::operator!=(const Vector2& vector) const noexcept
 	return x_ != vector.x_ || y_ != vector.y_;
 }
 
-Vector2::operator Point2() const
+Vector2::operator IntVector2() const
 {
-	return Point2(static_cast<int>(x_), static_cast<int>(y_));
+	return IntVector2(static_cast<int>(x_), static_cast<int>(y_));
 }
 
 const Vector2 Vector2::ZERO(0., 0.);
