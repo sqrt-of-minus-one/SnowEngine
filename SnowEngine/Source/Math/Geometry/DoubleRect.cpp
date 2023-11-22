@@ -26,7 +26,7 @@ DoubleRect::DoubleRect(const DoubleRect& rect) :
 	size_(rect.size_)
 {}
 
-DoubleRect::DoubleRect(const Vector2& position, const Vector2& size) :
+DoubleRect::DoubleRect(const Point2& position, const Vector2& size) :
 	position_(position),
 	size_(size)
 {
@@ -77,12 +77,12 @@ std::shared_ptr<json::Element> DoubleRect::to_json() const
 	return rect;
 }
 
-const Vector2& DoubleRect::get_position() const
+const Point2& DoubleRect::get_position() const
 {
 	return position_;
 }
 
-Vector2 DoubleRect::get_corner_position() const
+Point2 DoubleRect::get_corner_position() const
 {
 	return position_ + size_;
 }
@@ -92,12 +92,12 @@ const Vector2& DoubleRect::get_size() const
 	return size_;
 }
 	
-void DoubleRect::set_position(const Vector2& position)
+void DoubleRect::set_position(const Point2& position)
 {
 	position_ = position;
 }
 
-void DoubleRect::set_corner_position(const Vector2& corner_position)
+void DoubleRect::set_corner_position(const Point2& corner_position)
 {
 	size_.set_x(std::abs(corner_position.get_x() - position_.get_x()));
 	size_.set_y(std::abs(corner_position.get_y() - position_.get_y()));

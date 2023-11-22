@@ -6,6 +6,7 @@
 
 #include "ComplexShape.h"
 
+#include "../../Vector/IntVector2.h"
 #include "../DoubleRect.h"
 #include "../../../Util/Util.h"
 #include "../../../Util/Json/JsonObject.h"
@@ -22,6 +23,8 @@ wchar_t type_to_char_(ComplexShape::EType type)
 		return L'|';
 	case ComplexShape::EType::XOR:
 		return L'^';
+	case ComplexShape::EType::SUB:
+		return L'\\';
 	}
 }
 
@@ -30,11 +33,17 @@ ComplexShape::EType char_to_type_(wchar_t ch)
 	switch (ch)
 	{
 	case L'&':
+	case L'*':
 		return ComplexShape::EType::AND;
 	case L'|':
+	case L'+':
 		return ComplexShape::EType::OR;
 	case L'^':
 		return ComplexShape::EType::XOR;
+	case L'\\':
+	case L'/':
+	case L'-':
+		return ComplexShape::EType::SUB;
 	default:
 		throw std::invalid_argument("Invalid complex shape type");
 	}
@@ -92,46 +101,96 @@ std::shared_ptr<json::Element> ComplexShape::to_json() const
 
 double ComplexShape::area(bool transformed, double accuracy) const
 {
-	double result = 0.;
-	double intersection_area = 0.; // Todo
-	switch (type_)
-	{
-	case EType::AND:
-	{
-		result = intersection_area;
-		break;
-	}
-	case EType::OR:
-	{
-		result = first_->area() + second_->area() - intersection_area;
-		break;
-	}
-	case EType::XOR:
-	{
-		result = first_->area() + second_->area() - 2 * intersection_area;
-		break;
-	}
-	}
+	DoubleRect boundary = get_boundary_rect(false);
+	Point2 from = boundary.get_position();
+	Point2 to = boundary.get_corner_position();
+
+	double result = 0;
+	double new_result = 0;
 	
+	int n = 8;
+	const int N_MAX = 1000;
+	do
+	{
+		result = new_result;
+		n *= 2;
+		Vector2 step = (to - from) / n;
+		double point_area_q = step.get_x() * step.get_y() / 4;
+		int points_counter = 0;
+		for (int i = 0; i <= n; i++)
+		{
+			for (int j = 0; j <= n; j++)
+			{
+				Point2 point = from + step * IntVector2(i, j);
+				if (is_inside(point, false))
+				{
+					if ((i == 0 || i == n) && (j == 0 || j == n))
+					{
+						points_counter += 1;
+					}
+					else if (i == 0 || i == n || j == 0 || j == n)
+					{
+						points_counter += 2;
+					}
+					else
+					{
+						points_counter += 4;
+					}
+				}
+			}
+		}
+		new_result = points_counter * point_area_q;
+		if (new_result == 0 && result == 0)
+		{
+			return .0;
+		}
+	} while (std::abs(new_result - result) / new_result > accuracy && n <= N_MAX);
+		
 	if (transformed)
 	{
-		return result * get_scale().get_x() * get_scale().get_y();
+		return new_result * get_scale().get_x() * get_scale().get_y();
 	}
 	else
 	{
-		return result;
+		return new_result;
 	}
 }
 
 double ComplexShape::perimeter(bool transform) const
 {
 	// Todo
+	// I have no idea how to do this...
 	return 0.;
 }
 
 DoubleRect ComplexShape::get_boundary_rect(bool transform) const
 {
-	// Todo
+	DoubleRect f_rect = first_->get_boundary_rect(transform);
+	DoubleRect s_rect = second_->get_boundary_rect(transform);
+	switch (type_)
+	{
+	case EType::AND:
+	{
+		if (!f_rect.overlap(s_rect))
+		{
+			return DoubleRect();
+		}
+		Point2 position = Point2::max(f_rect.get_position(), s_rect.get_position());
+		Point2 corner = Point2::min(f_rect.get_corner_position(), s_rect.get_corner_position());
+		return DoubleRect(position, corner - position);
+	}
+	case EType::OR:
+	case EType::XOR:
+	{
+		Point2 position = Point2::min(f_rect.get_position(), s_rect.get_position());
+		Point2 corner = Point2::max(f_rect.get_corner_position(), s_rect.get_corner_position());
+		return DoubleRect(position, corner - position);
+	}
+	case EType::SUB:
+	{
+		return f_rect;
+	}
+	}
 	return DoubleRect();
 }
 
@@ -161,6 +220,10 @@ bool ComplexShape::is_inside(const Vector2& point, bool transformed) const
 	{
 		return first_->is_inside(point) ^ second_->is_inside(point);
 	}
+	case EType::SUB:
+	{
+		return first_->is_inside(point) && !second_->is_inside(point);
+	}
 	}
 }
 
@@ -170,15 +233,19 @@ ComplexShape::operator bool() const
 	{
 	case EType::AND:
 	{
-		return overlap(*first_, *second_);
+		return static_cast<bool>(*first_) && static_cast<bool>(*second_);
 	}
 	case EType::OR:
 	{
-		return static_cast<bool>(*first_) && static_cast<bool>(*second_);
+		return static_cast<bool>(*first_) || static_cast<bool>(*second_);
 	}
 	case EType::XOR:
 	{
-		return *first_ != *second_;
+		return static_cast<bool>(*first_) || static_cast<bool>(*second_);
+	}
+	case EType::SUB:
+	{
+		return static_cast<bool>(*first_);
 	}
 	}
 }
@@ -219,6 +286,26 @@ ComplexShape snow::operator+(Shape&& first, const Shape& second)
 ComplexShape snow::operator+(Shape&& first, Shape&& second)
 {
 	return ComplexShape(ComplexShape::EType::OR, Shape::unique_move(std::move(first)), Shape::unique_move(std::move(second)));
+}
+
+ComplexShape snow::operator-(const Shape& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::SUB, Shape::unique_copy(first), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator-(const Shape& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::SUB, Shape::unique_copy(first), Shape::unique_move(std::move(second)));
+}
+
+ComplexShape snow::operator-(Shape&& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::SUB, Shape::unique_move(std::move(first)), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator-(Shape&& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::SUB, Shape::unique_move(std::move(first)), Shape::unique_move(std::move(second)));
 }
 
 ComplexShape snow::operator*(const Shape& first, const Shape& second)
@@ -301,6 +388,26 @@ ComplexShape snow::operator^(Shape&& first, Shape&& second)
 	return ComplexShape(ComplexShape::EType::XOR, Shape::unique_move(std::move(first)), Shape::unique_move(std::move(second)));
 }
 
+ComplexShape snow::operator/(const Shape& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::SUB, Shape::unique_copy(first), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator/(const Shape& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::SUB, Shape::unique_copy(first), Shape::unique_move(std::move(second)));
+}
+
+ComplexShape snow::operator/(Shape&& first, const Shape& second)
+{
+	return ComplexShape(ComplexShape::EType::SUB, Shape::unique_move(std::move(first)), Shape::unique_copy(second));
+}
+
+ComplexShape snow::operator/(Shape&& first, Shape&& second)
+{
+	return ComplexShape(ComplexShape::EType::SUB, Shape::unique_move(std::move(first)), Shape::unique_move(std::move(second)));
+}
+
 ComplexShape& ComplexShape::operator+=(const Shape& shape)
 {
 	operator_as_(shape);
@@ -312,6 +419,20 @@ ComplexShape& ComplexShape::operator+=(Shape&& shape)
 {
 	operator_as_(std::move(shape));
 	type_ = EType::OR;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator-=(const Shape& shape)
+{
+	operator_as_(shape);
+	type_ = EType::SUB;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator-=(Shape&& shape)
+{
+	operator_as_(std::move(shape));
+	type_ = EType::SUB;
 	return *this;
 }
 
@@ -371,6 +492,20 @@ ComplexShape& ComplexShape::operator^=(Shape&& shape)
 	return *this;
 }
 
+ComplexShape& ComplexShape::operator/=(const Shape& shape)
+{
+	operator_as_(shape);
+	type_ = EType::SUB;
+	return *this;
+}
+
+ComplexShape& ComplexShape::operator/=(Shape&& shape)
+{
+	operator_as_(std::move(shape));
+	type_ = EType::SUB;
+	return *this;
+}
+
 const String ComplexShape::SHAPE_NAME = L"Complex";
 
 		/* ComplexShape: private */
@@ -400,4 +535,17 @@ void ComplexShape::operator_as_(const Shape& shape)
 	
 	first_ = std::move(new_first);
 	second_ = Shape::unique_copy(shape);
+}
+
+void ComplexShape::operator_as_(Shape&& shape)
+{
+	std::unique_ptr<Shape> f = std::move(first_);
+
+	std::unique_ptr<ComplexShape> new_first = std::make_unique<ComplexShape>();
+	new_first->type_ = type_;
+	new_first->first_ = std::move(f);
+	new_first->second_ = std::move(second_);
+	
+	first_ = std::move(new_first);
+	second_ = Shape::unique_move(std::move(shape));
 }

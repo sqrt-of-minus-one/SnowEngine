@@ -449,7 +449,143 @@ public:
 	 *	- `is_collinear()`, `is_co_directed()`
 	 */
 	bool is_orthogonal(const Vector3& vector) const noexcept;
-	
+
+	/**
+	 *	\~english
+	 *	\brief The least coordinates of two points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\min\{a_x, b_x\}, \min\{a_y, b_y\}, \min\{a_z, b_z\}\}\f$,
+	 *	where \f$\vec{a}\f$ and \f$\vec{b}\f$ are the parameters of the method.
+	 *	\code
+	 *		Point3 point = Point3::min(Point3(5., 19., 7.), Point3(8., 1., 21.));
+	 *		point == Point3(5., 1., 7.);
+	 *	\endcode
+	 *	\param first The first point.
+	 *	\param second The second point.
+	 *	\return The new point with the least coordinates.
+	 *	\sa
+	 *	- `max()`
+	 *	
+	 *	\~russian
+	 *	\brief Наименьшие координаты двух точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\min\{a_x; b_x\}; \min\{a_y; b_y\}; \min\{a_z; b_z\}\}\f$,
+	 *	где \f$\vec{a}\f$ and \f$\vec{b}\f$ — параметры метода.
+	 *	\code
+	 *		Point3 point = Point3::min(Point3(5., 19., 7.), Point3(8., 1., 21.));
+	 *		point == Point3(5., 1., 7.);
+	 *	\endcode
+	 *	\param first Первая точка.
+	 *	\param second Вторая точка.
+	 *	\return Новая точка с наименьшими координатами.
+	 *	\sa
+	 *	- `max()`
+	 */	
+	static Point3 min(const Point3& first, const Point3& second);
+
+	/**
+	 *	\~english
+	 *	\brief The least coordinates of points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\min\{a_x, b_x, c_x, ...\}, \min\{a_y, b_y, c_y, ...\}, \min\{a_z, b_z, c_z, ...\}\f$,
+	 *	where \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ are the parameters of the method.
+	 *	\code
+	 *		Point3 point = Point3::min({ Point3(5., 19., 7.), Point3(8., 1., 21.), Point3(2., 43., 6.) });
+	 *		point == Point3(2., 1., 6.);
+	 *	\endcode
+	 *	\param points The container with the points.
+	 *	\return The new point with the least coordinates.
+	 *	\sa
+	 *	- `max()`
+	 *	
+	 *	\~russian
+	 *	\brief Наименьшие координаты точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\min\{a_x; b_x; c_x; ...\}; \min\{a_y; b_y; c_y; ...\}; \min\{a_z; b_z; c_z; ...\}\f$,
+	 *	где \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ — параметры метода.
+	 *	\code
+	 *		Point3 point = Point3::min({ Point3(5., 19., 7.), Point3(8., 1., 21.), Point3(2., 43., 6.) });
+	 *		point == Point3(2., 1., 6.);
+	 *	\endcode
+	 *	\param points Контейнер с точками.
+	 *	\return Новая точка с наименьшими координатами.
+	 *	\sa
+	 *	- `max()`
+	 */	
+	static Point3 min(const std::vector<Point3>& points);
+
+	/**
+	 *	\~english
+	 *	\brief The greatest coordinates of two points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\max\{a_x, b_x\}, \max\{a_y, b_y\}, \max\{a_z, b_z\}\}\f$,
+	 *	where \f$\vec{a}\f$ and \f$\vec{b}\f$ are the parameters of the method.
+	 *	\code
+	 *		Point3 point = Point3::max(Point3(5., 19., 7.), Point3(8., 1., 21.));
+	 *		point == Point3(8., 19., 21.);
+	 *	\endcode
+	 *	\param first The first point.
+	 *	\param second The second point.
+	 *	\return The new point with the greatest coordinates.
+	 *	\sa
+	 *	- `min()`
+	 *	
+	 *	\~russian
+	 *	\brief Наибольшие координаты двух точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\max\{a_x; b_x\}; \max\{a_y; b_y\}; \max\{a_z; b_z\}\}\f$,
+	 *	где \f$\vec{a}\f$ and \f$\vec{b}\f$ — параметры метода.
+	 *	\code
+	 *		Point3 point = Point3::max(Point3(5., 19., 7.), Point3(8., 1., 21.));
+	 *		point == Point3(8., 19., 21.);
+	 *	\endcode
+	 *	\param first Первая точка.
+	 *	\param second Вторая точка.
+	 *	\return Новая точка с наибольшими координатами.
+	 *	\sa
+	 *	- `min()`
+	 */	
+	static Point3 max(const Point3& first, const Point3& second);
+
+	/**
+	 *	\~english
+	 *	\brief The greatest coordinates of points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\max\{a_x, b_x, c_x, ...\}, \max\{a_y, b_y, c_y, ...\}, \max\{a_z, b_z, c_z, ...\}\}\f$,
+	 *	where \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ are the parameters of the method.
+	 *	\code
+	 *		Point3 point = Point3::max({ Point3(5., 19., 7.), Point3(8., 1., 21.), Point3(2., 43., 6.) });
+	 *		point == Point3(8., 43., 21.);
+	 *	\endcode
+	 *	\param points The container with the points.
+	 *	\return The new point with the greatest coordinates.
+	 *	\sa
+	 *	- `min()`
+	 *	
+	 *	\~russian
+	 *	\brief Наибольшие координаты точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\max\{a_x; b_x; c_x; ...\}; \max\{a_y; b_y; c_y; ...\}; \max\{a_z; b_z; c_z; ...\}\}\f$,
+	 *	где \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ — параметры метода.
+	 *	\code
+	 *		Point3 point = Point3::max({ Point3(5., 19., 7.), Point3(8., 1., 21.), Point3(2., 43., 6.) });
+	 *		point == Point3(8., 43., 21.);
+	 *	\endcode
+	 *	\param points Контейнер с точками.
+	 *	\return Новая точка с наибольшими координатами.
+	 *	\sa
+	 *	- `min()`
+	 */	
+	static Point3 max(const std::vector<Point3>& points);
+
 			/* OPERATORS */
 
 	/**

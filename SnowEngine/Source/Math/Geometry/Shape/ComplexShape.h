@@ -14,7 +14,7 @@ namespace snow
 class ComplexShape : public Shape
 {
 public:
-	enum class EType { AND, OR, XOR };
+	enum class EType { AND, OR, XOR, SUB };
 
 	ComplexShape(const ComplexShape& shape);
 	ComplexShape(ComplexShape&& shape);
@@ -45,6 +45,11 @@ public:
 	friend ComplexShape operator*(Shape&& first, const Shape& second);
 	friend ComplexShape operator*(Shape&& first, Shape&& second);
 	
+	friend ComplexShape operator-(const Shape& first, const Shape& second);
+	friend ComplexShape operator-(const Shape& first, Shape&& second);
+	friend ComplexShape operator-(Shape&& first, const Shape& second);
+	friend ComplexShape operator-(Shape&& first, Shape&& second);
+	
 	friend ComplexShape operator&(const Shape& first, const Shape& second);
 	friend ComplexShape operator&(const Shape& first, Shape&& second);
 	friend ComplexShape operator&(Shape&& first, const Shape& second);
@@ -59,9 +64,16 @@ public:
 	friend ComplexShape operator^(const Shape& first, Shape&& second);
 	friend ComplexShape operator^(Shape&& first, const Shape& second);
 	friend ComplexShape operator^(Shape&& first, Shape&& second);
+
+	friend ComplexShape operator/(const Shape& first, const Shape& second);
+	friend ComplexShape operator/(const Shape& first, Shape&& second);
+	friend ComplexShape operator/(Shape&& first, const Shape& second);
+	friend ComplexShape operator/(Shape&& first, Shape&& second);
 	
 	ComplexShape& operator+=(const Shape& shape);
 	ComplexShape& operator+=(Shape&& shape);
+	ComplexShape& operator-=(const Shape& shape);
+	ComplexShape& operator-=(Shape&& shape);
 	ComplexShape& operator*=(const Shape& shape);
 	ComplexShape& operator*=(Shape&& shape);
 	ComplexShape& operator&=(const Shape& shape);
@@ -70,6 +82,8 @@ public:
 	ComplexShape& operator|=(Shape&& shape);
 	ComplexShape& operator^=(const Shape& shape);
 	ComplexShape& operator^=(Shape&& shape);
+	ComplexShape& operator/=(const Shape& shape);
+	ComplexShape& operator/=(Shape&& shape);
 
 	static const String SHAPE_NAME;
 

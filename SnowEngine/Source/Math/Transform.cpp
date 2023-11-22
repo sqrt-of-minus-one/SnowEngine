@@ -123,20 +123,20 @@ void Transform::scale(const Vector2& factor) noexcept
 	scale_ *= factor;
 }
 
-Vector2 Transform::transform(const Vector2& point) const
+Point2 Transform::transform(const Point2& point) const
 {
-	Vector2 result = point;
+	Point2 result = point;
 	result -= position_;
-	result.rotate(-rotation_);
 	result /= scale_;
+	result.rotate(-rotation_);
 	return result;
 }
 
-Vector2 Transform::untransform(const Vector2& point) const
+Point2 Transform::untransform(const Point2& point) const
 {
-	Vector2 result = point;
-	result *= scale_;
+	Point2 result = point;
 	result.rotate(rotation_);
+	result *= scale_;
 	result += position_;
 	return result;
 }

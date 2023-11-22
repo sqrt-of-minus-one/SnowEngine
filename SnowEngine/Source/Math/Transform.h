@@ -320,7 +320,7 @@ public:
 	 *	\param point Глобальные координаты точки.
 	 *	\return Локальные координаты точки.
 	 */
-	Vector2 transform(const Vector2& point) const;
+	Point2 transform(const Point2& point) const;
 
 	/**
 	 *	\~english
@@ -337,7 +337,7 @@ public:
 	 *	\param point Локальные координаты точки.
 	 *	\return Глобальные координаты точки.
 	 */
-	Vector2 untransform(const Vector2& point) const;
+	Point2 untransform(const Point2& point) const;
 
 			/* OPERATORS */
 

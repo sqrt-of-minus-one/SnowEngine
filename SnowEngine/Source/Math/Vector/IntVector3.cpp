@@ -139,6 +139,74 @@ IntVector3 IntVector3::abs() const noexcept
 	return IntVector3(std::abs(x_), std::abs(y_), std::abs(z_));
 }
 
+IntPoint3 IntVector3::min(const IntPoint3& first, const IntPoint3& second)
+{
+	return IntPoint3(std::min(first.get_x(), second.get_x()),
+					 std::min(first.get_y(), second.get_y()),
+					 std::min(first.get_z(), second.get_z()));
+}
+
+IntPoint3 IntVector3::min(const std::vector<IntPoint3>& points)
+{
+	if (points.empty())
+	{
+		throw std::invalid_argument("The argument of the min() method cannot be an empty container");
+	}
+	int x = points.front().get_x();
+	int y = points.front().get_y();
+	int z = points.front().get_z();
+	for (const IntPoint3& point : points)
+	{
+		if (point.get_x() < x)
+		{
+			x = point.get_x();
+		}
+		if (point.get_y() < y)
+		{
+			y = point.get_y();
+		}
+		if (point.get_z() < z)
+		{
+			z = point.get_z();
+		}
+	}
+	return IntPoint3(x, y, z);
+}
+
+IntPoint3 IntVector3::max(const IntPoint3& first, const IntPoint3& second)
+{
+	return IntPoint3(std::max(first.get_x(), second.get_x()),
+					 std::max(first.get_y(), second.get_y()),
+					 std::max(first.get_z(), second.get_z()));
+}
+
+IntPoint3 IntVector3::max(const std::vector<IntPoint3>& points)
+{
+	if (points.empty())
+	{
+		throw std::invalid_argument("The argument of the max() method cannot be an empty container");
+	}
+	int x = points.front().get_x();
+	int y = points.front().get_y();
+	int z = points.front().get_z();
+	for (const IntPoint3& point : points)
+	{
+		if (point.get_x() > x)
+		{
+			x = point.get_x();
+		}
+		if (point.get_y() > y)
+		{
+			y = point.get_y();
+		}
+		if (point.get_z() > z)
+		{
+			z = point.get_z();
+		}
+	}
+	return IntPoint3(x, y, z);
+}
+
 IntVector3& IntVector3::operator=(const IntVector3& point) noexcept
 {
 	x_ = point.x_;

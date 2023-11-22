@@ -131,8 +131,25 @@ DoubleRect Ellipse::get_boundary_rect(bool transformed) const
 {
 	if (transformed)
 	{
-		// Todo
-		return DoubleRect();
+		double sin_sq = std::pow(math::sin(get_rotation()), 2);
+		double cos_sq = std::pow(math::cos(get_rotation()), 2);
+		double a_sq = semi_axes_.get_x() * semi_axes_.get_x();
+		double b_sq = semi_axes_.get_y() * semi_axes_.get_y();
+		double x = std::sqrt(sin_sq * b_sq + cos_sq * a_sq);
+		double y = std::sqrt(cos_sq * b_sq + sin_sq * a_sq);
+
+		Point2 first = centre_.rotated(get_rotation());
+		Point2 second = first;
+
+		first += Vector2(-x, -y);
+		second += Vector2(x, y);
+
+		first *= get_scale();
+		second *= get_scale();
+		first += get_position();
+		second += get_position();
+
+		return DoubleRect(first, second - first);
 	}
 	else
 	{

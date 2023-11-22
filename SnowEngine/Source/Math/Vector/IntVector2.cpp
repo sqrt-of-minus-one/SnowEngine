@@ -110,6 +110,60 @@ IntVector2 IntVector2::abs() const noexcept
 	return IntVector2(std::abs(x_), std::abs(y_));
 }
 
+IntPoint2 IntVector2::min(const IntPoint2& first, const IntPoint2& second)
+{
+	return IntPoint2(std::min(first.get_x(), second.get_x()), std::min(first.get_y(), second.get_y()));
+}
+
+IntPoint2 IntVector2::min(const std::vector<IntPoint2>& points)
+{
+	if (points.empty())
+	{
+		throw std::invalid_argument("The argument of the min() method cannot be an empty container");
+	}
+	int x = points.front().get_x();
+	int y = points.front().get_y();
+	for (const IntPoint2& point : points)
+	{
+		if (point.get_x() < x)
+		{
+			x = point.get_x();
+		}
+		if (point.get_y() < y)
+		{
+			y = point.get_y();
+		}
+	}
+	return IntPoint2(x, y);
+}
+
+IntPoint2 IntVector2::max(const IntPoint2& first, const IntPoint2& second)
+{
+	return IntPoint2(std::max(first.get_x(), second.get_x()), std::max(first.get_y(), second.get_y()));
+}
+
+IntPoint2 IntVector2::max(const std::vector<IntPoint2>& points)
+{
+	if (points.empty())
+	{
+		throw std::invalid_argument("The argument of the max() method cannot be an empty container");
+	}
+	int x = points.front().get_x();
+	int y = points.front().get_y();
+	for (const IntPoint2& point : points)
+	{
+		if (point.get_x() > x)
+		{
+			x = point.get_x();
+		}
+		if (point.get_y() > y)
+		{
+			y = point.get_y();
+		}
+	}
+	return IntPoint2(x, y);
+}
+
 IntVector2& IntVector2::operator=(const IntVector2& point) noexcept
 {
 	x_ = point.x_;

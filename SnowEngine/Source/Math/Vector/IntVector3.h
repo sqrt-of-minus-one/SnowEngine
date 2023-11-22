@@ -304,6 +304,142 @@ public:
 	 */
 	IntVector3 abs() const noexcept;
 	
+	/**
+	 *	\~english
+	 *	\brief The least coordinates of two points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\min\{a_x, b_x\}, \min\{a_y, b_y\}, \min\{a_z, b_z\}\}\f$,
+	 *	where \f$\vec{a}\f$ and \f$\vec{b}\f$ are the parameters of the method.
+	 *	\code
+	 *		IntPoint3 point = IntPoint3::min(IntPoint3(5, 19, 7), IntPoint3(8, 1, 21));
+	 *		point == IntPoint3(5, 1, 7);
+	 *	\endcode
+	 *	\param first The first point.
+	 *	\param second The second point.
+	 *	\return The new point with the least coordinates.
+	 *	\sa
+	 *	- `max()`
+	 *	
+	 *	\~russian
+	 *	\brief Наименьшие координаты двух точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\min\{a_x; b_x\}; \min\{a_y; b_y\}; \min\{a_z; b_z\}\}\f$,
+	 *	где \f$\vec{a}\f$ and \f$\vec{b}\f$ — параметры метода.
+	 *	\code
+	 *		IntPoint3 point = IntPoint3::min(IntPoint3(5, 19, 7), IntPoint3(8, 1, 21));
+	 *		point == IntPoint3(5, 1, 7);
+	 *	\endcode
+	 *	\param first Первая точка.
+	 *	\param second Вторая точка.
+	 *	\return Новая точка с наименьшими координатами.
+	 *	\sa
+	 *	- `max()`
+	 */	
+	static IntPoint3 min(const IntPoint3& first, const IntPoint3& second);
+
+	/**
+	 *	\~english
+	 *	\brief The least coordinates of points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\min\{a_x, b_x, c_x, ...\}, \min\{a_y, b_y, c_y, ...\}, \min\{a_z, b_z, c_z, ...\}\f$,
+	 *	where \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ are the parameters of the method.
+	 *	\code
+	 *		IntPoint3 point = IntPoint3::min({ IntPoint3(5, 19, 7, IntPoint3(8, 1, 21), IntPoint3(2, 43, 6) });
+	 *		point == IntPoint3(2, 1, 6);
+	 *	\endcode
+	 *	\param points The container with the points.
+	 *	\return The new point with the least coordinates.
+	 *	\sa
+	 *	- `max()`
+	 *	
+	 *	\~russian
+	 *	\brief Наименьшие координаты точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\min\{a_x; b_x; c_x; ...\}; \min\{a_y; b_y; c_y; ...\}; \min\{a_z; b_z; c_z; ...\}\f$,
+	 *	где \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ — параметры метода.
+	 *	\code
+	 *		IntPoint3 point = IntPoint3::min({ IntPoint3(5, 19, 7), IntPoint3(8, 1, 21), IntPoint3(2, 43, 6) });
+	 *		point == IntPoint3(2, 1, 6);
+	 *	\endcode
+	 *	\param points Контейнер с точками.
+	 *	\return Новая точка с наименьшими координатами.
+	 *	\sa
+	 *	- `max()`
+	 */	
+	static IntPoint3 min(const std::vector<IntPoint3>& points);
+
+	/**
+	 *	\~english
+	 *	\brief The greatest coordinates of two points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\max\{a_x, b_x\}, \max\{a_y, b_y\}, \max\{a_z, b_z\}\}\f$,
+	 *	where \f$\vec{a}\f$ and \f$\vec{b}\f$ are the parameters of the method.
+	 *	\code
+	 *		IntPoint3 point = IntPoint3::max(IntPoint3(5, 19, 7), IntPoint3(8, 1, 21));
+	 *		point == IntPoint3(8, 19, 21);
+	 *	\endcode
+	 *	\param first The first point.
+	 *	\param second The second point.
+	 *	\return The new point with the greatest coordinates.
+	 *	\sa
+	 *	- `min()`
+	 *	
+	 *	\~russian
+	 *	\brief Наибольшие координаты двух точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\max\{a_x; b_x\}; \max\{a_y; b_y\}; \max\{a_z; b_z\}\}\f$,
+	 *	где \f$\vec{a}\f$ and \f$\vec{b}\f$ — параметры метода.
+	 *	\code
+	 *		IntPoint3 point = IntPoint3::max(IntPoint3(5, 19, 7), IntPoint3(8, 1, 21));
+	 *		point == IntPoint3(8, 19, 21);
+	 *	\endcode
+	 *	\param first Первая точка.
+	 *	\param second Вторая точка.
+	 *	\return Новая точка с наибольшими координатами.
+	 *	\sa
+	 *	- `min()`
+	 */	
+	static IntPoint3 max(const IntPoint3& first, const IntPoint3& second);
+
+	/**
+	 *	\~english
+	 *	\brief The greatest coordinates of points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\max\{a_x, b_x, c_x, ...\}, \max\{a_y, b_y, c_y, ...\}, \max\{a_z, b_z, c_z, ...\}\}\f$,
+	 *	where \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ are the parameters of the method.
+	 *	\code
+	 *		IntPoint3 point = IntPoint3::max({ IntPoint3(5, 19, 7), IntPoint3(8, 1, 21), IntPoint3(2, 43, 6) });
+	 *		point == IntPoint3(8, 43, 21);
+	 *	\endcode
+	 *	\param points The container with the points.
+	 *	\return The new point with the greatest coordinates.
+	 *	\sa
+	 *	- `min()`
+	 *	
+	 *	\~russian
+	 *	\brief Наибольшие координаты точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\max\{a_x; b_x; c_x; ...\}; \max\{a_y; b_y; c_y; ...\}; \max\{a_z; b_z; c_z; ...\}\}\f$,
+	 *	где \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ — параметры метода.
+	 *	\code
+	 *		IntPoint3 point = IntPoint3::max({ IntPoint3(5, 19, 7), IntPoint3(8, 1, 21), IntPoint3(2, 43, 6) });
+	 *		point == IntPoint3(8, 43, 21);
+	 *	\endcode
+	 *	\param points Контейнер с точками.
+	 *	\return Новая точка с наибольшими координатами.
+	 *	\sa
+	 *	- `min()`
+	 */	
+	static IntPoint3 max(const std::vector<IntPoint3>& points);
+
 			/* OPERATORS */
 
 	/**

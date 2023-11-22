@@ -159,6 +159,13 @@ void Vector2::rotate(const Angle& delta)
 	set_angle(get_angle() + delta);
 }
 
+Vector2 Vector2::rotated(const Angle& delta) const
+{
+	Vector2 vector = *this;
+	vector.rotate(delta);
+	return vector;
+}
+
 Angle Vector2::get_angle(const Vector2& vector) const
 {
 	return (get_angle() - vector.get_angle()).get_normalized_180().abs();
@@ -193,6 +200,60 @@ bool Vector2::is_co_directed(const Vector2& vector) const noexcept
 bool Vector2::is_orthogonal(const Vector2& vector) const noexcept
 {
 	return (*this & vector) == 0.;
+}
+
+Point2 Vector2::min(const Point2& first, const Point2& second)
+{
+	return Point2(std::min(first.get_x(), second.get_x()), std::min(first.get_y(), second.get_y()));
+}
+
+Point2 Vector2::min(const std::vector<Point2>& points)
+{
+	if (points.empty())
+	{
+		throw std::invalid_argument("The argument of the min() method cannot be an empty container");
+	}
+	double x = points.front().get_x();
+	double y = points.front().get_y();
+	for (const Point2& point : points)
+	{
+		if (point.get_x() < x)
+		{
+			x = point.get_x();
+		}
+		if (point.get_y() < y)
+		{
+			y = point.get_y();
+		}
+	}
+	return Point2(x, y);
+}
+
+Point2 Vector2::max(const Point2& first, const Point2& second)
+{
+	return Point2(std::max(first.get_x(), second.get_x()), std::max(first.get_y(), second.get_y()));
+}
+
+Point2 Vector2::max(const std::vector<Point2>& points)
+{
+	if (points.empty())
+	{
+		throw std::invalid_argument("The argument of the max() method cannot be an empty container");
+	}
+	double x = points.front().get_x();
+	double y = points.front().get_y();
+	for (const Point2& point : points)
+	{
+		if (point.get_x() > x)
+		{
+			x = point.get_x();
+		}
+		if (point.get_y() > y)
+		{
+			y = point.get_y();
+		}
+	}
+	return Point2(x, y);
 }
 
 Vector2& Vector2::operator=(const Vector2& vector) noexcept

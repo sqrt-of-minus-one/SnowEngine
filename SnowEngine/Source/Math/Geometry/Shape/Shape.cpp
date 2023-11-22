@@ -73,7 +73,7 @@ using namespace snow;
 std::shared_ptr<json::Element> Shape::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::make_shared<json::JsonObject>();
-	object->get_content().insert({ L"shape", shape_name().to_json() });
+	object->get_content().insert({ L"shape", util::to_json(shape_name()) });
 	object->get_content().insert({ L"transform", transform_.to_json() });
 	return object;
 }

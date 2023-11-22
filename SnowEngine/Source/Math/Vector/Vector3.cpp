@@ -199,6 +199,74 @@ bool Vector3::is_orthogonal(const Vector3& vector) const noexcept
 	return (*this & vector) == 0.;
 }
 
+Point3 Vector3::min(const Point3& first, const Point3& second)
+{
+	return Point3(std::min(first.get_x(), second.get_x()),
+				  std::min(first.get_y(), second.get_y()),
+				  std::min(first.get_z(), second.get_z()));
+}
+
+Point3 Vector3::min(const std::vector<Point3>& points)
+{
+	if (points.empty())
+	{
+		throw std::invalid_argument("The argument of the min() method cannot be an empty container");
+	}
+	double x = points.front().get_x();
+	double y = points.front().get_y();
+	double z = points.front().get_z();
+	for (const Point3& point : points)
+	{
+		if (point.get_x() < x)
+		{
+			x = point.get_x();
+		}
+		if (point.get_y() < y)
+		{
+			y = point.get_y();
+		}
+		if (point.get_z() < z)
+		{
+			z = point.get_z();
+		}
+	}
+	return Point3(x, y, z);
+}
+
+Point3 Vector3::max(const Point3& first, const Point3& second)
+{
+	return Point3(std::max(first.get_x(), second.get_x()),
+				  std::max(first.get_y(), second.get_y()),
+				  std::max(first.get_z(), second.get_z()));
+}
+
+Point3 Vector3::max(const std::vector<Point3>& points)
+{
+	if (points.empty())
+	{
+		throw std::invalid_argument("The argument of the max() method cannot be an empty container");
+	}
+	double x = points.front().get_x();
+	double y = points.front().get_y();
+	double z = points.front().get_z();
+	for (const Point3& point : points)
+	{
+		if (point.get_x() > x)
+		{
+			x = point.get_x();
+		}
+		if (point.get_y() > y)
+		{
+			y = point.get_y();
+		}
+		if (point.get_z() > z)
+		{
+			z = point.get_z();
+		}
+	}
+	return Point3(x, y, z);
+}
+
 Vector3& Vector3::operator=(const Vector3& vector) noexcept
 {
 	x_ = vector.x_;

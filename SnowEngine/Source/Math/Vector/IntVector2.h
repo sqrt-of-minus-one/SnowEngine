@@ -234,6 +234,142 @@ public:
 	 */
 	IntVector2 abs() const noexcept;
 	
+	/**
+	 *	\~english
+	 *	\brief The least coordinates of two points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\min\{a_x, b_x\}, \min\{a_y, b_y\}\}\f$,
+	 *	where \f$\vec{a}\f$ and \f$\vec{b}\f$ are the parameters of the method.
+	 *	\code
+	 *		IntPoint2 point = IntPoint2::min(IntPoint2(5, 19), IntPoint2(8, 1));
+	 *		point == IntPoint2(5, 1);
+	 *	\endcode
+	 *	\param first The first point.
+	 *	\param second The second point.
+	 *	\return The new point with the least coordinates.
+	 *	\sa
+	 *	- `max()`
+	 *	
+	 *	\~russian
+	 *	\brief Наименьшие координаты двух точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\min\{a_x; b_x\}; \min\{a_y; b_y\}\}\f$,
+	 *	где \f$\vec{a}\f$ and \f$\vec{b}\f$ — параметры метода.
+	 *	\code
+	 *		IntPoint2 point = IntPoint2::min(IntPoint2(5, 19), IntPoint2(8, 1));
+	 *		point == IntPoint2(5, 1);
+	 *	\endcode
+	 *	\param first Первая точка.
+	 *	\param second Вторая точка.
+	 *	\return Новая точка с наименьшими координатами.
+	 *	\sa
+	 *	- `max()`
+	 */	
+	static IntPoint2 min(const IntPoint2& first, const IntPoint2& second);
+
+	/**
+	 *	\~english
+	 *	\brief The least coordinates of points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\min\{a_x, b_x, c_x, ...\}, \min\{a_y, b_y, c_y, ...\}\}\f$,
+	 *	where \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ are the parameters of the method.
+	 *	\code
+	 *		Point2 point = IntPoint2::min({ IntPoint2(5, 19), IntPoint2(8, 1), IntPoint2(2, 43) });
+	 *		point == IntPoint2(2, 1);
+	 *	\endcode
+	 *	\param points The container with the points.
+	 *	\return The new point with the least coordinates.
+	 *	\sa
+	 *	- `max()`
+	 *	
+	 *	\~russian
+	 *	\brief Наименьшие координаты точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\min\{a_x; b_x; c_x; ...\}; \min\{a_y; b_y; c_y; ...\}\}\f$,
+	 *	где \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ — параметры метода.
+	 *	\code
+	 *		Point2 point = IntPoint2::min({ IntPoint2(5, 19), IntPoint2(8, 1), IntPoint2(2, 43) });
+	 *		point == IntPoint2(2, 1);
+	 *	\endcode
+	 *	\param points Контейнер с точками.
+	 *	\return Новая точка с наименьшими координатами.
+	 *	\sa
+	 *	- `max()`
+	 */	
+	static IntPoint2 min(const std::vector<IntPoint2>& points);
+
+	/**
+	 *	\~english
+	 *	\brief The greatest coordinates of two points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\max\{a_x, b_x\}, \max\{a_y, b_y\}\}\f$,
+	 *	where \f$\vec{a}\f$ and \f$\vec{b}\f$ are the parameters of the method.
+	 *	\code
+	 *		Point2 point = IntPoint2::max(Point2(5, 19), IntPoint2(8, 1));
+	 *		point == IntPoint2(8, 19);
+	 *	\endcode
+	 *	\param first The first point.
+	 *	\param second The second point.
+	 *	\return The new point with the greatest coordinates.
+	 *	\sa
+	 *	- `min()`
+	 *	
+	 *	\~russian
+	 *	\brief Наибольшие координаты двух точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\max\{a_x; b_x\}; \max\{a_y; b_y\}\}\f$,
+	 *	где \f$\vec{a}\f$ and \f$\vec{b}\f$ — параметры метода.
+	 *	\code
+	 *		Point2 point = IntPoint2::max(Point2(5, 19), IntPoint2(8, 1));
+	 *		point == IntPoint2(8, 19);
+	 *	\endcode
+	 *	\param first Первая точка.
+	 *	\param second Вторая точка.
+	 *	\return Новая точка с наибольшими координатами.
+	 *	\sa
+	 *	- `min()`
+	 */	
+	static IntPoint2 max(const IntPoint2& first, const IntPoint2& second);
+
+	/**
+	 *	\~english
+	 *	\brief The greatest coordinates of points
+	 *	
+	 *	Creates a point
+	 *	\f$\{\max\{a_x, b_x, c_x, ...\}, \max\{a_y, b_y, c_y, ...\}\}\f$,
+	 *	where \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ are the parameters of the method.
+	 *	\code
+	 *		Point2 point = IntPoint2::max({ IntPoint2(5, 19), IntPoint2(8, 1), IntPoint2(2, 43) });
+	 *		point == IntPoint2(8, 43);
+	 *	\endcode
+	 *	\param points The container with the points.
+	 *	\return The new point with the greatest coordinates.
+	 *	\sa
+	 *	- `min()`
+	 *	
+	 *	\~russian
+	 *	\brief Наибольшие координаты точек
+	 *	
+	 *	Создаёт точку
+	 *	\f$\{\max\{a_x; b_x; c_x; ...\}; \max\{a_y; b_y; c_y; ...\}\}\f$,
+	 *	где \f$\vec{a}, \vec{b}, \vec{c}, ...\f$ — параметры метода.
+	 *	\code
+	 *		Point2 point = IntPoint2::max({ IntPoint2(5, 19), IntPoint2(8, 1), IntPoint2(2, 43) });
+	 *		point == IntPoint2(8, 43);
+	 *	\endcode
+	 *	\param points Контейнер с точками.
+	 *	\return Новая точка с наибольшими координатами.
+	 *	\sa
+	 *	- `max()`
+	 */	
+	static IntPoint2 max(const std::vector<IntPoint2>& points);
+
 			/* OPERATORS */
 	
 	/**

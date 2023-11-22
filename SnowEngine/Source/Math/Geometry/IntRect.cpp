@@ -27,7 +27,7 @@ IntRect::IntRect(const IntRect& rect) :
 	size_(rect.size_)
 {}
 
-IntRect::IntRect(const IntVector2& position, const IntVector2& size) :
+IntRect::IntRect(const IntPoint2& position, const IntVector2& size) :
 	position_(position),
 	size_(size)
 {
@@ -78,12 +78,12 @@ std::shared_ptr<json::Element> IntRect::to_json() const
 	return rect;
 }
 
-const IntVector2& IntRect::get_position() const noexcept
+const IntPoint2& IntRect::get_position() const noexcept
 {
 	return position_;
 }
 
-IntVector2 IntRect::get_corner_position() const
+IntPoint2 IntRect::get_corner_position() const
 {
 	return position_ + size_;
 }
@@ -93,12 +93,12 @@ const IntVector2& IntRect::get_size() const noexcept
 	return size_;
 }
 	
-void IntRect::set_position(const IntVector2& position)
+void IntRect::set_position(const IntPoint2& position)
 {
 	position_ = position;
 }
 
-void IntRect::set_corner_position(const IntVector2& corner_position)
+void IntRect::set_corner_position(const IntPoint2& corner_position)
 {
 	size_.set_x(std::abs(corner_position.get_x() - position_.get_x()));
 	size_.set_y(std::abs(corner_position.get_y() - position_.get_y()));

@@ -80,7 +80,7 @@ public:
 	 *	\param position Положение угла с наименьшими координатами.
 	 *	\param size Размер прямоугольника.
 	 */
-	DoubleRect(const Vector2& position, const Vector2& size);
+	DoubleRect(const Point2& position, const Vector2& size);
 
 	/**
 	 *	\~english
@@ -156,7 +156,7 @@ public:
 	 *	Позволяет получить положение угла с наименьшими координатами.
 	 *	\return Положение прямоугольника.
 	 */
-	const Vector2& get_position() const;
+	const Point2& get_position() const;
 
 	/**
 	 *	\~english
@@ -171,7 +171,7 @@ public:
 	 *	Позволяет получить положение угла с наибольшими координатами.
 	 *	\return Положение угла с наибольшими координатами.
 	 */
-	Vector2 get_corner_position() const;
+	Point2 get_corner_position() const;
 
 	/**
 	 *	\~english
@@ -203,7 +203,7 @@ public:
 	 *	прямоугольника.
 	 *	\param position Новое положение прямоугольника.
 	 */
-	void set_position(const Vector2& position);
+	void set_position(const Point2& position);
 
 	/**
 	 *	\~english
@@ -213,10 +213,10 @@ public:
 	 *	the position of the rectangle. The value of the position variable may be changed if the new
 	 *	corner coordinates become less than rectangle coordinates.
 	 *	\code
-	 *															// {{position}, {  size  }}
+	 *																	// {{position}, {  size  }}
 	 *		IntRect rect(IntVector2(2.f, 2.f), IntVector2(2.f, 2.f));	// {{2.0, 2.0}, {2.0, 2.0}}
-	 *		rect.set_corner_position(IntVector2(5.5f, 5.5f));		// {{2.0, 2.0}, {3.5, 3.5}}
-	 *		rect.set_corner_position(IntVector2(1.f, 1.f));			// {{1.0, 1.0}, {1.0, 1.0}}
+	 *		rect.set_corner_position(IntVector2(5.5f, 5.5f));			// {{2.0, 2.0}, {3.5, 3.5}}
+	 *		rect.set_corner_position(IntVector2(1.f, 1.f));				// {{1.0, 1.0}, {1.0, 1.0}}
 	 *	\endcode
 	 *	\param corner_position The new position of the corner.
 	 *
@@ -227,14 +227,14 @@ public:
 	 *	прямоугольника. Значение переменной, хранящей положение, может быть изменено, если новые
 	 *	координаты угла становятся меньше, чем координаты прямоугольника.
 	 *	\code
-	 *															// {{положен }, { размер }}
+	 *																	// {{положен }, { размер }}
 	 *		IntRect rect(IntVector2(2.f, 2.f), IntVector2(2.f, 2.f));	// {{2.0, 2.0}, {2.0, 2.0}}
-	 *		rect.set_corner_position(IntVector2(5.5f, 5.5f));		// {{2.0, 2.0}, {3.5, 3.5}}
-	 *		rect.set_corner_position(IntVector2(1.f, 1.f));			// {{1.0, 1.0}, {1.0, 1.0}}
+	 *		rect.set_corner_position(IntVector2(5.5f, 5.5f));			// {{2.0, 2.0}, {3.5, 3.5}}
+	 *		rect.set_corner_position(IntVector2(1.f, 1.f));				// {{1.0, 1.0}, {1.0, 1.0}}
 	 *	\endcode
 	 *	\param corner_position Новое положение угла.
 	 */
-	void set_corner_position(const Vector2& corner_position);
+	void set_corner_position(const Point2& corner_position);
 
 	/**
 	 *	\~english
@@ -352,7 +352,7 @@ public:
 	bool operator!=(const DoubleRect& rect) const;
 
 private:
-	Vector2 position_;
+	Point2 position_;
 	Vector2 size_;
 };
 

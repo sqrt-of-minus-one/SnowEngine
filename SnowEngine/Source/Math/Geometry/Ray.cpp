@@ -17,7 +17,7 @@ using namespace snow;
 Ray::Ray() :
 	origin_(),
 	angle_(),
-	ray_point_(Vector2::I)
+	ray_point_(Point2::I)
 {}
 
 Ray::Ray(const Ray& ray) :
@@ -34,7 +34,7 @@ Ray::Ray(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		origin_ = Vector2(object->get_content().at(L"initial_point"));
+		origin_ = Point2(object->get_content().at(L"initial_point"));
 		angle_ = Angle(object->get_content().at(L"angle"));
 	}
 	catch (const std::out_of_range& e)
@@ -45,7 +45,7 @@ Ray::Ray(std::shared_ptr<const json::Element> json) :
 	calc_ray_point_();
 }
 
-Ray::Ray(const Vector2& initial_point, const Angle& angle) :
+Ray::Ray(const Point2& initial_point, const Angle& angle) :
 	origin_(initial_point),
 	angle_(angle.get_normalized_180()),
 	ray_point_()
@@ -53,7 +53,7 @@ Ray::Ray(const Vector2& initial_point, const Angle& angle) :
 	calc_ray_point_();
 }
 
-Ray::Ray(const Vector2& initial_point, const Vector2& point) :
+Ray::Ray(const Point2& initial_point, const Point2& point) :
 	origin_(initial_point),
 	angle_((point - initial_point).get_angle()),
 	ray_point_(point)
@@ -72,7 +72,7 @@ std::shared_ptr<json::Element> Ray::to_json() const
 	return object;
 }
 
-const Vector2& Ray::get_origin() const
+const Point2& Ray::get_origin() const
 {
 	return origin_;
 }
@@ -82,7 +82,7 @@ const Angle& Ray::get_angle() const
 	return angle_;
 }
 
-void Ray::set_origin(const Vector2& point)
+void Ray::set_origin(const Point2& point)
 {
 	origin_ = point;
 }
@@ -94,12 +94,12 @@ void Ray::set_angle(const Angle& angle)
 
 Vector2 Ray::get_direction_vector() const
 {
-	Vector2 point = ray_point_ - origin_;
-	point /= point.length();
-	return point;
+	Vector2 vector = ray_point_ - origin_;
+	vector /= vector.length();
+	return vector;
 }
 
-bool Ray::is_on(const Vector2& point, bool including_ends) const
+bool Ray::is_on(const Point2& point, bool including_ends) const
 {
 	Line line(*this);
 	return line.is_on(point) && origin_.are_on_one_side(ray_point_, point, including_ends);
@@ -115,14 +115,14 @@ bool Ray::is_on(const Ray& ray, bool including_ends) const
 	return angle_ == ray.angle_ && is_on(ray.origin_, including_ends);
 }
 
-std::shared_ptr<Vector2> Ray::intersection(const Line& line, bool including_ends) const
+std::shared_ptr<Point2> Ray::intersection(const Line& line, bool including_ends) const
 {
 	return line.intersection(*this, including_ends);
 }
 
-std::shared_ptr<Vector2> Ray::intersection(const Ray& ray, bool including_ends) const
+std::shared_ptr<Point2> Ray::intersection(const Ray& ray, bool including_ends) const
 {
-	std::shared_ptr<Vector2> point = Line(*this) & Line(ray);
+	std::shared_ptr<Point2> point = Line(*this) & Line(ray);
 	if (point && is_on(*point, including_ends) && ray.is_on(*point, including_ends))
 	{
 		return point;
@@ -130,9 +130,9 @@ std::shared_ptr<Vector2> Ray::intersection(const Ray& ray, bool including_ends) 
 	return nullptr;
 }
 
-std::shared_ptr<Vector2> Ray::intersection(const LineSegment& segment, bool including_ends) const
+std::shared_ptr<Point2> Ray::intersection(const LineSegment& segment, bool including_ends) const
 {
-	std::shared_ptr<Vector2> point = Line(*this).intersection(segment, including_ends);
+	std::shared_ptr<Point2> point = Line(*this).intersection(segment, including_ends);
 	if (point && is_on(*point, including_ends))
 	{
 		return point;
@@ -157,32 +157,32 @@ Ray Ray::operator-() const
 	return ray;
 }
 
-std::shared_ptr<Vector2> Ray::operator*(const Line& line) const
+std::shared_ptr<Point2> Ray::operator*(const Line& line) const
 {
 	return intersection(line, true);
 }
 
-std::shared_ptr<Vector2> Ray::operator*(const Ray& ray) const
+std::shared_ptr<Point2> Ray::operator*(const Ray& ray) const
 {
 	return intersection(ray, true);
 }
 
-std::shared_ptr<Vector2> Ray::operator*(const LineSegment& segment) const
+std::shared_ptr<Point2> Ray::operator*(const LineSegment& segment) const
 {
 	return intersection(segment, true);
 }
 
-std::shared_ptr<Vector2> Ray::operator&(const Line& line) const
+std::shared_ptr<Point2> Ray::operator&(const Line& line) const
 {
 	return intersection(line, false);
 }
 
-std::shared_ptr<Vector2> Ray::operator&(const Ray& ray) const
+std::shared_ptr<Point2> Ray::operator&(const Ray& ray) const
 {
 	return intersection(ray, false);
 }
 
-std::shared_ptr<Vector2> Ray::operator&(const LineSegment& segment) const
+std::shared_ptr<Point2> Ray::operator&(const LineSegment& segment) const
 {
 	return intersection(segment, false);
 }
