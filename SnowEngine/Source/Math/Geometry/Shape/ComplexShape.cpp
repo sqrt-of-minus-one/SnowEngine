@@ -8,6 +8,9 @@
 
 #include "../../Vector/IntVector2.h"
 #include "../DoubleRect.h"
+#include "NullShape.h"
+#include "Polygon.h"
+#include "Ellipse.h"
 #include "../../../Util/Util.h"
 #include "../../../Util/Json/JsonObject.h"
 
@@ -199,7 +202,7 @@ const String& ComplexShape::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool ComplexShape::is_inside(const Vector2& point, bool transformed) const
+bool ComplexShape::is_inside(const Point2& point, bool transformed) const
 {
 	if (transformed)
 	{
@@ -223,6 +226,34 @@ bool ComplexShape::is_inside(const Vector2& point, bool transformed) const
 	case EType::SUB:
 	{
 		return first_->is_inside(point) && !second_->is_inside(point);
+	}
+	}
+}
+
+bool ComplexShape::overlap(const Shape& shape, bool transformed) const
+{
+	if (shape.shape_name() == NullShape::SHAPE_NAME)
+	{
+		return false;
+	}
+	
+	switch (type_)
+	{
+	case EType::AND:
+	{
+		return first_->overlap(shape) || second_->overlap(shape);
+	}
+	case EType::OR:
+	{
+		// Todo
+	}
+	case EType::XOR:
+	{
+		// Todo
+	}
+	case EType::SUB:
+	{
+		// Todo
 	}
 	}
 }

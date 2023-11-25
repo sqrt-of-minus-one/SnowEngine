@@ -28,7 +28,8 @@ public:
 	virtual DoubleRect get_boundary_rect(bool transformed = true) const override;
 
 	virtual const String& shape_name() const override;
-	virtual bool is_inside(const Vector2& point, bool transformed = true) const override;
+	virtual bool is_inside(const Point2& point, bool transformed = true) const override;
+	virtual bool overlap(const Shape& shape, bool transformed = true) const override;
 
 	virtual operator bool() const override;
 

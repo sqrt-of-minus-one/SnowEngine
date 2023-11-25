@@ -15,7 +15,7 @@ public:
 	Ellipse();
 	Ellipse(const Ellipse& ellipse);
 	Ellipse(std::shared_ptr<const json::Element> json);
-	Ellipse(const Vector2& semi_axes, const Vector2& centre = Vector2::ZERO);
+	Ellipse(const Vector2& semi_axes, const Point2& centre = Point2::ZERO);
 	Ellipse(const DoubleRect& rect);
 
 	virtual String to_string() const override;
@@ -26,15 +26,16 @@ public:
 	virtual DoubleRect get_boundary_rect(bool transformed = true) const override;
 
 	virtual const String& shape_name() const override;
-	virtual bool is_inside(const Vector2& point, bool transformed = true) const override;
+	virtual bool is_inside(const Point2& point, bool transformed = true) const override;
+	virtual bool overlap(const Shape& shape, bool transformed = true) const override;
 
 	virtual operator bool() const override;
 
 	const Vector2& get_semi_axes() const;
-	const Vector2& get_centre() const;
+	const Point2& get_centre() const;
 	double get_eccentricity() const;
 	double get_focal_distance() const;
-	std::pair<Vector2, Vector2> get_foci() const;
+	std::pair<Point2, Point2> get_foci() const;
 
 	Ellipse& operator=(const Ellipse& ellipse);
 
@@ -42,12 +43,12 @@ public:
 
 protected:
 	Vector2 semi_axes_;
-	Vector2 centre_;
+	Point2 centre_;
 
 	double eccentricity_;
 	double focal_distance_;
 	bool is_horizontal_;
-	std::pair<Vector2, Vector2> foci_;
+	std::pair<Point2, Point2> foci_;
 
 	virtual void calc_prop_();
 };

@@ -32,16 +32,16 @@ public:
 	virtual DoubleRect get_boundary_rect(bool transformed = true) const = 0;
 	
 	virtual const String& shape_name() const = 0;
-	virtual bool is_inside(const Vector2& point, bool transformed = true) const = 0;
-//	virtual bool overlap(const Shape& shape) const = 0;
-	static bool overlap(const Shape& first, const Shape& second);
+	virtual bool is_inside(const Point2& point, bool transformed = true) const = 0;
+	virtual bool overlap(const Shape& shape, bool transformed = true) const = 0;
+	static bool overlap(const Shape& first, const Shape& second, bool transformed = true);
 
-	const Vector2& get_position() const;
+	const Point2& get_position() const;
 	const Angle& get_rotation() const;
 	const Vector2& get_scale() const;
 	const Transform& get_transform() const;
 
-	void set_position(const Vector2& position);
+	void set_position(const Point2& position);
 	void set_rotation(const Angle& angle);
 	void set_scale(const Vector2& scale);
 	void set_transform(const Transform& transform);
@@ -51,6 +51,7 @@ public:
 	void scale(const Vector2& factor);
 
 	virtual operator bool() const = 0;
+	bool operator%(const Shape& shape) const;
 
 protected:
 	Shape();

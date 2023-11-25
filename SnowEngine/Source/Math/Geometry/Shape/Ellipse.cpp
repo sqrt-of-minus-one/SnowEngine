@@ -7,6 +7,9 @@
 #include "Ellipse.h"
 
 #include "../DoubleRect.h"
+#include "NullShape.h"
+#include "Polygon.h"
+#include "ComplexShape.h"
 #include "../../../Util/Util.h"
 #include "../../../Util/Json/JsonObject.h"
 
@@ -52,11 +55,11 @@ Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 		auto centre_iter = object->get_content().find(L"centre");
 		if (centre_iter != object->get_content().end())
 		{
-			centre_ = Vector2(centre_iter->second);
+			centre_ = Point2(centre_iter->second);
 		}
 		else
 		{
-			centre_ = Vector2(object->get_content().at(L"center"));
+			centre_ = Point2(object->get_content().at(L"center"));
 		}
 	}
 	catch(const std::out_of_range& e)
@@ -66,7 +69,7 @@ Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 	calc_prop_();
 }
 
-Ellipse::Ellipse(const Vector2& semi_axes, const Vector2& centre) :
+Ellipse::Ellipse(const Vector2& semi_axes, const Point2& centre) :
 	Shape(),
 	semi_axes_(semi_axes),
 	centre_(centre),
@@ -153,7 +156,7 @@ DoubleRect Ellipse::get_boundary_rect(bool transformed) const
 	}
 	else
 	{
-		return DoubleRect(Vector2(centre_ - semi_axes_), Vector2(semi_axes_ * 2));
+		return DoubleRect(Point2(centre_ - semi_axes_), Vector2(semi_axes_ * 2));
 	}
 }
 
@@ -162,7 +165,7 @@ const String& Ellipse::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Ellipse::is_inside(const Vector2& point, bool transformed) const
+bool Ellipse::is_inside(const Point2& point, bool transformed) const
 {
 	if (transformed)
 	{
@@ -172,6 +175,34 @@ bool Ellipse::is_inside(const Vector2& point, bool transformed) const
 	{
 		return (point - foci_.first).length() + (point - foci_.second).length() <= 2 * std::max(semi_axes_.get_x(), semi_axes_.get_y());
 	}
+}
+
+bool Ellipse::overlap(const Shape& shape, bool transformed) const
+{
+	if (shape.shape_name() == NullShape::SHAPE_NAME)
+	{
+		return false;
+	}
+
+	const Ellipse* ellipse = dynamic_cast<const Ellipse*>(&shape);
+	if (ellipse)
+	{
+		// Todo
+	}
+	
+	const Polygon* polygon = dynamic_cast<const Polygon*>(&shape);
+	if (polygon)
+	{
+		// Todo
+	}
+
+	const ComplexShape* complex_shape = dynamic_cast<const ComplexShape*>(&shape);
+	if (complex_shape)
+	{
+		return complex_shape->overlap(*this, transformed);
+	}
+
+	return false;
 }
 
 Ellipse::operator bool() const
@@ -184,7 +215,7 @@ const Vector2& Ellipse::get_semi_axes() const
 	return semi_axes_;
 }
 
-const Vector2& Ellipse::get_centre() const
+const Point2& Ellipse::get_centre() const
 {
 	return centre_;
 }
@@ -199,7 +230,7 @@ double Ellipse::get_focal_distance() const
 	return focal_distance_;
 }
 
-std::pair<Vector2, Vector2> Ellipse::get_foci() const
+std::pair<Point2, Point2> Ellipse::get_foci() const
 {
 	return foci_;
 }

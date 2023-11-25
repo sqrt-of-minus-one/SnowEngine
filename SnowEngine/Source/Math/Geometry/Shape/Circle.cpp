@@ -36,11 +36,11 @@ Circle::Circle(std::shared_ptr<const json::Element> json) :
 		auto centre_iter = object->get_content().find(L"centre");
 		if (centre_iter != object->get_content().end())
 		{
-			centre_ = Vector2(centre_iter->second);
+			centre_ = Point2(centre_iter->second);
 		}
 		else
 		{
-			centre_ = Vector2(object->get_content().at(L"center"));
+			centre_ = Point2(object->get_content().at(L"center"));
 		}
 	}
 	catch(const std::out_of_range& e)
@@ -49,7 +49,7 @@ Circle::Circle(std::shared_ptr<const json::Element> json) :
 	}
 }
 
-Circle::Circle(double radius, const Vector2& centre) :
+Circle::Circle(double radius, const Point2& centre) :
 	Ellipse(Vector2(radius, radius), centre)
 {}
 
@@ -83,7 +83,7 @@ const String& Circle::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Circle::is_inside(const Vector2& point, bool transformed) const
+bool Circle::is_inside(const Point2& point, bool transformed) const
 {
 	if (transformed)
 	{

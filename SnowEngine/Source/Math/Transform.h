@@ -19,7 +19,7 @@ namespace snow
  *	\brief Position, rotation, and scale in one class
  *	
  *	The transform object contains the information about position, rotation, and scale.
- *	- The position is the `Vector2` object containing the coordinates.
+ *	- The position is the `Point2` object containing the coordinates.
  *	- The rotation is the `Angle` object containing the angle of rotation.
  *	- The scale is the `Vector2` object containing the factors of scale (`Vector2(1., 1.)` is the
  *	normal scale).
@@ -35,7 +35,7 @@ namespace snow
  *	\brief Положение, поворот и масштаб в одном классе
  *	
  *	Объект преобразования содержит информацию о положении, повороте и масштабе.
- *	- Положение — объект `Vector2`, содержащий координаты.
+ *	- Положение — объект `Point2`, содержащий координаты.
  *	- Поворот — объект `Angle`, содержащий угол поворота.
  *	- Масштаб — объект `Vector2`, содержащий коэффициенты масштаба (`Vector2(1.f, 1.f)` —
  *	нормальный масштаб).
@@ -57,13 +57,13 @@ public:
 	 *	\~english
 	 *	\brief A default transform
 	 *	
-	 *	Creates a default transform: position is `Vector2(0., 0.)`, rotation is `0_deg`, scale is
+	 *	Creates a default transform: position is `Point2(0., 0.)`, rotation is `0_deg`, scale is
 	 *	`Vector2(1., 1.)`.
 	 *	
 	 *	\~russian
 	 *	\brief Преобразование по умолчанию
 	 *	
-	 *	Создаёт преобразование по умолчанию: положение — `Vector2(0., 0.)`, поворот — `0_deg`,
+	 *	Создаёт преобразование по умолчанию: положение — `Point2(0., 0.)`, поворот — `0_deg`,
 	 *	масштаб — `Vector2(1., 1.)`.
 	 */
 	Transform();
@@ -100,7 +100,7 @@ public:
 	 *	\param rotation Поворот.
 	 *	\param scale Масштаб.
 	 */
-	Transform(const Vector2& position, const Angle& rotation, const Vector2& scale);
+	Transform(const Point2& position, const Angle& rotation, const Vector2& scale);
 
 	/**
 	 *	\~english
@@ -183,7 +183,7 @@ public:
 	 *	Позволяет получить положение преобразования.
 	 *	\return Положение преобразования.
 	 */
-	const Vector2& get_position() const noexcept;
+	const Point2& get_position() const noexcept;
 
 	/**
 	 *	\~english
@@ -228,7 +228,7 @@ public:
 	 *	Позволяет изменить положение преобразования.
 	 *	\param degrees Новое положение преобразования.
 	 */
-	void set_position(const Vector2& position) noexcept;
+	void set_position(const Point2& position) noexcept;
 
 	/**
 	 *	\~english
@@ -393,7 +393,7 @@ public:
 	bool operator!=(const Transform& transform) const noexcept;
 
 private:
-	Vector2 position_;
+	Point2 position_;
 	Angle rotation_;
 	Vector2 scale_;
 };

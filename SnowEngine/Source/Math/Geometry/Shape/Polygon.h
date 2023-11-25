@@ -14,6 +14,7 @@ namespace snow
 {
 
 class Ray;
+class LineSegment;
 
 class Polygon : public Shape
 {
@@ -22,8 +23,8 @@ public:
 	Polygon(const Polygon& polygon);
 	Polygon(Polygon&& polygon);
 	Polygon(std::shared_ptr<const json::Element> json);
-	Polygon(const std::vector<Vector2>& vertices);
-	Polygon(std::vector<Vector2>&& vertices);
+	Polygon(const std::vector<Point2>& vertices);
+	Polygon(std::vector<Point2>&& vertices);
 
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;
@@ -33,12 +34,14 @@ public:
 	virtual DoubleRect get_boundary_rect(bool transformed = true) const override;
 
 	virtual const String& shape_name() const override;
-	virtual bool is_inside(const Vector2& point, bool transformed = true) const override;
+	virtual bool is_inside(const Point2& point, bool transformed = true) const override;
+	virtual bool overlap(const Shape& shape, bool transform = true) const override;
 
 	virtual operator bool() const override;
 
-	const std::vector<Vector2>& get_non_transformed_vertices() const;
-	std::vector<Vector2> get_transformed_vertices() const;
+	const std::vector<Point2>& get_non_transformed_vertices() const;
+	std::vector<Point2> get_transformed_vertices() const;
+	std::vector<LineSegment> get_sides(bool transformed) const;
 	int intersections(const Ray& ray) const;
 
 	Polygon& operator=(const Polygon& polygon);
@@ -47,12 +50,12 @@ public:
 	static const String SHAPE_NAME;
 
 protected:
-	std::vector<Vector2> vertices_;
+	std::vector<Point2> vertices_;
 
 private:
 	void fix_();
-	static double perimeter_(const std::vector<Vector2>& vertices);
-	static DoubleRect boundary_rect_(const std::vector<Vector2>& vertices);
+	static double perimeter_(const std::vector<Point2>& vertices);
+	static DoubleRect boundary_rect_(const std::vector<Point2>& vertices);
 };
 
 }

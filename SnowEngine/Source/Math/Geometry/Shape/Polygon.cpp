@@ -7,6 +7,9 @@
 #include "Polygon.h"
 
 #include "../DoubleRect.h"
+#include "NullShape.h"
+#include "Ellipse.h"
+#include "ComplexShape.h"
 #include "../../../Util/Util.h"
 #include "../../../Util/Json/JsonObject.h"
 #include "../../../Util/Json/Element.h"
@@ -40,11 +43,11 @@ Polygon::Polygon(std::shared_ptr<const json::Element> json) :
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
 	{
-		transform_ = Transform(object->get_content().at(L"transform"));
+		set_transform(Transform(object->get_content().at(L"transform")));
 		std::shared_ptr<const json::Array> vertices = util::json_to_array(object->get_content().at(L"vertices"));
 		for (const auto& i : vertices->get_content())
 		{
-			vertices_.push_back(Vector2(i));
+			vertices_.push_back(Point2(i));
 		}
 	}
 	catch(const std::out_of_range& e)
@@ -54,14 +57,14 @@ Polygon::Polygon(std::shared_ptr<const json::Element> json) :
 	fix_();
 }
 
-Polygon::Polygon(const std::vector<Vector2>& vertices) :
+Polygon::Polygon(const std::vector<Point2>& vertices) :
 	Shape(),
 	vertices_(vertices)
 {
 	fix_();
 }
 
-Polygon::Polygon(std::vector<Vector2>&& vertices) :
+Polygon::Polygon(std::vector<Point2>&& vertices) :
 	Shape(),
 	vertices_(std::move(vertices))
 {
@@ -77,7 +80,7 @@ std::shared_ptr<json::Element> Polygon::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::dynamic_pointer_cast<json::JsonObject>(Shape::to_json());
 	std::shared_ptr<json::Array> vertices = std::make_shared<json::Array>();
-	for (const Vector2& i : vertices_)
+	for (const Point2& i : vertices_)
 	{
 		vertices->get_content().push_back(i.to_json());
 	}
@@ -88,7 +91,7 @@ std::shared_ptr<json::Element> Polygon::to_json() const
 double Polygon::area(bool transformed, double accuracy) const
 {
 	double result = 0.;
-	std::vector<Vector2> vertices = vertices_;
+	std::vector<Point2> vertices = vertices_;
 	while (vertices.size() >= 3)
 	{
 		LineSegment segment(vertices[vertices.size() - 2], vertices[0]);
@@ -122,7 +125,7 @@ const String& Polygon::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Polygon::is_inside(const Vector2& point, bool transformed) const
+bool Polygon::is_inside(const Point2& point, bool transformed) const
 {
 	if (transformed)
 	{
@@ -134,24 +137,76 @@ bool Polygon::is_inside(const Vector2& point, bool transformed) const
 	}
 }
 
+bool Polygon::overlap(const Shape& shape, bool transformed) const
+{
+	if (shape.shape_name() == NullShape::SHAPE_NAME)
+	{
+		return false;
+	}
+
+	const Polygon* polygon = dynamic_cast<const Polygon*>(&shape);
+	if (polygon)
+	{
+		std::vector<LineSegment> first_sides = get_sides(transformed);
+		std::vector<LineSegment> second_sides = polygon->get_sides(transformed);
+		for (const LineSegment& first_side : first_sides)
+		{
+			for (const LineSegment& second_side : second_sides)
+			{
+				if (first_side & second_side)
+				{
+					return true;
+				}
+			}
+		}
+		return polygon->is_inside(transformed ? get_transform().untransform(vertices_.front()) : vertices_.front(), transformed);
+	}
+
+	const Ellipse* ellipse = dynamic_cast<const Ellipse*>(&shape);
+	if (ellipse)
+	{
+		// Todo
+	}
+
+	const ComplexShape* complex_shape = dynamic_cast<const ComplexShape*>(&shape);
+	if (complex_shape)
+	{
+		return complex_shape->overlap(*this, transformed);
+	}
+
+	return false;
+}
+
 Polygon::operator bool() const
 {
 	return !vertices_.empty();
 }
 
-const std::vector<Vector2>& Polygon::get_non_transformed_vertices() const
+const std::vector<Point2>& Polygon::get_non_transformed_vertices() const
 {
 	return vertices_;
 }
 
-std::vector<Vector2> Polygon::get_transformed_vertices() const
+std::vector<Point2> Polygon::get_transformed_vertices() const
 {
-	std::vector<Vector2> result;
-	for (const Vector2& i : vertices_)
+	std::vector<Point2> result;
+	for (const Point2& i : vertices_)
 	{
 		result.push_back(get_transform().untransform(i));
 	}
 	return result;
+}
+
+std::vector<LineSegment> Polygon::get_sides(bool transformed) const
+{
+	std::vector<LineSegment> sides;
+	std::vector<Point2> vertices = (transformed ? get_transformed_vertices() : get_non_transformed_vertices());
+	sides.push_back(LineSegment(vertices.back(), vertices.front()));
+	for (int i = 1; i < vertices.size(); i++)
+	{
+		sides.push_back(LineSegment(vertices[i - 1], vertices[i]));
+	}
+	return sides;
 }
 
 int Polygon::intersections(const Ray& ray) const
@@ -164,7 +219,7 @@ int Polygon::intersections(const Ray& ray) const
 	for (int i = 0, prev = vertices_.size() - 1; i < vertices_.size(); prev = i++)
 	{
 		LineSegment segment(vertices_[prev], vertices_[i]);
-		std::shared_ptr<Vector2> point = ray & segment;
+		std::shared_ptr<Point2> point = ray & segment;
 		bool is_on;
 		if (point &&
 			(*point != vertices_[i] ||
@@ -220,14 +275,14 @@ void Polygon::fix_()
 		for (int j = i + 1, j_prev = i; j < vertices_.size(); j_prev = j++)
 		{
 			LineSegment j_segment(vertices_[j_prev], vertices_[j]);
-			std::shared_ptr<Vector2> point = i_segment & j_segment;
+			std::shared_ptr<Point2> point = i_segment & j_segment;
 		}
 	}
 
 #undef NEXT
 }
 
-double Polygon::perimeter_(const std::vector<Vector2>& vertices)
+double Polygon::perimeter_(const std::vector<Point2>& vertices)
 {
 	double perimeter = 0.;
 	for (int i = 0, prev = vertices.size() - 1; i < vertices.size(); prev = i++)
@@ -237,10 +292,10 @@ double Polygon::perimeter_(const std::vector<Vector2>& vertices)
 	return perimeter;
 }
 
-DoubleRect Polygon::boundary_rect_(const std::vector<Vector2>& vertices)
+DoubleRect Polygon::boundary_rect_(const std::vector<Point2>& vertices)
 {
-	Vector2 min = vertices.front(), max = vertices.front();
-	for (const Vector2& i : vertices)
+	Point2 min = vertices.front(), max = vertices.front();
+	for (const Point2& i : vertices)
 	{
 		if (i.get_x() > max.get_x())
 		{

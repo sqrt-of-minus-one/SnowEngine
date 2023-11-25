@@ -15,12 +15,12 @@ using namespace snow;
 		/* Transform: public */
 
 Transform::Transform() :
-	position_(Vector2::ZERO),
+	position_(Point2::ZERO),
 	rotation_(Angle::ZERO),
 	scale_(Vector2(1., 1.))
 {}
 
-Transform::Transform(const Vector2& position, const Angle& rotation, const Vector2& scale) :
+Transform::Transform(const Point2& position, const Angle& rotation, const Vector2& scale) :
 	position_(position),
 	rotation_(rotation),
 	scale_(scale)
@@ -53,7 +53,7 @@ Transform::Transform(std::shared_ptr<const json::Element> json) :
 	}
 	try
 	{
-		position_ = Vector2(object->get_content().at(L"position"));
+		position_ = Point2(object->get_content().at(L"position"));
 		rotation_ = Angle(object->get_content().at(L"rotation"));
 		scale_ = Vector2(object->get_content().at(L"scale"));
 	}
@@ -78,7 +78,7 @@ std::shared_ptr<json::Element> Transform::to_json() const
 	return result;
 }
 
-const Vector2& Transform::get_position() const noexcept
+const Point2& Transform::get_position() const noexcept
 {
 	return position_;
 }
@@ -93,7 +93,7 @@ const Vector2& Transform::get_scale() const noexcept
 	return scale_;
 }
 	
-void Transform::set_position(const Vector2& position) noexcept
+void Transform::set_position(const Point2& position) noexcept
 {
 	position_ = position;
 }

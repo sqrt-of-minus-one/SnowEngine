@@ -7,6 +7,9 @@
 #include "Rectangle.h"
 
 #include "../DoubleRect.h"
+#include "ComplexShape.h"
+#include "Circle.h"
+#include "NullShape.h"
 #include "../../../Util/Util.h"
 #include "../../../Util/Json/JsonObject.h"
 
@@ -40,22 +43,22 @@ Rectangle::Rectangle(std::shared_ptr<const json::Element> json) :
 	}
 	vertices_ = {
 		rect_.get_position(),
-		Vector2(rect_.get_corner_position().get_x(), rect_.get_position().get_y()),
+		Point2(rect_.get_corner_position().get_x(), rect_.get_position().get_y()),
 		rect_.get_corner_position(),
-		Vector2(rect_.get_position().get_x(), rect_.get_corner_position().get_y()) };
+		Point2(rect_.get_position().get_x(), rect_.get_corner_position().get_y()) };
 }
 
 Rectangle::Rectangle(const Vector2& size) :
-	Polygon({ Vector2::ZERO, Vector2(size.get_x(), 0), size, Vector2(0, size.get_y()) }),
-	rect_(Vector2::ZERO, size)
+	Polygon({ Point2::ZERO, Point2(size.get_x(), 0), size, Point2(0, size.get_y()) }),
+	rect_(Point2::ZERO, size)
 {}
 
 Rectangle::Rectangle(const DoubleRect& rect) :
 	Polygon({
 		rect.get_position(),
-		Vector2(rect.get_corner_position().get_x(), rect.get_position().get_y()),
+		Point2(rect.get_corner_position().get_x(), rect.get_position().get_y()),
 		rect.get_corner_position(),
-		Vector2(rect.get_position().get_x(), rect.get_corner_position().get_y()) }),
+		Point2(rect.get_position().get_x(), rect.get_corner_position().get_y()) }),
 	rect_(rect)
 {}
 
@@ -105,7 +108,7 @@ const String& Rectangle::shape_name() const
 	return SHAPE_NAME;
 }
 
-bool Rectangle::is_inside(const Vector2& point, bool transformed) const
+bool Rectangle::is_inside(const Point2& point, bool transformed) const
 {
 	if (transformed)
 	{

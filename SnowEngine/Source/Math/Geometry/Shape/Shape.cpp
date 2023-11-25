@@ -108,13 +108,12 @@ std::unique_ptr<Shape> Shape::unique_move(Shape&& shape)
 	MOVE_(shape, std::make_unique);
 }
 
-bool Shape::overlap(const Shape& first, const Shape& second)
+bool Shape::overlap(const Shape& first, const Shape& second, bool transformed)
 {
-	// Todo
-	return false;
+	return first.overlap(second, transformed);
 }
 
-const Vector2& Shape::get_position() const
+const Point2& Shape::get_position() const
 {
 	return transform_.get_position();
 }
@@ -134,7 +133,7 @@ const Transform& Shape::get_transform() const
 	return transform_;
 }
 
-void Shape::set_position(const Vector2& position)
+void Shape::set_position(const Point2& position)
 {
 	transform_.set_position(position);
 }
@@ -167,6 +166,11 @@ void Shape::rotate(const Angle& delta)
 void Shape::scale(const Vector2& factor)
 {
 	transform_.scale(factor);
+}
+
+bool Shape::operator%(const Shape& shape) const
+{
+	return overlap(shape, true);
 }
 
 		/* Shape: protected */
