@@ -8,12 +8,17 @@
 
 #include "../../../Object.h"
 
+#include <set>
+
 #include "../../Transform.h"
 
 namespace snow
 {
 
 class DoubleRect;
+class Line;
+class Ray;
+class LineSegment;
 
 class Shape : public Object
 {
@@ -35,6 +40,9 @@ public:
 	virtual bool is_inside(const Point2& point, bool transformed = true) const = 0;
 	virtual bool overlap(const Shape& shape, bool transformed = true) const = 0;
 	static bool overlap(const Shape& first, const Shape& second, bool transformed = true);
+	virtual std::set<Point2> intersections(const Line& line, bool transformed = true) const = 0;
+	virtual std::set<Point2> intersections(const Ray& ray, bool transformed = true) const = 0;
+	virtual std::set<Point2> intersections(const LineSegment& segment, bool transformed = true) const = 0;
 
 	const Point2& get_position() const;
 	const Angle& get_rotation() const;

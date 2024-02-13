@@ -7,6 +7,9 @@
 #include "Ellipse.h"
 
 #include "../DoubleRect.h"
+#include "../Line.h"
+#include "../Ray.h"
+#include "../LineSegment.h"
 #include "NullShape.h"
 #include "Polygon.h"
 #include "ComplexShape.h"
@@ -203,6 +206,106 @@ bool Ellipse::overlap(const Shape& shape, bool transformed) const
 	}
 
 	return false;
+}
+
+std::set<Point2> Ellipse::intersections(const Line& line, bool transformed) const
+{
+	if (transformed)
+	{
+		std::set<Point2> result_local = intersections(
+			Line(
+				get_transform().transform(line.get_point()),
+				get_transform().transform(line.get_point() + line.get_direction_vector())),
+			false);
+		std::set<Point2> result;
+		for (Point2 point : result_local)
+		{
+			result.insert(get_transform().untransform(point));
+		}
+		return result;
+	}
+
+	if (line.get_angle() != Angle::RIGHT)
+	{
+		double k = line.get_k();
+		double c = line.get_b() + k * centre_.get_x() - centre_.get_y();
+
+		k *= semi_axes_.get_x() / semi_axes_.get_y();
+		c /= semi_axes_.get_y();
+
+		double D = 1 + k * k - c * c;
+
+		if (D > 0)
+		{
+			double alpha = -c * k / (1 + k * k);
+			double beta = std::sqrt(D) / (1 + k * k);
+			double x1 = alpha - beta;
+			double x2 = alpha + beta;
+			double y1 = k * x1 + c;
+			double y2 = k * x2 + c;
+			
+			return {
+				Point2(semi_axes_.get_x() * x1 + centre_.get_x(), semi_axes_.get_y() * y1 + centre_.get_y()),
+				Point2(semi_axes_.get_x() * x2 + centre_.get_x(), semi_axes_.get_y() * y2 + centre_.get_y()) };
+		}
+		else if (D == 0)
+		{
+			double x = -c * k / (1 + k * k);
+			double y = k * x + c;
+			return { Point2(semi_axes_.get_x() * x + centre_.get_x(), semi_axes_.get_y() * y + centre_.get_y()) };
+		}
+		return {};
+	}
+	else
+	{
+		double c = line.get_point().get_x() - centre_.get_x();
+		if (c > -semi_axes_.get_x() && c < semi_axes_.get_x())
+		{
+			double y = semi_axes_.get_y() * std::sqrt(1 - c * c / semi_axes_.get_x() * semi_axes_.get_x()) + centre_.get_y();
+			return {
+				Point2(line.get_point().get_x(), -y),
+				Point2(line.get_point().get_x(), y) };
+		}
+		else if (c == -semi_axes_.get_x() || c == semi_axes_.get_x())
+		{
+			return { Point2(line.get_point().get_x(), centre_.get_y()) };
+		}
+		return {};
+	}
+}
+
+std::set<Point2> Ellipse::intersections(const Ray& ray, bool transformed, bool including_ends) const
+{
+	std::set<Point2> result = intersections(Line(ray), transformed);
+	for (auto i = result.begin(); i != result.end(); )
+	{
+		if (!ray.is_on(*i, including_ends))
+		{
+			result.erase(i++);
+		}
+		else
+		{
+			i++;
+		}
+	}
+	return result;
+}
+
+std::set<Point2> Ellipse::intersections(const LineSegment& segment, bool transformed, bool including_ends) const
+{
+	std::set<Point2> result = intersections(Line(segment), transformed);
+	for (auto i = result.begin(); i != result.end(); )
+	{
+		if (!segment.is_on(*i, including_ends))
+		{
+			result.erase(i++);
+		}
+		else
+		{
+			i++;
+		}
+	}
+	return result;
 }
 
 Ellipse::operator bool() const

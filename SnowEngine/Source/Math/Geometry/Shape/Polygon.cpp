@@ -19,6 +19,19 @@
 
 using namespace snow;
 
+#define INTERSECTIONS_(obj, )										\
+	std::set<Point2> points;									\
+	std::vector<LineSegment> sides = get_sides(transformed);	\
+	for (const LineSegment& side : sides)						\
+	{															\
+		std::shared_ptr<Point2> point = side & (obj);			\
+		if (point)												\
+		{														\
+			points.insert(*point);								\
+		}														\
+	}															\
+	return points;
+
 		/* Polygon: public */
 
 Polygon::Polygon() :
@@ -97,7 +110,7 @@ double Polygon::area(bool transformed, double accuracy) const
 		LineSegment segment(vertices[vertices.size() - 2], vertices[0]);
 		Line line(segment);
 		double tr_area = segment.length() * line.distance(vertices.back()) * .5;
-		if (intersections(Ray(vertices.back(), segment.get_centre())) % 2 == 1)
+		if (count_ray_intersections(Ray(vertices.back(), segment.get_centre())) % 2 == 1)
 		{
 			result += tr_area;
 		}
@@ -133,7 +146,7 @@ bool Polygon::is_inside(const Point2& point, bool transformed) const
 	}
 	else
 	{
-		return intersections(Ray(point, Angle::ZERO)) % 2 == 1;
+		return count_ray_intersections(Ray(point, Angle::ZERO)) % 2 == 1;
 	}
 }
 
@@ -177,6 +190,21 @@ bool Polygon::overlap(const Shape& shape, bool transformed) const
 	return false;
 }
 
+std::set<Point2> Polygon::intersections(const Line& line, bool transformed) const
+{
+	INTERSECTIONS_(line);
+}
+
+std::set<Point2> Polygon::intersections(const Ray& ray, bool transformed, bool including_ends = true) const
+{
+	INTERSECTIONS_(ray);
+}
+
+std::set<Point2> Polygon::intersections(const LineSegment& segment, bool transformed, bool including_ends = true) const
+{
+	INTERSECTIONS_(segment);
+}
+
 Polygon::operator bool() const
 {
 	return !vertices_.empty();
@@ -209,7 +237,7 @@ std::vector<LineSegment> Polygon::get_sides(bool transformed) const
 	return sides;
 }
 
-int Polygon::intersections(const Ray& ray) const
+int Polygon::count_ray_intersections(const Ray& ray) const
 {
 #define NEXT(i) (i) == vertices_.size() - 1 ? 0 : (i) + 1
 #define NEXT_NEXT(i) (i) == vertices_.size() - 1 ? 1 : ((i) == vertices_.size() - 2 ? 0 : (i) + 2)
