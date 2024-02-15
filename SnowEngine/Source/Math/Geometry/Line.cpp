@@ -17,9 +17,9 @@ using namespace snow;
 		/* Line: public */
 
 Line::Line() :
-	point_(),
-	angle_(),
-	k_()
+	point_(Point2::ZERO),
+	angle_(Angle::ZERO),
+	k_(.0)
 {}
 
 Line::Line(const Line& line) :
@@ -31,7 +31,7 @@ Line::Line(const Line& line) :
 Line::Line(std::shared_ptr<const json::Element> json) :
 	point_(),
 	angle_(),
-	k_()
+	k_(.0)
 {
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
@@ -100,17 +100,17 @@ std::shared_ptr<json::Element> Line::to_json() const
 	return object;
 }
 
-const Point2& Line::get_point() const
+const Point2& Line::get_point() const noexcept
 {
 	return point_;
 }
 
-const Angle& Line::get_angle() const
+const Angle& Line::get_angle() const noexcept
 {
 	return angle_;
 }
 
-void Line::set_point(const Point2& point)
+void Line::set_point(const Point2& point) noexcept
 {
 	point_ = point;
 }
@@ -142,12 +142,12 @@ Vector2 Line::get_direction_vector() const
 	}
 	double cos_sq = 1 / (1 + k_ * k_);
 	double sin_sq = 1 - cos_sq;
-	return Vector2(sqrt(cos_sq), angle_ >= Angle::ZERO ? sqrt(sin_sq) : -sqrt(sin_sq));
+	return Vector2(std::sqrt(cos_sq), angle_ >= Angle::ZERO ? std::sqrt(sin_sq) : -std::sqrt(sin_sq));
 }
 
 double Line::get_b() const
 {
-	return point_.get_y() - k_ * point_.get_x();
+	return point_.get_y() - get_k() * point_.get_x();
 }
 
 bool Line::is_on(const Point2& point) const
@@ -170,7 +170,7 @@ bool Line::is_on(const Ray& ray) const
 	return is_on(ray.get_origin()) && is_on(ray.get_ray_point());
 }
 
-bool Line::is_parallel(const Line& line) const
+bool Line::is_parallel(const Line& line) const noexcept
 {
 	return angle_ == line.angle_;
 }
@@ -233,7 +233,7 @@ std::shared_ptr<Point2> Line::intersection(const Line& line) const
 std::shared_ptr<Point2> Line::intersection(const Ray& ray, bool including_ends) const
 {
 	Line line(ray);
-	std::shared_ptr<Point2> point = operator&(line);
+	std::shared_ptr<Point2> point = intersection(line);
 	if (point && ray.get_origin().are_on_one_side(ray.get_ray_point(), *point, including_ends))
 	{
 		return point;
@@ -244,7 +244,7 @@ std::shared_ptr<Point2> Line::intersection(const Ray& ray, bool including_ends) 
 std::shared_ptr<Point2> Line::intersection(const LineSegment& segment, bool including_ends) const
 {
 	Line line(segment);
-	std::shared_ptr<Point2> point = operator&(line);
+	std::shared_ptr<Point2> point = intersection(line);
 	if (point && !point->are_on_one_side(segment.get_endpoints().first, segment.get_endpoints().second, including_ends))
 	{
 		return point;
@@ -252,7 +252,7 @@ std::shared_ptr<Point2> Line::intersection(const LineSegment& segment, bool incl
 	return nullptr;
 }
 
-Line& Line::operator=(const Line& line)
+Line& Line::operator=(const Line& line) noexcept
 {
 	point_ = line.point_;
 	angle_ = line.angle_;

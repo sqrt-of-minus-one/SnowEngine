@@ -23,7 +23,8 @@ class Vector2;
  *	\brief The class of two-dimensional integer vector
  *	
  *	This class represents a two-dimensional integer vector. It has two integer coordinates: X and
- *	Y. You can access them via `get_x()`, `get_y()` and `set_x()`, `set_y()` methods.
+ *	Y. You can access them via `get_x()`, `get_y()` and `set_x()`, `set_y()` methods. The
+ *	`IntPoint2` is an alias of the `IntVector2`.
  *	\sa
  *	- `IntVector3`: three-dimensional integer vector
  *	- `Vector2`, `Vector3`: real vectors
@@ -33,7 +34,7 @@ class Vector2;
  *	
  *	Этот класс представляет двумерный целочисленный вектор. Он имеет две целочисленные координаты:
  *	X и Y. Вы можете получить к ним доступ с помощью методов `get_x()`, `get_y()` и `set_x()`,
- *	`set_y()`.
+ *	`set_y()`. `IntPoint2` является псевдонимом класса `IntVector2`.
  *	\sa
  *	- `IntVector3`: трёхмерный целочисленный вектор
  *	- `Vector2`, `Vector3`: вещественные векторы
@@ -775,6 +776,82 @@ public:
 	 *	\return `true`, если векторы не равны, иначе `false`.
 	 */
 	bool operator!=(const IntVector2& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y.
+	*/
+	bool operator<(const IntVector2& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y.
+	*/
+	bool operator>(const IntVector2& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y.
+	*/
+	bool operator<=(const IntVector2& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y.
+	*/
+	bool operator>=(const IntVector2& vector) const noexcept;
 
 			/* CAST OPERATORS */
 

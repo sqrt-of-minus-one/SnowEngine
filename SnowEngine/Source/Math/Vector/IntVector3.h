@@ -25,7 +25,7 @@ class Vector3;
  *
  *	This class represents a three-dimensional integer vector. It has three integer coordinates: X,
  *	Y, and Z. You can access them via `get_x()`, `get_y()`, `get_z()` and `set_x()`, `set_y()`,
- *	`set_z()` methods.
+ *	`set_z()` methods. The `IntPoint3` is the alias of the `IntVector3`.
  *	\sa
  *	- `IntVector2`: two-dimensional vector
  *	- `Vector2`, `Vector3`: real vectors
@@ -35,7 +35,7 @@ class Vector3;
  *
  *	Этот класс представляет трёхмерный целочисленный вектор. Он имеет три целочисленные координаты:
  *	X, Y и Z. Вы можете получить к ним доступ с помощью методов `get_x()`, `get_y()`, `get_z()` и
- *	`set_x()`, `set_y()`, `set_z()`.
+ *	`set_x()`, `set_y()`, `set_z()`. `IntPoint3` является псевдонимом класса `IntVector3`.
  *	\sa
  *	- `IntVector2`: двумерный вектор
  *	- `Vector2`, `Vector3`: вещественные векторы
@@ -854,6 +854,82 @@ public:
 	 *	\return `true`, если векторы не равны, иначе `false`.
 	 */
 	bool operator!=(const IntVector3& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared. If Y coordinates are equal, Z coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y. Если координаты Y равны, сравниваются координаты Z.
+	*/
+	bool operator<(const IntVector3& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared. If Y coordinates are equal, Z coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y. Если координаты Y равны, сравниваются координаты Z.
+	*/
+	bool operator>(const IntVector3& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared. If Y coordinates are equal, Z coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y. Если координаты Y равны, сравниваются координаты Z.
+	*/
+	bool operator<=(const IntVector3& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared. If Y coordinates are equal, Z coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y. Если координаты Y равны, сравниваются координаты Z.
+	*/
+	bool operator>=(const IntVector3& vector) const noexcept;
 
 			/* CAST OPERATORS */
 

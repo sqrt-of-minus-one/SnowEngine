@@ -28,6 +28,8 @@ wchar_t type_to_char_(ComplexShape::EType type)
 		return L'^';
 	case ComplexShape::EType::SUB:
 		return L'\\';
+	default:
+		throw std::invalid_argument("Invalid complex shape type");
 	}
 }
 
@@ -54,11 +56,18 @@ ComplexShape::EType char_to_type_(wchar_t ch)
 
 		/* ComplexShape: public */
 
+ComplexShape::ComplexShape() :
+	Shape(),
+	type_(),
+	first_(std::make_unique<NullShape>()),
+	second_(std::make_unique<NullShape>())
+{}
+
 ComplexShape::ComplexShape(const ComplexShape& shape) :
 	Shape(shape),
 	type_(shape.type_),
-	first_(std::make_unique<Shape>(*shape.first_)),
-	second_(std::make_unique<Shape>(*shape.second_))
+	first_(Shape::unique_copy(*shape.first_)),
+	second_(Shape::unique_copy(*shape.second_))
 {}
 
 ComplexShape::ComplexShape(ComplexShape&& shape) :
@@ -102,7 +111,7 @@ std::shared_ptr<json::Element> ComplexShape::to_json() const
 	return object;
 }
 
-double ComplexShape::area(bool transformed, double accuracy) const
+double ComplexShape::area(bool transformed) const
 {
 	DoubleRect boundary = get_boundary_rect(false);
 	Point2 from = boundary.get_position();
@@ -147,7 +156,7 @@ double ComplexShape::area(bool transformed, double accuracy) const
 		{
 			return .0;
 		}
-	} while (std::abs(new_result - result) / new_result > accuracy && n <= N_MAX);
+	} while (std::abs(new_result - result) / new_result > area_accuracy && n <= N_MAX);
 		
 	if (transformed)
 	{
@@ -197,7 +206,7 @@ DoubleRect ComplexShape::get_boundary_rect(bool transform) const
 	return DoubleRect();
 }
 
-const String& ComplexShape::shape_name() const
+const String& ComplexShape::shape_name() const noexcept
 {
 	return SHAPE_NAME;
 }
@@ -258,13 +267,28 @@ bool ComplexShape::overlap(const Shape& shape, bool transformed) const
 	}
 }
 
-ComplexShape::operator bool() const
+std::set<Point2> ComplexShape::intersections(const Line& line, bool transformed = true) const
+{
+	// Todo
+}
+
+std::set<Point2> ComplexShape::intersections(const Ray& ray, bool transformed = true) const
+{
+	// Todo
+}
+
+std::set<Point2> ComplexShape::intersections(const LineSegment& segment, bool transformed = true) const
+{
+	// Todo
+}
+
+ComplexShape::operator bool() const noexcept
 {
 	switch (type_)
 	{
 	case EType::AND:
 	{
-		return static_cast<bool>(*first_) && static_cast<bool>(*second_);
+		return static_cast<bool>(*first_) && static_cast<bool>(*second_) && first_->overlap(*second_);
 	}
 	case EType::OR:
 	{
@@ -285,8 +309,8 @@ ComplexShape& ComplexShape::operator=(const ComplexShape& shape)
 {
 	set_transform(shape.get_transform());
 	type_ = shape.type_;
-	first_ = Shape::unique_from_json(shape.first_->to_json());
-	second_ = Shape::unique_from_json(shape.second_->to_json());
+	first_ = Shape::unique_copy(*shape.first_);
+	second_ = Shape::unique_copy(*shape.second_);
 	return *this;
 }
 
@@ -538,6 +562,8 @@ ComplexShape& ComplexShape::operator/=(Shape&& shape)
 }
 
 const String ComplexShape::SHAPE_NAME = L"Complex";
+
+double ComplexShape::area_accuracy = .01;
 
 		/* ComplexShape: private */
 

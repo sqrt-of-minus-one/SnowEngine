@@ -26,7 +26,7 @@ class Angle;
  *
  *	This class represents a three-dimensional vector. It has three real coordinates: X, Y, and Z.
  *	You can access them via `get_x()`, `get_y()`, `get_z()` and `set_x()`, `set_y()`, `set_z()`
- *	methods.
+ *	methods. The `Point3` is an alias of the `Vector3`.
  *	\sa
  *	- `Vector2`: two-dimensional vector
  *	- `IntVector2`, `IntVector3`: vectors with integer coordinates
@@ -36,7 +36,7 @@ class Angle;
  *
  *	Этот класс представляет трёхмерный вектор. Он имеет три вещественные координаты: X, Y и Z. Вы
  *	можете получить к ним доступ с помощью методов `get_x()`, `get_y()`, `get_z()` и `set_x()`,
- *	`set_y()`, `set_z()`.
+ *	`set_y()`, `set_z()`. `Point3` является псевдонимом класса `Vector3`.
  *	\sa
  *	- `Vector2`: двумерный вектор
  *	- `IntVector2`, `IntVector3`: векторы с целочисленными координатами
@@ -345,13 +345,14 @@ public:
 	 *	
 	 *	Allows to get an angle between the vector and the positive direction of Z-axis (a polar
 	 *	angle). The result is between 0° and 180°.
-	 *	\return A polar angle.
+	 *	\return A polar angle. A zero angle if the vector is zero.
 	 *	
 	 *	\~russian
 	 *	\brief Зенитный угол вектора
 	 *	
 	 *	Позволяет получить угол между ветором и положительным направлением оси Z (зенитный угол).
 	 *	Результат находится между 0° и 180°.
+	 *	\return Зенитный угол. Нулевой угол, если вектор нулевой.
 	 */
 	Angle get_polar_angle() const;
 
@@ -362,13 +363,14 @@ public:
 	 *	Allows to get an angle between an orthogonal projection of the vector on the OXY plane
 	 *	and the positive direction of X-axis (an azimuthal angle). The result is between -180° and
 	 *	180°.
-	 *	\return An azimuthal angle.
+	 *	\return An azimuthal angle. A zero angle if the vector is zero.
 	 *	
 	 *	\~russian
 	 *	\brief Азимутальный угол вектора
 	 *	
 	 *	Позволяет получить угол между ортогональной проекцией вектора на плоскость OXY и
 	 *	положительным направлением оси X (азимутальный угол). Результат лежит между -180° и 180°.
+	 *	\return Азимутальный угол. Нулевой угол, если вектор нулевой.
 	 */
 	Angle get_azimuthal_angle() const;
 
@@ -378,12 +380,14 @@ public:
 	 *
 	 *	Allows to get an angle between two vectors. The result is between 0° and 180°.
 	 *	\return An angle between two vectors.
+	 *	\throw std::domain_error One of the vectors is zero.
 	 *
 	 *	\~russian
 	 *	\brief Угол между двумя векторами
 	 *
 	 *	Позволяет получить угол между двумя векторами. Результат лежит между 0° и 180°.
 	 *	\return Угол между двумя векторами.
+	 *	\throw std::domain_error Один из векторов нулевой.
 	 */
 	Angle get_angle(const Vector3& vector) const;
 
@@ -1113,6 +1117,82 @@ public:
 	 */
 	bool operator!=(const Vector3& vector) const noexcept;
 
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared. If Y coordinates are equal, Z coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y. Если координаты Y равны, сравниваются координаты Z.
+	*/
+	bool operator<(const Vector3& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared. If Y coordinates are equal, Z coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y. Если координаты Y равны, сравниваются координаты Z.
+	*/
+	bool operator>(const Vector3& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared. If Y coordinates are equal, Z coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y. Если координаты Y равны, сравниваются координаты Z.
+	*/
+	bool operator<=(const Vector3& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared. If Y coordinates are equal, Z coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y. Если координаты Y равны, сравниваются координаты Z.
+	*/
+	bool operator>=(const Vector3& vector) const noexcept;
+
 			/* CAST OPERATORS */
 
 	/**
@@ -1179,14 +1259,14 @@ public:
 	 *
 	 *	The zero vector. Each of its X, Y, and Z coordinates is zero. It's \f$\{0, 0, 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::I`, `Vector3::J`, `Vector3::K`
+	 *	- `Vector3::I`, `Vector3::J`, `Vector3::K`, `Vector3::ONE`
 	 *
 	 *	\~russian
 	 *	\brief Нулевой вектор
 	 *
 	 *	Нулевой вектор. Каждая из его координат X, Y и Z равна нулю: \f$\{0; 0; 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::I`, `Vector3::J`, `Vector3::K`
+	 *	- `Vector3::I`, `Vector3::J`, `Vector3::K`, `Vector3::ONE`
 	 */
 	static const Vector3 ZERO;
 
@@ -1196,14 +1276,14 @@ public:
 	 *
 	 *	The ort of the abscissa axis. It's \f$\{1, 0, 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::J`, `Vector3::K`
+	 *	- `Vector3::ZERO`, `Vector3::J`, `Vector3::K`, `Vector3::ONE`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси X
 	 *
 	 *	Орт оси абсцисс: \f$\{1; 0; 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::J`, `Vector3::K`
+	 *	- `Vector3::ZERO`, `Vector3::J`, `Vector3::K`, `Vector3::ONE`
 	 */
 	static const Vector3 I;
 
@@ -1213,14 +1293,14 @@ public:
 	 *
 	 *	The ort of the ordinate axis. It's \f$\{0, 1, 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::K`
+	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::K`, `Vector3::ONE`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси Y
 	 *
 	 *	Орт оси ординат: \f$\{0; 1; 0\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::K`
+	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::K`, `Vector3::ONE`
 	 */
 	static const Vector3 J;
 	
@@ -1230,17 +1310,34 @@ public:
 	 *
 	 *	The ort of the applicate axis. It's \f$\{0, 0, 1\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::J`
+	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::J`, `Vector3::ONE`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси Z
 	 *
 	 *	Орт оси аппликат: \f$\{0; 0; 1\}\f$.
 	 *	\sa
-	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::J`
+	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::J`, `Vector3::ONE`
 	 */
 	static const Vector3 K;
 		
+	/**
+	 *	\~english
+	 *	\brief The vector whose all coordinates are 1
+	 *	
+	 *	The vector \f$\{1, 1, 1\}\f$.
+	 *	\sa
+	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::J`, `Vector3::K`
+	 *	
+	 *	\~russian
+	 *	\brief Вектор, все координаты которого равны 1
+	 *	
+	 *	Вектор \f$\{1; 1; 1\}\f$.
+	 *	\sa
+	 *	- `Vector3::ZERO`, `Vector3::I`, `Vector3::J`, `Vector3::K`
+	 */
+	static const Vector3 ONE;
+
 private:
 	double x_, y_, z_;
 };

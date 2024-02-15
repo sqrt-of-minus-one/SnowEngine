@@ -15,6 +15,7 @@
 
 using namespace snow;
 
+// json is std::shared_ptr<const json::Element>; make is either std::make_shared or std::make_unique
 #define FROM_JSON_(json, make)																						\
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);									\
 	String shape;																									\
@@ -38,7 +39,8 @@ using namespace snow;
 	if (shape == Polygon::SHAPE_NAME)																				\
 		return make<Polygon>(json);																					\
 	if (shape == Ellipse::SHAPE_NAME)																				\
-		return make<Ellipse>(json);
+		return make<Ellipse>(json);																					\
+	throw std::invalid_argument("Couldn't create a share: the JSON object contains an unknown shape name");
 
 #define COPY_(shape, make)															\
 	if ((shape).shape_name() == Rectangle::SHAPE_NAME)								\
@@ -52,7 +54,8 @@ using namespace snow;
 	if ((shape).shape_name() == Polygon::SHAPE_NAME)								\
 		return make<Polygon>(*dynamic_cast<const Polygon*>(&(shape)));				\
 	if ((shape).shape_name() == Ellipse::SHAPE_NAME)								\
-		return make<Ellipse>(*dynamic_cast<const Ellipse*>(&(shape)));
+		return make<Ellipse>(*dynamic_cast<const Ellipse*>(&(shape)));				\
+	return nullptr;
 
 #define MOVE_(shape, make)																	\
 	if ((shape).shape_name() == Rectangle::SHAPE_NAME)										\
@@ -66,7 +69,8 @@ using namespace snow;
 	if ((shape).shape_name() == Polygon::SHAPE_NAME)										\
 		return make<Polygon>(std::move(*dynamic_cast<const Polygon*>(&(shape))));			\
 	if ((shape).shape_name() == Ellipse::SHAPE_NAME)										\
-		return make<Ellipse>(std::move(*dynamic_cast<const Ellipse*>(&(shape))));
+		return make<Ellipse>(std::move(*dynamic_cast<const Ellipse*>(&(shape))));			\
+	return nullptr;
 
 		/* Shape: public */
 
@@ -113,57 +117,57 @@ bool Shape::overlap(const Shape& first, const Shape& second, bool transformed)
 	return first.overlap(second, transformed);
 }
 
-const Point2& Shape::get_position() const
+const Point2& Shape::get_position() const noexcept
 {
 	return transform_.get_position();
 }
 
-const Angle& Shape::get_rotation() const
+const Angle& Shape::get_rotation() const noexcept
 {
 	return transform_.get_rotation();
 }
 
-const Vector2& Shape::get_scale() const
+const Vector2& Shape::get_scale() const noexcept
 {
 	return transform_.get_scale();
 }
 
-const Transform& Shape::get_transform() const
+const Transform& Shape::get_transform() const noexcept
 {
 	return transform_;
 }
 
-void Shape::set_position(const Point2& position)
+void Shape::set_position(const Point2& position) noexcept
 {
 	transform_.set_position(position);
 }
 
-void Shape::set_rotation(const Angle& rotation)
+void Shape::set_rotation(const Angle& rotation) noexcept
 {
 	transform_.set_rotation(rotation);
 }
 
-void Shape::set_scale(const Vector2& scale)
+void Shape::set_scale(const Vector2& scale) noexcept
 {
 	transform_.set_scale(scale);
 }
 
-void Shape::set_transform(const Transform& transform)
+void Shape::set_transform(const Transform& transform) noexcept
 {
 	transform_ = transform;
 }
 
-void Shape::move(const Vector2& delta)
+void Shape::move(const Vector2& delta) noexcept
 {
 	transform_.move(delta);
 }
 
-void Shape::rotate(const Angle& delta)
+void Shape::rotate(const Angle& delta) noexcept
 {
 	transform_.rotate(delta);
 }
 
-void Shape::scale(const Vector2& factor)
+void Shape::scale(const Vector2& factor) noexcept
 {
 	transform_.scale(factor);
 }

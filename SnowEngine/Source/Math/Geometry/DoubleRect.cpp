@@ -17,8 +17,8 @@ using namespace snow;
 		/* DoubleRect: public */
 
 DoubleRect::DoubleRect() :
-	position_(),
-	size_()
+	position_(Point2::ZERO),
+	size_(Vector2::ZERO)
 {}
 
 DoubleRect::DoubleRect(const DoubleRect& rect) :
@@ -77,7 +77,7 @@ std::shared_ptr<json::Element> DoubleRect::to_json() const
 	return rect;
 }
 
-const Point2& DoubleRect::get_position() const
+const Point2& DoubleRect::get_position() const noexcept
 {
 	return position_;
 }
@@ -87,12 +87,12 @@ Point2 DoubleRect::get_corner_position() const
 	return position_ + size_;
 }
 
-const Vector2& DoubleRect::get_size() const
+const Vector2& DoubleRect::get_size() const noexcept
 {
 	return size_;
 }
 	
-void DoubleRect::set_position(const Point2& position)
+void DoubleRect::set_position(const Point2& position) noexcept
 {
 	position_ = position;
 }
@@ -105,7 +105,7 @@ void DoubleRect::set_corner_position(const Point2& corner_position)
 	position_.set_y(std::min(position_.get_y(), corner_position.get_y()));
 }
 
-void DoubleRect::set_size(const Vector2& size)
+void DoubleRect::set_size(const Vector2& size) noexcept
 {
 	size_ = size;
 	if (size_.get_x() < 0.)
@@ -129,29 +129,31 @@ bool DoubleRect::overlap(const DoubleRect& rect) const
 		get_corner_position().get_y() >= rect.position_.get_y();
 }
 
-double DoubleRect::perimeter() const
+double DoubleRect::perimeter() const noexcept
 {
 	return 2. * (size_.get_x() + size_.get_y());
 }
 
-double DoubleRect::area() const
+double DoubleRect::area() const noexcept
 {
 	return size_.get_x() * size_.get_y();
 }
 
-DoubleRect& DoubleRect::operator=(const DoubleRect& rect)
+DoubleRect& DoubleRect::operator=(const DoubleRect& rect) noexcept
 {
 	position_ = rect.position_;
 	size_ = rect.size_;
 	return *this;
 }
 
-bool DoubleRect::operator==(const DoubleRect& rect) const
+bool DoubleRect::operator==(const DoubleRect& rect) const noexcept
 {
 	return position_ == rect.position_ && size_ == rect.size_;
 }
 
-bool DoubleRect::operator!=(const DoubleRect& rect) const
+bool DoubleRect::operator!=(const DoubleRect& rect) const noexcept
 {
 	return !(*this == rect);
 }
+
+const DoubleRect DoubleRect::ZERO(Point2::ZERO, Vector2::ZERO);

@@ -23,8 +23,7 @@ namespace snow
  *	\brief The class of a rectangle with integer sides
  *	
  *	This class represents a rectangle whose sides are integer. The rectangle is set by its position
- *	and size. The position of the rectangle is the position of its corner with the smallest
- *	coordinates.
+ *	and size. The position of the rectangle is the position of its corner nearest to the origin.
  *	\sa
  *	- `DoubleRect`: the rectangle with real sides
  *	
@@ -32,8 +31,8 @@ namespace snow
  *	\brief Класс прямоугольника с целочисленными сторонами
  *	
  *	Этот класс представляет прямоугольник, чьи стороны целочисленны. Прямоугольник задаётся
- *	положением и размером. Положение прямоугольника — это положение его угла с наименьшими
- *	координатами.
+ *	положением и размером. Положение прямоугольника — это положение его угла, ближайшего к началу
+ *	координат.
  *	\sa
  *	- `DoubleRect`: прямоугольник с вещественными сторонами
  */
@@ -207,7 +206,7 @@ public:
 	 *	прямоугольника.
 	 *	\param position Новое положение прямоугольника.
 	 */
-	void set_position(const IntPoint2& position);
+	void set_position(const IntPoint2& position) noexcept;
 
 	/**
 	 *	\~english
@@ -253,7 +252,7 @@ public:
 	 *	Позволяет установить размер прямоугольника без изменения его положения.
 	 *	\param size Новый размер.
 	 */
-	void set_size(const IntVector2& size);
+	void set_size(const IntVector2& size) noexcept;
 	
 	/**
 	 *	\~english
@@ -285,7 +284,7 @@ public:
 	 *	Вычисляет периметр прямоугольника.
 	 *	\return Периметр.
 	 */
-	int perimeter() const;
+	int perimeter() const noexcept;
 
 	/**
 	 *	\~english
@@ -300,7 +299,7 @@ public:
 	 *	Вычисляет площадь прямоугольника.
 	 *	\return Площадь.
 	 */
-	int area() const;
+	int area() const noexcept;
 	
 			/* OPERATORS */
 
@@ -319,7 +318,7 @@ public:
 	 *	\param rect Прямоугольник, который будет скопирован.
 	 *	\return Ссылка на себя.
 	 */
-	IntRect& operator=(const IntRect& rect);
+	IntRect& operator=(const IntRect& rect) noexcept;
 
 	/**
 	 *	\~english
@@ -336,7 +335,7 @@ public:
 	 *	\param rect Прямоугольник для сравнения.
 	 *	\return `true`, если прямоугольники равны, иначе `false`.
 	 */
-	bool operator==(const IntRect& rect) const;
+	bool operator==(const IntRect& rect) const noexcept;
 
 	/**
 	 *	\~english
@@ -353,7 +352,22 @@ public:
 	 *	\param rect Прямоугольник для сравнения.
 	 *	\return `true`, если прямоугольники не равны, иначе `false`.
 	 */
-	bool operator!=(const IntRect& rect) const;
+	bool operator!=(const IntRect& rect) const noexcept;
+
+			/* CONSTANTS */
+
+	/**
+	 *	\~english
+	 *	\brief A zero rectangle
+	 *	
+	 *	The rectangle with zero size in zero coordinates.
+	 *	
+	 *	\~russian
+	 *	\brief Нулевой прямоугольник
+	 *	
+	 *	Прямоугольник нулевого размера в нулевых координатах.
+	 */
+	static const IntRect ZERO;
 
 private:
 	IntPoint2 position_;

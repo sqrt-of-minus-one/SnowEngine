@@ -178,8 +178,11 @@ Angle Vector3::get_azimuthal_angle() const
 
 Angle Vector3::get_angle(const Vector3& vector) const
 {
-	return (is_zero() || vector.is_zero()) ? Angle::ZERO :
-		math::arccos((*this & vector) / (length() * vector.length()));
+	if (is_zero() || vector.is_zero())
+	{
+		throw std::domain_error("Attempt to find an angle between two vectors when one of them is zero");
+	}
+	return math::arccos((*this & vector) / (length() * vector.length()));
 }
 
 bool Vector3::is_collinear(const Vector3& vector) const noexcept
@@ -413,6 +416,58 @@ bool Vector3::operator!=(const Vector3& vector) const noexcept
 	return x_ != vector.x_ || y_ != vector.y_ || z_ != vector.z_;
 }
 
+bool Vector3::operator<(const Vector3& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		if (y_ == vector.y_)
+		{
+			return z_ < vector.z_;
+		}
+		return y_ < vector.y_;
+	}
+	return x_ < vector.x_;
+}
+
+bool Vector3::operator>(const Vector3& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		if (y_ == vector.y_)
+		{
+			return z_ > vector.z_;
+		}
+		return y_ > vector.y_;
+	}
+	return x_ > vector.x_;
+}
+
+bool Vector3::operator<=(const Vector3& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		if (y_ == vector.y_)
+		{
+			return z_ <= vector.z_;
+		}
+		return y_ <= vector.y_;
+	}
+	return x_ <= vector.x_;
+}
+
+bool Vector3::operator>=(const Vector3& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		if (y_ == vector.y_)
+		{
+			return z_ >= vector.z_;
+		}
+		return y_ >= vector.y_;
+	}
+	return x_ >= vector.x_;
+}
+
 Vector3::operator Vector2() const
 {
 	return Vector2(x_, y_);
@@ -427,3 +482,4 @@ const Vector3 Vector3::ZERO(0., 0., 0.);
 const Vector3 Vector3::I(1., 0., 0.);
 const Vector3 Vector3::J(0., 1., 0.);
 const Vector3 Vector3::K(0., 0., 1.);
+const Vector3 Vector3::ONE(1., 1., 1.);

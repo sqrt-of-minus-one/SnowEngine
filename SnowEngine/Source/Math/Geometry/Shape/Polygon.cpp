@@ -19,12 +19,12 @@
 
 using namespace snow;
 
-#define INTERSECTIONS_(obj, )										\
+#define INTERSECTIONS_(obj)										\
 	std::set<Point2> points;									\
 	std::vector<LineSegment> sides = get_sides(transformed);	\
 	for (const LineSegment& side : sides)						\
 	{															\
-		std::shared_ptr<Point2> point = side & (obj);			\
+		std::shared_ptr<Point2> point = side.intersection(obj);	\
 		if (point)												\
 		{														\
 			points.insert(*point);								\
@@ -84,7 +84,7 @@ Polygon::Polygon(std::vector<Point2>&& vertices) :
 	fix_();
 }
 
-String Polygon::to_string() const
+String Polygon::to_string() const noexcept
 {
 	return SHAPE_NAME;
 }
@@ -101,22 +101,26 @@ std::shared_ptr<json::Element> Polygon::to_json() const
 	return object;
 }
 
-double Polygon::area(bool transformed, double accuracy) const
+double Polygon::area(bool transformed) const
 {
 	double result = 0.;
 	std::vector<Point2> vertices = vertices_;
+	// Split the polygon into triangles and find their area
 	while (vertices.size() >= 3)
 	{
 		LineSegment segment(vertices[vertices.size() - 2], vertices[0]);
 		Line line(segment);
-		double tr_area = segment.length() * line.distance(vertices.back()) * .5;
-		if (count_ray_intersections(Ray(vertices.back(), segment.get_centre())) % 2 == 1)
+		double tr_area = segment.length() * line.distance(vertices.back()) * .5; // The triangle area
+		if (tr_area != 0.)
 		{
-			result += tr_area;
-		}
-		else
-		{
-			result -= tr_area;
+			if (count_ray_intersections(Ray(vertices.back(), segment.get_centre())) % 2 == 1)
+			{
+				result += tr_area;
+			}
+			else
+			{
+				result -= tr_area;
+			}
 		}
 		vertices.pop_back();
 	}
@@ -125,7 +129,13 @@ double Polygon::area(bool transformed, double accuracy) const
 
 double Polygon::perimeter(bool transformed) const
 {
-	return perimeter_(transformed ? get_transformed_vertices() : get_non_transformed_vertices());
+	double perimeter = 0.;
+	std::vector<LineSegment> sides = get_sides(transformed);
+	for (const LineSegment& side : sides)
+	{
+		perimeter += side.length();
+	}
+	return perimeter;
 }
 
 DoubleRect Polygon::get_boundary_rect(bool transformed) const
@@ -133,7 +143,7 @@ DoubleRect Polygon::get_boundary_rect(bool transformed) const
 	return boundary_rect_(transformed ? get_transformed_vertices() : get_non_transformed_vertices());
 }
 
-const String& Polygon::shape_name() const
+const String& Polygon::shape_name() const noexcept
 {
 	return SHAPE_NAME;
 }
@@ -187,7 +197,7 @@ bool Polygon::overlap(const Shape& shape, bool transformed) const
 		return complex_shape->overlap(*this, transformed);
 	}
 
-	return false;
+	throw std::invalid_argument("Unknown shape");
 }
 
 std::set<Point2> Polygon::intersections(const Line& line, bool transformed) const
@@ -195,22 +205,22 @@ std::set<Point2> Polygon::intersections(const Line& line, bool transformed) cons
 	INTERSECTIONS_(line);
 }
 
-std::set<Point2> Polygon::intersections(const Ray& ray, bool transformed, bool including_ends = true) const
+std::set<Point2> Polygon::intersections(const Ray& ray, bool transformed) const
 {
 	INTERSECTIONS_(ray);
 }
 
-std::set<Point2> Polygon::intersections(const LineSegment& segment, bool transformed, bool including_ends = true) const
+std::set<Point2> Polygon::intersections(const LineSegment& segment, bool transformed) const
 {
 	INTERSECTIONS_(segment);
 }
 
-Polygon::operator bool() const
+Polygon::operator bool() const noexcept
 {
 	return !vertices_.empty();
 }
 
-const std::vector<Point2>& Polygon::get_non_transformed_vertices() const
+const std::vector<Point2>& Polygon::get_non_transformed_vertices() const noexcept
 {
 	return vertices_;
 }
@@ -237,30 +247,22 @@ std::vector<LineSegment> Polygon::get_sides(bool transformed) const
 	return sides;
 }
 
-int Polygon::count_ray_intersections(const Ray& ray) const
+int Polygon::count_ray_intersections(const Ray& ray, bool* out_is_on) const
 {
-#define NEXT(i) (i) == vertices_.size() - 1 ? 0 : (i) + 1
-#define NEXT_NEXT(i) (i) == vertices_.size() - 1 ? 1 : ((i) == vertices_.size() - 2 ? 0 : (i) + 2)
-
-	Line line(ray);
-	int intersections = 0;
-	for (int i = 0, prev = vertices_.size() - 1; i < vertices_.size(); prev = i++)
+	std::set<Point2> points = intersections(ray, false);
+	if (out_is_on)
 	{
-		LineSegment segment(vertices_[prev], vertices_[i]);
-		std::shared_ptr<Point2> point = ray & segment;
-		bool is_on;
-		if (point &&
-			(*point != vertices_[i] ||
-			!(is_on = ray.is_on(vertices_[NEXT(i)])) && line.are_on_one_side(vertices_[prev], vertices_[NEXT(i)]) ||
-			is_on && line.are_on_one_side(vertices_[prev], vertices_[NEXT_NEXT(i)])))
+		*out_is_on = false;
+		for (const Point2& point : points)
 		{
-			intersections++;
+			if (point == ray.get_origin())
+			{
+				*out_is_on = true;
+				break;
+			}
 		}
 	}
-	return intersections;
-	
-#undef NEXT
-#undef NEXT_NEXT
+	return points.size();
 }
 
 Polygon& Polygon::operator=(const Polygon& polygon)
@@ -270,7 +272,7 @@ Polygon& Polygon::operator=(const Polygon& polygon)
 	return *this;
 }
 
-Polygon& Polygon::operator=(Polygon&& polygon)
+Polygon& Polygon::operator=(Polygon&& polygon) noexcept
 {
 	set_transform(polygon.get_transform());
 	vertices_ = std::move(polygon.vertices_);
@@ -283,11 +285,11 @@ const String Polygon::SHAPE_NAME = L"Polygon";
 
 void Polygon::fix_()
 {
-#define NEXT(i) (i) == vertices_.size() - 1 ? 0 : (i) + 1
+#define NEXT(i) (i) < vertices_.size() - 1 ? (i) + 1 : 0
 
 	for (int i = 0, prev = vertices_.size(); i < vertices_.size(); )
 	{
-		if (Line(vertices_[prev], vertices_[NEXT(i)]).is_on(vertices_[i]))
+		if (vertices_[i] == vertices_[NEXT(i)] || Line(vertices_[prev], vertices_[NEXT(i)]).is_on(vertices_[i]))
 		{
 			vertices_.erase(vertices_.begin() + i);
 		}
@@ -304,20 +306,24 @@ void Polygon::fix_()
 		{
 			LineSegment j_segment(vertices_[j_prev], vertices_[j]);
 			std::shared_ptr<Point2> point = i_segment & j_segment;
+			if (point)
+			{
+				if (*point != vertices_[i_prev] && *point != vertices_[i])
+				{
+					vertices_.insert(vertices_.begin() + i, *point);
+					i_prev = i++;
+					j_prev = j++;
+				}
+				if (*point != vertices_[j_prev] && *point != vertices_[i_prev])
+				{
+					vertices_.insert(vertices_.begin() + j, *point);
+					j_prev = j++;
+				}
+			}
 		}
 	}
 
 #undef NEXT
-}
-
-double Polygon::perimeter_(const std::vector<Point2>& vertices)
-{
-	double perimeter = 0.;
-	for (int i = 0, prev = vertices.size() - 1; i < vertices.size(); prev = i++)
-	{
-		perimeter += LineSegment(vertices[prev], vertices[i]).length();
-	}
-	return perimeter;
 }
 
 DoubleRect Polygon::boundary_rect_(const std::vector<Point2>& vertices)

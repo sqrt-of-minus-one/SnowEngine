@@ -33,6 +33,22 @@ Vector2::Vector2(double x, double y) :
 	y_(y)
 {}
 
+Vector2::Vector2(double length, const Angle& angle) :
+	x_(),
+	y_()
+{
+	if (length == 0.)
+	{
+		x_ = 0.;
+		y_ = 0.;
+	}
+	else
+	{
+		x_ = length * math::cos(angle);
+		y_ = length * math::sin(angle);
+	}
+}
+
 Vector2::Vector2(std::shared_ptr<const json::Element> json) :
 	x_(),
 	y_()
@@ -168,20 +184,11 @@ Vector2 Vector2::rotated(const Angle& delta) const
 
 Angle Vector2::get_angle(const Vector2& vector) const
 {
-	return (get_angle() - vector.get_angle()).get_normalized_180().abs();
-}
-
-bool Vector2::are_on_one_side(const Vector2& first, const Vector2& second, bool if_on) const
-{
-	double prod = (first - *this) & (second - *this);
-	if (prod == 0.)
+	if (is_zero() || vector.is_zero())
 	{
-		return if_on;
+		throw std::domain_error("Attempt to find an angle between two vectors when one of them is zero");
 	}
-	else
-	{
-		return prod > 0.;
-	}
+	return math::arccos((*this & vector) / (length() * vector.length()));
 }
 
 bool Vector2::is_collinear(const Vector2& vector) const noexcept
@@ -200,6 +207,26 @@ bool Vector2::is_co_directed(const Vector2& vector) const noexcept
 bool Vector2::is_orthogonal(const Vector2& vector) const noexcept
 {
 	return (*this & vector) == 0.;
+}
+
+bool Vector2::are_on_one_side(const Point2& first, const Point2& second, bool if_on) const
+{
+	try
+	{
+		Angle angle(*this, first, second);
+		if (angle == Angle::STRAIGHT)
+		{
+			return if_on;
+		}
+		else
+		{
+			return angle < Angle::STRAIGHT;
+		}
+	}
+	catch (const std::domain_error& e)
+	{
+		return if_on;
+	}
 }
 
 Point2 Vector2::min(const Point2& first, const Point2& second)
@@ -381,6 +408,42 @@ bool Vector2::operator!=(const Vector2& vector) const noexcept
 	return x_ != vector.x_ || y_ != vector.y_;
 }
 
+bool Vector2::operator<(const Vector2& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		return y_ < vector.y_;
+	}
+	return x_ < vector.x_;
+}
+
+bool Vector2::operator>(const Vector2& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		return y_ > vector.y_;
+	}
+	return x_ > vector.x_;
+}
+
+bool Vector2::operator<=(const Vector2& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		return y_ <= vector.y_;
+	}
+	return x_ <= vector.x_;
+}
+
+bool Vector2::operator>=(const Vector2& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		return y_ >= vector.y_;
+	}
+	return x_ >= vector.x_;
+}
+
 Vector2::operator IntVector2() const
 {
 	return IntVector2(static_cast<int>(x_), static_cast<int>(y_));
@@ -389,3 +452,4 @@ Vector2::operator IntVector2() const
 const Vector2 Vector2::ZERO(0., 0.);
 const Vector2 Vector2::I(1., 0.);
 const Vector2 Vector2::J(0., 1.);
+const Vector2 Vector2::ONE(1., 1.);

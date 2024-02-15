@@ -284,6 +284,42 @@ bool IntVector2::operator!=(const IntVector2& point) const noexcept
 	return x_ != point.x_ || y_ != point.y_;
 }
 
+bool IntVector2::operator<(const IntVector2& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		return y_ < vector.y_;
+	}
+	return x_ < vector.x_;
+}
+
+bool IntVector2::operator>(const IntVector2& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		return y_ > vector.y_;
+	}
+	return x_ > vector.x_;
+}
+
+bool IntVector2::operator<=(const IntVector2& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		return y_ <= vector.y_;
+	}
+	return x_ <= vector.x_;
+}
+
+bool IntVector2::operator>=(const IntVector2& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		return y_ >= vector.y_;
+	}
+	return x_ >= vector.x_;
+}
+
 IntVector2::operator Vector2() const
 {
 	return Vector2(static_cast<double>(x_), static_cast<double>(y_));

@@ -16,14 +16,15 @@ using namespace snow;
 		/* LineSegment: public */
 
 LineSegment::LineSegment() :
-	endpoints_()
+	endpoints_(Point2::ZERO, Point2::ZERO)
 {}
 
 LineSegment::LineSegment(const LineSegment& segment) :
 	endpoints_(segment.endpoints_)
 {}
 
-LineSegment::LineSegment(std::shared_ptr<const json::Element> json)
+LineSegment::LineSegment(std::shared_ptr<const json::Element> json) :
+	endpoints_()
 {
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	std::shared_ptr<const json::Array> endpoints;
@@ -80,7 +81,7 @@ void LineSegment::set_endpoints(const std::pair<Point2, Point2>& endpoints)
 	endpoints_ = endpoints;
 }
 
-void LineSegment::set_endpoints(const Point2& first, const Point2& second)
+void LineSegment::set_endpoints(const Point2& first, const Point2& second) noexcept
 {
 	endpoints_.first = first;
 	endpoints_.second = second;
@@ -93,7 +94,7 @@ double LineSegment::length_sq() const
 
 double LineSegment::length() const
 {
-	return sqrt(length_sq());
+	return std::sqrt(length_sq());
 }
 
 Point2 LineSegment::get_centre() const
@@ -127,8 +128,7 @@ std::shared_ptr<Point2> LineSegment::intersection(const Ray& ray, bool including
 
 std::shared_ptr<Point2> LineSegment::intersection(const LineSegment& segment, bool including_ends) const
 {
-	Line line1(*this), line2(segment);
-	std::shared_ptr<Point2> point = line1 & line2;
+	std::shared_ptr<Point2> point = Line(*this) & Line(segment);
 	if (point &&
 		!point->are_on_one_side(endpoints_.first, endpoints_.second, including_ends) &&
 		!point->are_on_one_side(segment.endpoints_.first, segment.endpoints_.second, including_ends))
@@ -174,13 +174,13 @@ std::shared_ptr<Point2> LineSegment::operator&(const LineSegment& segment) const
 	return intersection(segment, true);
 }
 
-bool LineSegment::operator==(const LineSegment& segment) const
+bool LineSegment::operator==(const LineSegment& segment) const noexcept
 {
 	return endpoints_.first == segment.endpoints_.first && endpoints_.second == segment.endpoints_.second ||
 		endpoints_.first == segment.endpoints_.second && endpoints_.second == segment.endpoints_.first;
 }
 
-bool LineSegment::operator!=(const LineSegment& segment) const
+bool LineSegment::operator!=(const LineSegment& segment) const noexcept
 {
 	return !operator==(segment);
 }

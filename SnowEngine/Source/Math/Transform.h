@@ -14,6 +14,10 @@
 namespace snow
 {
 
+class Line;
+class Ray;
+class LineSegment;
+
 /**
  *	\~english
  *	\brief Position, rotation, and scale in one class
@@ -324,6 +328,57 @@ public:
 
 	/**
 	 *	\~english
+	 *	\brief Converts the line from global to local coordinates
+	 *	
+	 *	Converts the line coordinates from the global to the local coordinate system.
+	 *	\param line The line defined in global coordinates.
+	 *	\return The line defined in local coordinates.
+	 *	
+	 *	\~russian
+	 *	\brief Переводит прямую из глобальных в локальные координаты
+	 *	
+	 *	Переводит координаты прямой из глобальной в локальную систему координат.
+	 *	\param line Прямая, заданная в глобальных координатах.
+	 *	\return Прямая, заданная в локальных координатах.
+	 */
+	Line transform(const Line& line) const;
+
+	/**
+	 *	\~english
+	 *	\brief Converts the ray from global to local coordinates
+	 *	
+	 *	Converts the ray coordinates from the global to the local coordinate system.
+	 *	\param ray The ray defined in global coordinates.
+	 *	\return The ray defined in local coordinates.
+	 *	
+	 *	\~russian
+	 *	\brief Переводит луч из глобальных в локальные координаты
+	 *	
+	 *	Переводит координаты луча из глобальной в локальную систему координат.
+	 *	\param ray Луч, заданный в глобальных координатах.
+	 *	\return Луч, заданный в локальных координатах.
+	 */
+	Ray transform(const Ray& ray) const;
+
+	/**
+	 *	\~english
+	 *	\brief Converts the line segment from global to local coordinates
+	 *	
+	 *	Converts the line segment coordinates from the global to the local coordinate system.
+	 *	\param segment The line segment defined in global coordinates.
+	 *	\return The line segment defined in local coordinates.
+	 *	
+	 *	\~russian
+	 *	\brief Переводит отрезок из глобальных в локальные координаты
+	 *	
+	 *	Переводит координаты отрезка из глобальной в локальную систему координат.
+	 *	\param segment Отрезок, заданный в глобальных координатах.
+	 *	\return Отрезок, заданный в локальных координатах.
+	 */
+	LineSegment transform(const LineSegment& segment) const;
+
+	/**
+	 *	\~english
 	 *	\brief Converts from local to global coordinates
 	 *	
 	 *	Converts the point coordinates from the local to the global coordinate system.
@@ -338,6 +393,57 @@ public:
 	 *	\return Глобальные координаты точки.
 	 */
 	Point2 untransform(const Point2& point) const;
+
+	/**
+	 *	\~english
+	 *	\brief Converts the line from local to global coordinates
+	 *	
+	 *	Converts the line coordinates from the local to the global coordinate system.
+	 *	\param line The line defined in local coordinates.
+	 *	\return The line defined in global coordinates.
+	 *	
+	 *	\~russian
+	 *	\brief Переводит прямую из локальных в глобальные координаты
+	 *	
+	 *	Переводит координаты прямой из локальной в глобальную систему координат.
+	 *	\param line Прямая, заданная в локальных координатах.
+	 *	\return Прямая, заданная в глобальных координатах.
+	 */
+	Line untransform(const Line& line) const;
+
+	/**
+	 *	\~english
+	 *	\brief Converts the ray from local to global coordinates
+	 *	
+	 *	Converts the ray coordinates from the local to the global coordinate system.
+	 *	\param ray The ray defined in local coordinates.
+	 *	\return The ray defined in global coordinates.
+	 *	
+	 *	\~russian
+	 *	\brief Переводит луч из локальных в глобальные координаты
+	 *	
+	 *	Переводит координаты луча из локальной в глобальную систему координат.
+	 *	\param ray Луч, заданный в локальных координатах.
+	 *	\return Луч, заданный в глобальных координатах.
+	 */
+	Ray untransform(const Ray& ray) const;
+
+	/**
+	 *	\~english
+	 *	\brief Converts the line segment from local to global coordinates
+	 *	
+	 *	Converts the line segment coordinates from the local to the global coordinate system.
+	 *	\param segment The line segment defined in local coordinates.
+	 *	\return The line segment defined in global coordinates.
+	 *	
+	 *	\~russian
+	 *	\brief Переводит отрезок из локальных в глобальные координаты
+	 *	
+	 *	Переводит координаты отрезка из локальной в глобальную систему координат.
+	 *	\param segment Отрезок, заданный в локальных координатах.
+	 *	\return Отрезок, заданный в глобальных координатах.
+	 */
+	LineSegment untransform(const LineSegment& segment) const;
 
 			/* OPERATORS */
 

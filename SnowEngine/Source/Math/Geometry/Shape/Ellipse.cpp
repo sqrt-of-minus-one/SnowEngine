@@ -20,25 +20,23 @@ using namespace snow;
 
 Ellipse::Ellipse() :
 	Shape(),
-	semi_axes_(),
-	centre_(),
+	semi_axes_(Vector2::ZERO),
+	centre_(Point2::ZERO),
 	eccentricity_(),
 	focal_distance_(),
 	is_horizontal_(),
-	foci_()
+	foci_({ Point2::ZERO, Point2::ZERO })
 {}
 
 Ellipse::Ellipse(const Ellipse& ellipse) :
 	Shape(ellipse),
 	semi_axes_(ellipse.semi_axes_),
 	centre_(ellipse.centre_),
-	eccentricity_(),
-	focal_distance_(),
-	is_horizontal_(),
-	foci_()
-{
-	calc_prop_();
-}
+	eccentricity_(ellipse.eccentricity_),
+	focal_distance_(ellipse.focal_distance_),
+	is_horizontal_(ellipse.is_horizontal_),
+	foci_(ellipse.foci_)
+{}
 
 Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 	Shape(),
@@ -109,7 +107,7 @@ std::shared_ptr<json::Element> Ellipse::to_json() const
 	return object;
 }
 
-double Ellipse::area(bool transformed, double accuracy) const
+double Ellipse::area(bool transformed) const
 {
 	if (transformed)
 	{
@@ -125,11 +123,11 @@ double Ellipse::perimeter(bool transformed) const
 {
 	if (transformed)
 	{
-		return sqrt(2) * math::PI * (semi_axes_ * get_scale()).length();
+		return math::SQRT_2 * math::PI * (semi_axes_ * get_scale()).length();
 	}
 	else
 	{
-		return sqrt(2) * math::PI * semi_axes_.length();
+		return math::SQRT_2 * math::PI * semi_axes_.length();
 	}
 }
 
@@ -163,7 +161,7 @@ DoubleRect Ellipse::get_boundary_rect(bool transformed) const
 	}
 }
 
-const String& Ellipse::shape_name() const
+const String& Ellipse::shape_name() const noexcept
 {
 	return SHAPE_NAME;
 }
@@ -205,7 +203,7 @@ bool Ellipse::overlap(const Shape& shape, bool transformed) const
 		return complex_shape->overlap(*this, transformed);
 	}
 
-	return false;
+	throw std::invalid_argument("Unknown shape");
 }
 
 std::set<Point2> Ellipse::intersections(const Line& line, bool transformed) const
@@ -254,7 +252,7 @@ std::set<Point2> Ellipse::intersections(const Line& line, bool transformed) cons
 			double y = k * x + c;
 			return { Point2(semi_axes_.get_x() * x + centre_.get_x(), semi_axes_.get_y() * y + centre_.get_y()) };
 		}
-		return {};
+		return { };
 	}
 	else
 	{
@@ -270,16 +268,16 @@ std::set<Point2> Ellipse::intersections(const Line& line, bool transformed) cons
 		{
 			return { Point2(line.get_point().get_x(), centre_.get_y()) };
 		}
-		return {};
+		return { };
 	}
 }
 
-std::set<Point2> Ellipse::intersections(const Ray& ray, bool transformed, bool including_ends) const
+std::set<Point2> Ellipse::intersections(const Ray& ray, bool transformed) const
 {
 	std::set<Point2> result = intersections(Line(ray), transformed);
 	for (auto i = result.begin(); i != result.end(); )
 	{
-		if (!ray.is_on(*i, including_ends))
+		if (!ray.is_on(*i))
 		{
 			result.erase(i++);
 		}
@@ -291,12 +289,12 @@ std::set<Point2> Ellipse::intersections(const Ray& ray, bool transformed, bool i
 	return result;
 }
 
-std::set<Point2> Ellipse::intersections(const LineSegment& segment, bool transformed, bool including_ends) const
+std::set<Point2> Ellipse::intersections(const LineSegment& segment, bool transformed) const
 {
 	std::set<Point2> result = intersections(Line(segment), transformed);
 	for (auto i = result.begin(); i != result.end(); )
 	{
-		if (!segment.is_on(*i, including_ends))
+		if (!segment.is_on(*i))
 		{
 			result.erase(i++);
 		}
@@ -308,32 +306,32 @@ std::set<Point2> Ellipse::intersections(const LineSegment& segment, bool transfo
 	return result;
 }
 
-Ellipse::operator bool() const
+Ellipse::operator bool() const noexcept
 {
-	return !semi_axes_.is_zero();
+	return true;
 }
 
-const Vector2& Ellipse::get_semi_axes() const
+const Vector2& Ellipse::get_semi_axes() const noexcept
 {
 	return semi_axes_;
 }
 
-const Point2& Ellipse::get_centre() const
+const Point2& Ellipse::get_centre() const noexcept
 {
 	return centre_;
 }
 
-double Ellipse::get_eccentricity() const
+double Ellipse::get_eccentricity() const noexcept
 {
 	return eccentricity_;
 }
 
-double Ellipse::get_focal_distance() const
+double Ellipse::get_focal_distance() const noexcept
 {
 	return focal_distance_;
 }
 
-std::pair<Point2, Point2> Ellipse::get_foci() const
+std::pair<Point2, Point2> Ellipse::get_foci() const noexcept
 {
 	return foci_;
 }
@@ -343,7 +341,10 @@ Ellipse& Ellipse::operator=(const Ellipse& ellipse)
 	set_transform(ellipse.get_transform());
 	semi_axes_ = ellipse.semi_axes_;
 	centre_ = ellipse.centre_;
-	calc_prop_();
+	eccentricity_ = ellipse.eccentricity_;
+	focal_distance_ = ellipse.focal_distance_;
+	is_horizontal_ = ellipse.is_horizontal_;
+	foci_ = ellipse.foci_;
 	return *this;
 }
 

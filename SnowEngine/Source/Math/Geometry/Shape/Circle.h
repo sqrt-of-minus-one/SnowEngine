@@ -23,10 +23,10 @@ public:
 
 	virtual double perimeter(bool transformed = true) const override;
 
-	virtual const String& shape_name() const override;
+	virtual const String& shape_name() const noexcept override;
 	virtual bool is_inside(const Point2& point, bool transformed = true) const override;
 
-	double get_radius() const;
+	double get_radius() const noexcept;
 
 	Circle& operator=(const Circle& circle);
 
@@ -34,6 +34,6 @@ public:
 
 protected:
 	virtual void calc_prop_() override;
-}
+};
 
 }

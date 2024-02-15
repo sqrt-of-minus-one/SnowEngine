@@ -334,6 +334,58 @@ bool IntVector3::operator!=(const IntVector3& point) const noexcept
 	return x_ != point.x_ || y_ != point.y_ || z_ != point.z_;
 }
 
+bool IntVector3::operator<(const IntVector3& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		if (y_ == vector.y_)
+		{
+			return z_ < vector.z_;
+		}
+		return y_ < vector.y_;
+	}
+	return x_ < vector.x_;
+}
+
+bool IntVector3::operator>(const IntVector3& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		if (y_ == vector.y_)
+		{
+			return z_ > vector.z_;
+		}
+		return y_ > vector.y_;
+	}
+	return x_ > vector.x_;
+}
+
+bool IntVector3::operator<=(const IntVector3& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		if (y_ == vector.y_)
+		{
+			return z_ <= vector.z_;
+		}
+		return y_ <= vector.y_;
+	}
+	return x_ <= vector.x_;
+}
+
+bool IntVector3::operator>=(const IntVector3& vector) const noexcept
+{
+	if (x_ == vector.x_)
+	{
+		if (y_ == vector.y_)
+		{
+			return z_ >= vector.z_;
+		}
+		return y_ >= vector.y_;
+	}
+	return x_ >= vector.x_;
+}
+
 IntVector3::operator IntVector2() const
 {
 	return IntVector2(x_, y_);

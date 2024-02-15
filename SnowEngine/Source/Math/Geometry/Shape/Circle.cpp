@@ -47,6 +47,7 @@ Circle::Circle(std::shared_ptr<const json::Element> json) :
 	{
 		throw std::invalid_argument("Couldn't create a shape: the JSON doesn't contain necessary elements");
 	}
+	calc_prop_();
 }
 
 Circle::Circle(double radius, const Point2& centre) :
@@ -58,7 +59,7 @@ String Circle::to_string() const
 	return SHAPE_NAME;
 }
 
-std::shared_ptr<const json::Element> Circle::to_json() const
+std::shared_ptr<json::Element> Circle::to_json() const
 {
 	std::shared_ptr<json::JsonObject> object = std::dynamic_pointer_cast<json::JsonObject>(Shape::to_json());
 	object->get_content().insert({ L"radius", util::to_json(semi_axes_.get_x()) });
@@ -78,7 +79,7 @@ double Circle::perimeter(bool transformed) const
 	}
 }
 
-const String& Circle::shape_name() const
+const String& Circle::shape_name() const noexcept
 {
 	return SHAPE_NAME;
 }
@@ -95,7 +96,7 @@ bool Circle::is_inside(const Point2& point, bool transformed) const
 	}
 }
 
-double Circle::get_radius() const
+double Circle::get_radius() const noexcept
 {
 	return semi_axes_.get_x();
 }

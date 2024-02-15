@@ -18,8 +18,8 @@ using namespace snow;
 		/* IntRect: public */
 
 IntRect::IntRect() :
-	position_(),
-	size_()
+	position_(IntPoint2::ZERO),
+	size_(IntVector2::ZERO)
 {}
 
 IntRect::IntRect(const IntRect& rect) :
@@ -93,7 +93,7 @@ const IntVector2& IntRect::get_size() const noexcept
 	return size_;
 }
 	
-void IntRect::set_position(const IntPoint2& position)
+void IntRect::set_position(const IntPoint2& position) noexcept
 {
 	position_ = position;
 }
@@ -106,7 +106,7 @@ void IntRect::set_corner_position(const IntPoint2& corner_position)
 	position_.set_y(std::min(position_.get_y(), corner_position.get_y()));
 }
 
-void IntRect::set_size(const IntVector2& size)
+void IntRect::set_size(const IntVector2& size) noexcept
 {
 	size_ = size;
 	if (size_.get_x() < 0)
@@ -130,29 +130,31 @@ bool IntRect::overlap(const IntRect& rect) const
 		get_corner_position().get_y() >= rect.position_.get_y();
 }
 
-int IntRect::perimeter() const
+int IntRect::perimeter() const noexcept
 {
 	return 2 * (size_.get_x() + size_.get_y());
 }
 
-int IntRect::area() const
+int IntRect::area() const noexcept
 {
 	return size_.get_x() * size_.get_y();
 }
 
-IntRect& IntRect::operator=(const IntRect& rect)
+IntRect& IntRect::operator=(const IntRect& rect) noexcept
 {
 	position_ = rect.position_;
 	size_ = rect.size_;
 	return *this;
 }
 
-bool IntRect::operator==(const IntRect& rect) const
+bool IntRect::operator==(const IntRect& rect) const noexcept
 {
 	return position_ == rect.position_ && size_ == rect.size_;
 }
 
-bool IntRect::operator!=(const IntRect& rect) const
+bool IntRect::operator!=(const IntRect& rect) const noexcept
 {
 	return !(*this == rect);
 }
+
+const IntRect IntRect::ZERO(IntPoint2::ZERO, IntVector2::ZERO);

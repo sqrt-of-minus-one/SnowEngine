@@ -10,8 +10,9 @@
 
 using namespace snow;
 
-const double math::PI = 3.141'592'653'589'793;
-const double math::E = 2.718'281'828'459'045;
+const double math::PI =		3.141'592'653'589'793;
+const double math::E =		2.718'281'828'459'045;
+const double math::SQRT_2 =	1.414'213'562'373'095;
 
 double math::sin(const Angle& angle)
 {

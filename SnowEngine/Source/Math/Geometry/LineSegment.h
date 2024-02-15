@@ -31,7 +31,7 @@ public:
 
 	const std::pair<Point2, Point2>& get_endpoints() const;
 	void set_endpoints(const std::pair<Point2, Point2>& endpoints);
-	void set_endpoints(const Point2& first, const Point2& second);
+	void set_endpoints(const Point2& first, const Point2& second) noexcept;
 	double length_sq() const;
 	double length() const;
 	Point2 get_centre() const;
@@ -53,8 +53,8 @@ public:
 	std::shared_ptr<Point2> operator&(const Ray& ray) const;
 	std::shared_ptr<Point2> operator&(const LineSegment& segment) const;
 
-	bool operator==(const LineSegment& segment) const;
-	bool operator!=(const LineSegment& segment) const;
+	bool operator==(const LineSegment& segment) const noexcept;
+	bool operator!=(const LineSegment& segment) const noexcept;
 
 private:
 	std::pair<Point2, Point2> endpoints_;

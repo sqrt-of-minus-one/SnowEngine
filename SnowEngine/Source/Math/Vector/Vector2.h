@@ -26,7 +26,8 @@ class IntVector2;
  *	\brief The class of two-dimensional vector
  *	
  *	This class represents a two-dimensional vector. It has two real coordinates: X and Y. You can
- *	access them via `get_x()`, `get_y()` and `set_x()`, `set_y()` methods.
+ *	access them via `get_x()`, `get_y()` and `set_x()`, `set_y()` methods. The `Point2` is an alias
+ *	of the `Vector2`.
  *	\sa
  *	- `Vector3`: three-dimensional vector
  *	- `IntVector2`, `IntVector3`: vectors with integer coordinates
@@ -36,6 +37,7 @@ class IntVector2;
  *	
  *	Этот класс представляет двумерный вектор. Он имеет две вещественные координаты: X и Y. Вы
  *	можете получить к ним доступ с помощью методов `get_x()`, `get_y()` и `set_x()`, `set_y()`.
+ *	`Point2` является псевдонимом класса `Vector2`.
  *	\sa
  *	- `Vector3`: трёхмерный вектор
  *	- `IntVector2`, `IntVector3`: векторы с целочисленными координатами
@@ -89,6 +91,23 @@ public:
 	 *	\param y Координата Y вектора.
 	 */
 	Vector2(double x, double y);
+
+	/**
+	 *	\~english
+	 *	\brief Creates a vector with the passed length and angle
+	 *	
+	 *	Creates a vector defined in polar coordinates by its length and direction.
+	 *	\param length The length of the vector.
+	 *	\param angle The angle between the vector and the positive direction of X-axis.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт вектор с переданным длиной и углом
+	 *	
+	 *	Создаёт вектор, заданный в полярных координатах длиной и направлением.
+	 *	\param length Длина вектора.
+	 *	\param angle Угол между вектором и положительным направлением оси X.
+	*/
+	Vector2(double length, const Angle& angle);
 
 	/**
 	 *	\~english
@@ -275,14 +294,16 @@ public:
 	 *	
 	 *	Allows to get an angle between the vector and the positive direction of X-axis. The result
 	 *	is between –180° and 180°.
-	 *	\return An angle between the vector and the positive direction of X-axis.
+	 *	\return An angle between the vector and the positive direction of X-axis. A zero angle if
+	 *	the vector is zero.
 	 *	
 	 *	\~russian
 	 *	\brief Угол между вектором и положительным направлением оси X
 	 *	
 	 *	Позволяет получить угол между вектором и положительным направлением оси X. Результат
 	 *	находится между –180° и 180°.
-	 *	\return Угол между вектором и положительным направлением оси X.
+	 *	\return Угол между вектором и положительным направлением оси X. Нулевой угол, если вектор
+	 *	нулевой.
 	 */
 	Angle get_angle() const;
 
@@ -341,42 +362,17 @@ public:
 	 *	
 	 *	Allows to get an angle between two vectors. The result is between 0° and 180°.
 	 *	\return An angle between two vectors.
+	 *	\throw std::domain_error One of the vectors is zero.
 	 *	
 	 *	\~russian
 	 *	\brief Угол между двумя векторами
 	 *	
 	 *	Позволяет получить угол между двумя векторами. Результат лежит между 0° и 180°.
 	 *	\return Угол между двумя векторами.
+	 *	\throw std::domain_error Один из векторов нулевой.
 	 */
 	Angle get_angle(const Vector2& vector) const;
 
-	/**
-	 *	\~english
-	 *	\brief Checks if the angle formed by three points is acute
-	 *	
-	 *	Checks if the angle between `first - *this` and `second - *this` vectors is acute.
-	 *	\param first The first point.
-	 *	\param second The second point.
-	 *	\param if_on The value that the method should return if the angle is right or if `first` or
-	 *	`second` equals `*this`.
-	 *	\return `true` if the angle between `first - *this` and `second - *this` is acute, `false`
-	 *	if the angle is obtuse, `if_on` if the angle is right of if `first == *this` or
-	 *	`second == *this`.
-	 *	
-	 *	\~russian
-	 *	\brief Проверяет, является ли угол, образуемый тремя точками, острым
-	 *	
-	 *	Проверяет, является ли угол между векторами `first - *this` и `second - *this` острым.
-	 *	\param first Первая точка.
-	 *	\param second Вторая точка.
-	 *	\param if_on Значение, которое должен вернуть метод в случае, если угол прямой или если
-	 *	`first` или `second` совпадают с `*this`.
-	 *	\return `true`, если угол между `first - *this` и `second - *this` острый, `false`, если
-	 *	этого угол тупой, `if_on`, если угол прямой или если `first == *this` или
-	 *	`second == *this`.
-	 */
-	bool are_on_one_side(const Point2& first, const Point2& second, bool if_on = true) const;
-	
 	/**
 	 *	\~english
 	 *	\brief Checks whether two vectors are collinear
@@ -439,6 +435,34 @@ public:
 	 *	- `is_collinear()`, `is_co_directed()`
 	 */
 	bool is_orthogonal(const Vector2& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Whether two points are on the same side from this one
+	 *	
+	 *	The method returns `true` if the angle formed by two given points and this point as a
+	 *	vertex is acute, and `false` if it is obtuse. The purpose of the method is to define for
+	 *	three points of the line whether two of them are on the same side of the third one.
+	 *	\param first The first point.
+	 *	\param second The second point.
+	 *	\param if_on This value will be returned if the angle is right.
+	 *	\return `true`, if the angle described above is acute, `false` otherwise. If the angle is
+	 *	right, `if_on` is returned.
+	 *	
+	 *	\~russian
+	 *	\brief Находятся ли две точки по одну сторону от данной
+	 *	
+	 *	Метод возвращает `true`, если угол, образуемый двумя переданными точками с данной точкой в
+	 *	качестве вершины, является острым, и `false`, если этот угол тупой. Назначением данного
+	 *	метода является определение для трёх точек прямой, находятся ли две их них по одну сторону
+	 *	от третьей.
+	 *	\param first Первая точка.
+	 *	\param second Вторая точка.
+	 *	\param if_on Это значение будет возвращено, если угол прямой.
+	 *	\return `true`, если описанный угол острый; иначе `false`. Если угол прямой, возвращается
+	 *	`if_on`.
+	 */
+	bool are_on_one_side(const Point2& first, const Point2& second, bool if_on = true) const;
 
 	/**
 	 *	\~english
@@ -1011,6 +1035,82 @@ public:
 	 */
 	bool operator!=(const Vector2& vector) const noexcept;
 
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y.
+	*/
+	bool operator<(const Vector2& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y.
+	*/
+	bool operator>(const Vector2& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y.
+	*/
+	bool operator<=(const Vector2& vector) const noexcept;
+
+	/**
+	 *	\~english
+	 *	\brief Compares the coordinates of the two vectors
+	 *	
+	 *	Compare methods allow the class to be used in containers such as `std::set`.
+	 *	\param vector The vector to compare.
+	 *	\return The result of comparison of X coordinates. If X coordinates are equal, Y
+	 *	coordinates are compared.
+	 *	
+	 *	\~russian
+	 *	\brief Сравнивает координаты двух векторов
+	 *	
+	 *	Методы сравнения позволяют использовать класс в таких контейнерах как `std::set`.
+	 *	\param vector Вектор для сравнения.
+	 *	\return Результат сравнения координат X. Если координаты X равны, сравниваются координаты
+	 *	Y.
+	*/
+	bool operator>=(const Vector2& vector) const noexcept;
+
 			/* CAST OPERATORS */
 
 	/**
@@ -1050,14 +1150,14 @@ public:
 	 *	
 	 *	The zero vector. Both of its X and Y coordinates are zero. It's \f$\{0, 0\}\f$.
 	 *	\sa
-	 *	- `Vector2::I`, `Vector2::J`
+	 *	- `Vector2::I`, `Vector2::J`, `Vector2::ONE`
 	 *	
 	 *	\~russian
 	 *	\brief Нулевой вектор
 	 *	
 	 *	Нулевой вектор. Обе его X и Y координаты равны нулю: \f$\{0; 0\}\f$.
 	 *	\sa
-	 *	- `Vector2::I`, `Vector2::J`
+	 *	- `Vector2::I`, `Vector2::J`, `Vector2::ONE`
 	 */
 	static const Vector2 ZERO;
 
@@ -1067,14 +1167,14 @@ public:
 	 *	
 	 *	The ort of the abscissa axis. It's \f$\{1, 0\}\f$.
 	 *	\sa
-	 *	- `Vector2::ZERO`, `Vector2::J`
+	 *	- `Vector2::ZERO`, `Vector2::J`, `Vector2::ONE`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси X
 	 *
 	 *	Орт оси абсцисс: \f$\{1; 0\}\f$.
 	 *	\sa
-	 *	- `Vector2::ZERO`, `Vector2::J`
+	 *	- `Vector2::ZERO`, `Vector2::J`, `Vector2::ONE`
 	 */
 	static const Vector2 I;
 
@@ -1084,16 +1184,33 @@ public:
 	 *
 	 *	The ort of the ordinate axis. It's \f$\{0, 1\}\f$.
 	 *	\sa
-	 *	- `Vector2::ZERO`, `Vector2::I`
+	 *	- `Vector2::ZERO`, `Vector2::I`, `Vector2::ONE`
 	 *
 	 *	\~russian
 	 *	\brief Орт оси Y
 	 *
 	 *	Орт оси ординат: \f$\{0; 1\}\f$.
 	 *	\sa
-	 *	- `Vector2::ZERO`, `Vector2::I`
+	 *	- `Vector2::ZERO`, `Vector2::I`, `Vector2::ONE`
 	 */
 	static const Vector2 J;
+
+	/**
+	 *	\~english
+	 *	\brief The vector whose both coordinates are 1
+	 *	
+	 *	The vector \f$\{1, 1\}\f$.
+	 *	\sa
+	 *	- `Vector2::ZERO`, `Vector2::I`, `Vector2::J`
+	 *	
+	 *	\~russian
+	 *	\brief Вектор, обе координаты которого равны 1
+	 *	
+	 *	Вектор \f$\{1; 1\}\f$.
+	 *	\sa
+	 *	- `Vector2::ZERO`, `Vector2::I`, `Vector2::J`
+	 */
+	static const Vector2 ONE;
 		
 private:
 	double x_, y_;

@@ -17,6 +17,11 @@ using namespace snow;
 
 		/* Rectangle: public */
 
+Rectangle::Rectangle() :
+	Polygon(),
+	rect_(DoubleRect::ZERO)
+{}
+
 Rectangle::Rectangle(const Rectangle& rectangle) :
 	Polygon(rectangle),
 	rect_(rectangle.rect_)
@@ -46,6 +51,7 @@ Rectangle::Rectangle(std::shared_ptr<const json::Element> json) :
 		Point2(rect_.get_corner_position().get_x(), rect_.get_position().get_y()),
 		rect_.get_corner_position(),
 		Point2(rect_.get_position().get_x(), rect_.get_corner_position().get_y()) };
+	fix_();
 }
 
 Rectangle::Rectangle(const Vector2& size) :
@@ -74,7 +80,7 @@ std::shared_ptr<json::Element> Rectangle::to_json() const
 	return object;
 }
 
-double Rectangle::area(bool transformed, double accuracy) const
+double Rectangle::area(bool transformed) const
 {
 	if (transformed)
 	{
@@ -100,10 +106,14 @@ double Rectangle::perimeter(bool transformed) const
 
 DoubleRect Rectangle::get_boundary_rect(bool transformed) const
 {
+	if (transformed)
+	{
+		return Polygon::get_boundary_rect(transformed);
+	}
 	return rect_;
 }
 
-const String& Rectangle::shape_name() const
+const String& Rectangle::shape_name() const noexcept
 {
 	return SHAPE_NAME;
 }
@@ -121,12 +131,12 @@ bool Rectangle::is_inside(const Point2& point, bool transformed) const
 	}
 }
 
-Rectangle::operator bool() const
+Rectangle::operator bool() const noexcept
 {
-	return !rect_.get_size().is_zero();
+	return true;
 }
 
-const DoubleRect& Rectangle::get_rect() const
+const DoubleRect& Rectangle::get_rect() const noexcept
 {
 	return rect_;
 }
@@ -138,7 +148,7 @@ Rectangle& Rectangle::operator=(const Rectangle& rectangle)
 	return *this;
 }
 
-Rectangle& Rectangle::operator=(Rectangle&& rectangle)
+Rectangle& Rectangle::operator=(Rectangle&& rectangle) noexcept
 {
 	rect_ = rectangle.rect_;
 	Polygon::operator=(std::move(rectangle));

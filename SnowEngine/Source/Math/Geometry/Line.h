@@ -33,9 +33,9 @@ public:
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;
 
-	const Point2& get_point() const;
-	const Angle& get_angle() const;
-	void set_point(const Point2& b);
+	const Point2& get_point() const noexcept;
+	const Angle& get_angle() const noexcept;
+	void set_point(const Point2& b) noexcept;
 	void set_angle(const Angle& angle);
 	double get_k() const;
 	Vector2 get_direction_vector() const;
@@ -44,7 +44,7 @@ public:
 	bool is_on(const Point2& point) const;
 	bool is_on(const LineSegment& segment) const;
 	bool is_on(const Ray& ray) const;
-	bool is_parallel(const Line& line) const;
+	bool is_parallel(const Line& line) const noexcept;
 	bool is_perpendicular(const Line& line) const;
 	bool are_on_one_side(const Point2& first, const Point2& second, bool if_on = true) const;
 	double distance(const Point2& point) const;
@@ -53,7 +53,7 @@ public:
 	std::shared_ptr<Point2> intersection(const Ray& ray, bool including_ends = true) const;
 	std::shared_ptr<Point2> intersection(const LineSegment& segment, bool including_ends = true) const;
 
-	Line& operator=(const Line& line);
+	Line& operator=(const Line& line) noexcept;
 	Line& operator=(const Ray& ray);
 	Line& operator=(const LineSegment& segment);
 
@@ -70,7 +70,7 @@ public:
 
 private:
 	Point2 point_;
-	Angle angle_; // Is supposed to be always between -90° and 90°
+	Angle angle_; // Is supposed to always be between -90° and 90°
 	double k_; // y = kx + b
 };
 

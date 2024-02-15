@@ -27,17 +27,17 @@ namespace json
  *	\~english
  *	\brief SnowStorm, the SnowEngine JSON system
  *	
- *	SnowStorm allows to work with JSON format. SnowStorm's JSON is slightly different from the
- *	the common JSON. If the string is valid for common JSON, it should also be valid for
- *	SnowStorm's one, but valid SnowStorm's JSON string may turn out not to be valid for common
- *	JSON. The data can be stored by the classes listed below, which are based on the `Element`
- *	class. The `Element` represents any JSON entity. It has methods allowing to convert it to
- *	string and vice versa, save it to file or load the `Element` from file. A string or a file is a
- *	valid JSON if it only has one well-formed JSON element (this element can contain multiple child
- *	elements). Space characters outside elements are ignored. Here is the list of element types.
+ *	SnowStorm allows to work with SnowJSON format. The SnowJSON is slightly different from the
+ *	common JSON. If the string is valid for common JSON, it should also be valid for SnowJSON, but
+ *	valid SnowJSON string may turn out not to be valid for common JSON. The data can be stored by
+ *	the classes listed below, which are based on the `Element` class. The `Element` represents any
+ *	SnowJSON entity. It has methods allowing to convert it to string and vice versa, save it to
+ *	file or load the `Element` from file. A string or a file is a valid SnowJSON if it only has one
+ *	well-formed SnowJSON element (this element can contain multiple child elements). Space
+ *	characters outside elements are ignored. Here is the list of element types.
  *	- Values.
  *		- `StringValue`. Strings must be enclosed in " or ' characters. They can contain escape
- *		sequences listed in the documentation of `String::escape()` method.
+ *		sequences listed in the documentation of `string::escape()` method.
  *		- `IntValue`. Integer values can be specified in decimal, binary, octal or hexadecimal
  *		notation. By default the number is assumed to be decimal. Use prefixes to change it: `0b`
  *		(`0B`) for binary, `0o` (`0O`) for octal, `0x` or `0h` (`0X` or `0H`) for hexadecimal.
@@ -60,21 +60,21 @@ namespace json
  *	\~russian
  *	\brief SnowStorm, система SnowEngine для работы с JSON
  *	
- *	SnowStorm позволяет работать с форматом JSON. SnowStorm's JSON слегка отличается от обычного
- *	JSON. Если строка корректна для обычного JSON, то она должна быть корректна и для SnowStorm's
- *	JSON, но корректная для SnowStorm's JSON строка может оказаться некорректной для обычного JSON.
- *	Данные могут храниться в классах, перечисленных ниже, которые наследуются от класса `Element`.
- *	`Element` представляет любую сущность JSON. Он имеет методы, позволяющие конвертировать его в
- *	строку и наоборот, сохранять его в файл или загружать `Element` из файла. Строка или файл
- *	является корректным JSON, если имеет только один правильно записанный элемент JSON (этот
- *	элемент может содержать множество дочерних элементов). Пробельные символы вне элементов
- *	игнорируются. Дале приведён список типов элементов.
+ *	SnowStorm позволяет работать с форматом SnowJSON. SnowJSON слегка отличается от обычного JSON.
+ *	Если строка корректна для обычного JSON, то она должна быть корректна и для SnowJSON, но
+ *	корректная для SnowJSON строка может оказаться некорректной для обычного JSON. Данные могут
+ *	храниться в классах, перечисленных ниже, которые наследуются от класса `Element`. `Element`
+ *	представляет любую сущность SnowJSON. Он имеет методы, позволяющие конвертировать его в строку
+ *	и наоборот, сохранять его в файл или загружать `Element` из файла. Строка или файл является
+ *	корректным SnowJSON, если имеет только один правильно записанный элемент JSON (этот элемент
+ *	может содержать множество дочерних элементов). Пробельные символы вне элементов игнорируются.
+ *	Далее приведён список типов элементов.
  *	- Значения.
  *		- `StringValue`. Строки должны быть заключены в символы " или '. Они могут содержать
- *		управляющие последовательности, перечисленные в документации метода `String::escape()`.
+ *		управляющие последовательности, перечисленные в документации метода `string::escape()`.
  *		- `IntValue`. Целочисленные значения могут быть указаны в десятичной, двоичной,
  *		восьмеричной или шестнадцатеричной записи. По умолчанию предполагается, что число
- *		десятичное. Чтобы изменить это , используйте префиксы: `0b` (`0B`) для двоичной, `0o`
+ *		десятичное. Чтобы изменить это, используйте префиксы: `0b` (`0B`) для двоичной, `0o`
  *		(`0O`) для восьмеричной, `0x` или `0h` (`0X` или `0H`) для шестнадцатеричной системы.
  *		- `DoubleValue`. Вещественные значения могут быть заданы только как десятичные числа. Для
  *		десятичного разделителя используется символ точки.

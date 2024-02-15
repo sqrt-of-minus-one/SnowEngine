@@ -6,6 +6,9 @@
 
 #include "Transform.h"
 
+#include "Geometry/Line.h"
+#include "Geometry/Ray.h"
+#include "Geometry/LineSegment.h"
 #include "../Util/String.h"
 #include "../Util/Json/JsonObject.h"
 #include "../Util/Json/Value.h"
@@ -17,7 +20,7 @@ using namespace snow;
 Transform::Transform() :
 	position_(Point2::ZERO),
 	rotation_(Angle::ZERO),
-	scale_(Vector2(1., 1.))
+	scale_(Vector2::ONE)
 {}
 
 Transform::Transform(const Point2& position, const Angle& rotation, const Vector2& scale) :
@@ -132,6 +135,21 @@ Point2 Transform::transform(const Point2& point) const
 	return result;
 }
 
+Line Transform::transform(const Line& line) const
+{
+	return Line(transform(line.get_point()), transform(line.get_point() + line.get_direction_vector()));
+}
+
+Ray Transform::transform(const Ray& ray) const
+{
+	return Ray(transform(ray.get_origin()), transform(ray.get_ray_point()));
+}
+
+LineSegment Transform::transform(const LineSegment& segment) const
+{
+	return LineSegment(transform(segment.get_endpoints().first), transform(segment.get_endpoints().second));
+}
+
 Point2 Transform::untransform(const Point2& point) const
 {
 	Point2 result = point;
@@ -139,6 +157,21 @@ Point2 Transform::untransform(const Point2& point) const
 	result *= scale_;
 	result += position_;
 	return result;
+}
+
+Line Transform::untransform(const Line& line) const
+{
+	return Line(untransform(line.get_point()), untransform(line.get_point() + line.get_direction_vector()));
+}
+
+Ray Transform::untransform(const Ray& ray) const
+{
+	return Ray(untransform(ray.get_origin()), untransform(ray.get_ray_point()));
+}
+
+LineSegment Transform::untransform(const LineSegment& segment) const
+{
+	return LineSegment(untransform(segment.get_endpoints().first), untransform(segment.get_endpoints().second));
 }
 	
 Transform& Transform::operator=(const Transform& transform) noexcept

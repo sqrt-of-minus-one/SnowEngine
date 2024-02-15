@@ -72,6 +72,19 @@ extern const double PI;
  */
 extern const double E;
 
+/**
+ *	\~english
+ *	\brief The root of 2
+ *	
+ *	The square root of two.
+ *	
+ *	\~russian
+ *	\brief Корень из 2
+ *	
+ *	Квадратный корень из двух.
+ */
+extern const double SQRT_2;
+
 		/* OPERATIONS WITH NUMBERS */
 
 /**

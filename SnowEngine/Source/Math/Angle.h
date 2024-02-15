@@ -11,6 +11,9 @@
 namespace snow
 {
 
+class Point2;
+class Point3;
+
 /**
  *	\addtogroup Math
  *	\{
@@ -154,6 +157,48 @@ public:
 	 *	\throw std::invalid_argument Переданный JSON неправильный.
 	 */
 	Angle(std::shared_ptr<const json::Element> json);
+
+	/**
+	 *	\~english
+	 *	\brief Creates an angle formed by three 2D-points
+	 *	
+	 *	Creates a new angle by connecting three 2D-points. The angle is between 0° and 180°.
+	 *	\param vertex The vertex of the angle.
+	 *	\param a The first point.
+	 *	\param b The second point.
+	 *	\throw std::domain_error a or b coinsides with the vertex.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт угол, образованный тремя двумерными точками
+	 *	
+	 *	Создаёт новый угол, соединяя три двумерные точки. Угол лежит между 0° и 180°.
+	 *	\param vertex Вершина угла.
+	 *	\param a Первая точка.
+	 *	\param b Вторая точка.
+	 *	\throw std::domain_error a или b совпадает с вершиной.
+	 */
+	Angle(Point2 vertex, Point2 a, Point2 b);
+
+	/**
+	 *	\~english
+	 *	\brief Creates an angle formed by three 3D-points
+	 *	
+	 *	Creates a new angle by connecting three 3D-points. The angle is between 0° and 180°.
+	 *	\param vertex The vertex of the angle.
+	 *	\param a The first point.
+	 *	\param b The second point.
+	 *	\throw std::domain_error a or b coinsides with the vertex.
+	 *	
+	 *	\~russian
+	 *	\brief Создаёт угол, образованный тремя трёхмерными точками
+	 *	
+	 *	Создаёт новый угол, соединяя три трёхмерные точки. Угол лежит между 0° и 180°.
+	 *	\param vertex Вершина угла.
+	 *	\param a Первая точка.
+	 *	\param b Вторая точка.
+	 *	\throw std::domain_error a или b совпадает с вершиной.
+	 */
+	Angle(Point3 vertex, Point3 a, Point3 b);
 
 			/* METHODS FROM Object */
 

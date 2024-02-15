@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "Math.h"
+#include "Vector/Vector2.h"
+#include "Vector/Vector3.h"
 #include "../Util/Util.h"
 #include "../Util/String.h"
 #include "../Util/Json/JsonObject.h"
@@ -103,6 +105,18 @@ Angle::Angle(std::shared_ptr<const json::Element> json) :
 		throw std::invalid_argument("Couldn't create an angle: the JSON must be either a double or integer value or a JSON object");
 	}
 	}
+}
+
+Angle::Angle(Point2 vertex, Point2 a, Point2 b) :
+	value_deg_()
+{
+	*this = (a - vertex).get_angle(b - vertex);
+}
+
+Angle::Angle(Point3 vertex, Point3 a, Point3 b) :
+	value_deg_()
+{
+	*this = (a - vertex).get_angle(b - vertex);
 }
 
 String Angle::to_string() const
