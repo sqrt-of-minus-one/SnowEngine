@@ -50,16 +50,12 @@ public:
 	double distance(const Point2& point) const;
 	
 	std::shared_ptr<Point2> intersection(const Line& line) const;
-	std::shared_ptr<Point2> intersection(const Ray& ray, bool including_ends = true) const;
-	std::shared_ptr<Point2> intersection(const LineSegment& segment, bool including_ends = true) const;
+	std::shared_ptr<Point2> intersection(const Ray& ray) const;
+	std::shared_ptr<Point2> intersection(const LineSegment& segment) const;
 
 	Line& operator=(const Line& line) noexcept;
 	Line& operator=(const Ray& ray);
 	Line& operator=(const LineSegment& segment);
-
-	std::shared_ptr<Point2> operator*(const Line& line) const;
-	std::shared_ptr<Point2> operator*(const Ray& ray) const;
-	std::shared_ptr<Point2> operator*(const LineSegment& segment) const;
 
 	std::shared_ptr<Point2> operator&(const Line& line) const;
 	std::shared_ptr<Point2> operator&(const Ray& ray) const;

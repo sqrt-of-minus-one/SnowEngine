@@ -230,22 +230,22 @@ std::shared_ptr<Point2> Line::intersection(const Line& line) const
 	return point;
 }
 
-std::shared_ptr<Point2> Line::intersection(const Ray& ray, bool including_ends) const
+std::shared_ptr<Point2> Line::intersection(const Ray& ray) const
 {
 	Line line(ray);
 	std::shared_ptr<Point2> point = intersection(line);
-	if (point && ray.get_origin().are_on_one_side(ray.get_ray_point(), *point, including_ends))
+	if (point && ray.get_origin().are_on_one_side(ray.get_ray_point(), *point, ray.get_including_end()))
 	{
 		return point;
 	}
 	return nullptr;
 }
 
-std::shared_ptr<Point2> Line::intersection(const LineSegment& segment, bool including_ends) const
+std::shared_ptr<Point2> Line::intersection(const LineSegment& segment) const
 {
 	Line line(segment);
 	std::shared_ptr<Point2> point = intersection(line);
-	if (point && !point->are_on_one_side(segment.get_endpoints().first, segment.get_endpoints().second, including_ends))
+	if (point && !point->are_on_one_side(segment.get_endpoints().first, segment.get_endpoints().second, segment.get_including_ends()))
 	{
 		return point;
 	}
@@ -276,21 +276,6 @@ Line& Line::operator=(const LineSegment& segment)
 	return *this;
 }
 
-std::shared_ptr<Point2> Line::operator*(const Line& line) const
-{
-	return intersection(line);
-}
-
-std::shared_ptr<Point2> Line::operator*(const Ray& ray) const
-{
-	return intersection(ray, false);
-}
-
-std::shared_ptr<Point2> Line::operator*(const LineSegment& segment) const
-{
-	return intersection(segment, false);
-}
-
 std::shared_ptr<Point2> Line::operator&(const Line& line) const
 {
 	return intersection(line);
@@ -298,12 +283,12 @@ std::shared_ptr<Point2> Line::operator&(const Line& line) const
 
 std::shared_ptr<Point2> Line::operator&(const Ray& ray) const
 {
-	return intersection(ray, true);
+	return intersection(ray);
 }
 
 std::shared_ptr<Point2> Line::operator&(const LineSegment& segment) const
 {
-	return intersection(segment, true);
+	return intersection(segment);
 }
 
 bool Line::operator==(const Line& line) const
