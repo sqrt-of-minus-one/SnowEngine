@@ -23,8 +23,8 @@ public:
 	Polygon(const Polygon& polygon);
 	Polygon(Polygon&& polygon);
 	Polygon(std::shared_ptr<const json::Element> json);
-	Polygon(const std::vector<Point2>& vertices);
-	Polygon(std::vector<Point2>&& vertices);
+	Polygon(const std::vector<Point2>& vertices, bool is_closed = true);
+	Polygon(std::vector<Point2>&& vertices, bool is_closed = true);
 
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;
@@ -45,6 +45,7 @@ public:
 	const std::vector<Point2>& get_non_transformed_vertices() const noexcept;
 	std::vector<Point2> get_transformed_vertices() const;
 	std::vector<LineSegment> get_sides(bool transformed) const;
+	bool is_closed() const noexcept;
 	int count_ray_intersections(const Ray& ray, bool* is_on = nullptr) const;
 
 	Polygon& operator=(const Polygon& polygon);
@@ -54,6 +55,7 @@ public:
 
 protected:
 	std::vector<Point2> vertices_;
+	bool is_closed_;
 	void fix_();
 
 private:

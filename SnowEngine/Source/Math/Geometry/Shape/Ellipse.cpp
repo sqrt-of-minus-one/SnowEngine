@@ -22,6 +22,7 @@ Ellipse::Ellipse() :
 	Shape(),
 	semi_axes_(Vector2::ZERO),
 	centre_(Point2::ZERO),
+	is_closed_(true),
 	eccentricity_(),
 	focal_distance_(),
 	is_horizontal_(),
@@ -32,6 +33,7 @@ Ellipse::Ellipse(const Ellipse& ellipse) :
 	Shape(ellipse),
 	semi_axes_(ellipse.semi_axes_),
 	centre_(ellipse.centre_),
+	is_closed_(ellipse.is_closed_),
 	eccentricity_(ellipse.eccentricity_),
 	focal_distance_(ellipse.focal_distance_),
 	is_horizontal_(ellipse.is_horizontal_),
@@ -42,6 +44,7 @@ Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 	Shape(),
 	semi_axes_(),
 	centre_(),
+	is_closed_(true),
 	eccentricity_(),
 	focal_distance_(),
 	is_horizontal_(),
@@ -62,6 +65,7 @@ Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 		{
 			centre_ = Point2(object->get_content().at(L"center"));
 		}
+		is_closed_ = util::json_to_bool(object->get_content().at(L"is_closed"));
 	}
 	catch(const std::out_of_range& e)
 	{
@@ -70,10 +74,11 @@ Ellipse::Ellipse(std::shared_ptr<const json::Element> json) :
 	calc_prop_();
 }
 
-Ellipse::Ellipse(const Vector2& semi_axes, const Point2& centre) :
+Ellipse::Ellipse(const Vector2& semi_axes, const Point2& centre, bool is_closed) :
 	Shape(),
 	semi_axes_(semi_axes),
 	centre_(centre),
+	is_closed_(is_closed),
 	eccentricity_(),
 	focal_distance_(),
 	is_horizontal_(),
@@ -82,10 +87,11 @@ Ellipse::Ellipse(const Vector2& semi_axes, const Point2& centre) :
 	calc_prop_();
 }
 
-Ellipse::Ellipse(const DoubleRect& rect) :
+Ellipse::Ellipse(const DoubleRect& rect, bool is_closed) :
 	Shape(),
 	semi_axes_(rect.get_size() / 2),
 	centre_(rect.get_position() + semi_axes_),
+	is_closed_(is_closed),
 	eccentricity_(),
 	focal_distance_(),
 	is_horizontal_(),
@@ -104,6 +110,7 @@ std::shared_ptr<json::Element> Ellipse::to_json() const
 	std::shared_ptr<json::JsonObject> object = std::dynamic_pointer_cast<json::JsonObject>(Shape::to_json());
 	object->get_content().insert({ L"semi_axes", semi_axes_.to_json() });
 	object->get_content().insert({ L"centre", centre_.to_json() });
+	object->get_content().insert({ L"is_closed", util::to_json(is_closed_) });
 	return object;
 }
 
@@ -174,7 +181,14 @@ bool Ellipse::is_inside(const Point2& point, bool transformed) const
 	}
 	else
 	{
-		return (point - foci_.first).length() + (point - foci_.second).length() <= 2 * std::max(semi_axes_.get_x(), semi_axes_.get_y());
+		if (is_closed_)
+		{
+			return (point - foci_.first).length() + (point - foci_.second).length() <= 2 * std::max(semi_axes_.get_x(), semi_axes_.get_y());
+		}
+		else
+		{
+			return (point - foci_.first).length() + (point - foci_.second).length() < 2 * std::max(semi_axes_.get_x(), semi_axes_.get_y());
+		}
 	}
 }
 
@@ -321,6 +335,11 @@ const Point2& Ellipse::get_centre() const noexcept
 	return centre_;
 }
 
+bool Ellipse::is_closed() const noexcept
+{
+	return is_closed_;
+}
+
 double Ellipse::get_eccentricity() const noexcept
 {
 	return eccentricity_;
@@ -341,6 +360,7 @@ Ellipse& Ellipse::operator=(const Ellipse& ellipse)
 	set_transform(ellipse.get_transform());
 	semi_axes_ = ellipse.semi_axes_;
 	centre_ = ellipse.centre_;
+	is_closed_ = ellipse.is_closed_;
 	eccentricity_ = ellipse.eccentricity_;
 	focal_distance_ = ellipse.focal_distance_;
 	is_horizontal_ = ellipse.is_horizontal_;

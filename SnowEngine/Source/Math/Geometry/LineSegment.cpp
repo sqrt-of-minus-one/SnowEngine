@@ -165,6 +165,7 @@ std::shared_ptr<Point2> LineSegment::intersection(const LineSegment& segment) co
 LineSegment& LineSegment::operator=(const LineSegment& segment)
 {
 	endpoints_ = segment.endpoints_;
+	including_ends_ = segment.including_ends_;
 	return *this;
 }
 

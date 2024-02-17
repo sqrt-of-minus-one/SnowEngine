@@ -184,6 +184,7 @@ Ray& Ray::operator=(const Ray& ray) noexcept
 	origin_ = ray.origin_;
 	angle_ = ray.angle_;
 	ray_point_ = ray.ray_point_;
+	including_end_ = ray.including_end_;
 	return *this;
 }
 

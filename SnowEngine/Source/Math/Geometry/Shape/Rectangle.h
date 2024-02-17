@@ -20,8 +20,8 @@ public:
 	Rectangle(const Rectangle& rectangle);
 	Rectangle(Rectangle&& rectangle);
 	Rectangle(std::shared_ptr<const json::Element> json);
-	Rectangle(const Vector2& size);
-	Rectangle(const DoubleRect& rect);
+	Rectangle(const Vector2& size, bool is_closed = true);
+	Rectangle(const DoubleRect& rect, bool is_closed = true);
 
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;

@@ -15,8 +15,8 @@ public:
 	Ellipse();
 	Ellipse(const Ellipse& ellipse);
 	Ellipse(std::shared_ptr<const json::Element> json);
-	Ellipse(const Vector2& semi_axes, const Point2& centre = Point2::ZERO);
-	Ellipse(const DoubleRect& rect);
+	Ellipse(const Vector2& semi_axes, const Point2& centre = Point2::ZERO, bool is_closed = true);
+	Ellipse(const DoubleRect& rect, bool is_closed = true);
 
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;
@@ -36,6 +36,7 @@ public:
 
 	const Vector2& get_semi_axes() const noexcept;
 	const Point2& get_centre() const noexcept;
+	bool is_closed() const noexcept;
 	double get_eccentricity() const noexcept;
 	double get_focal_distance() const noexcept;
 	std::pair<Point2, Point2> get_foci() const noexcept;
@@ -47,6 +48,7 @@ public:
 protected:
 	Vector2 semi_axes_;
 	Point2 centre_;
+	bool is_closed_;
 
 	double eccentricity_;
 	double focal_distance_;

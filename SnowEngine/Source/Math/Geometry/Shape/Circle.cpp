@@ -19,10 +19,6 @@ Circle::Circle(const Circle& circle) :
 	Ellipse(circle)
 {}
 
-Circle::Circle(Circle&& circle) :
-	Ellipse(std::move(circle))
-{}
-
 Circle::Circle(std::shared_ptr<const json::Element> json) :
 	Ellipse()
 {
@@ -42,6 +38,7 @@ Circle::Circle(std::shared_ptr<const json::Element> json) :
 		{
 			centre_ = Point2(object->get_content().at(L"center"));
 		}
+		is_closed_ = util::json_to_bool(object->get_content().at(L"is_closed"));
 	}
 	catch(const std::out_of_range& e)
 	{
@@ -50,8 +47,8 @@ Circle::Circle(std::shared_ptr<const json::Element> json) :
 	calc_prop_();
 }
 
-Circle::Circle(double radius, const Point2& centre) :
-	Ellipse(Vector2(radius, radius), centre)
+Circle::Circle(double radius, const Point2& centre, bool is_closed) :
+	Ellipse(Vector2(radius, radius), centre, is_closed)
 {}
 
 String Circle::to_string() const
@@ -64,6 +61,7 @@ std::shared_ptr<json::Element> Circle::to_json() const
 	std::shared_ptr<json::JsonObject> object = std::dynamic_pointer_cast<json::JsonObject>(Shape::to_json());
 	object->get_content().insert({ L"radius", util::to_json(semi_axes_.get_x()) });
 	object->get_content().insert({ L"centre", centre_.to_json() });
+	object->get_content().insert({ L"is_closed", util::to_json(is_closed_) });
 	return object;
 }
 
@@ -92,7 +90,14 @@ bool Circle::is_inside(const Point2& point, bool transformed) const
 	}
 	else
 	{
-		return (point - centre_).length_sq() <= semi_axes_.get_x() * semi_axes_.get_x();
+		if (is_closed_)
+		{
+			return (point - centre_).length_sq() <= semi_axes_.get_x() * semi_axes_.get_x();
+		}
+		else
+		{
+			return (point - centre_).length_sq() < semi_axes_.get_x() * semi_axes_.get_x();
+		}
 	}
 }
 

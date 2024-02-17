@@ -14,9 +14,8 @@ class Circle : public Ellipse
 public:
 	Circle();
 	Circle(const Circle& circle);
-	Circle(Circle&& circle);
 	Circle(std::shared_ptr<const json::Element> json);
-	Circle(double radius, const Point2& centre = Point2::ZERO);
+	Circle(double radius, const Point2& centre = Point2::ZERO, bool is_closed = true);
 
 	virtual String to_string() const override;
 	virtual std::shared_ptr<json::Element> to_json() const override;

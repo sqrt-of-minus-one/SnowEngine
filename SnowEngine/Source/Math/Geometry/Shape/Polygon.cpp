@@ -36,22 +36,26 @@ using namespace snow;
 
 Polygon::Polygon() :
 	Shape(),
-	vertices_()
+	vertices_(),
+	is_closed_(true)
 {}
 
 Polygon::Polygon(const Polygon& polygon) :
 	Shape(polygon),
-	vertices_(polygon.vertices_)
+	vertices_(polygon.vertices_),
+	is_closed_(polygon.is_closed_)
 {}
 
 Polygon::Polygon(Polygon&& polygon) :
 	Shape(polygon),
-	vertices_(std::move(polygon.vertices_))
+	vertices_(std::move(polygon.vertices_)),
+	is_closed_(polygon.is_closed_)
 {}
 
 Polygon::Polygon(std::shared_ptr<const json::Element> json) :
 	Shape(),
-	vertices_()
+	vertices_(),
+	is_closed_(true)
 {
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
@@ -62,6 +66,7 @@ Polygon::Polygon(std::shared_ptr<const json::Element> json) :
 		{
 			vertices_.push_back(Point2(i));
 		}
+		is_closed_ = util::json_to_bool(object->get_content().at(L"is_closed"));
 	}
 	catch(const std::out_of_range& e)
 	{
@@ -70,16 +75,18 @@ Polygon::Polygon(std::shared_ptr<const json::Element> json) :
 	fix_();
 }
 
-Polygon::Polygon(const std::vector<Point2>& vertices) :
+Polygon::Polygon(const std::vector<Point2>& vertices, bool is_closed) :
 	Shape(),
-	vertices_(vertices)
+	vertices_(vertices),
+	is_closed_(is_closed)
 {
 	fix_();
 }
 
-Polygon::Polygon(std::vector<Point2>&& vertices) :
+Polygon::Polygon(std::vector<Point2>&& vertices, bool is_closed) :
 	Shape(),
-	vertices_(std::move(vertices))
+	vertices_(std::move(vertices)),
+	is_closed_(is_closed)
 {
 	fix_();
 }
@@ -98,6 +105,7 @@ std::shared_ptr<json::Element> Polygon::to_json() const
 		vertices->get_content().push_back(i.to_json());
 	}
 	object->get_content().insert({ L"vertices", vertices });
+	object->get_content().insert({ L"is_closed", util::to_json(is_closed_) });
 	return object;
 }
 
@@ -156,7 +164,10 @@ bool Polygon::is_inside(const Point2& point, bool transformed) const
 	}
 	else
 	{
-		return count_ray_intersections(Ray(point, Angle::ZERO)) % 2 == 1;
+		// Todo: is_closed?
+		bool is_on;
+		int intersections = count_ray_intersections(Ray(point, Angle::ZERO), &is_on);
+		return is_on ? is_closed_ : intersections % 2 == 1;
 	}
 }
 
@@ -217,7 +228,7 @@ std::set<Point2> Polygon::intersections(const LineSegment& segment, bool transfo
 
 Polygon::operator bool() const noexcept
 {
-	return !vertices_.empty();
+	return !vertices_.empty() || !is_closed_ && vertices_.size() <= 2;
 }
 
 const std::vector<Point2>& Polygon::get_non_transformed_vertices() const noexcept
@@ -247,6 +258,11 @@ std::vector<LineSegment> Polygon::get_sides(bool transformed) const
 	return sides;
 }
 
+bool Polygon::is_closed() const noexcept
+{
+	return is_closed_;
+}
+
 int Polygon::count_ray_intersections(const Ray& ray, bool* out_is_on) const
 {
 	std::set<Point2> points = intersections(ray, false);
@@ -269,6 +285,7 @@ Polygon& Polygon::operator=(const Polygon& polygon)
 {
 	set_transform(polygon.get_transform());
 	vertices_ = polygon.vertices_;
+	is_closed_ = polygon.is_closed_;
 	return *this;
 }
 
@@ -276,6 +293,7 @@ Polygon& Polygon::operator=(Polygon&& polygon) noexcept
 {
 	set_transform(polygon.get_transform());
 	vertices_ = std::move(polygon.vertices_);
+	is_closed_ = polygon.is_closed_;
 	return *this;
 }
 
