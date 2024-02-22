@@ -135,20 +135,14 @@ double Polygon::area(bool transformed) const
 	return transformed ? result * get_scale().get_x() * get_scale().get_y() : result;
 }
 
-double Polygon::perimeter(bool transformed) const
-{
-	double perimeter = 0.;
-	std::vector<LineSegment> sides = get_sides(transformed);
-	for (const LineSegment& side : sides)
-	{
-		perimeter += side.length();
-	}
-	return perimeter;
-}
-
 DoubleRect Polygon::get_boundary_rect(bool transformed) const
 {
 	return boundary_rect_(transformed ? get_transformed_vertices() : get_non_transformed_vertices());
+}
+
+EShape Polygon::get_type() const noexcept
+{
+	return EShape::POLYGON;
 }
 
 const String& Polygon::shape_name() const noexcept
@@ -164,9 +158,8 @@ bool Polygon::is_inside(const Point2& point, bool transformed) const
 	}
 	else
 	{
-		// Todo: is_closed?
 		bool is_on;
-		int intersections = count_ray_intersections(Ray(point, Angle::ZERO), &is_on);
+		int intersections = count_ray_intersections(Ray(point, Angle::ZERO), &is_on, true);
 		return is_on ? is_closed_ : intersections % 2 == 1;
 	}
 }
@@ -263,19 +256,24 @@ bool Polygon::is_closed() const noexcept
 	return is_closed_;
 }
 
-int Polygon::count_ray_intersections(const Ray& ray, bool* out_is_on) const
+int Polygon::count_ray_intersections(const Ray& ray, bool* out_is_on, bool break_if_on) const
 {
-	std::set<Point2> points = intersections(ray, false);
-	if (out_is_on)
+	std::set<Point2> points;
+	std::vector<LineSegment> sides = get_sides(false);
+	for (const LineSegment& side : sides)
 	{
-		*out_is_on = false;
-		for (const Point2& point : points)
+		std::shared_ptr<Point2> point = side.intersection(ray);
+		if (point)
 		{
-			if (point == ray.get_origin())
+			if (*point == ray.get_origin() && out_is_on)
 			{
 				*out_is_on = true;
-				break;
+				if (break_if_on)
+				{
+					return 0;
+				}
 			}
+			points.insert(*point);
 		}
 	}
 	return points.size();

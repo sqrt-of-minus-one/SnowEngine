@@ -20,6 +20,16 @@ class Line;
 class Ray;
 class LineSegment;
 
+enum class EShape
+{
+	NULL_SHAPE = 0,
+	POLYGON,
+	RECTANGLE,
+	ELLIPSE,
+	CIRCLE,
+	COMPLEX_SHAPE
+};
+
 class Shape : public Object
 {
 public:
@@ -33,9 +43,9 @@ public:
 	static std::unique_ptr<Shape> unique_move(Shape&& shape);
 
 	virtual double area(bool transformed = true) const = 0;
-	virtual double perimeter(bool transformed = true) const = 0;
 	virtual DoubleRect get_boundary_rect(bool transformed = true) const = 0;
 	
+	virtual EShape get_type() const noexcept = 0;
 	virtual const String& shape_name() const noexcept = 0;
 	virtual bool is_inside(const Point2& point, bool transformed = true) const = 0;
 	virtual bool overlap(const Shape& shape, bool transformed = true) const = 0;

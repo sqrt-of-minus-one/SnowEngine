@@ -65,16 +65,9 @@ std::shared_ptr<json::Element> Circle::to_json() const
 	return object;
 }
 
-double Circle::perimeter(bool transformed) const
+EShape Circle::get_type() const noexcept
 {
-	if (transformed)
-	{
-		return Ellipse::perimeter(true);
-	}
-	else
-	{
-		return 2 * math::PI * semi_axes_.get_x();
-	}
+	return EShape::CIRCLE;
 }
 
 const String& Circle::shape_name() const noexcept
@@ -104,6 +97,18 @@ bool Circle::is_inside(const Point2& point, bool transformed) const
 double Circle::get_radius() const noexcept
 {
 	return semi_axes_.get_x();
+}
+
+double Circle::perimeter(bool transformed) const noexcept
+{
+	if (transformed)
+	{
+		return Ellipse::perimeter(true);
+	}
+	else
+	{
+		return 2 * math::PI * semi_axes_.get_x();
+	}
 }
 
 Circle& Circle::operator=(const Circle& circle)

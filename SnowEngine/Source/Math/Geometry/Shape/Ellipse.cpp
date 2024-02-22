@@ -126,18 +126,6 @@ double Ellipse::area(bool transformed) const
 	}
 }
 
-double Ellipse::perimeter(bool transformed) const
-{
-	if (transformed)
-	{
-		return math::SQRT_2 * math::PI * (semi_axes_ * get_scale()).length();
-	}
-	else
-	{
-		return math::SQRT_2 * math::PI * semi_axes_.length();
-	}
-}
-
 DoubleRect Ellipse::get_boundary_rect(bool transformed) const
 {
 	if (transformed)
@@ -166,6 +154,11 @@ DoubleRect Ellipse::get_boundary_rect(bool transformed) const
 	{
 		return DoubleRect(Point2(centre_ - semi_axes_), Vector2(semi_axes_ * 2));
 	}
+}
+
+EShape Ellipse::get_type() const noexcept
+{
+	return EShape::ELLIPSE;
 }
 
 const String& Ellipse::shape_name() const noexcept
@@ -353,6 +346,18 @@ double Ellipse::get_focal_distance() const noexcept
 std::pair<Point2, Point2> Ellipse::get_foci() const noexcept
 {
 	return foci_;
+}
+
+double Ellipse::perimeter(bool transformed) const noexcept
+{
+	if (transformed)
+	{
+		return math::SQRT_2 * math::PI * (semi_axes_ * get_scale()).length();
+	}
+	else
+	{
+		return math::SQRT_2 * math::PI * semi_axes_.length();
+	}
 }
 
 Ellipse& Ellipse::operator=(const Ellipse& ellipse)

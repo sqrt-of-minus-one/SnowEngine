@@ -25,9 +25,9 @@ public:
 	virtual std::shared_ptr<json::Element> to_json() const override;
 
 	virtual double area(bool transformed = true) const override;
-	virtual double perimeter(bool transformed = true) const override;
 	virtual DoubleRect get_boundary_rect(bool transformed = true) const override;
 
+	virtual EShape get_type() const noexcept override;
 	virtual const String& shape_name() const noexcept override;
 	virtual bool is_inside(const Point2& point, bool transformed = true) const override;
 	virtual bool overlap(const Shape& shape, bool transformed = true) const override;
@@ -95,15 +95,17 @@ public:
 	static double area_accuracy;
 
 private:
-	ComplexShape();
 	ComplexShape(EType type, std::unique_ptr<Shape>&& first, std::unique_ptr<Shape>&& second);
+	ComplexShape(EType type, std::unique_ptr<Shape>&& first, std::unique_ptr<Shape>&& second, std::unique_ptr<Shape>&& equals);
 
 	EType type_;
 	std::unique_ptr<Shape> first_;
 	std::unique_ptr<Shape> second_;
+	std::unique_ptr<Shape> equals_;
 
 	void operator_as_(const Shape& shape);
 	void operator_as_(Shape&& shape);
+	void find_equal_();
 };
 
 }

@@ -18,23 +18,27 @@ using namespace snow;
 		/* Rectangle: public */
 
 Rectangle::Rectangle() :
-	Polygon(),
-	rect_(DoubleRect::ZERO)
+	Shape(),
+	rect_(DoubleRect::ZERO),
+	is_closed_(true)
 {}
 
 Rectangle::Rectangle(const Rectangle& rectangle) :
-	Polygon(rectangle),
-	rect_(rectangle.rect_)
+	Shape(rectangle),
+	rect_(rectangle.rect_),
+	is_closed_(rectangle.is_closed_)
 {}
 
 Rectangle::Rectangle(Rectangle&& rectangle) :
-	Polygon(std::move(rectangle)),
-	rect_(rectangle.rect_)
+	Shape(std::move(rectangle)),
+	rect_(rectangle.rect_),
+	is_closed_(rectangle.is_closed_)
 {}
 
 Rectangle::Rectangle(std::shared_ptr<const json::Element> json) :
-	Polygon(),
-	rect_()
+	Shape(),
+	rect_(),
+	is_closed_(true)
 {
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
@@ -47,26 +51,18 @@ Rectangle::Rectangle(std::shared_ptr<const json::Element> json) :
 	{
 		throw std::invalid_argument("Couldn't create a shape: the JSON doesn't contain necessary elements");
 	}
-	vertices_ = {
-		rect_.get_position(),
-		Point2(rect_.get_corner_position().get_x(), rect_.get_position().get_y()),
-		rect_.get_corner_position(),
-		Point2(rect_.get_position().get_x(), rect_.get_corner_position().get_y()) };
-	fix_();
 }
 
 Rectangle::Rectangle(const Vector2& size, bool is_closed) :
-	Polygon({ Point2::ZERO, Point2(size.get_x(), 0), size, Point2(0, size.get_y()) }, is_closed),
-	rect_(Point2::ZERO, size)
+	Shape(),
+	rect_(Point2::ZERO, size),
+	is_closed_(is_closed)
 {}
 
 Rectangle::Rectangle(const DoubleRect& rect, bool is_closed) :
-	Polygon({
-		rect.get_position(),
-		Point2(rect.get_corner_position().get_x(), rect.get_position().get_y()),
-		rect.get_corner_position(),
-		Point2(rect.get_position().get_x(), rect.get_corner_position().get_y()) }, is_closed),
-	rect_(rect)
+	Shape(),
+	rect_(rect),
+	is_closed_(is_closed)
 {}
 
 String Rectangle::to_string() const
@@ -94,25 +90,18 @@ double Rectangle::area(bool transformed) const
 	}
 }
 
-double Rectangle::perimeter(bool transformed) const
-{
-	if (transformed)
-	{
-		return 2 * (rect_.get_size().get_x() * get_scale().get_x() + rect_.get_size().get_y() * get_scale().get_y());
-	}
-	else
-	{
-		return rect_.perimeter();
-	}
-}
-
 DoubleRect Rectangle::get_boundary_rect(bool transformed) const
 {
 	if (transformed)
 	{
-		return Polygon::get_boundary_rect(transformed);
+		
 	}
 	return rect_;
+}
+
+EShape Rectangle::get_type() const noexcept
+{
+	return EShape::RECTANGLE;
 }
 
 const String& Rectangle::shape_name() const noexcept
@@ -143,6 +132,26 @@ bool Rectangle::is_inside(const Point2& point, bool transformed) const
 	}
 }
 
+bool Rectangle::overlap(const Shape& shape, bool transformed) const
+{
+
+}
+
+std::set<Point2> Rectangle::intersections(const Line& line, bool transformed = true) const
+{
+
+}
+
+std::set<Point2> Rectangle::intersections(const Ray& line, bool transformed = true) const
+{
+
+}
+
+std::set<Point2> Rectangle::intersections(const LineSegment& line, bool transformed = true) const
+{
+
+}
+
 Rectangle::operator bool() const noexcept
 {
 	return is_closed_ || !rect_.get_size().is_zero();
@@ -153,17 +162,27 @@ const DoubleRect& Rectangle::get_rect() const noexcept
 	return rect_;
 }
 
-Rectangle& Rectangle::operator=(const Rectangle& rectangle)
+bool Rectangle::is_closed() const noexcept
 {
-	rect_ = rectangle.rect_;
-	Polygon::operator=(rectangle);
-	return *this;
+	return is_closed_;
 }
 
-Rectangle& Rectangle::operator=(Rectangle&& rectangle) noexcept
+double Rectangle::perimeter(bool transformed) const noexcept
+{
+	if (transformed)
+	{
+		return 2 * (rect_.get_size().get_x() * get_scale().get_x() + rect_.get_size().get_y() * get_scale().get_y());
+	}
+	else
+	{
+		return rect_.perimeter();
+	}
+}
+
+Rectangle& Rectangle::operator=(const Rectangle& rectangle) noexcept
 {
 	rect_ = rectangle.rect_;
-	Polygon::operator=(std::move(rectangle));
+	is_closed_ = rectangle.is_closed_;
 	return *this;
 }
 

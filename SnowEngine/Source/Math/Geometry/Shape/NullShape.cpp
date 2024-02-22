@@ -30,14 +30,14 @@ double NullShape::area(bool transformed) const
 	return 0.;
 }
 
-double NullShape::perimeter(bool transformed) const
-{
-	return 0.;
-}
-
 DoubleRect NullShape::get_boundary_rect(bool transformed) const
 {
 	return DoubleRect(transformed ? get_position() : Point2::ZERO, Vector2::ZERO);
+}
+
+EShape NullShape::get_type() const noexcept
+{
+	return EShape::NULL_SHAPE;
 }
 
 const String& NullShape::shape_name() const noexcept

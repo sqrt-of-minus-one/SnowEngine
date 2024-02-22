@@ -60,28 +60,32 @@ ComplexShape::ComplexShape() :
 	Shape(),
 	type_(),
 	first_(std::make_unique<NullShape>()),
-	second_(std::make_unique<NullShape>())
+	second_(std::make_unique<NullShape>()),
+	equals_(std::make_unique<NullShape>())
 {}
 
 ComplexShape::ComplexShape(const ComplexShape& shape) :
 	Shape(shape),
 	type_(shape.type_),
 	first_(Shape::unique_copy(*shape.first_)),
-	second_(Shape::unique_copy(*shape.second_))
+	second_(Shape::unique_copy(*shape.second_)),
+	equals_(shape.equals_ ? Shape::unique_copy(*shape.equals_) : nullptr)
 {}
 
 ComplexShape::ComplexShape(ComplexShape&& shape) :
 	Shape(shape),
 	type_(shape.type_),
 	first_(std::move(shape.first_)),
-	second_(std::move(shape.second_))
+	second_(std::move(shape.second_)),
+	equals_(std::move(shape.equals_))
 {}
 
 ComplexShape::ComplexShape(std::shared_ptr<const json::Element> json) :
 	Shape(),
 	type_(),
 	first_(),
-	second_()
+	second_(),
+	equals_()
 {
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	try
@@ -95,6 +99,7 @@ ComplexShape::ComplexShape(std::shared_ptr<const json::Element> json) :
 	{
 		throw std::invalid_argument("Couldn't create a shape: the JSON doesn't contain necessary elements");
 	}
+	find_equal_();
 }
 
 String ComplexShape::to_string() const
@@ -113,6 +118,16 @@ std::shared_ptr<json::Element> ComplexShape::to_json() const
 
 double ComplexShape::area(bool transformed) const
 {
+	if (transformed)
+	{
+		return area(false) * get_scale().get_x() * get_scale().get_y();
+	}
+
+	if (equals_)
+	{
+		return equals_->area(transformed);
+	}
+
 	DoubleRect boundary = get_boundary_rect(false);
 	Point2 from = boundary.get_position();
 	Point2 to = boundary.get_corner_position();
@@ -157,26 +172,18 @@ double ComplexShape::area(bool transformed) const
 			return .0;
 		}
 	} while (std::abs(new_result - result) / new_result > area_accuracy && n <= N_MAX);
-		
-	if (transformed)
-	{
-		return new_result * get_scale().get_x() * get_scale().get_y();
-	}
-	else
-	{
-		return new_result;
-	}
-}
 
-double ComplexShape::perimeter(bool transform) const
-{
-	// Todo
-	// I have no idea how to do this...
-	return 0.;
+	return new_result;
 }
 
 DoubleRect ComplexShape::get_boundary_rect(bool transform) const
 {
+	// Todo: transform?
+	if (equals_)
+	{
+		return equals_->get_boundary_rect(transform);
+	}
+
 	DoubleRect f_rect = first_->get_boundary_rect(transform);
 	DoubleRect s_rect = second_->get_boundary_rect(transform);
 	switch (type_)
@@ -206,6 +213,11 @@ DoubleRect ComplexShape::get_boundary_rect(bool transform) const
 	return DoubleRect();
 }
 
+EShape ComplexShape::get_type() const noexcept
+{
+	return EShape::COMPLEX_SHAPE;
+}
+
 const String& ComplexShape::shape_name() const noexcept
 {
 	return SHAPE_NAME;
@@ -216,6 +228,11 @@ bool ComplexShape::is_inside(const Point2& point, bool transformed) const
 	if (transformed)
 	{
 		return is_inside(get_transform().transform(point), false);
+	}
+
+	if (equals_)
+	{
+		equals_->is_inside(point, false);
 	}
 
 	switch (type_)
@@ -284,6 +301,7 @@ std::set<Point2> ComplexShape::intersections(const LineSegment& segment, bool tr
 
 ComplexShape::operator bool() const noexcept
 {
+	// Todo?
 	switch (type_)
 	{
 	case EType::AND:
@@ -311,6 +329,7 @@ ComplexShape& ComplexShape::operator=(const ComplexShape& shape)
 	type_ = shape.type_;
 	first_ = Shape::unique_copy(*shape.first_);
 	second_ = Shape::unique_copy(*shape.second_);
+	equals_ = shape.equals_ ? Shape::unique_copy(*shape.equals_) : nullptr;
 	return *this;
 }
 
@@ -320,6 +339,7 @@ ComplexShape& ComplexShape::operator=(ComplexShape&& shape)
 	type_ = shape.type_;
 	first_ = std::move(shape.first_);
 	second_ = std::move(shape.second_);
+	equals_ = std::move(shape.equals_);
 	return *this;
 }
 
@@ -467,6 +487,7 @@ ComplexShape& ComplexShape::operator+=(const Shape& shape)
 {
 	operator_as_(shape);
 	type_ = EType::OR;
+	find_equal_();
 	return *this;
 }
 
@@ -474,6 +495,7 @@ ComplexShape& ComplexShape::operator+=(Shape&& shape)
 {
 	operator_as_(std::move(shape));
 	type_ = EType::OR;
+	find_equal_();
 	return *this;
 }
 
@@ -481,6 +503,7 @@ ComplexShape& ComplexShape::operator-=(const Shape& shape)
 {
 	operator_as_(shape);
 	type_ = EType::SUB;
+	find_equal_();
 	return *this;
 }
 
@@ -488,6 +511,7 @@ ComplexShape& ComplexShape::operator-=(Shape&& shape)
 {
 	operator_as_(std::move(shape));
 	type_ = EType::SUB;
+	find_equal_();
 	return *this;
 }
 
@@ -495,6 +519,7 @@ ComplexShape& ComplexShape::operator*=(const Shape& shape)
 {
 	operator_as_(shape);
 	type_ = EType::AND;
+	find_equal_();
 	return *this;
 }
 
@@ -502,6 +527,7 @@ ComplexShape& ComplexShape::operator*=(Shape&& shape)
 {
 	operator_as_(std::move(shape));
 	type_ = EType::AND;
+	find_equal_();
 	return *this;
 }
 
@@ -509,6 +535,7 @@ ComplexShape& ComplexShape::operator&=(const Shape& shape)
 {
 	operator_as_(shape);
 	type_ = EType::AND;
+	find_equal_();
 	return *this;
 }
 
@@ -516,6 +543,7 @@ ComplexShape& ComplexShape::operator&=(Shape&& shape)
 {
 	operator_as_(std::move(shape));
 	type_ = EType::AND;
+	find_equal_();
 	return *this;
 }
 
@@ -523,6 +551,7 @@ ComplexShape& ComplexShape::operator|=(const Shape& shape)
 {
 	operator_as_(shape);
 	type_ = EType::OR;
+	find_equal_();
 	return *this;
 }
 
@@ -530,6 +559,7 @@ ComplexShape& ComplexShape::operator|=(Shape&& shape)
 {
 	operator_as_(std::move(shape));
 	type_ = EType::OR;
+	find_equal_();
 	return *this;
 }
 
@@ -537,6 +567,7 @@ ComplexShape& ComplexShape::operator^=(const Shape& shape)
 {
 	operator_as_(shape);
 	type_ = EType::XOR;
+	find_equal_();
 	return *this;
 }
 
@@ -544,6 +575,7 @@ ComplexShape& ComplexShape::operator^=(Shape&& shape)
 {
 	operator_as_(std::move(shape));
 	type_ = EType::XOR;
+	find_equal_();
 	return *this;
 }
 
@@ -551,6 +583,7 @@ ComplexShape& ComplexShape::operator/=(const Shape& shape)
 {
 	operator_as_(shape);
 	type_ = EType::SUB;
+	find_equal_();
 	return *this;
 }
 
@@ -558,6 +591,7 @@ ComplexShape& ComplexShape::operator/=(Shape&& shape)
 {
 	operator_as_(std::move(shape));
 	type_ = EType::SUB;
+	find_equal_();
 	return *this;
 }
 
@@ -567,28 +601,27 @@ double ComplexShape::area_accuracy = .01;
 
 		/* ComplexShape: private */
 
-ComplexShape::ComplexShape() :
-	Shape(),
-	type_(),
-	first_(),
-	second_()
-{}
-
 ComplexShape::ComplexShape(EType type, std::unique_ptr<Shape>&& first, std::unique_ptr<Shape>&& second) :
 	Shape(),
 	type_(type),
 	first_(std::move(first)),
-	second_(std::move(second))
+	second_(std::move(second)),
+	equals_()
+{
+	find_equal_();
+}
+
+ComplexShape::ComplexShape(EType type, std::unique_ptr<Shape>&& first, std::unique_ptr<Shape>&& second, std::unique_ptr<Shape>&& equals) :
+	Shape(),
+	type_(type),
+	first_(std::move(first)),
+	second_(std::move(second)),
+	equals_(std::move(equals))
 {}
 
 void ComplexShape::operator_as_(const Shape& shape)
 {
-	std::unique_ptr<Shape> f = std::move(first_);
-
-	std::unique_ptr<ComplexShape> new_first = std::make_unique<ComplexShape>();
-	new_first->type_ = type_;
-	new_first->first_ = std::move(f);
-	new_first->second_ = std::move(second_);
+	std::unique_ptr<ComplexShape> new_first = std::make_unique<ComplexShape>(type_, std::move(first_), std::move(second_), std::move(equals_));
 	
 	first_ = std::move(new_first);
 	second_ = Shape::unique_copy(shape);
@@ -596,13 +629,76 @@ void ComplexShape::operator_as_(const Shape& shape)
 
 void ComplexShape::operator_as_(Shape&& shape)
 {
-	std::unique_ptr<Shape> f = std::move(first_);
-
-	std::unique_ptr<ComplexShape> new_first = std::make_unique<ComplexShape>();
-	new_first->type_ = type_;
-	new_first->first_ = std::move(f);
-	new_first->second_ = std::move(second_);
+	std::unique_ptr<ComplexShape> new_first = std::make_unique<ComplexShape>(type_, std::move(first_), std::move(second_), std::move(equals_));
 	
 	first_ = std::move(new_first);
 	second_ = Shape::unique_move(std::move(shape));
+}
+
+void ComplexShape::find_equal_()
+{
+	if (!first_->overlap(*second_))
+	{
+		switch (type_)
+		{
+		case EType::AND:
+		{
+			equals_ = std::make_unique<NullShape>();
+			break;
+		}
+		case EType::OR:
+		case EType::XOR:
+		{
+			if (!*first_)
+			{
+				equals_ = unique_copy(*second_);
+			}
+			else if (!*second_)
+			{
+				equals_ = unique_copy(*first_);
+			}
+			else
+			{
+				equals_ = nullptr;
+			}
+			break;
+		}
+		case EType::SUB:
+		{
+			equals_ = unique_copy(*first_);
+			break;
+		}
+		}
+		return;
+	}
+
+	// Now we know that first_ and second_ overlap
+	switch (first_->get_type())
+	{
+	case EShape::NULL_SHAPE:
+	{
+		// Impossible: NullShape can't overlap
+		break;
+	}
+	case EShape::POLYGON:
+	{
+		// Todo
+	}
+	case EShape::RECTANGLE:
+	{
+		// Todo
+	}
+	case EShape::ELLIPSE:
+	{
+		// Todo
+	}
+	case EShape::CIRCLE:
+	{
+		// Todo
+	}
+	case EShape::COMPLEX_SHAPE:
+	{
+		// Todo
+	}
+	}
 }

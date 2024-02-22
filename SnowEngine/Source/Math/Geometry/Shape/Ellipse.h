@@ -22,9 +22,9 @@ public:
 	virtual std::shared_ptr<json::Element> to_json() const override;
 
 	virtual double area(bool transformed = true) const override;
-	virtual double perimeter(bool transformed = true) const override;
 	virtual DoubleRect get_boundary_rect(bool transformed = true) const override;
 
+	virtual EShape get_type() const noexcept override;
 	virtual const String& shape_name() const noexcept override;
 	virtual bool is_inside(const Point2& point, bool transformed = true) const override;
 	virtual bool overlap(const Shape& shape, bool transformed = true) const override;
@@ -40,6 +40,7 @@ public:
 	double get_eccentricity() const noexcept;
 	double get_focal_distance() const noexcept;
 	std::pair<Point2, Point2> get_foci() const noexcept;
+	double perimeter(bool transformed = true) const noexcept;
 
 	Ellipse& operator=(const Ellipse& ellipse);
 

@@ -7,6 +7,7 @@
 #include "Shape.h"
 
 #include "ComplexShape.h"
+#include "Polygon.h"
 #include "Rectangle.h"
 #include "Circle.h"
 #include "NullShape.h"
@@ -43,34 +44,42 @@ using namespace snow;
 	throw std::invalid_argument("Couldn't create a share: the JSON object contains an unknown shape name");
 
 #define COPY_(shape, make)															\
-	if ((shape).shape_name() == Rectangle::SHAPE_NAME)								\
-		return make<Rectangle>(*dynamic_cast<const Rectangle*>(&(shape)));			\
-	if ((shape).shape_name() == Circle::SHAPE_NAME)									\
-		return make<Circle>(*dynamic_cast<const Circle*>(&(shape)));				\
-	if ((shape).shape_name() == ComplexShape::SHAPE_NAME)							\
-		return make<ComplexShape>(*dynamic_cast<const ComplexShape*>(&(shape)));	\
-	if ((shape).shape_name() == NullShape::SHAPE_NAME)								\
+	switch ((shape).get_type())														\
+	{																				\
+	case EShape::NULL_SHAPE:														\
 		return make<NullShape>(*dynamic_cast<const NullShape*>(&(shape)));			\
-	if ((shape).shape_name() == Polygon::SHAPE_NAME)								\
+	case EShape::POLYGON:															\
 		return make<Polygon>(*dynamic_cast<const Polygon*>(&(shape)));				\
-	if ((shape).shape_name() == Ellipse::SHAPE_NAME)								\
+	case EShape::RECTANGLE:															\
+		return make<Rectangle>(*dynamic_cast<const Rectangle*>(&(shape)));			\
+	case EShape::ELLIPSE:															\
 		return make<Ellipse>(*dynamic_cast<const Ellipse*>(&(shape)));				\
-	return nullptr;
+	case EShape::CIRCLE:															\
+		return make<Circle>(*dynamic_cast<const Circle*>(&(shape)));				\
+	case EShape::COMPLEX_SHAPE:														\
+		return make<ComplexShape>(*dynamic_cast<const ComplexShape*>(&(shape)));	\
+	default:																		\
+		return nullptr;																\
+	}
 
 #define MOVE_(shape, make)																	\
-	if ((shape).shape_name() == Rectangle::SHAPE_NAME)										\
-		return make<Rectangle>(std::move(*dynamic_cast<const Rectangle*>(&(shape))));		\
-	if ((shape).shape_name() == Circle::SHAPE_NAME)											\
-		return make<Circle>(std::move(*dynamic_cast<const Circle*>(&(shape))));				\
-	if ((shape).shape_name() == ComplexShape::SHAPE_NAME)									\
-		return make<ComplexShape>(std::move(*dynamic_cast<const ComplexShape*>(&(shape))));	\
-	if ((shape).shape_name() == NullShape::SHAPE_NAME)										\
+	switch ((shape).get_type())																\
+	{																						\
+	case EShape::NULL_SHAPE:																\
 		return make<NullShape>(std::move(*dynamic_cast<const NullShape*>(&(shape))));		\
-	if ((shape).shape_name() == Polygon::SHAPE_NAME)										\
+	case EShape::POLYGON:																	\
 		return make<Polygon>(std::move(*dynamic_cast<const Polygon*>(&(shape))));			\
-	if ((shape).shape_name() == Ellipse::SHAPE_NAME)										\
+	case EShape::RECTANGLE:																	\
+		return make<Rectangle>(std::move(*dynamic_cast<const Rectangle*>(&(shape))));		\
+	case EShape::ELLIPSE:																	\
 		return make<Ellipse>(std::move(*dynamic_cast<const Ellipse*>(&(shape))));			\
-	return nullptr;
+	case EShape::CIRCLE:																	\
+		return make<Circle>(std::move(*dynamic_cast<const Circle*>(&(shape))));				\
+	case EShape::COMPLEX_SHAPE:																\
+		return make<ComplexShape>(std::move(*dynamic_cast<const ComplexShape*>(&(shape))));	\
+	default:																				\
+		return nullptr;																		\
+	}
 
 		/* Shape: public */
 
