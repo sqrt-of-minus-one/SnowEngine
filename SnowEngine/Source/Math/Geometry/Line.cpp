@@ -43,7 +43,7 @@ Line::Line(std::shared_ptr<const json::Element> json) :
 	{
 		throw std::invalid_argument("Couldn't create a line: the JSON doesn't contain necessary elements");
 	}
-	angle_.normalize_90();
+	angle_.normalize_90(); // The angle is supposed to always be normalized
 	if (angle_ != Angle::RIGHT)
 	{
 		k_ = math::tg(angle_);
@@ -80,7 +80,12 @@ Line::Line(const Point2& first, const Point2& second) :
 	point_(first),
 	angle_((second - first).get_angle()),
 	k_(angle_ == Angle::RIGHT ? 0. : math::tg(angle_))
-{}
+{
+	if (first == second)
+	{
+		throw std::invalid_argument("Two points that define the line cannot coincide");
+	}
+}
 
 String Line::to_string() const
 {
@@ -140,13 +145,14 @@ Vector2 Line::get_direction_vector() const
 	{
 		return Vector2::J;
 	}
-	double cos_sq = 1 / (1 + k_ * k_);
+	double cos_sq = 1 / (1 + k_ * k_); // k is the tangent of the angle
 	double sin_sq = 1 - cos_sq;
 	return Vector2(std::sqrt(cos_sq), angle_ >= Angle::ZERO ? std::sqrt(sin_sq) : -std::sqrt(sin_sq));
 }
 
 double Line::get_b() const
 {
+	// get_k throws an exception if the line is vertical
 	return point_.get_y() - get_k() * point_.get_x();
 }
 
@@ -264,7 +270,7 @@ Line& Line::operator=(const Ray& ray)
 {
 	point_ = ray.get_origin();
 	angle_ = ray.get_angle().get_normalized_90();
-	k_ = math::tg(angle_);
+	k_ = (angle_ == Angle::RIGHT ? 0. : math::tg(angle_));
 	return *this;
 }
 
@@ -272,7 +278,7 @@ Line& Line::operator=(const LineSegment& segment)
 {
 	point_ = segment.get_endpoints().first;
 	angle_ = (segment.get_endpoints().first - segment.get_endpoints().second).get_angle().get_normalized_90();
-	k_ = math::tg(angle_);
+	k_ = (angle_ == Angle::RIGHT ? 0. : math::tg(angle_));
 	return *this;
 }
 

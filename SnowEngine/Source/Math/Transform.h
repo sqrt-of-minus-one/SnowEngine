@@ -14,6 +14,11 @@
 namespace snow
 {
 
+/**
+ *	\addtogroup Math
+ *	\{
+ */
+
 class Line;
 class Ray;
 class LineSegment;
@@ -503,5 +508,9 @@ private:
 	Angle rotation_;
 	Vector2 scale_;
 };
+
+/**
+ *	\}
+ */
 
 }

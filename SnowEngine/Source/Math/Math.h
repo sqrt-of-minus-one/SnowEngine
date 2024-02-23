@@ -26,6 +26,8 @@ namespace math
  *	coordinates
  *	- Rectangles with real (`DoubleRect`) and integer (`IntRect`) coordinates
  *	- Angles (`Angle`)
+ *	- Transform objects (`Transform`)
+ *	- Geometry objects (`Line`, `Ray`, `LineSegment`) and shapes (`Shape`)
  *	- Auxiliary math functions of the `math` namespace
  *	
  *	\~russian
@@ -36,6 +38,8 @@ namespace math
  *	координатами
  *	- Прямоугольники с вещественными (`DoubleRect`) и целочисленными (`IntRect`) координатами.
  *	- Углы (`Angle`)
+ *	- Объекты преобразований (`Transform`)
+ *	- Геометрические объекты (`Line`, `Ray`, `LineSegment`) и фигуры (`Shape`)
  *	- Вспомогательные функции из пространства имён `math`
  */
 

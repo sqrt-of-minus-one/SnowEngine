@@ -71,7 +71,7 @@ Ray::Ray(const Point2& initial_point, const Point2& point, bool including_end) :
 {
 	if (initial_point == point)
 	{
-		throw std::logic_error("The initial point and the point of the ray cannot coincide");
+		throw std::invalid_argument("The initial point and the direction point of the ray cannot coincide");
 	}
 }
 
