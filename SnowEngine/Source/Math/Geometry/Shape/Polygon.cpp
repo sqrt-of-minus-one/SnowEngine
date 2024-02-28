@@ -265,7 +265,7 @@ int Polygon::count_ray_intersections(const Ray& ray, bool* out_is_on, bool break
 		std::shared_ptr<Point2> point = side.intersection(ray);
 		if (point)
 		{
-			if (*point == ray.get_origin() && out_is_on)
+			if (*point == ray.get_initial_point() && out_is_on)
 			{
 				*out_is_on = true;
 				if (break_if_on)

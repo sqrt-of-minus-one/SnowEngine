@@ -142,7 +142,7 @@ Line Transform::transform(const Line& line) const
 
 Ray Transform::transform(const Ray& ray) const
 {
-	return Ray(transform(ray.get_origin()), transform(ray.get_ray_point()));
+	return Ray(transform(ray.get_initial_point()), transform(ray.get_ray_point()));
 }
 
 LineSegment Transform::transform(const LineSegment& segment) const
@@ -166,7 +166,7 @@ Line Transform::untransform(const Line& line) const
 
 Ray Transform::untransform(const Ray& ray) const
 {
-	return Ray(untransform(ray.get_origin()), untransform(ray.get_ray_point()));
+	return Ray(untransform(ray.get_initial_point()), untransform(ray.get_ray_point()));
 }
 
 LineSegment Transform::untransform(const LineSegment& segment) const

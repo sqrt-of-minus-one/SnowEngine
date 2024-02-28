@@ -17,17 +17,17 @@ using namespace snow;
 
 LineSegment::LineSegment() :
 	endpoints_(Point2::ZERO, Point2::ZERO),
-	including_ends_(true)
+	is_closed_(true)
 {}
 
 LineSegment::LineSegment(const LineSegment& segment) :
 	endpoints_(segment.endpoints_),
-	including_ends_(segment.including_ends_)
+	is_closed_(segment.is_closed_)
 {}
 
 LineSegment::LineSegment(std::shared_ptr<const json::Element> json) :
 	endpoints_(),
-	including_ends_(true)
+	is_closed_(true)
 {
 	std::shared_ptr<const json::JsonObject> object = util::json_to_object(json);
 	std::shared_ptr<const json::Array> endpoints;
@@ -35,10 +35,10 @@ LineSegment::LineSegment(std::shared_ptr<const json::Element> json) :
 	{
 		endpoints = util::json_to_array(object->get_content().at(L"endpoints"));
 
-		auto including_ends_it = object->get_content().find(L"including_ends");
+		auto including_ends_it = object->get_content().find(L"is_closed");
 		if (including_ends_it != object->get_content().end())
 		{
-			including_ends_ = util::json_to_bool(including_ends_it->second);
+			is_closed_ = util::json_to_bool(including_ends_it->second);
 		}
 	}
 	catch (const std::out_of_range& e)
@@ -53,25 +53,25 @@ LineSegment::LineSegment(std::shared_ptr<const json::Element> json) :
 	endpoints_.second = Point2(endpoints->get_content()[1]);
 }
 
-LineSegment::LineSegment(const std::pair<Point2, Point2>& endpoints, bool including_ends) :
+LineSegment::LineSegment(const std::pair<Point2, Point2>& endpoints, bool is_closed) :
 	endpoints_(endpoints),
-	including_ends_(including_ends)
+	is_closed_(is_closed)
 {}
 
-LineSegment::LineSegment(const Point2& first, const Point2& second, bool including_ends) :
+LineSegment::LineSegment(const Point2& first, const Point2& second, bool is_closed) :
 	endpoints_(first, second),
-	including_ends_(including_ends)
+	is_closed_(is_closed)
 {}
 
 LineSegment::LineSegment(const Ray& ray, double length) :
-	endpoints_(ray.get_origin(), ray.get_origin() + length * ray.get_direction_vector()),
-	including_ends_(ray.get_including_end())
+	endpoints_(ray.get_initial_point(), ray.get_initial_point() + length * ray.get_direction_vector()),
+	is_closed_(ray.is_closed())
 {}
 
 String LineSegment::to_string() const
 {
 	return L"[" + endpoints_.first.to_string() + L", " + endpoints_.second.to_string() + L']' +
-		(including_ends_ ? L" (including ends)" : L" (excluding ends)");
+		(is_closed_ ? L" (including ends)" : L" (excluding ends)");
 }
 
 std::shared_ptr<json::Element> LineSegment::to_json() const
@@ -81,7 +81,7 @@ std::shared_ptr<json::Element> LineSegment::to_json() const
 	endpoints->get_content().push_back(endpoints_.first.to_json());
 	endpoints->get_content().push_back(endpoints_.second.to_json());
 	object->get_content().insert({ L"endpoints", endpoints });
-	object->get_content().insert({ L"including_ends", util::to_json(including_ends_) });
+	object->get_content().insert({ L"is_closed", util::to_json(is_closed_) });
 	return object;
 };
 
@@ -90,9 +90,9 @@ const std::pair<Point2, Point2>& LineSegment::get_endpoints() const noexcept
 	return endpoints_;
 }
 
-bool LineSegment::get_including_ends() const noexcept
+bool LineSegment::is_closed() const noexcept
 {
-	return including_ends_;
+	return is_closed_;
 }
 
 void LineSegment::set_endpoints(const std::pair<Point2, Point2>& endpoints)
@@ -100,9 +100,9 @@ void LineSegment::set_endpoints(const std::pair<Point2, Point2>& endpoints)
 	endpoints_ = endpoints;
 }
 
-void LineSegment::set_including_ends(bool including_ends) noexcept
+void LineSegment::set_closed(bool is_closed) noexcept
 {
-	including_ends_ = including_ends;
+	is_closed_ = is_closed;
 }
 
 void LineSegment::set_endpoints(const Point2& first, const Point2& second) noexcept
@@ -129,15 +129,15 @@ Point2 LineSegment::get_centre() const
 bool LineSegment::is_on(const Point2& point) const
 {
 	Line line(*this);
-	return line.is_on(point) && !point.are_on_one_side(endpoints_.first, endpoints_.second, including_ends_);
+	return line.is_on(point) && !point.are_on_one_side(endpoints_.first, endpoints_.second, is_closed_);
 }
 
 bool LineSegment::is_on(const LineSegment& segment) const
 {
 	Line line(*this);
 	return line.is_on(segment.endpoints_.first) && line.is_on(segment.endpoints_.second) &&
-		!segment.endpoints_.first.are_on_one_side(endpoints_.first, endpoints_.second, including_ends_ || !segment.including_ends_) &&
-		!segment.endpoints_.second.are_on_one_side(endpoints_.first, endpoints_.second, including_ends_ || !segment.including_ends_);
+		!segment.endpoints_.first.are_on_one_side(endpoints_.first, endpoints_.second, is_closed_ || !segment.is_closed_) &&
+		!segment.endpoints_.second.are_on_one_side(endpoints_.first, endpoints_.second, is_closed_ || !segment.is_closed_);
 }
 
 std::shared_ptr<Point2> LineSegment::intersection(const Line& line) const
@@ -154,8 +154,8 @@ std::shared_ptr<Point2> LineSegment::intersection(const LineSegment& segment) co
 {
 	std::shared_ptr<Point2> point = Line(*this) & Line(segment);
 	if (point &&
-		!point->are_on_one_side(endpoints_.first, endpoints_.second, including_ends_) &&
-		!point->are_on_one_side(segment.endpoints_.first, segment.endpoints_.second, segment.including_ends_))
+		!point->are_on_one_side(endpoints_.first, endpoints_.second, is_closed_) &&
+		!point->are_on_one_side(segment.endpoints_.first, segment.endpoints_.second, segment.is_closed_))
 	{
 		return point;
 	}
@@ -165,7 +165,7 @@ std::shared_ptr<Point2> LineSegment::intersection(const LineSegment& segment) co
 LineSegment& LineSegment::operator=(const LineSegment& segment)
 {
 	endpoints_ = segment.endpoints_;
-	including_ends_ = segment.including_ends_;
+	is_closed_ = segment.is_closed_;
 	return *this;
 }
 

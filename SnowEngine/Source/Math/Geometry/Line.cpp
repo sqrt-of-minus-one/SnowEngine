@@ -51,7 +51,7 @@ Line::Line(std::shared_ptr<const json::Element> json) :
 }
 
 Line::Line(const Ray& ray) :
-	Line(ray.get_origin(), ray.get_angle())
+	Line(ray.get_initial_point(), ray.get_angle())
 {}
 
 Line::Line(const LineSegment& segment) :
@@ -173,7 +173,7 @@ bool Line::is_on(const LineSegment& segment) const
 
 bool Line::is_on(const Ray& ray) const
 {
-	return is_on(ray.get_origin()) && is_on(ray.get_ray_point());
+	return is_on(ray.get_initial_point()) && is_on(ray.get_ray_point());
 }
 
 bool Line::is_parallel(const Line& line) const noexcept
@@ -240,7 +240,7 @@ std::shared_ptr<Point2> Line::intersection(const Ray& ray) const
 {
 	Line line(ray);
 	std::shared_ptr<Point2> point = intersection(line);
-	if (point && ray.get_origin().are_on_one_side(ray.get_ray_point(), *point, ray.get_including_end()))
+	if (point && ray.get_initial_point().are_on_one_side(ray.get_ray_point(), *point, ray.is_closed()))
 	{
 		return point;
 	}
@@ -251,7 +251,7 @@ std::shared_ptr<Point2> Line::intersection(const LineSegment& segment) const
 {
 	Line line(segment);
 	std::shared_ptr<Point2> point = intersection(line);
-	if (point && !point->are_on_one_side(segment.get_endpoints().first, segment.get_endpoints().second, segment.get_including_ends()))
+	if (point && !point->are_on_one_side(segment.get_endpoints().first, segment.get_endpoints().second, segment.is_closed()))
 	{
 		return point;
 	}
@@ -268,7 +268,7 @@ Line& Line::operator=(const Line& line) noexcept
 
 Line& Line::operator=(const Ray& ray)
 {
-	point_ = ray.get_origin();
+	point_ = ray.get_initial_point();
 	angle_ = ray.get_angle().get_normalized_90();
 	k_ = (angle_ == Angle::RIGHT ? 0. : math::tg(angle_));
 	return *this;
