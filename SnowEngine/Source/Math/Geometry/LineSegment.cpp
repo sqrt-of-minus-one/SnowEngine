@@ -71,7 +71,7 @@ LineSegment::LineSegment(const Ray& ray, double length) :
 String LineSegment::to_string() const
 {
 	return L"[" + endpoints_.first.to_string() + L", " + endpoints_.second.to_string() + L']' +
-		(is_closed_ ? L" (including ends)" : L" (excluding ends)");
+		(is_closed_ ? L" (closed)" : L" (open)");
 }
 
 std::shared_ptr<json::Element> LineSegment::to_json() const
@@ -186,8 +186,9 @@ std::shared_ptr<Point2> LineSegment::operator&(const LineSegment& segment) const
 
 bool LineSegment::operator==(const LineSegment& segment) const noexcept
 {
-	return endpoints_.first == segment.endpoints_.first && endpoints_.second == segment.endpoints_.second ||
-		endpoints_.first == segment.endpoints_.second && endpoints_.second == segment.endpoints_.first;
+	return (endpoints_.first == segment.endpoints_.first && endpoints_.second == segment.endpoints_.second ||
+		endpoints_.first == segment.endpoints_.second && endpoints_.second == segment.endpoints_.first) &&
+		is_closed_ == segment.is_closed_;
 }
 
 bool LineSegment::operator!=(const LineSegment& segment) const noexcept

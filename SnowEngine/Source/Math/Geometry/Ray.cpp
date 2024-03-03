@@ -212,7 +212,7 @@ std::shared_ptr<Point2> Ray::operator&(const LineSegment& segment) const
 
 bool Ray::operator==(const Ray& ray) const noexcept
 {
-	return initial_point_ == ray.initial_point_ && angle_ == ray.angle_;
+	return initial_point_ == ray.initial_point_ && angle_ == ray.angle_ && is_closed_ == ray.is_closed_;
 }
 
 bool Ray::operator!=(const Ray& ray) const noexcept
