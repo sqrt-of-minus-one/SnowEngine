@@ -41,7 +41,7 @@ using namespace snow;
 		return make<Polygon>(json);																					\
 	if (shape == Ellipse::SHAPE_NAME)																				\
 		return make<Ellipse>(json);																					\
-	throw std::invalid_argument("Couldn't create a share: the JSON object contains an unknown shape name");
+	throw std::invalid_argument("Couldn't create a shape: the JSON object contains an unknown shape name");
 
 #define COPY_(shape, make)															\
 	switch ((shape).get_type())														\

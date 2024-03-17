@@ -250,12 +250,16 @@ public:
 	 *	
 	 *	Allows to get one of the points of the line
 	 *	\return A point on the line.
+	 *	\sa
+	 *	- `set_point()`
 	 *	
 	 *	\~russian
 	 *	\brief Точка на прямой
 	 *	
 	 *	Позволяет получить одну из точек прямой.
 	 *	\return Точка на прямой.
+	 *	\sa
+	 *	- `set_point()`
 	 */
 	const Point2& get_point() const noexcept;
 
@@ -266,12 +270,16 @@ public:
 	 *	Allows to get the angle between the line and the positive direction of the X axis
 	 *	(including sign).
 	 *	\return The angle between the line and the X axis.
+	 *	\sa
+	 *	- `set_angle()`
 	 *	
 	 *	\~russian
 	 *	\brief Угол между прямой и осью X
 	 *	
 	 *	Позволяет получить угол между прямой и положительным направлением оси X (с учётом знака).
 	 *	\return Угол между прямой и осью X.
+	 *	\sa
+	 *	- `set_angle()`
 	 */
 	const Angle& get_angle() const noexcept;
 
@@ -281,12 +289,16 @@ public:
 	 *	
 	 *	Moves the line without changing its angle, so that the line passes through the point.
 	 *	\param point The point that the line will pass through.
+	 *	\sa
+	 *	- `get_point()`
 	 *	
 	 *	\~russian
 	 *	\brief Перемещает прямую к переданной точке
 	 *	
 	 *	Перемещает прямую, не изменяя её угла, чтобы она проходила через переданную точку.
 	 *	\param point Точка, через которую будет проходить прямая.
+	 *	\sa
+	 *	- `get_point()`
 	 */
 	void set_point(const Point2& point) noexcept;
 
@@ -298,6 +310,8 @@ public:
 	 *	(including sign).
 	 *	\param angle The new angle between the line and the X axis.
 	 *	\warning The line position after execution of the method is undefined.
+	 *	\sa
+	 *	- `get_angle()`
 	 *	
 	 *	\~russian
 	 *	\brief Изменяет угол между прямой и осью X
@@ -305,6 +319,8 @@ public:
 	 *	Позволяет установить угол между прямой и положительным направлением оси X (с учётом знака).
 	 *	\param angle Новый угол между прямой и осью X.
 	 *	\warning После выполнения метода прямая может иметь неопределённое положение.
+	 *	\sa
+	 *	- `get_angle()`
 	 */
 	void set_angle(const Angle& angle);
 
@@ -315,6 +331,8 @@ public:
 	 *	Allows to get the angle coefficient \f$k\f$ of the line (\f$y = kx + b\f$).
 	 *	\return The angle coefficient.
 	 *	\throw std::domain_error The line is vertical and thus the angle coefficient is infinite.
+	 *	\sa
+	 *	- `get_b()`
 	 *	
 	 *	\~russian
 	 *	\brief Угловой коэффициент
@@ -322,6 +340,8 @@ public:
 	 *	Позволяет получить угловой коэффициент \f$k\f$ прямой (\f$y = kx + b\f$).
 	 *	\return Угловой коэффициент.
 	 *	\throw std::domain_error Прямая вертикальна, поэтому её угловой коэффициент бесконечен.
+	 *	\sa
+	 *	- `get_b()`
 	 */
 	double get_k() const;
 
@@ -349,6 +369,8 @@ public:
 	 *	\return The free parameter of the line.
 	 *	\throw std::domain_error The line is vertical and thus cannot be described by the equation
 	 *	\f$y = kx + b\f$.
+	 *	\sa
+	 *	- `get_k()`
 	 *	
 	 *	\~russian
 	 *	\brief Свободный параметр
@@ -358,6 +380,8 @@ public:
 	 *	\return Свободный параметр прямой.
 	 *	\throw std::domain_error Прямая вертикальна и поэтому не может быть описана уравнением
 	 *	\f$y = kx + b\f$.
+	 *	\sa
+	 *	- `get_k()`
 	 */
 	double get_b() const;
 
@@ -419,6 +443,8 @@ public:
 	 *	Allows to check whether the line is parallel to the passed one.
 	 *	\param line The line to check.
 	 *	\return `true` if the two lines are parallel, `false` otherwise.
+	 *	\sa
+	 *	- `is_perpendicular()`
 	 *	
 	 *	\~russian
 	 *	\brief Параллельны ли две прямые
@@ -426,6 +452,8 @@ public:
 	 *	Позволяет проверить, параллельна ли данная прямая переданной.
 	 *	\param line Прямая для проверки.
 	 *	\return `true`, если две прямые параллельны; иначе `false`.
+	 *	\sa
+	 *	- `is_perpendicular()`
 	 */
 	bool is_parallel(const Line& line) const noexcept;
 	
@@ -436,6 +464,8 @@ public:
 	 *	Allows to check whether the line is perpendicular to the passed one.
 	 *	\param line The line to check.
 	 *	\return `true` if the two lines are perpendicular, `false` otherwise.
+	 *	\sa
+	 *	- `is_parallel()`
 	 *	
 	 *	\~russian
 	 *	\brief Перпендикулярны ли две прямые
@@ -443,6 +473,8 @@ public:
 	 *	Позволяет проверить, перпендикулярна ли данная прямая переданной.
 	 *	\param line Прямая для проверки.
 	 *	\return `true`, если две прямые перпендикулярны; иначе `false`.
+	 *	\sa
+	 *	- `is_parallel()`
 	 */
 	bool is_perpendicular(const Line& line) const;
 
@@ -494,6 +526,8 @@ public:
 	 *	\param line The line.
 	 *	\return The pointer to the intersection point between the two lines. A null pointer if the
 	 *	lines are parallel.
+	 *	\sa
+	 *	- `operator&()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение двух прямых
@@ -502,6 +536,8 @@ public:
 	 *	\param line Прямая.
 	 *	\return Указатель на точку пересечения двух прямых. Нулевой указатель, если прямые
 	 *	параллельны.
+	 *	\sa
+	 *	- `operator&()`
 	 */
 	std::shared_ptr<Point2> intersection(const Line& line) const;
 	
@@ -513,6 +549,8 @@ public:
 	 *	\param ray The ray.
 	 *	\return The pointer to the intersection point between the line and the ray. A null pointer
 	 *	if the line and the ray do not intersect.
+	 *	\sa
+	 *	- `operator&()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение прямой и луча
@@ -521,6 +559,8 @@ public:
 	 *	\param ray Луч.
 	 *	\return Указатель на точку пересечения прямой и луча. Нулевой указатель, если прямая и луч
 	 *	не пересекаются.
+	 *	\sa
+	 *	- `operator&()`
 	 */
 	std::shared_ptr<Point2> intersection(const Ray& ray) const;
 	
@@ -532,6 +572,8 @@ public:
 	 *	\param segment The segment.
 	 *	\return The pointer to the intersection point between the line and the segment. A null
 	 *	pointer if the line and the segment do not intersect.
+	 *	\sa
+	 *	- `operator&()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение прямой и отрезка
@@ -540,6 +582,8 @@ public:
 	 *	\param segment Отрезок.
 	 *	\return Указатель на точку пересечения прямой и отрезка. Нулевой указатель, если прямая и
 	 *	отрезок не пересекаются.
+	 *	\sa
+	 *	- `operator&()`
 	 */
 	std::shared_ptr<Point2> intersection(const LineSegment& segment) const;
 
@@ -604,6 +648,8 @@ public:
 	 *	\param line The line.
 	 *	\return The pointer to the intersection point between the two lines. A null pointer if the
 	 *	lines are parallel.
+	 *	\sa
+	 *	- `intersection()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение двух прямых
@@ -612,6 +658,8 @@ public:
 	 *	\param line Прямая.
 	 *	\return Указатель на точку пересечения двух прямых. Нулевой указатель, если прямые
 	 *	параллельны.
+	 *	\sa
+	 *	- `intersection()`
 	 */
 	std::shared_ptr<Point2> operator&(const Line& line) const;
 	
@@ -623,6 +671,8 @@ public:
 	 *	\param ray The ray.
 	 *	\return The pointer to the intersection point between the line and the ray. A null pointer
 	 *	if the line and the ray do not intersect.
+	 *	\sa
+	 *	- `intersection()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение прямой и луча
@@ -631,6 +681,8 @@ public:
 	 *	\param ray Луч.
 	 *	\return Указатель на точку пересечения прямой и луча. Нулевой указатель, если прямая и луч
 	 *	не пересекаются.
+	 *	\sa
+	 *	- `intersection()`
 	 */
 	std::shared_ptr<Point2> operator&(const Ray& ray) const;
 	
@@ -642,6 +694,8 @@ public:
 	 *	\param segment The segment.
 	 *	\return The pointer to the intersection point between the line and the segment. A null
 	 *	pointer if the line and the segment do not intersect.
+	 *	\sa
+	 *	- `intersection()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение прямой и отрезка
@@ -650,6 +704,8 @@ public:
 	 *	\param segment Отрезок.
 	 *	\return Указатель на точку пересечения прямой и отрезка. Нулевой указатель, если прямая и
 	 *	отрезок не пересекаются.
+	 *	\sa
+	 *	- `intersection()`
 	 */
 	std::shared_ptr<Point2> operator&(const LineSegment& segment) const;
 	
@@ -660,6 +716,8 @@ public:
 	 *	Allows to check whether two lines coincide.
 	 *	\param line The line to check.
 	 *	\return `true` if the two lines are equal, `false` otherwise.
+	 *	\sa
+	 *	- `operator!=()`
 	 *	
 	 *	\~russian
 	 *	\brief Равны ли две прямые
@@ -667,6 +725,8 @@ public:
 	 *	Позволяет проверить, совпадают ли две прямые.
 	 *	\param line Прямая для проверки.
 	 *	\return `true`, если прямые равны; иначе `false`.
+	 *	\sa
+	 *	- `operator!=()`
 	 */
 	bool operator==(const Line& line) const;
 	
@@ -677,6 +737,8 @@ public:
 	 *	Allows to check whether two lines coincide.
 	 *	\param line The line to check.
 	 *	\return `true` if the two lines are not equal, `false` otherwise.
+	 *	\sa
+	 *	- `operator==()`
 	 *	
 	 *	\~russian
 	 *	\brief Различаются ли две прямые
@@ -684,6 +746,8 @@ public:
 	 *	Позволяет проверить, совпадают ли две прямые.
 	 *	\param line Прямая для проверки.
 	 *	\return `true`, если прямые не равны; иначе `false`.
+	 *	\sa
+	 *	- `operator==()`
 	 */
 	bool operator!=(const Line& line) const;
 

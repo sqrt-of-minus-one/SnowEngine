@@ -207,12 +207,16 @@ public:
 	 *	
 	 *	Allows to get the initial point of the ray.
 	 *	\return The initial point.
+	 *	\sa
+	 *	- `set_initial_point()`
 	 *	
 	 *	\~russian
 	 *	\brief Начало
 	 *	
 	 *	Позволяет получить начало луча.
 	 *	\return Начало луча.
+	 *	\sa
+	 *	- `set_initial_point()`
 	 */
 	const Point2& get_initial_point() const noexcept;
 
@@ -223,6 +227,8 @@ public:
 	 *	Allows to get the angle between the ray direction and the positive direction of the X axis
 	 *	(including sign).
 	 *	\return The angle.
+	 *	\sa
+	 *	- `set_angle()`
 	 *	
 	 *	\~russian
 	 *	\brief Угол луча
@@ -230,6 +236,8 @@ public:
 	 *	Позволяет получить угол между направлением луча и положительным направлением оси X (с
 	 *	учётом знака).
 	 *	\return Угол.
+	 *	\sa
+	 *	- `set_angle()`
 	 */
 	const Angle& get_angle() const noexcept;
 
@@ -240,6 +248,8 @@ public:
 	 *	If the ray is closed, its initial point is considered as the part of the ray. The initial
 	 *	point of an open ray is not a part of the ray.
 	 *	\return `true` if the ray is closed, `false` otherwise.
+	 *	\sa
+	 *	- `set_closed()`
 	 *	
 	 *	\~russian
 	 *	\brief Является ли луч замкнутым
@@ -247,6 +257,8 @@ public:
 	 *	Если луч замкнут, его начало рассматривается как часть луча. Начало открытого луча не
 	 *	является его частью.
 	 *	\return `true`, если луч замкнут; иначе `false`.
+	 *	\sa
+	 *	- `set_closed()`
 	 */
 	bool is_closed() const noexcept;
 
@@ -257,12 +269,16 @@ public:
 	 *	Moves the ray so that the passed point becomes a new initial point of the ray. Does not
 	 *	affect the angle of the ray.
 	 *	\param point The new initial point.
+	 *	\sa
+	 *	- `get_initial_point()`
 	 *	
 	 *	\~russian
 	 *	\brief Изменяет начало луча
 	 *	
 	 *	Двигает луч так, что переданная точка становится новым началом. Не влияет на угол луча.
 	 *	\param point Новое начало.
+	 *	\sa
+	 *	- `get_initial_point()`
 	 */
 	void set_initial_point(const Point2& point) noexcept;
 
@@ -273,6 +289,8 @@ public:
 	 *	Changes the angle of the ray without changing its initial point.
 	 *	\param angle The new angle between the direction of the ray and the positive direction of
 	 *	the X axis (including sign).
+	 *	\sa
+	 *	- `get_angle()`
 	 *	
 	 *	\~russian
 	 *	\brief Изменяет угол луча
@@ -280,6 +298,8 @@ public:
 	 *	Изменяет угол луча без изменения его начала.
 	 *	\param angle Новый угол между направлением луча и положительным направлением оси X (с
 	 *	учётом знака).
+	 *	\sa
+	 *	- `get_angle()`
 	 */
 	void set_angle(const Angle& angle);
 	
@@ -290,6 +310,8 @@ public:
 	 *	Allows to set if the ray is closed. If the ray is closed, its initial point is considered
 	 *	as the part of the ray. The initial point of an open ray is not the part of the ray.
 	 *	\param is_closed Whether the ray is closed.
+	 *	\sa
+	 *	- `is_closed()`
 	 *	
 	 *	\~russian
 	 *	\brief Устанавливает, является ли луч замкнутым
@@ -297,6 +319,8 @@ public:
 	 *	Позволяет задать, является ли луч замкнутым. Если луч замкнут, его начало рассматривается
 	 *	как часть луча. Начало открытого луча не является частью луча.
 	 *	\param is_closed Является ли луч замкнутым.
+	 *	\sa
+	 *	- `is_closed()`
 	 */
 	void set_closed(bool is_closed) noexcept;
 
@@ -389,6 +413,8 @@ public:
 	 *	\param line The line.
 	 *	\return The pointer to the intersection point between the ray and the line. A null pointer
 	 *	if the ray and the line do not intersect.
+	 *	\sa
+	 *	- `operator&()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение луча и прямой
@@ -397,6 +423,8 @@ public:
 	 *	\param line Прямая.
 	 *	\return Указатель на точку пересечения луча и прямой. Нулевой указатель, если луч и прямая
 	 *	не пересекаются.
+	 *	\sa
+	 *	- `operator&()`
 	 */
 	std::shared_ptr<Point2> intersection(const Line& line) const;
 	
@@ -408,6 +436,8 @@ public:
 	 *	\param ray The ray.
 	 *	\return The pointer to the intersection point between the two rays. A null pointer if the
 	 *	rays do not intersect.
+	 *	\sa
+	 *	- `operator&()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение двух лучей
@@ -416,6 +446,8 @@ public:
 	 *	\param ray Луч.
 	 *	\return Указатель на точку пересечения двух лучей. Нулевой указатель, если лучи не
 	 *	пересекаются.
+	 *	\sa
+	 *	- `operator&()`
 	 */
 	std::shared_ptr<Point2> intersection(const Ray& ray) const;
 	
@@ -427,6 +459,8 @@ public:
 	 *	\param segment The segment.
 	 *	\return The pointer to the intersection point between the ray and the segment. A null
 	 *	pointer if the ray and the segment do not intersect.
+	 *	\sa
+	 *	- `operator&()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение луча и отрезка
@@ -435,6 +469,8 @@ public:
 	 *	\param segment Отрезок.
 	 *	\return Указатель на точку пересечения луча и отрезка. Нулевой указатель, если луч и
 	 *	отрезок не пересекаются.
+	 *	\sa
+	 *	- `operator&()`
 	 */
 	std::shared_ptr<Point2> intersection(const LineSegment& segment) const;
 
@@ -480,6 +516,8 @@ public:
 	 *	\param line The line.
 	 *	\return The pointer to the intersection point between the ray and the line. A null pointer
 	 *	if the ray and the line do not intersect.
+	 *	\sa
+	 *	- `intersection()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение луча и прямой
@@ -488,6 +526,8 @@ public:
 	 *	\param line Прямая.
 	 *	\return Указатель на точку пересечения луча и прямой. Нулевой указатель, если луч и прямая
 	 *	не пересекаются.
+	 *	\sa
+	 *	- `intersection()`
 	 */
 	std::shared_ptr<Point2> operator&(const Line& line) const;
 	
@@ -499,6 +539,8 @@ public:
 	 *	\param ray The ray.
 	 *	\return The pointer to the intersection point between the two rays. A null pointer if the
 	 *	rays do not intersect.
+	 *	\sa
+	 *	- `intersection()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение двух лучей
@@ -507,6 +549,8 @@ public:
 	 *	\param ray Луч.
 	 *	\return Указатель на точку пересечения двух лучей. Нулевой указатель, если лучи не
 	 *	пересекаются.
+	 *	\sa
+	 *	- `intersection()`
 	 */
 	std::shared_ptr<Point2> operator&(const Ray& ray) const;
 	
@@ -518,6 +562,8 @@ public:
 	 *	\param segment The segment.
 	 *	\return The pointer to the intersection point between the ray and the segment. A null
 	 *	pointer if the ray and the segment do not intersect.
+	 *	\sa
+	 *	- `intersection()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение луча и отрезка
@@ -526,6 +572,8 @@ public:
 	 *	\param segment Отрезок.
 	 *	\return Указатель на точку пересечения луча и отрезка. Нулевой указатель, если луч и
 	 *	отрезок не пересекаются.
+	 *	\sa
+	 *	- `intersection()`
 	 */
 	std::shared_ptr<Point2> operator&(const LineSegment& segment) const;
 	
@@ -536,6 +584,8 @@ public:
 	 *	Allows to check whether two rays coincide.
 	 *	\param ray The ray to check.
 	 *	\return `true` if the two rays are equal, `false` otherwise.
+	 *	\sa
+	 *	- `operator!=()`
 	 *	
 	 *	\~russian
 	 *	\brief Равны ли два луча
@@ -543,6 +593,8 @@ public:
 	 *	Позволяет проверить, совпадают ли два луча.
 	 *	\param ray Луч для проверки.
 	 *	\return `true`, если лучи равны; иначе `false`.
+	 *	\sa
+	 *	- `operator!=()`
 	 */
 	bool operator==(const Ray& ray) const noexcept;
 	
@@ -553,6 +605,8 @@ public:
 	 *	Allows to check whether two rays coincide.
 	 *	\param ray The ray to check.
 	 *	\return `true` if the two rays are not equal, `false` otherwise.
+	 *	\sa
+	 *	- `operator==()`
 	 *	
 	 *	\~russian
 	 *	\brief Различаются ли два луча
@@ -560,6 +614,8 @@ public:
 	 *	Позволяет проверить, совпадают ли два луча.
 	 *	\param ray Луч для проверки.
 	 *	\return `true`, если лучи не равны; иначе `false`.
+	 *	\sa
+	 *	- `operator==()`
 	 */
 	bool operator!=(const Ray& ray) const noexcept;
 

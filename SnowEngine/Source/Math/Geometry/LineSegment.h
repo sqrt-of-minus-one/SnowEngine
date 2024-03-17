@@ -211,12 +211,16 @@ public:
 	 *	
 	 *	Allows to get the endpoints of the segment.
 	 *	\return The pair of the segment endpoints.
+	 *	\sa
+	 *	- `set_endpoints()`
 	 *	
 	 *	\~russian
 	 *	\brief Концы отрезка
 	 *	
 	 *	Позволяет получить концы отрезка.
 	 *	\return Пара концов отрезка.
+	 *	\sa
+	 *	- `set_endpoints()`
 	 */
 	const std::pair<Point2, Point2>& get_endpoints() const noexcept;
 
@@ -228,6 +232,8 @@ public:
 	 *	considered as the parts of the segment. The endpoints of an open segment are not the parts
 	 *	of the segment.
 	 *	\return `true` if the segment is closed, `false` otherwise.
+	 *	\sa
+	 *	- `set_closed()`
 	 *	
 	 *	\~russian
 	 *	\brief Является ли отрезок замкнутым
@@ -235,6 +241,8 @@ public:
 	 *	Проверяет, является ли отрезок замкнутым. Если отрезок замкнут, его концы рассматриваются
 	 *	как части отрезка. Концы открытого отрезка не являются частями отрезка.
 	 *	\return `true`, если отрезок замкнутый; иначе `false`.
+	 *	\sa
+	 *	- `set_closed()`
 	 */
 	bool is_closed() const noexcept;
 
@@ -244,12 +252,16 @@ public:
 	 *	
 	 *	Allows to set the endpoints of the segment.
 	 *	\param endpoints The pair of the endpoints.
+	 *	\sa
+	 *	- `get_endpoints()`
 	 *	
 	 *	\~russian
 	 *	\brief Устанавливает конечные точки
 	 *	
 	 *	Позволяет установить концы отрезка.
 	 *	\param endpoints Пара конечных точек.
+	 *	\sa
+	 *	- `get_endpoints()`
 	 */
 	void set_endpoints(const std::pair<Point2, Point2>& endpoints);
 
@@ -260,6 +272,8 @@ public:
 	 *	Allows to set the endpoints of the segment.
 	 *	\param first The first endpoint.
 	 *	\param second The second endpoint.
+	 *	\sa
+	 *	- `get_endpoints()`
 	 *	
 	 *	\~russian
 	 *	\brief Устанавливает конечные точки
@@ -267,6 +281,8 @@ public:
 	 *	Позволяет установить концы отрезка.
 	 *	\param first Первая конечная точка.
 	 *	\param second Вторая конечная точка.
+	 *	\sa
+	 *	- `get_endpoints()`
 	 */
 	void set_endpoints(const Point2& first, const Point2& second) noexcept;
 
@@ -278,6 +294,8 @@ public:
 	 *	considered as the parts of the segment. The endpoints of an open segment are not the parts
 	 *	of the segment.
 	 *	\param is_closed Whether the segment is closed.
+	 *	\sa
+	 *	- `is_closed()`
 	 *	
 	 *	\~russian
 	 *	\brief Устанавливает, является ли отрезок замкнутым
@@ -285,6 +303,8 @@ public:
 	 *	Позволяет установить, является ли отрезок замкнутым. Если отрезок замкнут, его концы
 	 *	рассматриваются как части отрезка. Концы открытого отрезка не являются частями отрезка.
 	 *	\param is_closed Является ли отрезок замкнутым.
+	 *	\sa
+	 *	- `is_closed()`
 	 */
 	void set_closed(bool is_closed) noexcept;
 
@@ -295,6 +315,8 @@ public:
 	 *	Allows to get the square of the length of the segment. You should prefer using this method
 	 *	over squaring the result of the `length()` method.
 	 *	\return The square of the length of the segment.
+	 *	\sa
+	 *	- `length()`
 	 *	
 	 *	\~russian
 	 *	\brief Квадрат длины
@@ -302,6 +324,8 @@ public:
 	 *	Позволяет получить квадрат длины отрезка. Данный метод следует предпочитать возведению в
 	 *	квадрат результата метода `length()`.
 	 *	\return Квадрат длины отрезка.
+	 *	\sa
+	 *	- `length()`
 	 */
 	double length_sq() const;
 
@@ -312,6 +336,8 @@ public:
 	 *	Allows to get the length of the segment. If you need to get the square of the length, you
 	 *	should use the `length_sq()` method, which is more efficient.
 	 *	\return The length of the segment.
+	 *	\sa
+	 *	- `length_sq()`
 	 *	
 	 *	\~russian
 	 *	\brief Длина
@@ -319,6 +345,8 @@ public:
 	 *	Позволяет получить длину отрезка. Если вам требуется получить квадрат длины, то следует
 	 *	использовать более эффективный метод `length_sq()`.
 	 *	\return Длина отрезка.
+	 *	\sa
+	 *	- `length_sq()`
 	 */
 	double length() const;
 
@@ -379,6 +407,8 @@ public:
 	 *	\param line The line.
 	 *	\return The pointer to the intersection point between the segment and the line. A null
 	 *	pointer if the segment and the line do not intersect.
+	 *	\sa
+	 *	- `operator&()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение отрезка и прямой
@@ -387,6 +417,8 @@ public:
 	 *	\param line Прямая.
 	 *	\return Указатель на точку пересечения отрезка и прямой. Нулевой указатель, если отрезок и
 	 *	прямая не пересекаются.
+	 *	\sa
+	 *	- `operator&()`
 	 */
 	std::shared_ptr<Point2> intersection(const Line& line) const;
 	
@@ -398,6 +430,8 @@ public:
 	 *	\param ray The ray.
 	 *	\return The pointer to the intersection point between the segment and the ray. A null
 	 *	pointer if the segment and the ray do not intersect.
+	 *	\sa
+	 *	- `operator&()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение отрезка и луча
@@ -406,6 +440,8 @@ public:
 	 *	\param ray Луч.
 	 *	\return Указатель на точку пересечения отрезка и луча. Нулевой указатель, если отрезок и
 	 *	луч не пересекаются.
+	 *	\sa
+	 *	- `operator&()`
 	 */
 	std::shared_ptr<Point2> intersection(const Ray& ray) const;
 	
@@ -417,6 +453,8 @@ public:
 	 *	\param segment The segment.
 	 *	\return The pointer to the intersection point between the two segments. A null pointer if
 	 *	two segments do not intersect.
+	 *	\sa
+	 *	- `operator&()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение двух отрезков
@@ -425,6 +463,8 @@ public:
 	 *	\param segment Отрезок.
 	 *	\return Указатель на точку пересечения двух отрезков. Нулевой указатель, если отрезки не
 	 *	пересекаются.
+	 *	\sa
+	 *	- `operator&()`
 	 */
 	std::shared_ptr<Point2> intersection(const LineSegment& segment) const;
 
@@ -455,6 +495,8 @@ public:
 	 *	\param line The line.
 	 *	\return The pointer to the intersection point between the segment and the line. A null
 	 *	pointer if the segment and the line do not intersect.
+	 *	\sa
+	 *	- `intersection()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение отрезка и прямой
@@ -463,6 +505,8 @@ public:
 	 *	\param line Прямая.
 	 *	\return Указатель на точку пересечения отрезка и прямой. Нулевой указатель, если отрезок и
 	 *	прямая не пересекаются.
+	 *	\sa
+	 *	- `intersection()`
 	 */
 	std::shared_ptr<Point2> operator&(const Line& line) const;
 	
@@ -474,6 +518,8 @@ public:
 	 *	\param ray The ray.
 	 *	\return The pointer to the intersection point between the segment and the ray. A null
 	 *	pointer if the segment and the ray do not intersect.
+	 *	\sa
+	 *	- `intersection()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение отрезка и луча
@@ -482,6 +528,8 @@ public:
 	 *	\param ray Луч.
 	 *	\return Указатель на точку пересечения отрезка и луча. Нулевой указатель, если отрезок и
 	 *	луч не пересекаются.
+	 *	\sa
+	 *	- `intersection()`
 	 */
 	std::shared_ptr<Point2> operator&(const Ray& ray) const;
 	
@@ -493,6 +541,8 @@ public:
 	 *	\param segment The segment.
 	 *	\return The pointer to the intersection point between the two segments. A null pointer if
 	 *	two segments do not intersect.
+	 *	\sa
+	 *	- `intersection()`
 	 *	
 	 *	\~russian
 	 *	\brief Пересечение двух отрезков
@@ -501,6 +551,8 @@ public:
 	 *	\param segment Отрезок.
 	 *	\return Указатель на точку пересечения двух отрезков. Нулевой указатель, если отрезки не
 	 *	пересекаются.
+	 *	\sa
+	 *	- `intersection()`
 	 */
 	std::shared_ptr<Point2> operator&(const LineSegment& segment) const;
 
@@ -511,6 +563,8 @@ public:
 	 *	Allows to check whether two segments coincide.
 	 *	\param segment The segment to check.
 	 *	\return `true` if the two segments are equal, `false` otherwise.
+	 *	\sa
+	 *	- `operator!=()`
 	 *	
 	 *	\~russian
 	 *	\brief Равны ли два отрезка
@@ -518,6 +572,8 @@ public:
 	 *	Позволяет проверить, совпадают ли два отрезка.
 	 *	\param segment Отрезок для проверки.
 	 *	\return `true`, если отрезки равны; иначе `false`.
+	 *	\sa
+	 *	- `operator!=()`
 	 */
 	bool operator==(const LineSegment& segment) const noexcept;
 
@@ -528,6 +584,8 @@ public:
 	 *	Allows to check whether two segments coincide.
 	 *	\param segment The segment to check.
 	 *	\return `true` if the two segments are not equal, `false` otherwise.
+	 *	\sa
+	 *	- `operator==()`
 	 *	
 	 *	\~russian
 	 *	\brief Различаются ли два отрезка
@@ -535,6 +593,8 @@ public:
 	 *	Позволяет проверить, совпадают ли два отрезка.
 	 *	\param segment Отрезок для проверки.
 	 *	\return `true`, если отрезки не равны; иначе `false`.
+	 *	\sa
+	 *	- `operator==()`
 	 */
 	bool operator!=(const LineSegment& segment) const noexcept;
 
